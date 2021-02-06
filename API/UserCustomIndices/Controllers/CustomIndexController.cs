@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UserCustomIndices.Services;
 using Database.Model.User.CustomIndices;
 using System;
+using UserCustomIndices.Validators;
 
 namespace UserCustomIndices.Controllers
 {
@@ -12,17 +13,19 @@ namespace UserCustomIndices.Controllers
     public class CustomIndexController : ControllerBase
     {
         private readonly ILogger<CustomIndexController> Logger;
-        private readonly ICustomIndexService indexService;
+        private readonly ICustomIndexService IndexService;
+        private readonly ICustomIndexValidator IndexValidator;
 
-        public CustomIndexController(ICustomIndexService bookService)
+        public CustomIndexController(ICustomIndexService indexService, ICustomIndexValidator customIndexValidator)
         {
-            indexService = bookService;
+            IndexService = indexService;
+            IndexValidator = customIndexValidator;
         }
 
         [HttpGet]
         public ActionResult<List<CustomIndex>> Get(Guid userId)
         {
-            var indices = indexService.Get(userId);
+            var indices = IndexService.Get(userId);
 
             if(indices is null)
             {
@@ -38,7 +41,7 @@ namespace UserCustomIndices.Controllers
             if (indexId.Length != 24)
                 return BadRequest();
 
-            var index = indexService.Get(indexId);
+            var index = IndexService.Get(indexId);
 
             if (index is null)
             {
@@ -51,22 +54,22 @@ namespace UserCustomIndices.Controllers
         [HttpPost]
         public ActionResult<CustomIndex> Create(CustomIndex index)
         {
-            indexService.Create(index);
+            IndexService.Create(index);
 
-            return CreatedAtRoute("GetBook", new { id = index.Id.ToString() }, index);
+            return CreatedAtRoute("Create", index);
         }
 
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, CustomIndex updatedIndex)
         {
-            var index = indexService.Get(id);
+            var index = IndexService.Get(id);
 
             if (index is null)
             {
                 return NotFound();
             }
 
-            indexService.Update(id, updatedIndex);
+            IndexService.Update(id, updatedIndex);
 
             return NoContent();
         }
@@ -74,14 +77,14 @@ namespace UserCustomIndices.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var index = indexService.Get(id);
+            var index = IndexService.Get(id);
 
             if (index is null)
             {
                 return NotFound();
             }
 
-            indexService.Remove(index.Id);
+            IndexService.Remove(index.Id);
 
             return NoContent();
         }

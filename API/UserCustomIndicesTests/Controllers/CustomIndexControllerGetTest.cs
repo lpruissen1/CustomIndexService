@@ -98,7 +98,7 @@ namespace UserCustomIndicesTests.Controllers
         private void SetupCustomIndexCollection(List<CustomIndex> customIndices, Dictionary<Guid, List<string>> userIndicesCollection = null)
         {
             customIndexService = new CustomIndexServiceFake(customIndices, userIndicesCollection);
-            sut = new CustomIndexController(customIndexService);
+            sut = new CustomIndexController(customIndexService, new CustomIndexValidatorFake());
         }
     }
 }
