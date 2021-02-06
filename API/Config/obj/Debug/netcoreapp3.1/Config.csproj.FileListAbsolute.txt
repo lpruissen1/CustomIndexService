@@ -1,0 +1,8 @@
+C:\sketch\API\Config\bin\Debug\netcoreapp3.1\Config.deps.json
+C:\sketch\API\Config\bin\Debug\netcoreapp3.1\Config.dll
+C:\sketch\API\Config\bin\Debug\netcoreapp3.1\Config.pdb
+C:\sketch\API\Config\obj\Debug\netcoreapp3.1\Config.AssemblyInfoInputs.cache
+C:\sketch\API\Config\obj\Debug\netcoreapp3.1\Config.AssemblyInfo.cs
+C:\sketch\API\Config\obj\Debug\netcoreapp3.1\Config.csproj.CoreCompileInputs.cache
+C:\sketch\API\Config\obj\Debug\netcoreapp3.1\Config.dll
+C:\sketch\API\Config\obj\Debug\netcoreapp3.1\Config.pdb
