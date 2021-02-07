@@ -40,14 +40,14 @@ namespace UserCustomIndicesTests.Controllers
         [Test]
         public void TestPost_ValidCustomIndex()
         {
-            var index = new CustomIndex();
-            CustomIndexValidatorMock.Setup(x => x.Validate(index)).Returns(false);
+            var index = new CustomIndex() { Id = "IAmAnId"};
+            CustomIndexValidatorMock.Setup(x => x.Validate(index)).Returns(true);
 
             SetupController(CustomIndexValidatorMock.Object);
 
             var response = sut.Create(index);
 
-            Assert.IsInstanceOf<CreatedAtRouteResult>(response.Result);
+            Assert.IsInstanceOf<ObjectResult>(response.Result);
             Assert.AreEqual(index, response.Value);
         }
 

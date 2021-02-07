@@ -12,7 +12,7 @@ namespace UserCustomIndices.Validators
     {
         public bool Validate(CustomIndex index)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

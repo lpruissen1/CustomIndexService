@@ -54,9 +54,11 @@ namespace UserCustomIndices.Controllers
         [HttpPost]
         public ActionResult<CustomIndex> Create(CustomIndex index)
         {
-            IndexService.Create(index);
+            if (!IndexValidator.Validate(index))
+                return BadRequest();
 
-            return CreatedAtRoute("Create", index);
+            IndexService.Create(index);
+            return Created("Create", index);
         }
 
         [HttpPut("{id:length(24)}")]
