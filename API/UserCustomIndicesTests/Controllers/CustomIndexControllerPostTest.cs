@@ -47,8 +47,7 @@ namespace UserCustomIndicesTests.Controllers
 
             var response = sut.Create(index);
 
-            Assert.IsInstanceOf<ObjectResult>(response.Result);
-            Assert.AreEqual(index, response.Value);
+            Assert.IsInstanceOf<CreatedResult>(response.Result);
         }
 
         private void SetupController(ICustomIndexValidator validator)
