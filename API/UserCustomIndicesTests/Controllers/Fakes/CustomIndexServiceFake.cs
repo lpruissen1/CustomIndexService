@@ -7,34 +7,34 @@ namespace UserCustomIndicesTests.Controllers.Fakes
 {
     class CustomIndexServiceFake : ICustomIndexService
     {
-        private List<CustomIndex> CustomIndexCollection;
-        private Dictionary<Guid, List<string>> UserIndicesCollection;
+        private List<CustomIndex> customIndexCollection;
+        private Dictionary<Guid, List<string>> userIndicesCollection;
 
-        public CustomIndexServiceFake(List<CustomIndex> customIndices, Dictionary<Guid, List<string>> userIndicesCollection) {
-            UserIndicesCollection = userIndicesCollection;
-            CustomIndexCollection = customIndices;
+        public CustomIndexServiceFake(List<CustomIndex> customIndices, Dictionary<Guid, List<string>> userIndices) {
+            this.userIndicesCollection = userIndices;
+            this.customIndexCollection = customIndices;
         }
 
         public void Create(CustomIndex customIndex)
         {
-            CustomIndexCollection.Add(customIndex);
+            customIndexCollection.Add(customIndex);
         }
 
         public CustomIndex Get(string indexId)
         {
-            return CustomIndexCollection.Find(x => x.Id == indexId);
+            return customIndexCollection.Find(x => x.Id == indexId);
         }
 
         public List<CustomIndex> Get(Guid userid)
         {
             List<CustomIndex> indices = new List<CustomIndex>();
-            var ids = UserIndicesCollection.GetValueOrDefault(userid);
+            var ids = userIndicesCollection.GetValueOrDefault(userid);
             if (ids is null)
                 return null;
 
             foreach(var id in ids)
             {
-               indices.Add(CustomIndexCollection.Find(x => x.Id == id));
+               indices.Add(customIndexCollection.Find(x => x.Id == id));
             }
 
             return indices;
@@ -42,17 +42,25 @@ namespace UserCustomIndicesTests.Controllers.Fakes
 
         public void Remove(CustomIndex bookIn)
         {
-            CustomIndexCollection.Remove(bookIn);
+            customIndexCollection.Remove(bookIn);
         }
 
         public void Remove(string id)
         {
-            CustomIndexCollection.RemoveAll(x => x.Id == id);
+            customIndexCollection.RemoveAll(x => x.Id == id);
         }
 
-        public void Update(string id, CustomIndex customIndexUpdated)
+        public CustomIndex Update(Guid clientId, CustomIndex customIndexUpdated)
         {
-            throw new NotImplementedException();
+            var ids = userIndicesCollection.GetValueOrDefault(clientId);
+            if (ids is null)
+                return null;
+
+            var index = customIndexCollection.Find(x => x.Id == customIndexUpdated.Id);
+            customIndexCollection.Remove(index);
+
+            customIndexCollection.Add(customIndexUpdated);
+            return customIndexUpdated;
         }
     }
 }
