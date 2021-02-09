@@ -35,7 +35,8 @@ namespace UserCustomIndices.Controllers
             return indices;
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetCustomIndex")]
+        // Add check for clientId
+        [HttpGet("{indexId:length(24)}", Name = "GetCustomIndex")]
         public ActionResult<CustomIndex> Get(string indexId)
         {
             if (indexId.Length != 24)
@@ -61,25 +62,26 @@ namespace UserCustomIndices.Controllers
             return Created("Create", index);
         }
 
-        [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, CustomIndex updatedIndex)
+        [HttpPut("{clientId:length(24)}")]
+        public IActionResult Update(Guid clientId, CustomIndex updatedIndex)
         {
-            var index = IndexService.Get(id);
+            if (!IndexValidator.Validate(updatedIndex))
+                return BadRequest();
 
+            var index = IndexService.Update(clientId, updatedIndex);
             if (index is null)
-            {
                 return NotFound();
-            }
 
-            IndexService.Update(id, updatedIndex);
-
-            return NoContent();
+            return new OkObjectResult(index);
         }
 
-        [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
+        [HttpDelete("{clientId:length(24)}")]
+        public IActionResult Delete(Guid clientId, string indexId)
         {
-            var index = IndexService.Get(id);
+            if (indexId.Length != 24)
+                return BadRequest();
+
+            var index = IndexService.Get(indexId);
 
             if (index is null)
             {
