@@ -53,10 +53,14 @@ namespace UserCustomIndicesTests.Controllers
             CustomIndexValidatorMock.Setup(x => x.Validate(index)).Returns(true);
 
             SetupController(customIndexService, CustomIndexValidatorMock.Object);
-
+            
+            index.SectorAndIndsutry.SectorGroups[0].Name = "New example industry";
             var response = sut.Update(clientId, index);
-
+           
             Assert.IsInstanceOf<OkObjectResult>(response);
+
+            var customIndex = ((OkObjectResult)response).Value as CustomIndex;
+            Assert.AreEqual("New example industry", customIndex.SectorAndIndsutry.SectorGroups[0].Name);
         }
 
         [Test]

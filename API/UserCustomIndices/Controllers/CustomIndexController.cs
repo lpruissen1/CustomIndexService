@@ -66,11 +66,11 @@ namespace UserCustomIndices.Controllers
         public IActionResult Update(Guid clientId, CustomIndex updatedIndex)
         {
             if (!IndexValidator.Validate(updatedIndex))
-                return BadRequest();
+                return new BadRequestResult();
 
             var index = IndexService.Update(clientId, updatedIndex);
             if (index is null)
-                return NotFound();
+                return new NotFoundResult();
 
             return new OkObjectResult(index);
         }
