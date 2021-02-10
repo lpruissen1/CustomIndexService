@@ -62,5 +62,16 @@ namespace UserCustomIndicesTests.Controllers.Fakes
             customIndexCollection.Add(customIndexUpdated);
             return customIndexUpdated;
         }
+
+        public bool Remove(Guid userId, string id)
+        {
+            var ids = userIndicesCollection.GetValueOrDefault(userId);
+            if (ids is null|| !ids.Contains(id))
+                return false;
+
+            customIndexCollection.RemoveAll(x => x.Id == id);
+
+            return true;
+        }
     }
 }

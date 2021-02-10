@@ -37,9 +37,12 @@ namespace UserCustomIndices.Services
             return customIndexUpdated;
         }
 
-        public void Remove(CustomIndex bookIn) => customIndexCollection.DeleteOne(book => book.Id == bookIn.Id);
+        public bool Remove(Guid userId, string id)
+        {
+            var result = customIndexCollection.DeleteOne(book => book.Id == id);
 
-        public void Remove(string id) => customIndexCollection.DeleteOne(book => book.Id == id);
+            return result.DeletedCount >= 1;
+        }
 
         public List<CustomIndex> Get(Guid userid)
         {

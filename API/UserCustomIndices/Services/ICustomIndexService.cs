@@ -10,7 +10,6 @@ namespace UserCustomIndices.Services
         public List<CustomIndex> Get(Guid userid);
         void Create(CustomIndex customIndex);
         CustomIndex Update(Guid id, CustomIndex customIndexUpdated);
-        void Remove(CustomIndex index);
-        void Remove(string id);
+        bool Remove(Guid userId, string id);
     }
 }
