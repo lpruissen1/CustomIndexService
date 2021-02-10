@@ -28,7 +28,14 @@ namespace UserCustomIndices.Services
             customIndexCollection.InsertOne(customIndex);
         }
 
-        public void Update(string id, CustomIndex customIndexUpdated) => customIndexCollection.ReplaceOne(customIndex => customIndex.Id == id, customIndexUpdated);
+        public CustomIndex Update(Guid clientId, CustomIndex customIndexUpdated)
+        {
+            // verify client owns customIndex
+
+            customIndexCollection.ReplaceOne(customIndex => customIndex.Id == customIndexUpdated.Id, customIndexUpdated);
+
+            return customIndexUpdated;
+        }
 
         public void Remove(CustomIndex bookIn) => customIndexCollection.DeleteOne(book => book.Id == bookIn.Id);
 

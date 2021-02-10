@@ -9,7 +9,7 @@ namespace UserCustomIndices.Services
         public CustomIndex Get(string indexId);
         public List<CustomIndex> Get(Guid userid);
         void Create(CustomIndex customIndex);
-        void Update(string id, CustomIndex customIndexUpdated);
+        CustomIndex Update(Guid id, CustomIndex customIndexUpdated);
         void Remove(CustomIndex index);
         void Remove(string id);
     }

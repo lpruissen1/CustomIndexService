@@ -23,7 +23,7 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<CustomIndex>> Get(Guid userId)
+        public IActionResult Get(Guid userId)
         {
             var indices = IndexService.Get(userId);
 
@@ -32,11 +32,11 @@ namespace UserCustomIndices.Controllers
                 return new NotFoundResult();
             }
 
-            return indices;
+            return new OkObjectResult(indices);
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetCustomIndex")]
-        public ActionResult<CustomIndex> Get(string indexId)
+        [HttpGet("{indexId:length(24)}", Name = "GetCustomIndex")]
+        public IActionResult Get(Guid userId, string indexId)
         {
             if (indexId.Length != 24)
                 return BadRequest();
@@ -48,7 +48,7 @@ namespace UserCustomIndices.Controllers
                 return new NotFoundResult();
             }
 
-            return index;
+            return new OkObjectResult(index);
         }
 
         [HttpPost]
@@ -61,25 +61,26 @@ namespace UserCustomIndices.Controllers
             return Created("Create", index);
         }
 
-        [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, CustomIndex updatedIndex)
+        [HttpPut("{userId:length(24)}")]
+        public IActionResult Update(Guid userId, CustomIndex updatedIndex)
         {
-            var index = IndexService.Get(id);
+            if (!IndexValidator.Validate(updatedIndex))
+                return new BadRequestResult();
 
+            var index = IndexService.Update(userId, updatedIndex);
             if (index is null)
-            {
-                return NotFound();
-            }
+                return new NotFoundResult();
 
-            IndexService.Update(id, updatedIndex);
-
-            return NoContent();
+            return new OkObjectResult(index);
         }
 
-        [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
+        [HttpDelete("{clientId:length(24)}")]
+        public IActionResult Delete(Guid userId, string indexId)
         {
-            var index = IndexService.Get(id);
+            if (indexId.Length != 24)
+                return BadRequest();
+
+            var index = IndexService.Get(indexId);
 
             if (index is null)
             {
