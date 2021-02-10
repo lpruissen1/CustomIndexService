@@ -40,7 +40,7 @@ namespace UserCustomIndicesTests.Controllers
         [Test]
         public void TestPost_ValidCustomIndex()
         {
-            var index = new CustomIndex() { Id = "IAmAnId"};
+            var index = new CustomIndex();
             CustomIndexValidatorMock.Setup(x => x.Validate(index)).Returns(true);
 
             SetupController(CustomIndexValidatorMock.Object);
