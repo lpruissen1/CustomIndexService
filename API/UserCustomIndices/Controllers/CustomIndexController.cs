@@ -23,7 +23,7 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<CustomIndex>> Get(Guid userId)
+        public IActionResult Get(Guid userId)
         {
             var indices = IndexService.Get(userId);
 
@@ -32,12 +32,11 @@ namespace UserCustomIndices.Controllers
                 return new NotFoundResult();
             }
 
-            return indices;
+            return new OkObjectResult(indices);
         }
 
-        // Add check for clientId
         [HttpGet("{indexId:length(24)}", Name = "GetCustomIndex")]
-        public ActionResult<CustomIndex> Get(string indexId)
+        public IActionResult Get(Guid userId, string indexId)
         {
             if (indexId.Length != 24)
                 return BadRequest();
@@ -49,7 +48,7 @@ namespace UserCustomIndices.Controllers
                 return new NotFoundResult();
             }
 
-            return index;
+            return new OkObjectResult(index);
         }
 
         [HttpPost]
@@ -62,13 +61,13 @@ namespace UserCustomIndices.Controllers
             return Created("Create", index);
         }
 
-        [HttpPut("{clientId:length(24)}")]
-        public IActionResult Update(Guid clientId, CustomIndex updatedIndex)
+        [HttpPut("{userId:length(24)}")]
+        public IActionResult Update(Guid userId, CustomIndex updatedIndex)
         {
             if (!IndexValidator.Validate(updatedIndex))
                 return new BadRequestResult();
 
-            var index = IndexService.Update(clientId, updatedIndex);
+            var index = IndexService.Update(userId, updatedIndex);
             if (index is null)
                 return new NotFoundResult();
 
@@ -76,7 +75,7 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpDelete("{clientId:length(24)}")]
-        public IActionResult Delete(Guid clientId, string indexId)
+        public IActionResult Delete(Guid userId, string indexId)
         {
             if (indexId.Length != 24)
                 return BadRequest();
