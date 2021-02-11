@@ -80,16 +80,10 @@ namespace UserCustomIndices.Controllers
             if (indexId.Length != 24)
                 return BadRequest();
 
-            var index = IndexService.Get(indexId);
+            if(IndexService.Remove(userId, indexId))
+                return new OkResult();
 
-            if (index is null)
-            {
-                return NotFound();
-            }
-
-            IndexService.Remove(index.Id);
-
-            return NoContent();
+            return new BadRequestResult();
         }
     }
 }
