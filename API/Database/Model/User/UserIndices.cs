@@ -13,8 +13,6 @@ namespace Database.Model.User
 
         public Guid userId { get; set; }
 
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public List<string> indexId{ get; set; }
     }
 }

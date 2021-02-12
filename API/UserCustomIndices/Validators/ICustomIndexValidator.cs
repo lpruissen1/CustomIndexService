@@ -7,12 +7,4 @@ namespace UserCustomIndices.Validators
     {
         bool Validate(CustomIndex index);
     }
-
-    public class CustomIndexValidator : ICustomIndexValidator
-    {
-        public bool Validate(CustomIndex index)
-        {
-            return true;
-        }
-    }
 }

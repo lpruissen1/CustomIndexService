@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using UserCustomIndices.Services;
+using UserCustomIndices.Validators;
 
 namespace UserCustomIndices
 {
@@ -26,7 +27,8 @@ namespace UserCustomIndices
             services.AddSingleton<IUserInfoDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserInfoDatabaseSettings>>().Value);
 
             services.AddControllers();
-
+            services.AddScoped<ICustomIndexService, CustomIndexService>();
+            services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();
 
             services.AddSwaggerGen(c =>
             {
