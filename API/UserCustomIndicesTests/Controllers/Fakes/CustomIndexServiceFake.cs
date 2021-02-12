@@ -15,12 +15,12 @@ namespace UserCustomIndicesTests.Controllers.Fakes
             this.customIndexCollection = customIndices;
         }
 
-        public void Create(CustomIndex customIndex)
+        public void Create(CustomIndex customIndex, Guid userId)
         {
             customIndexCollection.Add(customIndex);
         }
 
-        public CustomIndex Get(string indexId)
+        public CustomIndex Get(Guid userId, string indexId)
         {
             return customIndexCollection.Find(x => x.Id == indexId);
         }

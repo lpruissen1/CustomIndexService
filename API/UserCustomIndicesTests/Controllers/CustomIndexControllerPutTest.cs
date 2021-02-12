@@ -21,7 +21,6 @@ namespace UserCustomIndicesTests.Controllers
         private Guid clientId = Guid.NewGuid();
         private string indexId = "345674679867564532426375";
 
-
         [SetUp]
         public void SetUp()
         {

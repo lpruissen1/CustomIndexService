@@ -1,8 +1,6 @@
 using Config.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,14 +22,11 @@ namespace UserCustomIndices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ICustomIndexService>();
-
             services.Configure<UserInfoDatabaseSettings>(Configuration.GetSection(nameof(UserInfoDatabaseSettings)));
             services.AddSingleton<IUserInfoDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserInfoDatabaseSettings>>().Value);
 
-            services.AddSingleton<ICustomIndexService>();
-
             services.AddControllers();
+
 
             services.AddSwaggerGen(c =>
             {

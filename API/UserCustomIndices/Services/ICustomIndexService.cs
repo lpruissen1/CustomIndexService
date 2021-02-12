@@ -6,9 +6,9 @@ namespace UserCustomIndices.Services
 {
     public interface ICustomIndexService
     {
-        public CustomIndex Get(string indexId);
+        public CustomIndex Get(Guid userId, string indexId);
         public List<CustomIndex> Get(Guid userid);
-        void Create(CustomIndex customIndex);
+        void Create(CustomIndex customIndex, Guid userId);
         CustomIndex Update(Guid id, CustomIndex customIndexUpdated);
         bool Remove(Guid userId, string id);
     }

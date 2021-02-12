@@ -41,7 +41,7 @@ namespace UserCustomIndices.Controllers
             if (indexId.Length != 24)
                 return BadRequest();
 
-            var index = IndexService.Get(indexId);
+            var index = IndexService.Get(userId, indexId);
 
             if (index is null)
             {
@@ -52,12 +52,12 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CustomIndex> Create(CustomIndex index)
+        public ActionResult<CustomIndex> Create(Guid userId, CustomIndex index)
         {
             if (!IndexValidator.Validate(index))
                 return BadRequest();
 
-            IndexService.Create(index);
+            IndexService.Create(index, userId);
             return Created("Create", index);
         }
 

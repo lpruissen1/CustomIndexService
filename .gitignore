@@ -50,3 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#Extensions
+*.cache
+
+#Directories
+**/bin/**
+**/obj/**
