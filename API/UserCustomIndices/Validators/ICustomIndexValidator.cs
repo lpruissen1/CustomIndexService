@@ -1,5 +1,4 @@
 ﻿using Database.Model.User.CustomIndices;
-using System;
 
 namespace UserCustomIndices.Validators
 {

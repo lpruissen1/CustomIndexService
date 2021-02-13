@@ -15,7 +15,7 @@ namespace UserCustomIndicesTests.Controllers.Fakes
             this.customIndexCollection = customIndices;
         }
 
-        public void Create(CustomIndex customIndex, Guid userId)
+        public void Create(Guid userId, CustomIndex customIndex)
         {
             customIndexCollection.Add(customIndex);
         }

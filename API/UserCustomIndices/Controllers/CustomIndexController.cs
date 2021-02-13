@@ -57,7 +57,7 @@ namespace UserCustomIndices.Controllers
             if (!IndexValidator.Validate(index))
                 return BadRequest();
 
-            IndexService.Create(index, userId);
+            IndexService.Create(userId, index);
             return Created("Create", index);
         }
 

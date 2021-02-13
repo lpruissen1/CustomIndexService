@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserCustomIndicesTests.Services
 {
-    class CustomIndexService
+    class CustomIndexServiceTest
     {
     }
 }

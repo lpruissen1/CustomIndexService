@@ -47,7 +47,7 @@ namespace UserCustomIndices.Services
             return customIndexCollection.Find(x => x.Id == indexId).FirstOrDefault();
         }
 
-        public void Create(CustomIndex customIndex, Guid userId)
+        public void Create(Guid userId,  CustomIndex customIndex)
         {
             var update = Builders<UserIndices>.Update.AddToSet(x => x.indexId, customIndex.Id);
 
