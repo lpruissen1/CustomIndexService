@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using UserCustomIndices.Services;
-using Database.Model.User.CustomIndices;
 using System;
-using UserCustomIndices.Validators;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using UserCustomIndices.Model.Response;
 
 namespace UserCustomIndices.Controllers
 {
@@ -12,78 +12,43 @@ namespace UserCustomIndices.Controllers
     [Route("[controller]")]
     public class CustomIndexController : ControllerBase
     {
-        private readonly ILogger<CustomIndexController> Logger;
-        private readonly ICustomIndexService IndexService;
-        private readonly ICustomIndexValidator IndexValidator;
+        private readonly ILogger<CustomIndexController> logger;
+        private readonly ICustomIndexService indexService;
 
-        public CustomIndexController(ICustomIndexService indexService, ICustomIndexValidator customIndexValidator)
+        public CustomIndexController(ICustomIndexService indexService)
         {
-            IndexService = indexService;
-            IndexValidator = customIndexValidator;
+            this.indexService = indexService;
         }
 
         [HttpGet]
-        public IActionResult Get(Guid userId)
+        public Task<ActionResult<IEnumerable<CustomIndexResponse>>> Get(Guid userId)
         {
-            var indices = IndexService.Get(userId);
-
-            if(indices is null)
-            {
-                return new NotFoundResult();
-            }
-
-            return new OkObjectResult(indices);
+            return indexService.GetAllForUser(userId);
         }
 
         [HttpGet("{indexId:length(24)}", Name = "GetCustomIndex")]
-        public IActionResult Get(Guid userId, string indexId)
+        public Task<ActionResult<CustomIndexResponse>> GetById(Guid userId, string indexId)
         {
-            if (indexId.Length != 24)
-                return BadRequest();
 
-            var index = IndexService.Get(userId, indexId);
-
-            if (index is null)
-            {
-                return new NotFoundResult();
-            }
-
-            return new OkObjectResult(index);
+            return indexService.GetIndex(userId, indexId);
         }
 
         [HttpPost]
-        public ActionResult<CustomIndex> Create(Guid userId, CustomIndex index)
+        public Task<IActionResult> Create(Guid userId, CustomIndexResponse index)
         {
-            if (!IndexValidator.Validate(index))
-                return BadRequest();
-
-            IndexService.Create(userId, index);
-            return Created("Create", index);
+            return indexService.CreateIndex(userId, index);
         }
 
         [HttpPut("{userId:length(24)}")]
-        public IActionResult Update(Guid userId, CustomIndex updatedIndex)
+        public Task<IActionResult> Update(Guid userId, CustomIndexResponse updatedIndex)
         {
-            if (!IndexValidator.Validate(updatedIndex))
-                return new BadRequestResult();
-
-            var index = IndexService.Update(userId, updatedIndex);
-            if (index is null)
-                return new NotFoundResult();
-
-            return new OkObjectResult(index);
+            return indexService.UpdateIndex(userId, updatedIndex);
         }
 
         [HttpDelete("{clientId:length(24)}")]
-        public IActionResult Delete(Guid userId, string indexId)
+        public Task<IActionResult> Delete(Guid userId, string indexId)
         {
-            if (indexId.Length != 24)
-                return BadRequest();
-
-            if(IndexService.Remove(userId, indexId))
-                return new OkResult();
-
-            return new BadRequestResult();
+            return indexService.RemoveIndex(userId, indexId);    
         }
     }
 }

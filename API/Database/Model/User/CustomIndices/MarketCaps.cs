@@ -1,6 +1,6 @@
-﻿namespace Database.Model.User
+﻿namespace Database.Model.User.CustomIndices
 {
-    public struct MarketCaps
+    public class MarketCaps
     {
         public MarketCap[] MarketCapGroups;
     }

@@ -1,6 +1,6 @@
-﻿namespace Database.Model.User
+﻿namespace Database.Model.User.CustomIndices
 {
-    public struct MarketCap
+    public class MarketCap
     {
         public decimal Upper;
         public decimal Lower;

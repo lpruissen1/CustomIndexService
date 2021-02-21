@@ -1,6 +1,6 @@
-﻿namespace Database.Model.User
+﻿namespace Database.Model.User.CustomIndices
 {
-    public struct Sectors
+    public class Sectors
     {
         public Sector[] SectorGroups;
     }

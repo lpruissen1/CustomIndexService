@@ -5,14 +5,15 @@ using System.Collections.Generic;
 
 namespace Database.Model.User
 {
-    public class UserIndices
+    public class UserIndices : DbEntity
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public Guid UserId { get; set; }
 
-        public Guid userId { get; set; }
+        public List<string> IndexId{ get; set; }
 
-        public List<string> indexId{ get; set; }
+        public override string GetPrimaryKey()
+        {
+            return Id;            
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿namespace UserCustomIndices.Model.Response
 {
     public class ComposedMarkets
     {

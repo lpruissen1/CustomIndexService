@@ -1,11 +1,14 @@
-﻿using Config.Models;
+﻿using DB = Database.Model.User.CustomIndices;
+using Database.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using API = UserCustomIndices.Model.Response;
+using UserCustomIndices.Model.Response;
 using Database.Model.User.CustomIndices;
-using System;
-using Database.Model.User;
-using MongoDB.Bson;
 
 // convert the fomr API -> DB models
 // This is where I want validation to take place
@@ -13,61 +16,60 @@ namespace UserCustomIndices.Services
 {
     public class CustomIndexService : ICustomIndexService
     {
-        private readonly IMongoCollection<CustomIndex> customIndexCollection;
-        private readonly IMongoCollection<UserIndices> userIndexCollection;
+        private readonly IIndicesRepository indicesRepository;
 
-        public CustomIndexService(IUserInfoDatabaseSettings settings)
+        public CustomIndexService(IIndicesRepository indicesRepository)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            customIndexCollection = database.GetCollection<CustomIndex>(settings.CustomIndexCollectionName);
-            userIndexCollection = database.GetCollection<UserIndices>(settings.UserIndicesCollectionName);
-        }
-        public List<CustomIndex> Get(Guid userId)
-        {
-            var query = userIndexCollection.Find(entry => entry.userId == userId).FirstOrDefault();
-
-            if (query is null)
-                return null;
-
-            var builder = Builders<CustomIndex>.Filter;
-            var filter = builder.In(x => x.Id, query.indexId);
-
-            return customIndexCollection.Find(filter).ToList();
+            this.indicesRepository = indicesRepository;
         }
 
-        public CustomIndex Get(Guid userId, string indexId)
+        public async Task<ActionResult<CustomIndexResponse>> GetIndex(Guid userId, string indexId)
         {
-            var query = userIndexCollection.Find(entry => entry.userId == userId).FirstOrDefault();
+            var index = await indicesRepository.Get(userId, indexId);
 
-            if (query is null)
-                return null;
 
-            return customIndexCollection.Find(x => x.Id == indexId).FirstOrDefault();
+            return new ActionResult<CustomIndexResponse>(new CustomIndexResponse
+            { 
+                Id = index.Id,
+                Markets = new API.ComposedMarkets { Markets = index.Markets.Markets },
+                Test = index.Test
+            });
         }
 
-        public void Create(Guid userId,  CustomIndex customIndex)
+        public async Task<ActionResult<IEnumerable<CustomIndexResponse>>> GetAllForUser(Guid userid)
         {
-            var update = Builders<UserIndices>.Update.AddToSet(x => x.indexId, customIndex.Id);
+            var result = await indicesRepository.GetAllForUser(userid);
 
-            userIndexCollection.FindOneAndUpdate<UserIndices>(x => x.Id == userId.ToString(), update);
-            customIndexCollection.InsertOne(customIndex);
+            return new ActionResult<IEnumerable<CustomIndexResponse>>(result.Select(index => new CustomIndexResponse
+            {
+                Id = index.Id,
+                Markets = new API.ComposedMarkets { Markets = index.Markets?.Markets},
+                Test = index.Test
+            }));
         }
 
-        public CustomIndex Update(Guid clientId, CustomIndex customIndexUpdated)
+        public async Task<IActionResult> CreateIndex(Guid userId, CustomIndexResponse customIndex)
         {
-            
-            customIndexCollection.ReplaceOne(customIndex => customIndex.Id == customIndexUpdated.Id, customIndexUpdated);
+            var insert = indicesRepository.Create( new CustomIndex 
+            {
+                UserId = userId.ToString(),
+                Test = customIndex.Test,
+                Markets = new DB.ComposedMarkets { Markets = customIndex.Markets.Markets }
+            });
 
-            return customIndexUpdated;
+            insert.Wait();
+
+            return insert.IsCompletedSuccessfully ? new OkResult() : new BadRequestResult(); 
         }
 
-        public bool Remove(Guid userId, string id)
+        Task<IActionResult> ICustomIndexService.UpdateIndex(Guid userId, CustomIndexResponse customIndexUpdated)
         {
-            var result = customIndexCollection.DeleteOne(book => book.Id == id);
+            throw new NotImplementedException();
+        }
 
-            return result.DeletedCount >= 1;
+        Task<IActionResult> ICustomIndexService.RemoveIndex(Guid userId, string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

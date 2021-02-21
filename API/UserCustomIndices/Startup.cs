@@ -1,4 +1,6 @@
-using Config.Models;
+using Database;
+using Database.Config;
+using Database.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +29,8 @@ namespace UserCustomIndices
             services.AddSingleton<IUserInfoDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserInfoDatabaseSettings>>().Value);
 
             services.AddControllers();
+            services.AddScoped<IMongoCustomIndexDBContext, MongoDbContext>();
+            services.AddScoped<IIndicesRepository, IndiciesRepository>();
             services.AddScoped<ICustomIndexService, CustomIndexService>();
             services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();
 

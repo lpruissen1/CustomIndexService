@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Database.Model.User.CustomIndices
+﻿namespace UserCustomIndices.Model.Response
 {
-    public class CustomIndex : DbEntity
+    public class CustomIndexResponse
     {
-        public string UserId { get; set; }
+        public string Id { get; set; }
         public ComposedMarkets Markets { get; set; }
         public DividendYield DividendYield { get; set; }
         public Volitility Volitility { get; set; }
@@ -14,10 +12,5 @@ namespace Database.Model.User.CustomIndices
         public Sectors SectorAndIndsutry { get; set; }
         public MarketCaps MarketCaps { get; set; }
         public string Test { get; set; }
-
-        public override string GetPrimaryKey()
-        {
-            return Id;
-        }
     }
 }

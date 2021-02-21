@@ -1,15 +1,18 @@
 ﻿using Database.Model.User.CustomIndices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UserCustomIndices.Model.Response;
 
 namespace UserCustomIndices.Services
 {
     public interface ICustomIndexService
     {
-        public CustomIndex Get(Guid userId, string indexId);
-        public List<CustomIndex> Get(Guid userid);
-        void Create(Guid userId, CustomIndex customIndex);
-        CustomIndex Update(Guid id, CustomIndex customIndexUpdated);
-        bool Remove(Guid userId, string id);
+        Task<ActionResult<CustomIndexResponse>> GetIndex(Guid userId, string indexId);
+        Task<ActionResult<IEnumerable<CustomIndexResponse>>> GetAllForUser(Guid userid);
+        Task<IActionResult> CreateIndex(Guid userId, CustomIndexResponse customIndex);
+        Task<IActionResult> UpdateIndex(Guid userId, CustomIndexResponse customIndexUpdated);
+        Task<IActionResult> RemoveIndex(Guid userId, string id);
     }
 }
