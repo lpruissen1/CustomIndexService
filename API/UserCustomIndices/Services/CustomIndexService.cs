@@ -1,14 +1,12 @@
-﻿using DB = Database.Model.User.CustomIndices;
+﻿using Database.Model.User.CustomIndices;
 using Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API = UserCustomIndices.Model.Response;
 using UserCustomIndices.Model.Response;
-using Database.Model.User.CustomIndices;
+using API = UserCustomIndices.Model.Response;
 
 // convert the fomr API -> DB models
 // This is where I want validation to take place
@@ -54,7 +52,7 @@ namespace UserCustomIndices.Services
             {
                 UserId = userId.ToString(),
                 Test = customIndex.Test,
-                Markets = new DB.ComposedMarkets { Markets = customIndex.Markets.Markets }
+                Markets = new Database.Model.User.CustomIndices.ComposedMarkets { Markets = customIndex.Markets.Markets }
             });
 
             insert.Wait();

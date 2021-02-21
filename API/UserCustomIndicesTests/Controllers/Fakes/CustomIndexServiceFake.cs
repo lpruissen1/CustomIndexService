@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UserCustomIndices.Model.Response;
 using UserCustomIndices.Services;
 
 namespace UserCustomIndicesTests.Controllers.Fakes
@@ -81,17 +82,22 @@ namespace UserCustomIndicesTests.Controllers.Fakes
             return true;
         }
 
-        Task<ActionResult<CustomIndex>> ICustomIndexService.GetIndex(Guid userId, string indexId)
+        Task<ActionResult<CustomIndexResponse>> ICustomIndexService.GetIndex(Guid userId, string indexId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> CreateIndex(Guid userId, CustomIndex customIndex)
+        Task<ActionResult<IEnumerable<CustomIndexResponse>>> ICustomIndexService.GetAllForUser(Guid userid)
         {
             throw new NotImplementedException();
         }
 
-        Task<ActionResult<CustomIndex>> ICustomIndexService.UpdateIndex(Guid id, CustomIndex customIndexUpdated)
+        public Task<IActionResult> CreateIndex(Guid userId, CustomIndexResponse customIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> UpdateIndex(Guid userId, CustomIndexResponse customIndexUpdated)
         {
             throw new NotImplementedException();
         }
