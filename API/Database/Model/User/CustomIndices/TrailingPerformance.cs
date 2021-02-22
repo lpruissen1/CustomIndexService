@@ -1,6 +1,6 @@
-﻿namespace Database.Model.User
+﻿namespace Database.Model.User.CustomIndices
 {
-    public struct TrailingPerformance
+    public class TrailingPerformance
     {
         public int TimePeriod;
         public decimal Upper;

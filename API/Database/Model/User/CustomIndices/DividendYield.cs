@@ -1,6 +1,6 @@
-﻿namespace Database.Model.User
+﻿namespace Database.Model.User.CustomIndices
 {
-    public struct DividendYield
+    public class DividendYield
     {
         public decimal Upper;
         public decimal Lower;

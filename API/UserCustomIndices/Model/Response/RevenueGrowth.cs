@@ -1,6 +1,6 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿namespace UserCustomIndices.Model.Response
 {
-    public class EarningsGrowth
+    public struct RevenueGrowth
     {
         public int TimePeriod;
         public decimal Upper;

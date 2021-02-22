@@ -1,9 +1,12 @@
-﻿using Config.Models;
-using MongoDB.Driver;
+﻿using Database.Model.User.CustomIndices;
+using Database.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Database.Model.User.CustomIndices;
-using System;
+using System.Threading.Tasks;
+using UserCustomIndices.Model.Response;
+using API = UserCustomIndices.Model.Response;
 
 // convert the fomr API -> DB models
 // This is where I want validation to take place
@@ -11,42 +14,68 @@ namespace UserCustomIndices.Services
 {
     public class CustomIndexService : ICustomIndexService
     {
-        private readonly IMongoCollection<CustomIndex> customIndexCollection;
+        private readonly IIndicesRepository indicesRepository;
 
-        public CustomIndexService(IUserInfoDatabaseSettings settings)
+        public CustomIndexService(IIndicesRepository indicesRepository)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            customIndexCollection = database.GetCollection<CustomIndex>(settings.CustomIndexCollectionName);
+            this.indicesRepository = indicesRepository;
         }
 
-        public CustomIndex Get(string id) => customIndexCollection.Find(customIndex => customIndex.Id == id).FirstOrDefault();
-
-        public void Create(CustomIndex customIndex)
+        public async Task<ActionResult<CustomIndexResponse>> GetIndex(Guid userId, string indexId)
         {
-            customIndexCollection.InsertOne(customIndex);
+            var index = await indicesRepository.Get(userId, indexId);
+
+
+            return new ActionResult<CustomIndexResponse>(CreateResponse(index));
         }
 
-        public CustomIndex Update(Guid clientId, CustomIndex customIndexUpdated)
+        public async Task<ActionResult<IEnumerable<CustomIndexResponse>>> GetAllForUser(Guid userid)
         {
-            // verify client owns customIndex
+            var result = await indicesRepository.GetAllForUser(userid);
 
-            customIndexCollection.ReplaceOne(customIndex => customIndex.Id == customIndexUpdated.Id, customIndexUpdated);
-
-            return customIndexUpdated;
+            return new ActionResult<IEnumerable<CustomIndexResponse>>(result.Select(index => CreateResponse(index)));
         }
 
-        public bool Remove(Guid userId, string id)
+        public async Task<IActionResult> CreateIndex(Guid userId, CustomIndexResponse customIndex)
         {
-            var result = customIndexCollection.DeleteOne(book => book.Id == id);
+            var insert = indicesRepository.Create( new CustomIndex 
+            {
+                UserId = userId.ToString(),
+                Test = customIndex.Test,
+                Markets = new Database.Model.User.CustomIndices.ComposedMarkets { Markets = customIndex.Markets.Markets }
+            });
 
-            return result.DeletedCount >= 1;
+            insert.Wait();
+
+            return insert.IsCompletedSuccessfully ? new OkResult() : new BadRequestResult(); 
         }
 
-        public List<CustomIndex> Get(Guid userid)
+        Task<IActionResult> ICustomIndexService.UpdateIndex(Guid userId, CustomIndexResponse customIndexUpdated)
         {
             throw new NotImplementedException();
+        }
+
+        Task<IActionResult> ICustomIndexService.RemoveIndex(Guid userId, string id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        private CustomIndexResponse CreateResponse(CustomIndex index)
+        {
+            return new CustomIndexResponse
+            {
+                Id = index.Id,
+                Markets = new API.ComposedMarkets { Markets = index.Markets.Markets },
+                DividendYield = new API.DividendYield { Lower = index.DividendYield.Lower, Upper = index.DividendYield.Upper },
+                Volitility = new API.Volitility { Lower = index.Volitility.Lower, Upper = index.Volitility.Upper },
+                TrailingPerformance = new API.TrailingPerformance { Lower = index.TrailingPerformance.Lower, Upper = index.TrailingPerformance.Upper, TimePeriod = index.TrailingPerformance.TimePeriod },
+                RevenueGrowth = new API.RevenueGrowth { Lower = index.RevenueGrowth.Lower, Upper = index.RevenueGrowth.Upper, TimePeriod = index.RevenueGrowth.TimePeriod },
+                EarningsGrowth = new API.EarningsGrowth { Lower = index.EarningsGrowth.Lower, Upper = index.EarningsGrowth.Upper },
+                SectorAndIndsutry = new API.Sectors { SectorGroups = index.SectorAndIndsutry.SectorGroups.Select(sector => new API.Sector { Name = sector.Name, Industries = sector.Industries }).ToArray() },
+                MarketCaps = new API.MarketCaps { MarketCapGroups = index.MarketCaps.MarketCapGroups.Select(marketCap => new API.MarketCap { Lower = marketCap.Lower, Upper = marketCap.Upper }).ToArray() },
+                Test = index.Test
+            };
         }
     }
 }

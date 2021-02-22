@@ -1,6 +1,9 @@
 ﻿using Database.Model.User.CustomIndices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UserCustomIndices.Model.Response;
 using UserCustomIndices.Services;
 
 namespace UserCustomIndicesTests.Controllers.Fakes
@@ -15,29 +18,34 @@ namespace UserCustomIndicesTests.Controllers.Fakes
             this.customIndexCollection = customIndices;
         }
 
-        public void Create(CustomIndex customIndex)
+        Task<ActionResult<List<CustomIndex>>> GetAllForUser(Guid userid)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public List<CustomIndex> GetAllForUser(Guid userid)
+        //{
+        //    List<CustomIndex> indices = new List<CustomIndex>();
+        //    var ids = userIndicesCollection.GetValueOrDefault(userid);
+        //    if (ids is null)
+        //        return null;
+
+        //    foreach (var id in ids)
+        //    {
+        //        indices.Add(customIndexCollection.Find(x => x.Id == id));
+        //    }
+
+        //    return indices;
+        //}
+
+        public void Create(Guid userId, CustomIndex customIndex)
         {
             customIndexCollection.Add(customIndex);
         }
 
-        public CustomIndex Get(string indexId)
+        public CustomIndex GetIndex(Guid userId, string indexId)
         {
             return customIndexCollection.Find(x => x.Id == indexId);
-        }
-
-        public List<CustomIndex> Get(Guid userid)
-        {
-            List<CustomIndex> indices = new List<CustomIndex>();
-            var ids = userIndicesCollection.GetValueOrDefault(userid);
-            if (ids is null)
-                return null;
-
-            foreach(var id in ids)
-            {
-               indices.Add(customIndexCollection.Find(x => x.Id == id));
-            }
-
-            return indices;
         }
 
         public void Remove(CustomIndex bookIn)
@@ -50,7 +58,7 @@ namespace UserCustomIndicesTests.Controllers.Fakes
             customIndexCollection.RemoveAll(x => x.Id == id);
         }
 
-        public CustomIndex Update(Guid clientId, CustomIndex customIndexUpdated)
+        public CustomIndex UpdateIndex(Guid clientId, CustomIndex customIndexUpdated)
         {
             var ids = userIndicesCollection.GetValueOrDefault(clientId);
             if (ids is null)
@@ -63,7 +71,7 @@ namespace UserCustomIndicesTests.Controllers.Fakes
             return customIndexUpdated;
         }
 
-        public bool Remove(Guid userId, string id)
+        public bool RemoveIndex(Guid userId, string id)
         {
             var ids = userIndicesCollection.GetValueOrDefault(userId);
             if (ids is null|| !ids.Contains(id))
@@ -72,6 +80,31 @@ namespace UserCustomIndicesTests.Controllers.Fakes
             customIndexCollection.RemoveAll(x => x.Id == id);
 
             return true;
+        }
+
+        Task<ActionResult<CustomIndexResponse>> ICustomIndexService.GetIndex(Guid userId, string indexId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ActionResult<IEnumerable<CustomIndexResponse>>> ICustomIndexService.GetAllForUser(Guid userid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> CreateIndex(Guid userId, CustomIndexResponse customIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> UpdateIndex(Guid userId, CustomIndexResponse customIndexUpdated)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IActionResult> ICustomIndexService.RemoveIndex(Guid userId, string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

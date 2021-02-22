@@ -1,6 +1,6 @@
 ﻿namespace Database.Model.User
 {
-    public struct RevenueGrowth
+    public class RevenueGrowth
     {
         public int TimePeriod;
         public decimal Upper;
