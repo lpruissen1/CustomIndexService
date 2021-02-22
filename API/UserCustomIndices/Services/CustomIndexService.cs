@@ -26,24 +26,14 @@ namespace UserCustomIndices.Services
             var index = await indicesRepository.Get(userId, indexId);
 
 
-            return new ActionResult<CustomIndexResponse>(new CustomIndexResponse
-            { 
-                Id = index.Id,
-                Markets = new API.ComposedMarkets { Markets = index.Markets.Markets },
-                Test = index.Test
-            });
+            return new ActionResult<CustomIndexResponse>(CreateResponse(index));
         }
 
         public async Task<ActionResult<IEnumerable<CustomIndexResponse>>> GetAllForUser(Guid userid)
         {
             var result = await indicesRepository.GetAllForUser(userid);
 
-            return new ActionResult<IEnumerable<CustomIndexResponse>>(result.Select(index => new CustomIndexResponse
-            {
-                Id = index.Id,
-                Markets = new API.ComposedMarkets { Markets = index.Markets?.Markets},
-                Test = index.Test
-            }));
+            return new ActionResult<IEnumerable<CustomIndexResponse>>(result.Select(index => CreateResponse(index)));
         }
 
         public async Task<IActionResult> CreateIndex(Guid userId, CustomIndexResponse customIndex)
@@ -68,6 +58,24 @@ namespace UserCustomIndices.Services
         Task<IActionResult> ICustomIndexService.RemoveIndex(Guid userId, string id)
         {
             throw new NotImplementedException();
+        }
+
+
+        private CustomIndexResponse CreateResponse(CustomIndex index)
+        {
+            return new CustomIndexResponse
+            {
+                Id = index.Id,
+                Markets = new API.ComposedMarkets { Markets = index.Markets.Markets },
+                DividendYield = new API.DividendYield { Lower = index.DividendYield.Lower, Upper = index.DividendYield.Upper },
+                Volitility = new API.Volitility { Lower = index.Volitility.Lower, Upper = index.Volitility.Upper },
+                TrailingPerformance = new API.TrailingPerformance { Lower = index.TrailingPerformance.Lower, Upper = index.TrailingPerformance.Upper, TimePeriod = index.TrailingPerformance.TimePeriod },
+                RevenueGrowth = new API.RevenueGrowth { Lower = index.RevenueGrowth.Lower, Upper = index.RevenueGrowth.Upper, TimePeriod = index.RevenueGrowth.TimePeriod },
+                EarningsGrowth = new API.EarningsGrowth { Lower = index.EarningsGrowth.Lower, Upper = index.EarningsGrowth.Upper },
+                SectorAndIndsutry = new API.Sectors { SectorGroups = index.SectorAndIndsutry.SectorGroups.Select(sector => new API.Sector { Name = sector.Name, Industries = sector.Industries }).ToArray() },
+                MarketCaps = new API.MarketCaps { MarketCapGroups = index.MarketCaps.MarketCapGroups.Select(marketCap => new API.MarketCap { Lower = marketCap.Lower, Upper = marketCap.Upper }).ToArray() },
+                Test = index.Test
+            };
         }
     }
 }
