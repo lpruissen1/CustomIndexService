@@ -4,6 +4,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 		<PackageReference Include="MongoDB.Driver" Version="2.11.6" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
@@ -11,6 +12,10 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Database\Database.csproj" />
-		<ProjectReference Include="..\Config\Config.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Model\Requests\" />
+	  <Folder Include="Mappers\" />
 	</ItemGroup>
 </Project>

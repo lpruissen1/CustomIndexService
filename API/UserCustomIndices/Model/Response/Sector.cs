@@ -1,6 +1,6 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿namespace UserCustomIndices.Model.Response
 {
-    public class Sector
+    public struct Sector
     {
         public string Name;
         public string[] Industries;

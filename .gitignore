@@ -56,5 +56,5 @@ dkms.conf
 *.user
 
 #Directories
-**/bin/
-**/obj/
+**/bin/**
+**/obj/**

@@ -1,6 +1,6 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿namespace UserCustomIndices.Model.Response
 {
-    public class Volitility
+    public struct MarketCap
     {
         public decimal Upper;
         public decimal Lower;
