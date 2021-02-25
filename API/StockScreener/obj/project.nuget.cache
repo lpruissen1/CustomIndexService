@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "RmANg7xY4YvYLxiIYoHDM+XossQNtwR+SCfTU/hIDaKqb7kFp98lGl6bSbYBq2gSl6LBL2l4MwMWVb/NUwRY4w==",
+  "success": true,
+  "projectFilePath": "C:\\sketch\\CustomIndexService\\API\\StockScreener\\StockScreener.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Leendert\\.nuget\\packages\\mongodb.bson\\2.11.6\\mongodb.bson.2.11.6.nupkg.sha512"
+  ],
+  "logs": []
+}
