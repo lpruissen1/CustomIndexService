@@ -4,16 +4,16 @@ namespace Database.Model.User.CustomIndices
 {
     public class CustomIndex : DbEntity
     {
-        public string UserId { get; set; }
-        public ComposedMarkets Markets { get; set; }
-        public DividendYield DividendYield { get; set; }
-        public Volitility Volitility { get; set; }
-        public TrailingPerformance TrailingPerformance { get; set; }
-        public RevenueGrowth RevenueGrowth { get; set; }
-        public EarningsGrowth EarningsGrowth { get; set; }
-        public Sectors SectorAndIndsutry { get; set; }
-        public MarketCaps MarketCaps { get; set; }
-        public string Test { get; set; }
+        public string UserId { get; init; }
+        public ComposedMarkets Markets { get; init; } = new ComposedMarkets();
+        public DividendYield DividendYield { get; init; } 
+        public Volitility Volitility { get; init; }
+        public TrailingPerformance TrailingPerformance { get; init; }
+        public RevenueGrowth RevenueGrowth { get; init; }
+        public EarningsGrowth EarningsGrowth { get; init; }
+        public Sectors SectorAndIndsutry { get; init; } = new Sectors();
+        public MarketCaps MarketCaps { get; init; }
+        public string Test { get; init; }
 
         public override string GetPrimaryKey()
         {

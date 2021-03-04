@@ -9,10 +9,10 @@ namespace Database.Repositories
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : DbEntity
     {
 
-        protected readonly IMongoCustomIndexDBContext _mongoContext;
+        protected readonly IMongoDBContext _mongoContext;
         protected IMongoCollection<TEntity> _dbCollection;
 
-        protected BaseRepository(IMongoCustomIndexDBContext context)
+        protected BaseRepository(IMongoDBContext context)
         {
             _mongoContext = context;
             _dbCollection = _mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);

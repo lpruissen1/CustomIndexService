@@ -2,10 +2,9 @@
 {
     public class Security
     {
-        public string ticker;
-        public string name;
-        public string sector;
-        public string industry;
+        public string Ticker;
+        public string Sector;
+        public string Industry;
     }
 
 }

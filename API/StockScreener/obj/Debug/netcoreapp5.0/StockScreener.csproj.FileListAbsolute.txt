@@ -8,7 +8,9 @@ C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\StockScre
 C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\ref\StockScreener.dll
 C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\StockScreener.pdb
 C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\Database.dll
+C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\StockScreener.Core.dll
 C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\Database.pdb
+C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\StockScreener.Core.pdb
 C:\sketch\CustomIndexService\API\StockScreener\obj\Debug\netcoreapp5.0\StockScreener.csproj.CopyComplete
 C:\sketch\CustomIndexService\API\StockScreener\obj\Debug\netcoreapp5.0\StockScreener.dll
 C:\sketch\CustomIndexService\API\StockScreener\obj\Debug\netcoreapp5.0\ref\StockScreener.dll

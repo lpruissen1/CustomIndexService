@@ -2,8 +2,9 @@
 
 namespace Database
 {
-    public interface IMongoCustomIndexDBContext
+    public interface IMongoDBContext
     {
         IMongoCollection<T> GetCollection<T>(string name);
+        void ClearAll();
     }
 }

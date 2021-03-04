@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockScreener
+namespace Database
 {
-    enum Datapoint
+    public interface IFilterBuilder
     {
-        Sector,
-        Industry
+        void Build();
     }
 }

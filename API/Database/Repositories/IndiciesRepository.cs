@@ -8,7 +8,7 @@ namespace Database.Repositories
 {
     public class IndiciesRepository : BaseRepository<CustomIndex>, IIndicesRepository
     {
-        public IndiciesRepository(IMongoCustomIndexDBContext context) : base(context) { }
+        public IndiciesRepository(IMongoDBContext context) : base(context) { }
 
         public async Task<CustomIndex> Get(Guid userId, string id)
         {

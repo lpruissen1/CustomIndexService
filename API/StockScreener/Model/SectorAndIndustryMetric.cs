@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using StockScreener.Core;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StockScreener
 {
@@ -10,9 +12,9 @@ namespace StockScreener
         public SecuritiesList Apply(SecuritiesList securitiesList)
         {
             if ( industries.Length == 0 )
-                return securitiesList.Where(s => s.sector == sector);
+                return securitiesList.Where(s => s.Sector == sector).ToSecurityList();
 
-            return securitiesList.Where(s => industries.Contains(s.industry));
+            return securitiesList.Where(s => industries.Contains(s.Industry)).ToSecurityList();
         }
     }
 }
