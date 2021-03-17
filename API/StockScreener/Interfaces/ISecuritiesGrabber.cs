@@ -1,9 +1,12 @@
-﻿using StockScreener.Model;
+﻿using StockScreener.Core;
+using StockScreener.Model;
+using StockScreener.SecurityGrabber;
+using System.Collections.Generic;
 
 namespace StockScreener
 {
     public interface ISecuritiesGrabber
     {
-        SecuritiesList GetSecurities(MetricList metrics);
+        SecuritiesList GetSecurities(SecuritiesSearchParams searchParams);
     }
 }

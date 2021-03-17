@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace Database
+namespace Database.Core
 {
     public interface IMongoDBContext
     {

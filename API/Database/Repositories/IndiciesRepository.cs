@@ -1,4 +1,5 @@
-﻿using Database.Model.User.CustomIndices;
+﻿using Database.Core;
+using Database.Model.User.CustomIndices;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace Database.Config
+﻿namespace StockScreener.Database.Config
 {
     public class StockInformationDatabaseSettings : IStockDataDatabaseSettings
     {

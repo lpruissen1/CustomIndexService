@@ -1,10 +1,9 @@
-using Database;
-using Database.Config;
-using Database.Model.StockData;
 using Database.Model.User.CustomIndices;
 using Database.Repositories;
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using StockScreener.Database.Model.CompanyInfo;
+using StockScreener.Database.Model.StockIndex;
+using StockScreener.Database.Repos;
 using System.Linq;
 
 namespace StockScreener.Service.IntegrationTests
@@ -18,16 +17,17 @@ namespace StockScreener.Service.IntegrationTests
         }
 
         [Test]
-        public void ScreenByStockIndexTest()
+        public void ScreenByStockIndex_SingleIndexTest()
         {
-			var stockIndex1 = "Lee Index";
+			var stockIndex1 = "Lee's Index";
 			var stockIndex2 = "Lee's second Index";
 
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
+			var ticker3 = "EEL";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1 } });
-            AddStockIndex(new StockIndex { Name = stockIndex2, Tickers = new[] { ticker2 } });
+			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
+            AddStockIndex(new StockIndex { Name = stockIndex2, Tickers = new[] { ticker3 } });
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker1 });
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker2 });
 
@@ -37,56 +37,207 @@ namespace StockScreener.Service.IntegrationTests
 				{
 					Markets = new[]
 					{
-						"Lee Index"
+						stockIndex1
 					}
 				}
 			};
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new CompanyInfoRepository(context), new StockIndexRepository(context)));
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+
+			var result = sut.Screen(customIndex);
+
+			Assert.AreEqual(2, result.Count);
+
+			Assert.AreEqual(ticker1, result.First().Ticker);
+			Assert.AreEqual(ticker2, result.Last().Ticker);
+        }
+
+        [Test]
+        public void ScreenByStockIndex_MultipleMIndicesTest()
+        {
+			var stockIndex1 = "Lee's Index";
+			var stockIndex2 = "Lee's second Index";
+			var stockIndex3 = "Lee's third Index";
+
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var ticker3 = "EEL";
+
+			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1 } });
+            AddStockIndex(new StockIndex { Name = stockIndex2, Tickers = new[] { ticker2 } });
+            AddStockIndex(new StockIndex { Name = stockIndex3, Tickers = new[] { ticker3 } });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker1 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker2 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker3 });
+
+			var customIndex = new CustomIndex()
+			{
+				Markets = new ComposedMarkets
+				{
+					Markets = new[]
+					{
+						stockIndex1,
+						stockIndex3
+					}
+				}
+			};
+
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+
+			var result = sut.Screen(customIndex);
+
+			Assert.AreEqual(2, result.Count);
+
+			Assert.AreEqual(ticker1, result.First().Ticker);
+			Assert.AreEqual(ticker3, result.Last().Ticker);
+        }
+
+        [Test]
+        public void ScreenStockBySectorTest()
+        {
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var stockIndex = "Lee's Index";
+			var sector1 = "Energy";
+			var sector2 = "Materials";
+
+			AddStockIndex(new StockIndex { Name = stockIndex, Tickers = new[] { ticker1, ticker2 } });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = sector1 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = sector2 });
+
+			var customIndex = new CustomIndex()
+			{
+				Markets = new ComposedMarkets
+				{
+					Markets = new[]
+					{
+						stockIndex
+					}
+				},
+				SectorAndIndsutry = new Sectors
+				{
+					SectorGroups = new[]
+					{
+						new Sector { Name = sector1}
+					}
+				}
+			};
+
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
 
 			var result = sut.Screen(customIndex);
 
 			Assert.AreEqual(1, result.Count);
 
-			Assert.AreEqual(ticker1, result.First().Ticker);
+			var security = result.First();
+
+			Assert.AreEqual(ticker1, security.Ticker);
+			Assert.AreEqual(sector1, security.Sector);
+        }
+
+        [Test]
+        public void ScreenStockByIndustryTest()
+        {
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var ticker3 = "EEL";
+			var stockIndex = "Lee's Index";
+			var energySector = "Energy";
+			var energyIndustry1 = "Oil";
+			var energyIndustry2 = "Solar";
+			var materialsSector = "Materials";
+			var materialsIndustry1 = "Plastics";
+
+			AddStockIndex(new StockIndex { Name = stockIndex, Tickers = new[] { ticker1, ticker2, ticker3 } });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = energySector, Industry = energyIndustry1 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = energySector, Industry = energyIndustry2 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker3, Sector = materialsSector, Industry = materialsIndustry1 });
+
+			var customIndex = new CustomIndex()
+			{
+				Markets = new ComposedMarkets
+				{
+					Markets = new[]
+					{
+						stockIndex
+					}
+				},
+				SectorAndIndsutry = new Sectors
+				{
+					SectorGroups = new[]
+					{
+						new Sector { Name = energySector, Industries = new[] { energyIndustry1 }}
+					}
+				}
+			};
+
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+
+			var result = sut.Screen(customIndex);
+
+			Assert.AreEqual(1, result.Count);
+
+			var security = result.First();
+
+			Assert.AreEqual(ticker1, security.Ticker);
+			Assert.AreEqual(energySector, security.Sector);
+			Assert.AreEqual(energyIndustry1, security.Industry);
+        }
+
+        [Test]
+        public void ScreenStockBy_SectorAndIndustryTest()
+        {
+			var stockIndex = "Lee's Index";
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var ticker3 = "EEL";
+
+			var energySector = "Energy";
+			var energyIndustry1 = "Oil";
+			var energyIndustry2 = "Solar";
+
+			var materialsSector = "Materials";
+			var materialsIndustry = "Plastics";
+
+			AddStockIndex(new StockIndex { Name = stockIndex, Tickers = new[] { ticker1, ticker2, ticker3 } });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = energySector, Industry = energyIndustry1 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = energySector, Industry = energyIndustry2 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker3, Sector = materialsSector, Industry = materialsIndustry });
+
+			var customIndex = new CustomIndex()
+			{
+				Markets = new ComposedMarkets
+				{
+					Markets = new[]
+					{
+						stockIndex
+					}
+				},
+				SectorAndIndsutry = new Sectors
+				{
+					SectorGroups = new[]
+					{
+						new Sector { Name = energySector, Industries = new[] { energyIndustry1 }},
+						new Sector { Name = materialsSector}
+					}
+				}
+			};
+
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+
+			var result = sut.Screen(customIndex);
+
+			Assert.AreEqual(2, result.Count);
+
+			var security = result.First();
+
+			Assert.AreEqual(ticker1, security.Ticker);
+			Assert.AreEqual(energySector, security.Sector);
+			Assert.AreEqual(energyIndustry1, security.Industry);
+
+			Assert.AreEqual(ticker3, security.Ticker);
+			Assert.AreEqual(materialsSector, security.Sector);
+			Assert.AreEqual(materialsIndustry, security.Industry);
         }
     }
-
-	public abstract class StockScreenerServiceTestBase
-	{
-		protected IMongoDBContext context;
-
-		protected StockScreenerService sut;
-
-		[OneTimeSetUp]
-		public virtual void OneTimeSetUp()
-		{
-			var config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\Agg\\Agg\\AggregationService.IntegrationTests").AddJsonFile("appsettings.json").Build();
-			var dbSettings = new StockInformationDatabaseSettings() { ConnectionString = config["StockDataDatabaseSettings:ConnectionString"], DatabaseName = config["StockDataDatabaseSettings:DatabaseName"] };
-
-			context = new MongoStockInformationDbContext(dbSettings);
-		}
-
-		[OneTimeTearDown]
-		public virtual void OneTimeTearDown()
-		{
-
-		}
-
-		[TearDown]
-		public virtual void TearDown()
-		{
-			context.ClearAll();
-		}
-
-		public void AddStockIndex(StockIndex stockIndex)
-        {
-			context.GetCollection<StockIndex>("StockIndex").InsertOne(stockIndex);
-        }
-
-		public void AddCompanyInfo(CompanyInfo companyInfo)
-        {
-			context.GetCollection<CompanyInfo>("CompanyInfo").InsertOne(companyInfo);
-        }
-	}
 }

@@ -1,7 +1,8 @@
-﻿using Database.Model.StockData;
+﻿using Database.Core;
+using StockScreener.Database.Model.StockIndex;
 using System.Collections.Generic;
 
-namespace Database.Repositories
+namespace StockScreener.Database.Repos
 {
     public interface IStockIndexRepository : IBaseRepository<StockIndex>
     {

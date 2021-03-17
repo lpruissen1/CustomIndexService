@@ -5,8 +5,11 @@ namespace StockScreener.Core
     [Flags]
     public enum Datapoint
     {
-        SectorAndIndustry = 0,
+        Sector = 1,
+        Industry = 2,
+        MarketCap = 4,
 
-        CompanyInfo  = SectorAndIndustry
+        CompanyInfo  = Sector | Industry,
+        StockFinancials  = MarketCap
     }
 }

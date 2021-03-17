@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Database.Core;
 
 namespace Database.Model.User.CustomIndices
 {
@@ -12,12 +12,7 @@ namespace Database.Model.User.CustomIndices
         public RevenueGrowth RevenueGrowth { get; init; }
         public EarningsGrowth EarningsGrowth { get; init; }
         public Sectors SectorAndIndsutry { get; init; } = new Sectors();
-        public MarketCaps MarketCaps { get; init; }
+        public MarketCaps MarketCaps { get; init; } = new MarketCaps();
         public string Test { get; init; }
-
-        public override string GetPrimaryKey()
-        {
-            return Id;
-        }
     }
 }

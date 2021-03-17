@@ -272,6 +272,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
+          "Database.Core": "1.0.0",
           "Microsoft.Extensions.Configuration.Json": "5.0.0",
           "MongoDB.Bson": "2.12.0",
           "MongoDB.Driver": "2.12.0",
@@ -282,6 +283,20 @@
         },
         "runtime": {
           "bin/placeholder/Database.dll": {}
+        }
+      },
+      "Database.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "MongoDB.Bson": "2.12.0",
+          "MongoDB.Driver": "2.12.0"
+        },
+        "compile": {
+          "bin/placeholder/Database.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Database.Core.dll": {}
         }
       },
       "StockScreener.Core/1.0.0": {
@@ -295,6 +310,20 @@
         },
         "runtime": {
           "bin/placeholder/StockScreener.Core.dll": {}
+        }
+      },
+      "StockScreener.Database/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Database.Core": "1.0.0",
+          "StockScreener.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/StockScreener.Database.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/StockScreener.Database.dll": {}
         }
       }
     }
@@ -740,17 +769,28 @@
       "path": "../Database/Database.csproj",
       "msbuildProject": "../Database/Database.csproj"
     },
+    "Database.Core/1.0.0": {
+      "type": "project",
+      "path": "../Database.Core/Database.Core.csproj",
+      "msbuildProject": "../Database.Core/Database.Core.csproj"
+    },
     "StockScreener.Core/1.0.0": {
       "type": "project",
       "path": "../StockScreener.Core/StockScreener.Core.csproj",
       "msbuildProject": "../StockScreener.Core/StockScreener.Core.csproj"
+    },
+    "StockScreener.Database/1.0.0": {
+      "type": "project",
+      "path": "../StockScreener.Database/StockScreener.Database.csproj",
+      "msbuildProject": "../StockScreener.Database/StockScreener.Database.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
       "Database >= 1.0.0",
       "Microsoft.Extensions.Configuration.Json >= 5.0.0",
-      "StockScreener.Core >= 1.0.0"
+      "StockScreener.Core >= 1.0.0",
+      "StockScreener.Database >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -785,6 +825,9 @@
             },
             "C:\\sketch\\CustomIndexService\\API\\StockScreener.Core\\StockScreener.Core.csproj": {
               "projectPath": "C:\\sketch\\CustomIndexService\\API\\StockScreener.Core\\StockScreener.Core.csproj"
+            },
+            "C:\\sketch\\CustomIndexService\\API\\StockScreener.Database\\StockScreener.Database.csproj": {
+              "projectPath": "C:\\sketch\\CustomIndexService\\API\\StockScreener.Database\\StockScreener.Database.csproj"
             }
           }
         }

@@ -10,7 +10,8 @@
         "dependencies": {
           "Database": "1.0.0",
           "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "StockScreener.Core": "1.0.0"
+          "StockScreener.Core": "1.0.0",
+          "StockScreener.Database": "1.0.0"
         },
         "runtime": {
           "StockScreener.dll": {}
@@ -219,6 +220,7 @@
       },
       "Database/1.0.0": {
         "dependencies": {
+          "Database.Core": "1.0.0",
           "Microsoft.Extensions.Configuration.Json": "5.0.0",
           "MongoDB.Bson": "2.12.0",
           "MongoDB.Driver": "2.12.0",
@@ -228,12 +230,30 @@
           "Database.dll": {}
         }
       },
+      "Database.Core/1.0.0": {
+        "dependencies": {
+          "MongoDB.Bson": "2.12.0",
+          "MongoDB.Driver": "2.12.0"
+        },
+        "runtime": {
+          "Database.Core.dll": {}
+        }
+      },
       "StockScreener.Core/1.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Configuration.Json": "5.0.0"
         },
         "runtime": {
           "StockScreener.Core.dll": {}
+        }
+      },
+      "StockScreener.Database/1.0.0": {
+        "dependencies": {
+          "Database.Core": "1.0.0",
+          "StockScreener.Core": "1.0.0"
+        },
+        "runtime": {
+          "StockScreener.Database.dll": {}
         }
       }
     }
@@ -375,7 +395,17 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Database.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "StockScreener.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "StockScreener.Database/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

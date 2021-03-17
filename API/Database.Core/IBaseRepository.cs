@@ -1,8 +1,7 @@
-﻿using Database.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Database.Repositories
+namespace Database.Core
 {
     public interface IBaseRepository<TEntity> where TEntity : DbEntity
     {

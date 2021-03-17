@@ -1,20 +1,37 @@
 ﻿using StockScreener.Core;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener
 {
     public class SectorAndIndustryMetric : IMetric
     {
-        public string sector { get; init; }
-        public string[] industries { get; init; }
-
-        public SecuritiesList Apply(SecuritiesList securitiesList)
+        public SectorAndIndustryMetric()
         {
-            if ( industries.Length == 0 )
-                return securitiesList.Where(s => s.Sector == sector).ToSecurityList();
+            //industries = new List<string>();
+            //sectors = new List<string>();
+        }
 
-            return securitiesList.Where(s => industries.Contains(s.Industry)).ToSecurityList();
+        private List<string> industries { get; init; }
+        private List<string> sectors { get; init; }
+
+        public void AddSector(string sector)
+        {
+            sectors.Add(sector);
+        }
+
+        public void AddIndustry(string industry)
+        {
+            industries.Add(industry);
+        }
+
+        public void Apply(ref SecuritiesList securitiesList)
+        {
+            securitiesList.RemoveAll(s => !industries.Contains(s.Industry) || !sectors.Contains(s.Sector));
+        }
+
+        public IEnumerable<Datapoint> GetRelevantDatapoints()
+        {
+            yield return Datapoint.Industry;
         }
     }
 }

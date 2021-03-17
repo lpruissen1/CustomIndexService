@@ -5,6 +5,7 @@ namespace StockScreener
 {
     public interface IMetric
     {
-        SecuritiesList Apply(SecuritiesList securitiesList);
+        void Apply(ref SecuritiesList securitiesList);
+        IEnumerable<Datapoint> GetRelevantDatapoints();
     }
 }

@@ -4,9 +4,9 @@
     {
         public Sector[] SectorGroups;
 
-        public bool IsNotNull()
+        public bool IsNull()
         {
-            return SectorGroups is not null;
+            return SectorGroups is null;
         }
     }
 }

@@ -15,3 +15,7 @@ C:\sketch\CustomIndexService\API\StockScreener\obj\Debug\netcoreapp5.0\StockScre
 C:\sketch\CustomIndexService\API\StockScreener\obj\Debug\netcoreapp5.0\StockScreener.dll
 C:\sketch\CustomIndexService\API\StockScreener\obj\Debug\netcoreapp5.0\ref\StockScreener.dll
 C:\sketch\CustomIndexService\API\StockScreener\obj\Debug\netcoreapp5.0\StockScreener.pdb
+C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\Database.Core.dll
+C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\StockScreener.Database.dll
+C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\StockScreener.Database.pdb
+C:\sketch\CustomIndexService\API\StockScreener\bin\Debug\netcoreapp5.0\Database.Core.pdb

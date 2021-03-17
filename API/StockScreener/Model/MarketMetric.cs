@@ -3,13 +3,18 @@ using System.Collections.Generic;
 
 namespace StockScreener
 {
-    public class MarketMetric : IMetric
+    public class MarketMetric
     {
         public string[] markets { get; init; }
 
-        public SecuritiesList Apply(SecuritiesList securitiesList)
+        public void Apply(SecuritiesList securitiesList)
         {
             throw new System.Exception("I shouldnt be called");
+        }
+
+        public Datapoint GetRelevantDatapoint()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

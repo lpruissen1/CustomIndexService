@@ -10,23 +10,35 @@ namespace StockScreener.Mapper
         public MetricList MapToMetricList(CustomIndex index)
         {
             MetricList metricList = new MetricList();
-            metricList.Add(MapStockIndices(index.Markets));
-            metricList.AddRange(MapSectors(index.SectorAndIndsutry));
+            metricList.Indices = index.Markets.Markets;
+
+            metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
+            metricList.Add(MapMarketCap(index.MarketCaps));
 
             return metricList;
         }
 
-        private IEnumerable<SectorAndIndustryMetric> MapSectors(Sectors sectors)
+        private IMetric MapSectorsAndIndustries(Sectors sectors)
         {
-            if(sectors.IsNotNull())
-                return sectors.SectorGroups.Select(sectors => new SectorAndIndustryMetric { sector = sectors.Name, industries = sectors.Industries });
+            if ( sectors.IsNull() )
+                return null;
 
-            return Enumerable.Empty<SectorAndIndustryMetric>();
+            return null;
         }
 
-        private IMetric MapStockIndices(ComposedMarkets markets)
+        private IMetric MapMarketCap(MarketCaps marketCaps)
         {
-            return new MarketMetric { markets = markets.Markets };
+            if(marketCaps.IsNull())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach(var marketCapRange in marketCaps.MarketCapGroups)
+            {
+                list.Add(new Range(marketCapRange.Upper, marketCapRange.Lower));
+            }
+
+            return new MarketCapMetric(list);
         }
     }
 

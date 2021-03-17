@@ -1,8 +1,10 @@
-﻿using Database.Model.StockData;
+﻿using Database.Core;
+using Database.Repositories;
 using MongoDB.Driver;
+using StockScreener.Database.Model.StockIndex;
 using System.Collections.Generic;
 
-namespace Database.Repositories
+namespace StockScreener.Database.Repos
 {
     public class StockIndexRepository : BaseRepository<StockIndex>, IStockIndexRepository
     {
@@ -15,7 +17,7 @@ namespace Database.Repositories
 
             List<string> tickers = new List<string>();
             var fuck = Builders<StockIndex>.Filter.In(x => x.Name, indices);
-            foreach(var entry in _dbCollection.FindSync(fuck).ToEnumerable())
+            foreach ( var entry in _dbCollection.FindSync(fuck).ToEnumerable() )
             {
                 tickers.AddRange(entry.Tickers);
             }

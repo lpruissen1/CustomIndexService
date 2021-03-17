@@ -5,6 +5,7 @@
         public string Ticker;
         public string Sector;
         public string Industry;
+        public double MarketCap;
     }
 
 }

@@ -1,5 +1,6 @@
-﻿using Database.Config;
+﻿using Database.Core;
 using MongoDB.Driver;
+using StockScreener.Database.Config;
 
 namespace Database
 {

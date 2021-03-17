@@ -27,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\StockScreener.Core\StockScreener.Core.csproj" />
+    <ProjectReference Include="..\StockScreener.Database\StockScreener.Database.csproj" />
     <ProjectReference Include="..\StockScreener\StockScreener.csproj" />
   </ItemGroup>
 </Project>

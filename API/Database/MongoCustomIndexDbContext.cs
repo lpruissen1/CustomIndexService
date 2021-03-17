@@ -1,4 +1,5 @@
 ﻿using Database.Config;
+using Database.Core;
 using MongoDB.Driver;
 
 namespace Database
