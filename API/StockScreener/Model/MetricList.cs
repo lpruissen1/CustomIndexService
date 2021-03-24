@@ -10,8 +10,6 @@ namespace StockScreener.Model
         public string[] Indices { get; set; }
         private List<IMetric> metrics { get; init; } = new List<IMetric>();
 
-        internal MarketMetric MarketMetric => metrics.OfType<MarketMetric>().FirstOrDefault();
-
         public void Apply(ref SecuritiesList securitiesList)
         {
             foreach(var metric in metrics)

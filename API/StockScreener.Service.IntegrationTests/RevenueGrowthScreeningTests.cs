@@ -1,18 +1,14 @@
-﻿//using Database.Model.User.CustomIndices;
-using Database.Model.User.CustomIndices;
+﻿using Database.Model.User.CustomIndices;
 using Database.Repositories;
 using NUnit.Framework;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
 using System.Collections.Generic;
-using System.Linq;
-using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;
-using CustomIndexMarketCap = Database.Model.User.CustomIndices.MarketCap;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class MarketCapScreeningTests : StockScreenerServiceTestBase
+    public class RevenueGrowthScreeningTests : StockScreenerServiceTestBase
 	{
 		[SetUp]
 		public void Setup()
@@ -21,7 +17,7 @@ namespace StockScreener.Service.IntegrationTests
 		}
 
 		[Test]
-		public void ScreenByStockIndex_MarketCap()
+		public void ScreenByStockIndex_RevenueGrowth()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -32,11 +28,27 @@ namespace StockScreener.Service.IntegrationTests
 			AddStockFinancials(new StockFinancials 
 			{ 
 				Ticker = ticker1,
-				MarketCap = new List<MarketCap> 
+				Revenues = new List<Revenues> 
 				{ 
-					new MarketCap 
+					new Revenues 
 					{ 
-						marketCap = 1_000_000d 
+						revenues = 500_000d,
+						timestamp = 1561867200
+					},
+					new Revenues 
+					{ 
+						revenues = 750_000d,
+						timestamp = 1569816000
+					},
+					new Revenues 
+					{ 
+						revenues = 1_000_000d,
+						timestamp = 1577768400
+					},
+					new Revenues 
+					{ 
+						revenues = 1_500_000d,
+						timestamp = 1585627200
 					} 
 				} 
 			});
@@ -44,11 +56,27 @@ namespace StockScreener.Service.IntegrationTests
 			AddStockFinancials(new StockFinancials
 			{
 				Ticker = ticker2,
-				MarketCap = new List<MarketCap>
+				Revenues = new List<Revenues>
 				{
-					new MarketCap
+					new Revenues
 					{
-						marketCap = 10_000d
+						revenues = 500_000d,
+						timestamp = 1561867200
+					},
+					new Revenues
+					{
+						revenues = 750_000d,
+						timestamp = 1569816000
+					},
+					new Revenues
+					{
+						revenues = 1_000_000d,
+						timestamp = 1577768400
+					},
+					new Revenues
+					{
+						revenues = 400_000d,
+						timestamp = 1585627200
 					}
 				}
 			});
@@ -62,9 +90,9 @@ namespace StockScreener.Service.IntegrationTests
 						stockIndex1
 					}
 				},
-				MarketCaps = new MarketCaps()
-                {
-				   MarketCapGroups = new[] { new CustomIndexMarketCap { Lower = 200_000d, Upper = 2_000_000d } }
+				RevenueGrowths = new List<RevenueGrowth>()
+				{
+					new RevenueGrowth { Lower = 0, Upper = 100, TimePeriod = 1}
                 }
 			};
 

@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockScreener.Core", "Stock
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockScreener.Service.IntegrationTests", "StockScreener.Service.IntegrationTests\StockScreener.Service.IntegrationTests.csproj", "{DA12A308-8456-40B5-9694-7BAC228F814D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockScreener.Database", "StockScreener.Database\StockScreener.Database.csproj", "{3C09947A-7AEF-412A-B640-F099A0471383}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockScreener.Database", "StockScreener.Database\StockScreener.Database.csproj", "{3C09947A-7AEF-412A-B640-F099A0471383}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.Core", "Database.Core\Database.Core.csproj", "{6D520D4A-B179-48CE-B6C1-2C02E6D3BFB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.Core", "Database.Core\Database.Core.csproj", "{6D520D4A-B179-48CE-B6C1-2C02E6D3BFB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockScreener.Core.Test", "StockScreener.Core.Test\StockScreener.Core.Test.csproj", "{007D595B-82E7-4524-A9F7-FB6CABA895EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{6D520D4A-B179-48CE-B6C1-2C02E6D3BFB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D520D4A-B179-48CE-B6C1-2C02E6D3BFB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D520D4A-B179-48CE-B6C1-2C02E6D3BFB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{007D595B-82E7-4524-A9F7-FB6CABA895EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{007D595B-82E7-4524-A9F7-FB6CABA895EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{007D595B-82E7-4524-A9F7-FB6CABA895EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{007D595B-82E7-4524-A9F7-FB6CABA895EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

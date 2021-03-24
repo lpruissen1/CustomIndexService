@@ -11,10 +11,7 @@ namespace Database.Repositories
 {
     public class CompanyInfoRepository : BaseRepository<CompanyInfo>, ICompanyInfoRepository
     {
-        private ProjectionDefinitionBuilder<CompanyInfo> filterBuilder;
-        public CompanyInfoRepository(IMongoDBContext context) : base(context) {
-            filterBuilder = Builders<CompanyInfo>.Projection;
-        }
+        public CompanyInfoRepository(IMongoDBContext context) : base(context) { }
 
         public IEnumerable<CompanyInfo> Get(IEnumerable<string> tickers, IEnumerable<Datapoint> datapoints)
         {
@@ -22,9 +19,10 @@ namespace Database.Repositories
             return _dbCollection.Find(x => tickers.Contains(x.Ticker)).Project<CompanyInfo>(projection).ToEnumerable();
         }
 
-        private ProjectionDefinition<CompanyInfo> AddSector()
+        public CompanyInfo Get(string ticker, IEnumerable<Datapoint> dataPoints)
         {
-            return filterBuilder.Include(x => x.Sector);
+            var projection = Builders<CompanyInfo>.Projection.Include(x => x.Ticker).Include(x => x.Sector).Include(x => x.Industry);
+            return _dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection).FirstOrDefault();
         }
     }
 }

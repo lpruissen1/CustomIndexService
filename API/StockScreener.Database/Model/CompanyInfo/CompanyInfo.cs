@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace StockScreener.Database.Model.CompanyInfo
 {
-    public class CompanyInfo : DbEntity
+    public class CompanyInfo : StockDbEntity
     {
-        public string Ticker;
         public string Name;
         public string Industry;
         public string Sector;

@@ -24,10 +24,6 @@ namespace StockScreener
             metricList.Apply(ref securities);
             
             return securities;
-            // option 1. create huge filter within and filter the collection independently and returing a complete list of stocks (currently implemented)
-            // option 2. Get list of securities and filter them metric by metric. Needs datapoint list prior
-
-            // return null;
         }
     }
 }

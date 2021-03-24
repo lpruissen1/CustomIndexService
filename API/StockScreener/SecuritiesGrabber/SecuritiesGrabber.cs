@@ -12,6 +12,8 @@ namespace StockScreener
         private readonly IStockFinancialsRepository stockFinancialsRespository;
         private readonly IStockIndexRepository stockIndicesRespository;
 
+        private SecuritiesList list;
+
         public SecuritiesGrabber(IStockFinancialsRepository stockFinancialsRespository, ICompanyInfoRepository companyInfoRespository, IStockIndexRepository stockIndicesRespository)
         {
             this.companyInfoRespository = companyInfoRespository;
@@ -21,37 +23,44 @@ namespace StockScreener
 
         public SecuritiesList GetSecurities(SecuritiesSearchParams searchParams)
         {
-            var securityList = PullBaseSecurityList(searchParams.Indices);
+            list = PullBaseSecurityList(searchParams.Indices);
 
-            AddCompanyInfo(ref securityList, searchParams.Datapoints.Where(x => x.HasFlag(Datapoint.CompanyInfo)));
-            AddStockFinancials(ref securityList, searchParams.Datapoints.Where(x => x.HasFlag(Datapoint.StockFinancials)));
+            AddCompanyInfo(searchParams.Datapoints);
+            AddStockFinancials(searchParams.Datapoints);
 
-            return securityList;
+            return list;
         }
 
-        private void AddCompanyInfo(ref SecuritiesList list, IEnumerable<Datapoint> datapoints)
+        private void AddCompanyInfo(IEnumerable<Datapoint> datapoints)
         {
-            if ( datapoints.Count() == 0 )
-                return;
-           var companyInfo = companyInfoRespository.Get(list.Select(x => x.Ticker), datapoints);
-           foreach(var security in list)
-           {
-                var info = companyInfo.FirstOrDefault(x => x.Ticker == security.Ticker);
-                security.Industry = info.Industry;
-                security.Sector = info.Sector;
-           }
-        }
-
-        private void AddStockFinancials(ref SecuritiesList list, IEnumerable<Datapoint> datapoints)
-        {
-            if ( datapoints.Count() == 0 )
+            if ( !datapoints.Any() )
                 return;
 
-            var stockFinancials = stockFinancialsRespository.Get(list.Select(x => x.Ticker), datapoints);
-            foreach(var security in list)
+            foreach ( var security in list )
             {
-                var info = stockFinancials.FirstOrDefault(x => x.Ticker == security.Ticker);
-                security.MarketCap = info.MarketCap[0].marketCap;
+                var companyInfo = companyInfoRespository.Get(security.Ticker, datapoints);
+                if ( companyInfo is not null )
+                {
+                    security.Industry = companyInfo.Industry;
+                    security.Sector = companyInfo.Sector;
+                }
+            }
+        }
+
+        private void AddStockFinancials(IEnumerable<Datapoint> datapoints)
+        {
+            if ( !datapoints.Any() )
+                return;
+
+            var relevantDatapoints = datapoints.Where(x => Datapoint.StockFinancials.HasFlag(x));
+            var stockFinancialsMapper = new StockFinancialsMapper();
+
+            foreach ( var security in list )
+            {
+                var stockFinancials = stockFinancialsRespository.Get(security.Ticker, relevantDatapoints);
+
+                if ( stockFinancials is not null )
+                    security.Map(stockFinancialsMapper.MapToSecurity(relevantDatapoints, stockFinancials));
             }
         }
 
@@ -60,4 +69,5 @@ namespace StockScreener
             return stockIndicesRespository.Get(indices).Select(x => new Security() { Ticker = x }).ToSecurityList();
         }
     }
+
 }

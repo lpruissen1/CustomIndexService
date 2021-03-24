@@ -1,9 +1,8 @@
 ﻿using StockScreener.Core;
-using StockScreener.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StockScreener
+namespace StockScreener.Model
 {
     public class MarketCapMetric : IMetric
     {

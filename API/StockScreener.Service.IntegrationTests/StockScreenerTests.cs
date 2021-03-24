@@ -99,11 +99,13 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 			var stockIndex = "Lee's Index";
 			var sector1 = "Energy";
+			var industry1 = "Oil";
 			var sector2 = "Materials";
+			var industry2 = "Plastics";
 
 			AddStockIndex(new StockIndex { Name = stockIndex, Tickers = new[] { ticker1, ticker2 } });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = sector1 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = sector2 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = sector1, Industry = industry1 });
+			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = sector2, Industry = industry2 });
 
 			var customIndex = new CustomIndex()
 			{
@@ -234,6 +236,8 @@ namespace StockScreener.Service.IntegrationTests
 			Assert.AreEqual(ticker1, security.Ticker);
 			Assert.AreEqual(energySector, security.Sector);
 			Assert.AreEqual(energyIndustry1, security.Industry);
+
+			security = result.Last();
 
 			Assert.AreEqual(ticker3, security.Ticker);
 			Assert.AreEqual(materialsSector, security.Sector);

@@ -8,8 +8,9 @@ namespace StockScreener.Core
         Sector = 1,
         Industry = 2,
         MarketCap = 4,
+        Revenue = 8,
 
         CompanyInfo  = Sector | Industry,
-        StockFinancials  = MarketCap
+        StockFinancials  = MarketCap | Revenue
     }
 }

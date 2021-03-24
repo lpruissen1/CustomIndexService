@@ -1,7 +1,7 @@
 ﻿using StockScreener.Core;
 using System.Collections.Generic;
 
-namespace StockScreener
+namespace StockScreener.Model
 {
     public interface IMetric
     {

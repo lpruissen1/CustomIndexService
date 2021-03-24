@@ -1,4 +1,5 @@
 ﻿using Database.Core;
+using System.Collections.Generic;
 
 namespace Database.Model.User.CustomIndices
 {
@@ -9,7 +10,7 @@ namespace Database.Model.User.CustomIndices
         public DividendYield DividendYield { get; init; } 
         public Volitility Volitility { get; init; }
         public TrailingPerformance TrailingPerformance { get; init; }
-        public RevenueGrowth RevenueGrowth { get; init; }
+        public List<RevenueGrowth> RevenueGrowths { get; init; } = new List<RevenueGrowth>();
         public EarningsGrowth EarningsGrowth { get; init; }
         public Sectors SectorAndIndsutry { get; init; } = new Sectors();
         public MarketCaps MarketCaps { get; init; } = new MarketCaps();
