@@ -26,8 +26,9 @@ namespace StockScreener
             var presentTimeStamp = present.timestamp;
             var quarter = stockFinancials.Revenues.First(x => x.timestamp > (presentTimeStamp - (yearUnixTime / 4) - errorFactor) && x.timestamp < (presentTimeStamp - (yearUnixTime / 4) + errorFactor));
 
-            security.Revenue = new Dictionary<TimeSpan, double> {
+            security.RevenueGrowth = new Dictionary<TimeSpan, double> {
                 { TimeSpan.Quarterly, GrowthRateCalculator.CalculateGrowthRate(present.revenues, quarter.revenues)}
+                // Add more timespans
             };
         }
     }

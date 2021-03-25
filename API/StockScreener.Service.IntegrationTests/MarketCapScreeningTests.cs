@@ -6,9 +6,8 @@ using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
 using System.Collections.Generic;
-using System.Linq;
-using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;
 using CustomIndexMarketCap = Database.Model.User.CustomIndices.MarketCap;
+using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;
 
 namespace StockScreener.Service.IntegrationTests
 {

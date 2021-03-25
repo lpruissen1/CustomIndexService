@@ -39,6 +39,7 @@ namespace StockScreener
             foreach ( var security in list )
             {
                 var companyInfo = companyInfoRespository.Get(security.Ticker, datapoints);
+                // create mapper right here for company info
                 if ( companyInfo is not null )
                 {
                     security.Industry = companyInfo.Industry;

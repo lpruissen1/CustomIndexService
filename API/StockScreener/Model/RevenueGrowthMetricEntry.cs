@@ -15,7 +15,7 @@ namespace StockScreener.Model
 
         public bool Valid(Security security)
         {
-            return range.WithinRange(security.Revenue[span]);
+            return range.WithinRange(security.RevenueGrowth[span]);
         }
     }
 }
