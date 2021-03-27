@@ -1,6 +1,7 @@
 ﻿using Database.Model.User.CustomIndices;
 using StockScreener.Core;
 using StockScreener.Model;
+using StockScreener.Model.Metrics;
 using System.Collections.Generic;
 using System.Linq;
 

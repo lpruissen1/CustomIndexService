@@ -1,6 +1,7 @@
 ﻿using StockScreener.Core;
+using StockScreener.Model.BaseSecurity;
 
-namespace StockScreener.Model
+namespace StockScreener.Model.Metrics
 {
     public class RevenueGrowthMetricEntry
     {
@@ -13,7 +14,7 @@ namespace StockScreener.Model
             this.span = span;
         }
 
-        public bool Valid(Security security)
+        public bool Valid(DerivedSecurity security)
         {
             return range.WithinRange(security.RevenueGrowth[span]);
         }

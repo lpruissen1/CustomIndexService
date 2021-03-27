@@ -9,10 +9,10 @@ namespace Database.Repositories
     {
         public CompanyInfoProjectionBuilder() : base()
         {
-            datapointMapper = new Dictionary<Datapoint, Action>()
+            datapointMapper = new Dictionary<BaseDatapoint, Action>()
             {
-                {Datapoint.CompanyInfo, AddIndustry },
-                {Datapoint.Sector, AddSector }
+                {BaseDatapoint.CompanyInfo, AddIndustry },
+                {BaseDatapoint.Sector, AddSector }
             };
         }
 

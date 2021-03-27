@@ -1,8 +1,9 @@
 ﻿using StockScreener.Core;
+using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StockScreener.Model
+namespace StockScreener.Model.Metrics
 {
     public class MarketCapMetric : IMetric
     {
@@ -18,14 +19,19 @@ namespace StockScreener.Model
             marketCaps.Add(marketCapRange);
         }
 
-        public void Apply(ref SecuritiesList securitiesList)
+        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !marketCaps.Any(range => range.WithinRange(security.MarketCap)));
         }
 
-        public IEnumerable<Datapoint> GetRelevantDatapoints()
+        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
-            yield return Datapoint.MarketCap;
+            yield return BaseDatapoint.MarketCap;
+        }
+
+        public IEnumerable<BaseDatapoint> GetDerivedDatapoints()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

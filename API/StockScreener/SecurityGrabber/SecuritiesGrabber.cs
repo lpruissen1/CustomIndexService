@@ -1,10 +1,11 @@
 ﻿using StockScreener.Core;
 using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
+using StockScreener.Model.BaseSecurity;
+using StockScreener.SecurityGrabber.BaseDataMapper;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StockScreener
+namespace StockScreener.SecurityGrabber
 {
     public class SecuritiesGrabber : ISecuritiesGrabber
     {
@@ -12,7 +13,7 @@ namespace StockScreener
         private readonly IStockFinancialsRepository stockFinancialsRespository;
         private readonly IStockIndexRepository stockIndicesRespository;
 
-        private SecuritiesList list;
+        private SecuritiesList<BaseSecurity> list;
 
         public SecuritiesGrabber(IStockFinancialsRepository stockFinancialsRespository, ICompanyInfoRepository companyInfoRespository, IStockIndexRepository stockIndicesRespository)
         {
@@ -21,7 +22,7 @@ namespace StockScreener
             this.stockIndicesRespository = stockIndicesRespository;
         }
 
-        public SecuritiesList GetSecurities(SecuritiesSearchParams searchParams)
+        public SecuritiesList<BaseSecurity> GetSecurities(SecuritiesSearchParams searchParams)
         {
             list = PullBaseSecurityList(searchParams.Indices);
 
@@ -31,16 +32,16 @@ namespace StockScreener
             return list;
         }
 
-        private void AddCompanyInfo(IEnumerable<Datapoint> datapoints)
+        private void AddCompanyInfo(IEnumerable<BaseDatapoint> datapoints)
         {
-            if ( !datapoints.Any() )
+            if (!datapoints.Any())
                 return;
 
-            foreach ( var security in list )
+            foreach (var security in list)
             {
                 var companyInfo = companyInfoRespository.Get(security.Ticker, datapoints);
                 // create mapper right here for company info
-                if ( companyInfo is not null )
+                if (companyInfo is not null)
                 {
                     security.Industry = companyInfo.Industry;
                     security.Sector = companyInfo.Sector;
@@ -48,26 +49,26 @@ namespace StockScreener
             }
         }
 
-        private void AddStockFinancials(IEnumerable<Datapoint> datapoints)
+        private void AddStockFinancials(IEnumerable<BaseDatapoint> datapoints)
         {
-            if ( !datapoints.Any() )
+            if (!datapoints.Any())
                 return;
 
-            var relevantDatapoints = datapoints.Where(x => Datapoint.StockFinancials.HasFlag(x));
+            var relevantDatapoints = datapoints.Where(x => BaseDatapoint.StockFinancials.HasFlag(x));
             var stockFinancialsMapper = new StockFinancialsMapper();
 
-            foreach ( var security in list )
+            foreach (var security in list)
             {
                 var stockFinancials = stockFinancialsRespository.Get(security.Ticker, relevantDatapoints);
 
-                if ( stockFinancials is not null )
+                if (stockFinancials is not null)
                     security.Map(stockFinancialsMapper.MapToSecurity(relevantDatapoints, stockFinancials));
             }
         }
 
-        private SecuritiesList PullBaseSecurityList(IEnumerable<string> indices)
+        private SecuritiesList<BaseSecurity> PullBaseSecurityList(IEnumerable<string> indices)
         {
-            return stockIndicesRespository.Get(indices).Select(x => new Security() { Ticker = x }).ToSecurityList();
+            return new SecuritiesList<BaseSecurity>(stockIndicesRespository.Get(indices).Select(x => new BaseSecurity() { Ticker = x }));
         }
     }
 

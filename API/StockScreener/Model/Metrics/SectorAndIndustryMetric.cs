@@ -1,7 +1,8 @@
 ﻿using StockScreener.Core;
+using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 
-namespace StockScreener.Model
+namespace StockScreener.Model.Metrics
 {
     public class SectorAndIndustryMetric : IMetric
     {
@@ -14,15 +15,20 @@ namespace StockScreener.Model
         private List<string> industries { get; init; }
         private List<string> sectors { get; init; }
 
-        public void Apply(ref SecuritiesList securitiesList)
+        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(s => !industries.Contains(s.Industry) && !sectors.Contains(s.Sector));
         }
 
-        public IEnumerable<Datapoint> GetRelevantDatapoints()
+        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
-            yield return Datapoint.Industry;
-            yield return Datapoint.Sector;
+            yield return BaseDatapoint.Industry;
+            yield return BaseDatapoint.Sector;
+        }
+
+        public IEnumerable<BaseDatapoint> GetDerivedDatapoints()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

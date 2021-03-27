@@ -4,6 +4,7 @@ using NUnit.Framework;
 using StockScreener.Database.Model.CompanyInfo;
 using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
+using StockScreener.SecurityGrabber;
 using System.Linq;
 
 namespace StockScreener.Service.IntegrationTests

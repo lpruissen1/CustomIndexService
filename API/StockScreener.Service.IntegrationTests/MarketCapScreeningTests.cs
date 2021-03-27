@@ -5,6 +5,7 @@ using NUnit.Framework;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
+using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
 using CustomIndexMarketCap = Database.Model.User.CustomIndices.MarketCap;
 using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;

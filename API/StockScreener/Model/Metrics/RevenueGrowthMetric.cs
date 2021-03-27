@@ -1,8 +1,9 @@
 ﻿using StockScreener.Core;
+using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StockScreener.Model
+namespace StockScreener.Model.Metrics
 {
     public class RevenueGrowthMetric : IMetric
     {
@@ -13,14 +14,19 @@ namespace StockScreener.Model
             entries = revenueGrowthTargets;
         }
 
-        public void Apply(ref SecuritiesList securitiesList)
+        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(s => !entries.Any(entry => entry.Valid(s)));
         }
 
-        public IEnumerable<Datapoint> GetRelevantDatapoints()
+        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
-            yield return Datapoint.Revenue;
+            yield return BaseDatapoint.Revenue;
+        }
+
+        public IEnumerable<BaseDatapoint> GetDerivedDatapoints()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

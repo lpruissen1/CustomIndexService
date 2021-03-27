@@ -9,10 +9,10 @@ namespace Database.Repositories
     {
         public StockFinancialsProjectionBuilder() : base()
         {
-            datapointMapper = new Dictionary<Datapoint, Action>()
+            datapointMapper = new Dictionary<BaseDatapoint, Action>()
             {
-                {Datapoint.Revenue, AddRevenue },
-                {Datapoint.MarketCap, AddMarketCap }
+                {BaseDatapoint.Revenue, AddRevenue },
+                {BaseDatapoint.MarketCap, AddMarketCap }
             };
         }
 
