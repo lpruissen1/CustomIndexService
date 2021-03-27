@@ -3,7 +3,7 @@
     public struct RevenueGrowth
     {
         public int TimePeriod;
-        public decimal Upper;
-        public decimal Lower;
+        public double Upper;
+        public double Lower;
     }
 }

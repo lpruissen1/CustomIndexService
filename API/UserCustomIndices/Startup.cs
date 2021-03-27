@@ -1,5 +1,6 @@
 using Database;
 using Database.Config;
+using Database.Core;
 using Database.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,11 +26,11 @@ namespace UserCustomIndices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<UserInfoDatabaseSettings>(Configuration.GetSection(nameof(UserInfoDatabaseSettings)));
-            services.AddSingleton<IUserInfoDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserInfoDatabaseSettings>>().Value);
+            services.Configure<CustomIndexDatabaseSettings>(Configuration.GetSection(nameof(CustomIndexDatabaseSettings)));
+            services.AddSingleton<ICustomIndexDatabaseSettings>(sp => sp.GetRequiredService<IOptions<CustomIndexDatabaseSettings>>().Value);
 
             services.AddControllers();
-            services.AddScoped<IMongoCustomIndexDBContext, MongoDbContext>();
+            services.AddScoped<IMongoDBContext, MongoCustomIndexDbContext>();
             services.AddScoped<IIndicesRepository, IndiciesRepository>();
             services.AddScoped<ICustomIndexService, CustomIndexService>();
             services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();

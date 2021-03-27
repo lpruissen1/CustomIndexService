@@ -1,23 +1,20 @@
-﻿using System;
+﻿using Database.Core;
+using System.Collections.Generic;
 
 namespace Database.Model.User.CustomIndices
 {
     public class CustomIndex : DbEntity
     {
-        public string UserId { get; set; }
-        public ComposedMarkets Markets { get; set; }
-        public DividendYield DividendYield { get; set; }
-        public Volitility Volitility { get; set; }
-        public TrailingPerformance TrailingPerformance { get; set; }
-        public RevenueGrowth RevenueGrowth { get; set; }
-        public EarningsGrowth EarningsGrowth { get; set; }
-        public Sectors SectorAndIndsutry { get; set; }
-        public MarketCaps MarketCaps { get; set; }
-        public string Test { get; set; }
-
-        public override string GetPrimaryKey()
-        {
-            return Id;
-        }
+        public string UserId { get; init; }
+        public ComposedMarkets Markets { get; init; } = new ComposedMarkets();
+        public DividendYield DividendYield { get; init; } 
+        public Volitility Volitility { get; init; }
+        public TrailingPerformance TrailingPerformance { get; init; }
+        public List<RevenueGrowth> RevenueGrowths { get; init; } = new List<RevenueGrowth>();
+        public EarningsGrowth EarningsGrowth { get; init; }
+        public List<PriceToEarningRatioTTM> PriceToEarningRevenue { get; init; } = new List<PriceToEarningRatioTTM>();
+        public Sectors SectorAndIndsutry { get; init; } = new Sectors();
+        public MarketCaps MarketCaps { get; init; } = new MarketCaps();
+        public string Test { get; init; }
     }
 }

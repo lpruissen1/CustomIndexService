@@ -53,6 +53,7 @@ dkms.conf
 
 #Extensions
 *.cache
+*.user
 
 #Directories
 **/bin/**
