@@ -11,13 +11,19 @@ namespace Database.Repositories
         {
             datapointMapper = new Dictionary<Datapoint, Action>()
             {
-                {Datapoint.Revenue, AddRevenue }
+                {Datapoint.Revenue, AddRevenue },
+                {Datapoint.MarketCap, AddMarketCap }
             };
         }
 
         private void AddRevenue()
         {
             projection.Include(x => x.Revenues);
+        }
+
+        private void AddMarketCap()
+        {
+            projection.Include(x => x.MarketCap);
         }
     }
 }

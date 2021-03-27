@@ -13,4 +13,8 @@
 		<ProjectReference Include="..\StockScreener.Core\StockScreener.Core.csproj" />
 		<ProjectReference Include="..\StockScreener.Database\StockScreener.Database.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="MetricDeriver\" />
+	</ItemGroup>
 </Project>

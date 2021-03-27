@@ -19,7 +19,7 @@ namespace StockScreener.Service.IntegrationTests
 		public virtual void OneTimeSetUp()
 		{
 			var config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\Agg\\Agg\\AggregationService.IntegrationTests").AddJsonFile("appsettings.json").Build();
-			var dbSettings = new StockInformationDatabaseSettings() { ConnectionString = config["StockDataDatabaseSettings:ConnectionString"], DatabaseName = config["StockDataDatabaseSettings:DatabaseName"] };
+			var dbSettings = new StockInformationDatabaseSettings() { ConnectionString = config["StockDatabaseSettings:ConnectionString"], DatabaseName = config["StockDatabaseSettings:DatabaseName"] };
 
 			context = new MongoStockInformationDbContext(dbSettings);
 		}

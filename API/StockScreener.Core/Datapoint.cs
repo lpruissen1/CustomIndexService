@@ -9,8 +9,11 @@ namespace StockScreener.Core
         Industry = 2,
         MarketCap = 4,
         Revenue = 8,
+        EarningsPerShare = 16,
+        CurrentPrice = 32,
 
         CompanyInfo  = Sector | Industry,
-        StockFinancials  = MarketCap | Revenue
+        StockFinancials  = MarketCap | Revenue,
+        Price  = CurrentPrice
     }
 }

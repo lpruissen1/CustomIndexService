@@ -13,12 +13,12 @@ namespace Database.Repositories
 
         public async Task<CustomIndex> Get(Guid userId, string id)
         {
-            return await _dbCollection.FindAsync(i => i.Id == id && i.UserId == userId.ToString()).Result.FirstOrDefaultAsync();
+            return await dbCollection.FindAsync(i => i.Id == id && i.UserId == userId.ToString()).Result.FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<CustomIndex>> GetAllForUser(Guid userId)
         {
-            return await _dbCollection.FindAsync(i => i.UserId == userId.ToString()).Result.ToListAsync();
+            return await dbCollection.FindAsync(i => i.UserId == userId.ToString()).Result.ToListAsync();
         }
     }
 }

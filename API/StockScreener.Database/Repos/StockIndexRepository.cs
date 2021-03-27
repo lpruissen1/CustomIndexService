@@ -17,7 +17,7 @@ namespace StockScreener.Database.Repos
 
             List<string> tickers = new List<string>();
             var fuck = Builders<StockIndex>.Filter.In(x => x.Name, indices);
-            foreach ( var entry in _dbCollection.FindSync(fuck).ToEnumerable() )
+            foreach ( var entry in dbCollection.FindSync(fuck).ToEnumerable() )
             {
                 tickers.AddRange(entry.Tickers);
             }

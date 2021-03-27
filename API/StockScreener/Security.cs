@@ -13,6 +13,8 @@ namespace StockScreener
         public Dictionary<TimeSpan, double> EarningsGrowth;
         public double PriceToEarningsRatioTTM;
         public Dictionary<TimeSpan, double>  TrailingPerformance;
+        public double LastClosingPrice;
+        public List<double> EarningsReports;
 
         public void Map(Security security)
         {

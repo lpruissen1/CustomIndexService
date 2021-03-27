@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace StockScreener.Model
 {
-    public class MetricList
+    public class MetricList : IMetric
     {
         public string[] Indices { get; set; }
         private List<IMetric> metrics { get; init; } = new List<IMetric>();

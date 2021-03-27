@@ -24,14 +24,14 @@ namespace Database.Repositories
                 projection.Include(x => x.MarketCap.Last());
             }
 
-            return _dbCollection.Find(x => tickers.Contains(x.Ticker)).Project<StockFinancials>(projection).ToEnumerable();
+            return dbCollection.Find(x => tickers.Contains(x.Ticker)).Project<StockFinancials>(projection).ToEnumerable();
         }
 
         public StockFinancials? Get(string ticker, IEnumerable<Datapoint> datapoints)
         {
             var projection = projectionBuilder.BuildProjection(datapoints);
 
-            return _dbCollection.Find(x => ticker == x.Ticker).Project<StockFinancials>(projection).FirstOrDefault();
+            return dbCollection.Find(x => ticker == x.Ticker).Project<StockFinancials>(projection).FirstOrDefault();
         }
     }
 }

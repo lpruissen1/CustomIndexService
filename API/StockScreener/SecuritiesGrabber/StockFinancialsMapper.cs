@@ -16,7 +16,8 @@ namespace StockScreener
         {
             blah = new Dictionary<Datapoint, Action<StockFinancials>>()
             {
-                {Datapoint.Revenue, AddRevenue }
+                {Datapoint.Revenue, AddRevenue },
+                {Datapoint.MarketCap, AddMarketCap }
             };
         }
 
@@ -30,6 +31,11 @@ namespace StockScreener
                 { TimeSpan.Quarterly, GrowthRateCalculator.CalculateGrowthRate(present.revenues, quarter.revenues)}
                 // Add more timespans
             };
+        }
+
+        public virtual void AddMarketCap(StockFinancials stockFinancials)
+        {
+            security.MarketCap = stockFinancials.MarketCap.Last().marketCap;
         }
     }
 

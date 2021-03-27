@@ -16,13 +16,13 @@ namespace Database.Repositories
         public IEnumerable<CompanyInfo> Get(IEnumerable<string> tickers, IEnumerable<Datapoint> datapoints)
         {
             var projection = Builders<CompanyInfo>.Projection.Include(x => x.Ticker).Include(x => x.Sector).Include(x => x.Industry);
-            return _dbCollection.Find(x => tickers.Contains(x.Ticker)).Project<CompanyInfo>(projection).ToEnumerable();
+            return dbCollection.Find(x => tickers.Contains(x.Ticker)).Project<CompanyInfo>(projection).ToEnumerable();
         }
 
         public CompanyInfo Get(string ticker, IEnumerable<Datapoint> dataPoints)
         {
             var projection = Builders<CompanyInfo>.Projection.Include(x => x.Ticker).Include(x => x.Sector).Include(x => x.Industry);
-            return _dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection).FirstOrDefault();
+            return dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection).FirstOrDefault();
         }
     }
 }
