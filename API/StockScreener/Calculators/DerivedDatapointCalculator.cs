@@ -39,7 +39,7 @@ namespace StockScreener.Calculators
                 var span = revenueGrowthConstructionData.Time;
 
                 var (present, past) = GetGrowthOverTime(security.QuarterlyRevenue, span);
-                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Revenue, past.Revenue));
+                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimeSpan(span)));
             }
 
             return dic;
