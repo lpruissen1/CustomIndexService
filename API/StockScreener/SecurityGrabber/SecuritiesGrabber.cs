@@ -1,4 +1,5 @@
 ﻿using StockScreener.Core;
+using StockScreener.Database.Model.Price;
 using StockScreener.Database.Repos;
 using StockScreener.Model.BaseSecurity;
 using StockScreener.SecurityGrabber.BaseDataMapper;
@@ -30,7 +31,7 @@ namespace StockScreener.SecurityGrabber
 
             AddCompanyInfo(searchParams.Datapoints);
             AddStockFinancials(searchParams.Datapoints);
-
+            AddPrice(searchParams.Datapoints);
             return list;
         }
 
@@ -53,17 +54,16 @@ namespace StockScreener.SecurityGrabber
 
         private void AddPrice(IEnumerable<BaseDatapoint> datapoints)
         {
-            if (!datapoints.Any())
+            if (!datapoints.Any(x => x == BaseDatapoint.Price))
                 return;
 
             foreach (var security in list)
             {
-                var priceInfo = priceDataRepository.Get(security.Ticker);
+                var priceInfo = priceDataRepository.GetPriceData<DayPriceData>(security.Ticker);
                 // create mapper right here for company info
-                if (companyInfo is not null)
+                if (priceInfo is not null)
                 {
-                    security.Industry = companyInfo.Industry;
-                    security.Sector = companyInfo.Sector;
+                    security.DailyPrice = new List<PriceEntry>(priceInfo.Select(x => new PriceEntry { Price = x.closePrice, Timestamp = x.timestamp }));
                 }
             }
         }

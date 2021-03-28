@@ -33,6 +33,7 @@ namespace StockScreener.Model.Metrics
 
         public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
+            // todo: yield return for all time ranges
             throw new System.NotImplementedException();
         }
     }

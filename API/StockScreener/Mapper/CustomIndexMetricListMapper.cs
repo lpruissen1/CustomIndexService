@@ -70,6 +70,8 @@ namespace StockScreener.Mapper
             return new RevenueGrowthMetric(list);
         }
 
+        // Map P/ERatio ratio 
+
         private TimeSpan GetTimeSpan(int timeRange)
         {
             switch (timeRange)

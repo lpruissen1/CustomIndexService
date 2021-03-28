@@ -39,10 +39,5 @@ namespace StockScreener.Database.Repos
 			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(filter).FirstOrDefault();
 			return prices.Candle;
 		}
-
-        List<double> IPriceDataRepository.GetPriceData<TPriceEntry>(string ticker)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

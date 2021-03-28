@@ -18,17 +18,19 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
             };
         }
 
-        public virtual void AddRevenue(StockFinancials stockFinancials)
+        public void AddRevenue(StockFinancials stockFinancials)
         {
             var present = stockFinancials.Revenues.Last();
 
             security.QuarterlyRevenue = stockFinancials.Revenues.Select(stock => new RevenueEntry() { Revenue = stock.revenues, Timestamp = stock.timestamp}).ToList();
         }
 
-        public virtual void AddMarketCap(StockFinancials stockFinancials)
+        public void AddMarketCap(StockFinancials stockFinancials)
         {
             security.MarketCap = stockFinancials.MarketCap.Last().marketCap;
         }
+
+        // Add earnings here
     }
 
 }
