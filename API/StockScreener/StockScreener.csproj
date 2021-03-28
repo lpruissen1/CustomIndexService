@@ -16,7 +16,5 @@
 	
 	<ItemGroup>
 	  <Folder Include="MetricDeriver\" />
-	  <Folder Include="Model\Security\Base\" />
-	  <Folder Include="Model\Security\Derived\" />
 	</ItemGroup>
 </Project>

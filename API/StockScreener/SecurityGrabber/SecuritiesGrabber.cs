@@ -12,14 +12,16 @@ namespace StockScreener.SecurityGrabber
         private readonly ICompanyInfoRepository companyInfoRespository;
         private readonly IStockFinancialsRepository stockFinancialsRespository;
         private readonly IStockIndexRepository stockIndicesRespository;
+        private readonly IPriceDataRepository priceDataRepository;
 
         private SecuritiesList<BaseSecurity> list;
 
-        public SecuritiesGrabber(IStockFinancialsRepository stockFinancialsRespository, ICompanyInfoRepository companyInfoRespository, IStockIndexRepository stockIndicesRespository)
+        public SecuritiesGrabber(IStockFinancialsRepository stockFinancialsRespository, ICompanyInfoRepository companyInfoRespository, IStockIndexRepository stockIndicesRespository, IPriceDataRepository priceDataRepository)
         {
             this.companyInfoRespository = companyInfoRespository;
             this.stockFinancialsRespository = stockFinancialsRespository;
             this.stockIndicesRespository = stockIndicesRespository;
+            this.priceDataRepository = priceDataRepository;
         }
 
         public SecuritiesList<BaseSecurity> GetSecurities(SecuritiesSearchParams searchParams)
@@ -40,6 +42,23 @@ namespace StockScreener.SecurityGrabber
             foreach (var security in list)
             {
                 var companyInfo = companyInfoRespository.Get(security.Ticker, datapoints);
+                // create mapper right here for company info
+                if (companyInfo is not null)
+                {
+                    security.Industry = companyInfo.Industry;
+                    security.Sector = companyInfo.Sector;
+                }
+            }
+        }
+
+        private void AddPrice(IEnumerable<BaseDatapoint> datapoints)
+        {
+            if (!datapoints.Any())
+                return;
+
+            foreach (var security in list)
+            {
+                var priceInfo = priceDataRepository.Get(security.Ticker);
                 // create mapper right here for company info
                 if (companyInfo is not null)
                 {
