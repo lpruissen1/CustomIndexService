@@ -1,4 +1,5 @@
-﻿using StockScreener.Core;
+﻿using StockScreener.Calculators;
+using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +30,9 @@ namespace StockScreener.Model.Metrics
             yield return BaseDatapoint.MarketCap;
         }
 
-        public IEnumerable<BaseDatapoint> GetDerivedDatapoints()
+        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            throw new System.NotImplementedException();
+            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.MarketCap };
         }
     }
 }

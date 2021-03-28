@@ -1,8 +1,7 @@
-﻿using StockScreener.Core;
+﻿using StockScreener.Calculators;
+using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 
@@ -39,9 +38,16 @@ namespace StockScreener.Model.Metrics
             metrics.Add(metric);
         }
 
-        public IEnumerable<BaseDatapoint> GetDerivedDatapoints()
+        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            throw new NotImplementedException();
+            foreach (var metric in metrics)
+            {
+                foreach (var datapoint in metric.GetDerivedDatapoints())
+                {
+                    yield return datapoint;
+                }
+
+            };
         }
     }
 }

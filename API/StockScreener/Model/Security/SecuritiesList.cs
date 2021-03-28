@@ -16,7 +16,6 @@ namespace StockScreener.Model.BaseSecurity
 
         public SecuritiesList()
         {
-            this.securities = securities.ToList();
         }
 
         public void Add(TSecurity security)

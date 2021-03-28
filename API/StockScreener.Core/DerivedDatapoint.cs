@@ -1,6 +1,6 @@
 ﻿namespace StockScreener.Core
 {
-    public enum Derived
+    public enum DerivedDatapoint
     {
         Sector = 1,
         Industry = 2,

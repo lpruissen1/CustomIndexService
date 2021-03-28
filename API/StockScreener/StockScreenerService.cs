@@ -25,7 +25,7 @@ namespace StockScreener
 
             var derivedDatapointCalculator = new DerivedDatapointCalculator();
 
-            var derivedSecurityList = derivedDatapointCalculator.Derive(securities);
+            var derivedSecurityList = derivedDatapointCalculator.Derive(securities, metricList.GetDerivedDatapoints());
 
             metricList.Apply(ref derivedSecurityList);
             

@@ -1,4 +1,5 @@
-﻿using StockScreener.Core;
+﻿using StockScreener.Calculators;
+using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,16 @@ namespace StockScreener.Model.Metrics
 {
     public class RevenueGrowthMetric : IMetric
     {
-        private List<RevenueGrowthMetricEntry> entries;
+        private List<RangedEntry> entries;
 
-        public RevenueGrowthMetric(List<RevenueGrowthMetricEntry> revenueGrowthTargets)
+        public RevenueGrowthMetric(List<RangedEntry> revenueGrowthTargets)
         {
             entries = revenueGrowthTargets;
         }
 
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
-            securitiesList.RemoveAll(s => !entries.Any(entry => entry.Valid(s)));
+            securitiesList.RemoveAll(s => !entries.Any(entry => entry.Valid(s.RevenueGrowth[entry.GetTimeSpan()])));
         }
 
         public IEnumerable<BaseDatapoint> GetBaseDatapoints()
@@ -24,9 +25,12 @@ namespace StockScreener.Model.Metrics
             yield return BaseDatapoint.Revenue;
         }
 
-        public IEnumerable<BaseDatapoint> GetDerivedDatapoints()
+        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            throw new System.NotImplementedException();
+            foreach(var entry in entries.GroupBy(x => x.GetTimeSpan()).Select(x => x.FirstOrDefault()))
+            {
+                yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.RevenueGrowth, Time = entry.GetTimeSpan() };
+            }
         }
     }
 }

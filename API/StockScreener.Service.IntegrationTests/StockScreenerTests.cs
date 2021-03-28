@@ -54,7 +54,7 @@ namespace StockScreener.Service.IntegrationTests
         }
 
         [Test]
-        public void ScreenByStockIndex_MultipleMIndicesTest()
+        public void ScreenByStockIndex_MultipleIndicesTest()
         {
 			var stockIndex1 = "Lee's Index";
 			var stockIndex2 = "Lee's second Index";

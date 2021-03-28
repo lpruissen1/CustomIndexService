@@ -1,4 +1,5 @@
-﻿using StockScreener.Core;
+﻿using StockScreener.Calculators;
+using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 
@@ -26,9 +27,10 @@ namespace StockScreener.Model.Metrics
             yield return BaseDatapoint.Sector;
         }
 
-        public IEnumerable<BaseDatapoint> GetDerivedDatapoints()
+        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            throw new System.NotImplementedException();
+            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.Sector};
+            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.Industry};
         }
     }
 }

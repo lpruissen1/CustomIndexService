@@ -1,6 +1,5 @@
 ﻿using Database.Model.User.CustomIndices;
 using StockScreener.Core;
-using StockScreener.Model;
 using StockScreener.Model.Metrics;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,11 +60,11 @@ namespace StockScreener.Mapper
             if(!revenueGrowth.Any())
                 return null;
 
-            var list = new List<RevenueGrowthMetricEntry>();
+            var list = new List<RangedEntry>();
 
             foreach(var revenueGrowthTarget in revenueGrowth)
             {
-                list.Add(new RevenueGrowthMetricEntry(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
+                list.Add(new RangedEntry(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
             }
 
             return new RevenueGrowthMetric(list);
