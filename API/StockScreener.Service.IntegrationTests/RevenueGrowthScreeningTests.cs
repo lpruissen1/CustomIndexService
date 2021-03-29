@@ -93,7 +93,7 @@ namespace StockScreener.Service.IntegrationTests
 				},
 				RevenueGrowths = new List<RevenueGrowth>()
 				{
-					new RevenueGrowth { Lower = 60, Upper = 100, TimePeriod = 2}
+					new RevenueGrowth { Lower = 299, Upper = 301, TimePeriod = 2}
                 }
 			};
 
@@ -182,7 +182,7 @@ namespace StockScreener.Service.IntegrationTests
 				},
 				RevenueGrowths = new List<RevenueGrowth>()
 				{
-					new RevenueGrowth { Lower = 0, Upper = 100, TimePeriod = 1}
+					new RevenueGrowth { Lower = 404, Upper = 407, TimePeriod = 1}
                 }
 			};
 

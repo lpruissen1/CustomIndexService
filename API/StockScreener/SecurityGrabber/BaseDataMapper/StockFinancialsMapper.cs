@@ -11,7 +11,7 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
     {
         public StockFinancialsMapper()
         {
-            blah = new Dictionary<BaseDatapoint, Action<StockFinancials>>()
+            datapointMapperDictionary = new Dictionary<BaseDatapoint, Action<StockFinancials>>()
             {
                 {BaseDatapoint.Revenue, AddRevenue },
                 {BaseDatapoint.MarketCap, AddMarketCap }

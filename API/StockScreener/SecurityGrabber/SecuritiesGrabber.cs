@@ -40,15 +40,15 @@ namespace StockScreener.SecurityGrabber
             if (!datapoints.Any())
                 return;
 
+            var relevantDatapoints = datapoints.Where(x => BaseDatapoint.CompanyInfo.HasFlag(x));
+            var companyInfoMapper = new CompanyInfoMapper();
+
             foreach (var security in list)
             {
-                var companyInfo = companyInfoRespository.Get(security.Ticker, datapoints);
-                // create mapper right here for company info
+                var companyInfo = companyInfoRespository.Get(security.Ticker, relevantDatapoints);
+
                 if (companyInfo is not null)
-                {
-                    security.Industry = companyInfo.Industry;
-                    security.Sector = companyInfo.Sector;
-                }
+                    security.Map(companyInfoMapper.MapToSecurity(relevantDatapoints, companyInfo));
             }
         }
 
@@ -60,7 +60,7 @@ namespace StockScreener.SecurityGrabber
             foreach (var security in list)
             {
                 var priceInfo = priceDataRepository.GetPriceData<DayPriceData>(security.Ticker);
-                // create mapper right here for company info
+
                 if (priceInfo is not null)
                 {
                     security.DailyPrice = new List<PriceEntry>(priceInfo.Select(x => new PriceEntry { Price = x.closePrice, Timestamp = x.timestamp }));

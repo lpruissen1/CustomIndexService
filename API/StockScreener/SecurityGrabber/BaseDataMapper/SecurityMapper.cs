@@ -8,7 +8,7 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
 {
     public abstract class SecurityMapper<TDbEntity> where TDbEntity : StockDbEntity
     {
-        protected Dictionary<BaseDatapoint, Action<TDbEntity>> blah;
+        protected Dictionary<BaseDatapoint, Action<TDbEntity>> datapointMapperDictionary;
         protected BaseSecurity security;
 
         public SecurityMapper()
@@ -21,11 +21,10 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
 
             foreach (var datapoint in datapoints)
             {
-                blah[datapoint].Invoke(stockFinancials);
+                datapointMapperDictionary[datapoint].Invoke(stockFinancials);
             }
 
             return security;
         }
     }
-
 }
