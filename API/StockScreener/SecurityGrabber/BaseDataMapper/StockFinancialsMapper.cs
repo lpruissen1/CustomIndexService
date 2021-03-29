@@ -14,7 +14,8 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
             datapointMapperDictionary = new Dictionary<BaseDatapoint, Action<StockFinancials>>()
             {
                 {BaseDatapoint.Revenue, AddRevenue },
-                {BaseDatapoint.MarketCap, AddMarketCap }
+                {BaseDatapoint.MarketCap, AddMarketCap },
+                {BaseDatapoint.QuarterlyEarningsPerShare, AddQuarterlyEarningsPerShare }
             };
         }
 
@@ -30,7 +31,10 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
             security.MarketCap = stockFinancials.MarketCap.Last().marketCap;
         }
 
-        // Add earnings here
+        public void AddQuarterlyEarningsPerShare(StockFinancials stockFinancials)
+        {
+            security.QuarterlyEarnings = stockFinancials.EarningsPerShare.Select(stock => new EarningsEntry() { Earnings = stock.earningsPerShare, Timestamp = stock.timestamp }).ToList();
+        }
     }
 
 }

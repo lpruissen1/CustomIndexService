@@ -16,6 +16,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
             metricList.Add(MapMarketCap(index.MarketCaps));
             metricList.Add(MapRevenueGrowth(index.RevenueGrowths));
+            metricList.Add(MapPriceToEarningsTTM(index.PriceToEarningsRatioTTM));
 
             return metricList;
         }
@@ -70,7 +71,20 @@ namespace StockScreener.Mapper
             return new RevenueGrowthMetric(list);
         }
 
-        // Map P/ERatio ratio 
+        private IMetric MapPriceToEarningsTTM(List<PriceToEarningsRatioTTM> priceToEarningsRatioTTM)
+        {
+            if (!priceToEarningsRatioTTM.Any())
+                return null;
+
+            var list = new List<RangedEntry>();
+
+            foreach (var priceToEarningsRatioTTMTarget in priceToEarningsRatioTTM)
+            {
+                list.Add(new RangedEntry(new Range(priceToEarningsRatioTTMTarget.Upper, priceToEarningsRatioTTMTarget.Lower)));
+            }
+
+            return new PriceToEarningsRatioTTMMetric(list);
+        }
 
         private TimeSpan GetTimeSpan(int timeRange)
         {

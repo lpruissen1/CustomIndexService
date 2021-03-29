@@ -12,13 +12,21 @@ namespace StockScreener.Calculators
 
         public SecuritiesList<DerivedSecurity> Derive(SecuritiesList<BaseSecurity> securities, IEnumerable<DerivedDatapointConstructionData> derivedDatapoints)
         {
-            var blah = new SecuritiesList<DerivedSecurity>();
+            var derivedSecurities = new SecuritiesList<DerivedSecurity>();
 
             foreach (var security in securities) {
-                blah.Add(new DerivedSecurity() { Ticker = security.Ticker, RevenueGrowth = DeriveRevenueGrowth(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.RevenueGrowth), security) });
+                derivedSecurities.Add(new DerivedSecurity()
+                {
+                    Ticker = security.Ticker,
+                    Sector = security.Sector,
+                    Industry = security.Industry,
+                    RevenueGrowth = DeriveRevenueGrowth(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.RevenueGrowth), security),
+                    MarketCap = security.MarketCap,
+                    PriceToEarningsRatioTTM = DerivePriceToEarningsTTM(derivedDatapoints, security)
+                });
             }
             
-            return blah;
+            return derivedSecurities;
         }
 
         private void SectorAndIndustry()
@@ -30,28 +38,48 @@ namespace StockScreener.Calculators
         {
             if (!constructionData.Any())
                 return null;
-            // TODO:
-            // use generic annualizer to annualize
+
             var dic = new Dictionary<TimeSpan, double>();
 
             foreach(var revenueGrowthConstructionData in constructionData)
             {
                 var span = revenueGrowthConstructionData.Time;
 
-                var (present, past) = GetGrowthOverTime(security.QuarterlyRevenue, span);
+                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyRevenue, span);
                 dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimeSpan(span)));
             }
 
             return dic;
         }
 
-        private (TEntry present, TEntry past) GetGrowthOverTime<TEntry>(List<TEntry> timeEntries, TimeSpan range) where TEntry : TimeEntry
+        private double DerivePriceToEarningsTTM(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.PriceToEarningsRatioTTM))
+                return 0;
+
+            var earningsEntries = GetAllEntriesForTimeSpan(security.QuarterlyEarnings, TimeSpan.OneYear);
+
+            var yearlyEarnings = earningsEntries.Sum(x => x.Earnings);
+
+            return security.DailyPrice.Last().Price / yearlyEarnings;
+
+        }
+
+        private (TEntry present, TEntry past) GetEndpointDataForTimeRange<TEntry>(List<TEntry> timeEntries, TimeSpan range) where TEntry : TimeEntry
         {
             var present = timeEntries.Last();
             var timeRangeInUnix = GetUnixFromTimeSpan(range);
             var past = timeEntries.First(x => x.Timestamp > (present.Timestamp - timeRangeInUnix - errorFactor) && x.Timestamp < (present.Timestamp - timeRangeInUnix + errorFactor));
 
             return (present, past);
+        }
+
+        private IEnumerable<TEntry> GetAllEntriesForTimeSpan<TEntry>(List<TEntry> timeEntries, TimeSpan range) where TEntry : TimeEntry
+        {
+            var present = timeEntries.Last().Timestamp;
+            var timeRangeInUnix = GetUnixFromTimeSpan(range);
+
+            return timeEntries.Where(x => x.Timestamp > (present - yearUnixTime - errorFactor));
         }
 
         private double GetUnixFromTimeSpan(TimeSpan timespan)

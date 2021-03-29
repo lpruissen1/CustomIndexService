@@ -7,7 +7,7 @@ namespace StockScreener.Model.BaseSecurity
     {
         public Dictionary<TimeSpan, double> RevenueGrowth;
         public Dictionary<TimeSpan, double> EarningsGrowth;
-        public Dictionary<TimeSpan, double> PriceToEarningsRatio;
+        public double PriceToEarningsRatioTTM;
         public Dictionary<TimeSpan, double> TrailingPerformance;
     }
 

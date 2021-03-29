@@ -12,7 +12,8 @@ namespace Database.Repositories
             datapointMapper = new Dictionary<BaseDatapoint, Action>()
             {
                 {BaseDatapoint.Revenue, AddRevenue },
-                {BaseDatapoint.MarketCap, AddMarketCap }
+                {BaseDatapoint.MarketCap, AddMarketCap },
+                {BaseDatapoint.QuarterlyEarningsPerShare, AddQuarterlyEarningsPerShare }
             };
         }
 
@@ -24,6 +25,11 @@ namespace Database.Repositories
         private void AddMarketCap()
         {
             projection.Include(x => x.MarketCap);
+        }
+
+        private void AddQuarterlyEarningsPerShare()
+        {
+            projection.Include(x => x.EarningsPerShare);
         }
     }
 }

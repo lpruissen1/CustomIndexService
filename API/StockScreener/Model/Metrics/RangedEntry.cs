@@ -13,6 +13,11 @@ namespace StockScreener.Model.Metrics
             this.span = span;
         }
 
+        public RangedEntry(Range range)
+        {
+            this.range = range;
+        }
+
         public bool Valid(double value)
         {
             return range.WithinRange(value);

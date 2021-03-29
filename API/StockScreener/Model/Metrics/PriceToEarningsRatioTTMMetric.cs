@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class PriceToEarningRatio : IMetric
+    public class PriceToEarningsRatioTTMMetric : IMetric
     {
         private List<RangedEntry> entries;
 
-        public PriceToEarningRatio(List<RangedEntry> ranges)
+        public PriceToEarningsRatioTTMMetric(List<RangedEntry> ranges)
         {
             entries = ranges;
         }
@@ -22,19 +22,18 @@ namespace StockScreener.Model.Metrics
 
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
-            securitiesList.RemoveAll(security => !entries.Any(range => range.Valid(security.PriceToEarningsRatio[range.GetTimeSpan()])));
+            securitiesList.RemoveAll(security => !entries.Any(range => range.Valid(security.PriceToEarningsRatioTTM)));
         }
 
         public IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
             yield return BaseDatapoint.Price;
-            yield return BaseDatapoint.Earnings;
+            yield return BaseDatapoint.QuarterlyEarningsPerShare;
         }
 
         public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            // todo: yield return for all time ranges
-            throw new System.NotImplementedException();
+            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.PriceToEarningsRatioTTM };
         }
     }
 }
