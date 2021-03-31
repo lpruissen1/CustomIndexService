@@ -18,6 +18,7 @@ namespace Database.Model.User.CustomIndices
         public List<PayoutRatios> PayoutRatio { get; init; } = new List<PayoutRatios>();
         public List<ProfitMargins> ProfitMargin { get; init; } = new List<ProfitMargins>();
         public List<GrossMargins> GrossMargin { get; set; } = new List<GrossMargins>();
+        public List<WorkingCapitals> WorkingCapital { get; set; } = new List<WorkingCapitals>();
         public string Test { get; init; }
     }
 }

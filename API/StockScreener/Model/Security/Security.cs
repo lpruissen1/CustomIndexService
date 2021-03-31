@@ -9,5 +9,6 @@
         public double PayoutRatio;
         public double ProfitMargin;
         public double GrossMargin;
+        public double WorkingCapital;
     }
 }

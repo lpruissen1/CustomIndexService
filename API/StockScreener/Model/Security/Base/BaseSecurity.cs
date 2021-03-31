@@ -19,6 +19,7 @@ namespace StockScreener.Model.BaseSecurity
             PayoutRatio = security.PayoutRatio != 0 ? security.PayoutRatio : PayoutRatio;
             ProfitMargin = security.ProfitMargin != 0 ? security.ProfitMargin : ProfitMargin;
             GrossMargin = security.GrossMargin != 0 ? security.GrossMargin : GrossMargin;
+            WorkingCapital = security.WorkingCapital != 0 ? security.WorkingCapital : WorkingCapital;
         }
     }
 

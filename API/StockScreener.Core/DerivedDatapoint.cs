@@ -11,5 +11,6 @@
         PayoutRatio = 7,
         ProfitMargin = 8,
         GrossMargin = 9,
+        WorkingCapital = 10,
     }
 }

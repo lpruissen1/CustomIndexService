@@ -18,7 +18,8 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
                 {BaseDatapoint.QuarterlyEarningsPerShare, AddQuarterlyEarningsPerShare },
                 {BaseDatapoint.PayoutRatio, AddPayoutRatio },
                 {BaseDatapoint.ProfitMargin, AddProfitMargin },
-                {BaseDatapoint.GrossMargin, AddGrossMargin }
+                {BaseDatapoint.GrossMargin, AddGrossMargin },
+                {BaseDatapoint.WorkingCapital, AddWorkingCapital }
             };
         }
 
@@ -37,6 +38,11 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
         public void AddGrossMargin(StockFinancials stockFinancials)
         {
             security.GrossMargin = stockFinancials.GrossMargin.Last().grossMargin;
+        }
+
+        public void AddWorkingCapital(StockFinancials stockFinancials)
+        {
+            security.WorkingCapital = stockFinancials.WorkingCapital.Last().workingCapital;
         }
 
         public void AddProfitMargin(StockFinancials stockFinancials)

@@ -20,6 +20,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapPayoutRatio(index.PayoutRatio));
             metricList.Add(MapProfitMargin(index.ProfitMargin));
             metricList.Add(MapGrossMargin(index.GrossMargin));
+            metricList.Add(MapWorkingCapital(index.WorkingCapital));
 
 
             return metricList;
@@ -58,6 +59,21 @@ namespace StockScreener.Mapper
             }
 
             return new MarketCapMetric(list);
+        }
+
+        private IMetric MapWorkingCapital(List<WorkingCapitals> workingCapitals)
+        {
+            if (!workingCapitals.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var workingCapitalRange in workingCapitals)
+            {
+                list.Add(new Range(workingCapitalRange.Upper, workingCapitalRange.Lower));
+            }
+
+            return new WorkingCapitalMetric(list);
         }
 
         private IMetric MapPayoutRatio(List<PayoutRatios> payoutRatio)
