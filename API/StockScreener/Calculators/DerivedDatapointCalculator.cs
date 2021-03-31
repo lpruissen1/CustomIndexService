@@ -23,7 +23,8 @@ namespace StockScreener.Calculators
                     RevenueGrowth = DeriveRevenueGrowth(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.RevenueGrowth), security),
                     MarketCap = security.MarketCap,
                     PriceToEarningsRatioTTM = DerivePriceToEarningsTTM(derivedDatapoints, security),
-                    PayoutRatio = security.PayoutRatio
+                    PayoutRatio = security.PayoutRatio,
+                    ProfitMargin = security.ProfitMargin
                 });
             }
             

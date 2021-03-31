@@ -12,9 +12,10 @@ namespace StockScreener.Core
         QuarterlyEarningsPerShare = 16,
         Price = 32,
         PayoutRatio = 64, 
+        ProfitMargin = 128,
 
 
         CompanyInfo  = Sector | Industry,
-        StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio
+        StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio | ProfitMargin
     }
 }

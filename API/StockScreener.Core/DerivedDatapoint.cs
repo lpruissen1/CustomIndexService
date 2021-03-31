@@ -9,5 +9,6 @@
         TrailingPrice = 5,
         PriceToEarningsRatioTTM = 6,
         PayoutRatio = 7,
+        ProfitMargin = 8,
     }
 }

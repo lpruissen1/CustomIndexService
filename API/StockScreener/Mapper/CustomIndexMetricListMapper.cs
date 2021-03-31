@@ -18,6 +18,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapRevenueGrowth(index.RevenueGrowths));
             metricList.Add(MapPriceToEarningsTTM(index.PriceToEarningsRatioTTM));
             metricList.Add(MapPayoutRatio(index.PayoutRatio));
+            metricList.Add(MapProfitMargin(index.ProfitMargin));
 
 
             return metricList;
@@ -71,6 +72,21 @@ namespace StockScreener.Mapper
             }
 
             return new PayoutRatioMetric(list);
+        }
+
+        private IMetric MapProfitMargin(List<ProfitMargins> profitMargins)
+        {
+            if (!profitMargins.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var profitMarginRange in profitMargins)
+            {
+                list.Add(new Range(profitMarginRange.Upper, profitMarginRange.Lower));
+            }
+
+            return new ProfitMarginMetric(list);
         }
 
         private IMetric MapRevenueGrowth(List<RevenueGrowth> revenueGrowth)

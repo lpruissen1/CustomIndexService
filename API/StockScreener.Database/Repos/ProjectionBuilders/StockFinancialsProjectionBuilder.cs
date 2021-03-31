@@ -14,13 +14,19 @@ namespace Database.Repositories
                 {BaseDatapoint.Revenue, AddRevenue },
                 {BaseDatapoint.MarketCap, AddMarketCap },
                 {BaseDatapoint.QuarterlyEarningsPerShare, AddQuarterlyEarningsPerShare },
-                {BaseDatapoint.PayoutRatio, AddPayoutRatio }
+                {BaseDatapoint.PayoutRatio, AddPayoutRatio },
+                {BaseDatapoint.ProfitMargin, AddProfitMargin }
             };
         }
 
         private void AddRevenue()
         {
             projection.Include(x => x.Revenues);
+        }
+
+        private void AddProfitMargin()
+        {
+            projection.Include(x => x.ProfitMargin);
         }
 
         private void AddPayoutRatio()

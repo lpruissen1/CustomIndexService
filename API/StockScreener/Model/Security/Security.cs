@@ -7,5 +7,6 @@
         public string Industry;
         public double MarketCap;
         public double PayoutRatio;
+        public double ProfitMargin;
     }
 }

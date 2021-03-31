@@ -16,6 +16,7 @@ namespace Database.Model.User.CustomIndices
         public Sectors SectorAndIndsutry { get; init; } = new Sectors();
         public MarketCaps MarketCaps { get; init; } = new MarketCaps();
         public List<PayoutRatios> PayoutRatio { get; init; } = new List<PayoutRatios>();
+        public List<ProfitMargins> ProfitMargin { get; init; } = new List<ProfitMargins>();
         public string Test { get; init; }
     }
 }
