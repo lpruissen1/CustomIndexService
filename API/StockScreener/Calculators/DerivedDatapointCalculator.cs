@@ -24,7 +24,8 @@ namespace StockScreener.Calculators
                     MarketCap = security.MarketCap,
                     PriceToEarningsRatioTTM = DerivePriceToEarningsTTM(derivedDatapoints, security),
                     PayoutRatio = security.PayoutRatio,
-                    ProfitMargin = security.ProfitMargin
+                    ProfitMargin = security.ProfitMargin,
+                    GrossMargin = security.GrossMargin
                 });
             }
             

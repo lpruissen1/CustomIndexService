@@ -8,5 +8,6 @@
         public double MarketCap;
         public double PayoutRatio;
         public double ProfitMargin;
+        public double GrossMargin;
     }
 }

@@ -18,6 +18,7 @@ namespace StockScreener.Model.BaseSecurity
             MarketCap = security.MarketCap != 0 ? security.MarketCap : MarketCap;
             PayoutRatio = security.PayoutRatio != 0 ? security.PayoutRatio : PayoutRatio;
             ProfitMargin = security.ProfitMargin != 0 ? security.ProfitMargin : ProfitMargin;
+            GrossMargin = security.GrossMargin != 0 ? security.GrossMargin : GrossMargin;
         }
     }
 

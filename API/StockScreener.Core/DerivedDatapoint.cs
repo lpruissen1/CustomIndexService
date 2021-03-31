@@ -10,5 +10,6 @@
         PriceToEarningsRatioTTM = 6,
         PayoutRatio = 7,
         ProfitMargin = 8,
+        GrossMargin = 9,
     }
 }

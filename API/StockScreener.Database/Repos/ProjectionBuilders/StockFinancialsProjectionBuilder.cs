@@ -15,7 +15,8 @@ namespace Database.Repositories
                 {BaseDatapoint.MarketCap, AddMarketCap },
                 {BaseDatapoint.QuarterlyEarningsPerShare, AddQuarterlyEarningsPerShare },
                 {BaseDatapoint.PayoutRatio, AddPayoutRatio },
-                {BaseDatapoint.ProfitMargin, AddProfitMargin }
+                {BaseDatapoint.ProfitMargin, AddProfitMargin },
+                {BaseDatapoint.GrossMargin, AddGrossMargin }
             };
         }
 
@@ -27,6 +28,11 @@ namespace Database.Repositories
         private void AddProfitMargin()
         {
             projection.Include(x => x.ProfitMargin);
+        }
+
+        private void AddGrossMargin()
+        {
+            projection.Include(x => x.GrossMargin);
         }
 
         private void AddPayoutRatio()
