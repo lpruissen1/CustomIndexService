@@ -4,6 +4,7 @@ using NUnit.Framework;
 using StockScreener.Database.Model.CompanyInfo;
 using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
+using StockScreener.SecurityGrabber;
 using System.Linq;
 
 namespace StockScreener.Service.IntegrationTests
@@ -42,7 +43,7 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			};
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 
@@ -53,7 +54,7 @@ namespace StockScreener.Service.IntegrationTests
         }
 
         [Test]
-        public void ScreenByStockIndex_MultipleMIndicesTest()
+        public void ScreenByStockIndex_MultipleIndicesTest()
         {
 			var stockIndex1 = "Lee's Index";
 			var stockIndex2 = "Lee's second Index";
@@ -82,7 +83,7 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			};
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 
@@ -125,7 +126,7 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			};
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 
@@ -173,7 +174,7 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			};
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 
@@ -225,7 +226,7 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			};
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context)));
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 

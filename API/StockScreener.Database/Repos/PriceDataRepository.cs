@@ -3,6 +3,7 @@ using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Database.Model.Price;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StockScreener.Database.Repos
@@ -31,5 +32,12 @@ namespace StockScreener.Database.Repos
         {
             throw new NotImplementedException();
         }
+
+        public List<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData
+		{
+			var filter = Builders<TPriceEntry>.Filter.Eq(e => e.Ticker, ticker);
+			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(filter).FirstOrDefault();
+			return prices.Candle;
+		}
     }
 }

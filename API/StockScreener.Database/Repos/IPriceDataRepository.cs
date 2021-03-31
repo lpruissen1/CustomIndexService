@@ -1,5 +1,6 @@
 ﻿using StockScreener.Database.Model.Price;
 using System;
+using System.Collections.Generic;
 
 namespace StockScreener.Database.Repos
 {
@@ -7,5 +8,6 @@ namespace StockScreener.Database.Repos
     {
         double GetMostRecentPriceEntry<TPriceEntry>(string ticker) where TPriceEntry : PriceData;
         double GetPriceData<TPriceEntry>(string ticker, TimeSpan timeSpan) where TPriceEntry : PriceData;
+        List<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData;
     }
 }

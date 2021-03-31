@@ -1,5 +1,4 @@
-﻿//using Database.Model.User.CustomIndices;
-using Database.Model.User.CustomIndices;
+﻿using Database.Model.User.CustomIndices;
 using Database.Repositories;
 using NUnit.Framework;
 using StockScreener.Database.Model.StockFinancials;
@@ -7,12 +6,10 @@ using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
 using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
-using CustomIndexMarketCap = Database.Model.User.CustomIndices.MarketCap;
-using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class MarketCapScreeningTests : StockScreenerServiceTestBase
+    public class ProfitMarginScreeningTests : StockScreenerServiceTestBase
 	{
 		[SetUp]
 		public void Setup()
@@ -21,7 +18,7 @@ namespace StockScreener.Service.IntegrationTests
 		}
 
 		[Test]
-		public void ScreenByStockIndex_MarketCap()
+		public void ScreenByStockIndex_ProfitMargin()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -32,11 +29,11 @@ namespace StockScreener.Service.IntegrationTests
 			AddStockFinancials(new StockFinancials 
 			{ 
 				Ticker = ticker1,
-				MarketCap = new List<MarketCap> 
+				ProfitMargin = new List<ProfitMargin> 
 				{ 
-					new MarketCap 
+					new ProfitMargin 
 					{ 
-						marketCap = 1_000_000d 
+						profitMargin = 0.4d
 					} 
 				} 
 			});
@@ -44,14 +41,14 @@ namespace StockScreener.Service.IntegrationTests
 			AddStockFinancials(new StockFinancials
 			{
 				Ticker = ticker2,
-				MarketCap = new List<MarketCap>
+				ProfitMargin = new List<ProfitMargin>
 				{
-					new MarketCap
+					new ProfitMargin
 					{
-						marketCap = 10_000d
+						profitMargin = 0.05d
 					}
 				}
-			});
+			}) ;
 
 			var customIndex = new CustomIndex()
 			{
@@ -62,10 +59,10 @@ namespace StockScreener.Service.IntegrationTests
 						stockIndex1
 					}
 				},
-				MarketCaps = new MarketCaps()
-                {
-				   MarketCapGroups = new[] { new CustomIndexMarketCap { Lower = 200_000d, Upper = 2_000_000d } }
-                }
+				ProfitMargin = new List<ProfitMargins>()
+				{
+					new ProfitMargins {Lower = 0.1, Upper = 0.5}
+				}
 			};
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));

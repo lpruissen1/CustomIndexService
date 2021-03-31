@@ -12,9 +12,13 @@ namespace Database.Model.User.CustomIndices
         public TrailingPerformance TrailingPerformance { get; init; }
         public List<RevenueGrowth> RevenueGrowths { get; init; } = new List<RevenueGrowth>();
         public EarningsGrowth EarningsGrowth { get; init; }
-        public List<PriceToEarningRatioTTM> PriceToEarningRevenue { get; init; } = new List<PriceToEarningRatioTTM>();
+        public List<PriceToEarningsRatioTTM> PriceToEarningsRatioTTM { get; init; } = new List<PriceToEarningsRatioTTM>();
         public Sectors SectorAndIndsutry { get; init; } = new Sectors();
         public MarketCaps MarketCaps { get; init; } = new MarketCaps();
+        public List<PayoutRatios> PayoutRatio { get; init; } = new List<PayoutRatios>();
+        public List<ProfitMargins> ProfitMargin { get; init; } = new List<ProfitMargins>();
+        public List<GrossMargins> GrossMargin { get; set; } = new List<GrossMargins>();
+        public List<WorkingCapitals> WorkingCapital { get; set; } = new List<WorkingCapitals>();
         public string Test { get; init; }
     }
 }

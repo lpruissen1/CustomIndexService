@@ -1,4 +1,4 @@
-﻿namespace StockScreener.Model
+﻿namespace StockScreener.Core
 {
     public class Range
     {

@@ -9,7 +9,7 @@ namespace Database.Repositories
     public abstract class ProjectionBuilder<TDataType> where TDataType : StockDbEntity 
     {
         protected ProjectionDefinitionBuilder<TDataType> projection;
-        protected Dictionary<Datapoint, Action> datapointMapper;
+        protected Dictionary<BaseDatapoint, Action> datapointMapper;
 
         public ProjectionBuilder()
         {
@@ -17,7 +17,7 @@ namespace Database.Repositories
             projection.Include(x => x.Ticker);
         }
 
-        public virtual ProjectionDefinition<TDataType> BuildProjection(IEnumerable<Datapoint> datapoints) 
+        public virtual ProjectionDefinition<TDataType> BuildProjection(IEnumerable<BaseDatapoint> datapoints) 
         {
             foreach(var datapoint in datapoints )
             {

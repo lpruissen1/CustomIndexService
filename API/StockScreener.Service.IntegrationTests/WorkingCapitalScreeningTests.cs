@@ -1,5 +1,4 @@
-﻿//using Database.Model.User.CustomIndices;
-using Database.Model.User.CustomIndices;
+﻿using Database.Model.User.CustomIndices;
 using Database.Repositories;
 using NUnit.Framework;
 using StockScreener.Database.Model.StockFinancials;
@@ -7,12 +6,10 @@ using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
 using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
-using CustomIndexMarketCap = Database.Model.User.CustomIndices.MarketCap;
-using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class MarketCapScreeningTests : StockScreenerServiceTestBase
+    public class WorkingCapitalScreeningTests : StockScreenerServiceTestBase
 	{
 		[SetUp]
 		public void Setup()
@@ -21,7 +18,7 @@ namespace StockScreener.Service.IntegrationTests
 		}
 
 		[Test]
-		public void ScreenByStockIndex_MarketCap()
+		public void ScreenByStockIndex_WorkingCapital()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -32,11 +29,11 @@ namespace StockScreener.Service.IntegrationTests
 			AddStockFinancials(new StockFinancials 
 			{ 
 				Ticker = ticker1,
-				MarketCap = new List<MarketCap> 
+				WorkingCapital = new List<WorkingCapital> 
 				{ 
-					new MarketCap 
+					new WorkingCapital 
 					{ 
-						marketCap = 1_000_000d 
+						workingCapital = 10_000_000d
 					} 
 				} 
 			});
@@ -44,14 +41,14 @@ namespace StockScreener.Service.IntegrationTests
 			AddStockFinancials(new StockFinancials
 			{
 				Ticker = ticker2,
-				MarketCap = new List<MarketCap>
+				WorkingCapital = new List<WorkingCapital>
 				{
-					new MarketCap
+					new WorkingCapital
 					{
-						marketCap = 10_000d
+						workingCapital = 1_000_000d
 					}
 				}
-			});
+			}) ;
 
 			var customIndex = new CustomIndex()
 			{
@@ -62,10 +59,10 @@ namespace StockScreener.Service.IntegrationTests
 						stockIndex1
 					}
 				},
-				MarketCaps = new MarketCaps()
-                {
-				   MarketCapGroups = new[] { new CustomIndexMarketCap { Lower = 200_000d, Upper = 2_000_000d } }
-                }
+				WorkingCapital = new List<WorkingCapitals>()
+				{
+					new WorkingCapitals {Lower = 5_000_000, Upper = 15_000_000}
+				}
 			};
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));

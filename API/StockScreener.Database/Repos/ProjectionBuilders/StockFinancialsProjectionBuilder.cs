@@ -9,10 +9,15 @@ namespace Database.Repositories
     {
         public StockFinancialsProjectionBuilder() : base()
         {
-            datapointMapper = new Dictionary<Datapoint, Action>()
+            datapointMapper = new Dictionary<BaseDatapoint, Action>()
             {
-                {Datapoint.Revenue, AddRevenue },
-                {Datapoint.MarketCap, AddMarketCap }
+                {BaseDatapoint.Revenue, AddRevenue },
+                {BaseDatapoint.MarketCap, AddMarketCap },
+                {BaseDatapoint.QuarterlyEarningsPerShare, AddQuarterlyEarningsPerShare },
+                {BaseDatapoint.PayoutRatio, AddPayoutRatio },
+                {BaseDatapoint.ProfitMargin, AddProfitMargin },
+                {BaseDatapoint.GrossMargin, AddGrossMargin },
+                {BaseDatapoint.WorkingCapital, AddWorkingCapital }
             };
         }
 
@@ -21,9 +26,34 @@ namespace Database.Repositories
             projection.Include(x => x.Revenues);
         }
 
+        private void AddProfitMargin()
+        {
+            projection.Include(x => x.ProfitMargin);
+        }
+
+        private void AddWorkingCapital()
+        {
+            projection.Include(x => x.WorkingCapital);
+        }
+
+        private void AddGrossMargin()
+        {
+            projection.Include(x => x.GrossMargin);
+        }
+
+        private void AddPayoutRatio()
+        {
+            projection.Include(x => x.PayoutRatio);
+        }
+
         private void AddMarketCap()
         {
             projection.Include(x => x.MarketCap);
+        }
+
+        private void AddQuarterlyEarningsPerShare()
+        {
+            projection.Include(x => x.EarningsPerShare);
         }
     }
 }

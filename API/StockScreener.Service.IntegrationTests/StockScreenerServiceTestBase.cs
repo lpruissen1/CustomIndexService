@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using StockScreener.Database.Config;
 using StockScreener.Database.Model.CompanyInfo;
+using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
 
@@ -50,5 +51,10 @@ namespace StockScreener.Service.IntegrationTests
         {
 			context.GetCollection<StockFinancials>("StockFinancials").InsertOne(stockFinancials);
         }
+
+		public void AddDailyPriceData(DayPriceData dayPriceData)
+		{
+			context.GetCollection<DayPriceData>("DayPriceData").InsertOne(dayPriceData);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using Database.Model.User.CustomIndices;
 using StockScreener.Core;
-using StockScreener.Model;
+using StockScreener.Model.Metrics;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,6 +16,12 @@ namespace StockScreener.Mapper
             metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
             metricList.Add(MapMarketCap(index.MarketCaps));
             metricList.Add(MapRevenueGrowth(index.RevenueGrowths));
+            metricList.Add(MapPriceToEarningsTTM(index.PriceToEarningsRatioTTM));
+            metricList.Add(MapPayoutRatio(index.PayoutRatio));
+            metricList.Add(MapProfitMargin(index.ProfitMargin));
+            metricList.Add(MapGrossMargin(index.GrossMargin));
+            metricList.Add(MapWorkingCapital(index.WorkingCapital));
+
 
             return metricList;
         }
@@ -55,19 +61,94 @@ namespace StockScreener.Mapper
             return new MarketCapMetric(list);
         }
 
+        private IMetric MapWorkingCapital(List<WorkingCapitals> workingCapitals)
+        {
+            if (!workingCapitals.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var workingCapitalRange in workingCapitals)
+            {
+                list.Add(new Range(workingCapitalRange.Upper, workingCapitalRange.Lower));
+            }
+
+            return new WorkingCapitalMetric(list);
+        }
+
+        private IMetric MapPayoutRatio(List<PayoutRatios> payoutRatio)
+        {
+            if (!payoutRatio.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var payoutRatioRange in payoutRatio)
+            {
+                list.Add(new Range(payoutRatioRange.Upper, payoutRatioRange.Lower));
+            }
+
+            return new PayoutRatioMetric(list);
+        }
+
+        private IMetric MapProfitMargin(List<ProfitMargins> profitMargins)
+        {
+            if (!profitMargins.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var profitMarginRange in profitMargins)
+            {
+                list.Add(new Range(profitMarginRange.Upper, profitMarginRange.Lower));
+            }
+
+            return new ProfitMarginMetric(list);
+        }
+
+        private IMetric MapGrossMargin(List<GrossMargins> grossMargins)
+        {
+            if (!grossMargins.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var grossMarginRange in grossMargins)
+            {
+                list.Add(new Range(grossMarginRange.Upper, grossMarginRange.Lower));
+            }
+
+            return new GrossMarginMetric(list);
+        }
+
         private IMetric MapRevenueGrowth(List<RevenueGrowth> revenueGrowth)
         {
             if(!revenueGrowth.Any())
                 return null;
 
-            var list = new List<RevenueGrowthMetricEntry>();
+            var list = new List<RangedEntry>();
 
             foreach(var revenueGrowthTarget in revenueGrowth)
             {
-                list.Add(new RevenueGrowthMetricEntry(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
+                list.Add(new RangedEntry(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
             }
 
             return new RevenueGrowthMetric(list);
+        }
+
+        private IMetric MapPriceToEarningsTTM(List<PriceToEarningsRatioTTM> priceToEarningsRatioTTM)
+        {
+            if (!priceToEarningsRatioTTM.Any())
+                return null;
+
+            var list = new List<RangedEntry>();
+
+            foreach (var priceToEarningsRatioTTMTarget in priceToEarningsRatioTTM)
+            {
+                list.Add(new RangedEntry(new Range(priceToEarningsRatioTTMTarget.Upper, priceToEarningsRatioTTMTarget.Lower)));
+            }
+
+            return new PriceToEarningsRatioTTMMetric(list);
         }
 
         private TimeSpan GetTimeSpan(int timeRange)
