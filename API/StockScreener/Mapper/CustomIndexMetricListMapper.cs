@@ -17,6 +17,8 @@ namespace StockScreener.Mapper
             metricList.Add(MapMarketCap(index.MarketCaps));
             metricList.Add(MapRevenueGrowth(index.RevenueGrowths));
             metricList.Add(MapPriceToEarningsTTM(index.PriceToEarningsRatioTTM));
+            metricList.Add(MapPayoutRatio(index.PayoutRatio));
+
 
             return metricList;
         }
@@ -54,6 +56,21 @@ namespace StockScreener.Mapper
             }
 
             return new MarketCapMetric(list);
+        }
+
+        private IMetric MapPayoutRatio(List<PayoutRatios> payoutRatio)
+        {
+            if (!payoutRatio.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var payoutRatioRange in payoutRatio)
+            {
+                list.Add(new Range(payoutRatioRange.Upper, payoutRatioRange.Lower));
+            }
+
+            return new PayoutRatioMetric(list);
         }
 
         private IMetric MapRevenueGrowth(List<RevenueGrowth> revenueGrowth)

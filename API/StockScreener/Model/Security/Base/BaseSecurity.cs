@@ -16,6 +16,7 @@ namespace StockScreener.Model.BaseSecurity
             QuarterlyEarnings = security.QuarterlyEarnings != null ? security.QuarterlyEarnings : QuarterlyEarnings;
             QuarterlyRevenue = security.QuarterlyRevenue != null ? security.QuarterlyRevenue : QuarterlyRevenue;
             MarketCap = security.MarketCap != 0 ? security.MarketCap : MarketCap;
+            PayoutRatio = security.PayoutRatio != 0 ? security.PayoutRatio : PayoutRatio;
         }
     }
 

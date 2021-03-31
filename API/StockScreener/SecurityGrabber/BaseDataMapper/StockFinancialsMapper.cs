@@ -15,7 +15,8 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
             {
                 {BaseDatapoint.Revenue, AddRevenue },
                 {BaseDatapoint.MarketCap, AddMarketCap },
-                {BaseDatapoint.QuarterlyEarningsPerShare, AddQuarterlyEarningsPerShare }
+                {BaseDatapoint.QuarterlyEarningsPerShare, AddQuarterlyEarningsPerShare },
+                {BaseDatapoint.PayoutRatio, AddPayoutRatio }
             };
         }
 
@@ -29,6 +30,11 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
         public void AddMarketCap(StockFinancials stockFinancials)
         {
             security.MarketCap = stockFinancials.MarketCap.Last().marketCap;
+        }
+
+        public void AddPayoutRatio(StockFinancials stockFinancials)
+        {
+            security.PayoutRatio = stockFinancials.PayoutRatio.Last().payoutRatio;
         }
 
         public void AddQuarterlyEarningsPerShare(StockFinancials stockFinancials)

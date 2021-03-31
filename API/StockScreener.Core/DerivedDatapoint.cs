@@ -7,6 +7,7 @@
         MarketCap = 3,
         RevenueGrowth = 4,
         TrailingPrice = 5,
-        PriceToEarningsRatioTTM = 6
+        PriceToEarningsRatioTTM = 6,
+        PayoutRatio = 7,
     }
 }

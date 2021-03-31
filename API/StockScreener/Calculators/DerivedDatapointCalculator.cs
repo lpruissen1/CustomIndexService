@@ -22,16 +22,12 @@ namespace StockScreener.Calculators
                     Industry = security.Industry,
                     RevenueGrowth = DeriveRevenueGrowth(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.RevenueGrowth), security),
                     MarketCap = security.MarketCap,
-                    PriceToEarningsRatioTTM = DerivePriceToEarningsTTM(derivedDatapoints, security)
+                    PriceToEarningsRatioTTM = DerivePriceToEarningsTTM(derivedDatapoints, security),
+                    PayoutRatio = security.PayoutRatio
                 });
             }
             
             return derivedSecurities;
-        }
-
-        private void SectorAndIndustry()
-        {
-
         }
 
         private Dictionary<TimeSpan, double> DeriveRevenueGrowth(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)

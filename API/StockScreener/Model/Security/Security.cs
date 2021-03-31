@@ -6,5 +6,6 @@
         public string Sector;
         public string Industry;
         public double MarketCap;
+        public double PayoutRatio;
     }
 }
