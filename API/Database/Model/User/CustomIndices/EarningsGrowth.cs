@@ -1,9 +1,7 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class EarningsGrowth
+    public class EarningsGrowth : MetricRange
     {
         public int TimePeriod;
-        public decimal Upper;
-        public decimal Lower;
     }
 }

@@ -1,9 +1,7 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class TrailingPerformance
+    public class TrailingPerformance : MetricRange
     {
         public int TimePeriod;
-        public decimal Upper;
-        public decimal Lower;
     }
 }
