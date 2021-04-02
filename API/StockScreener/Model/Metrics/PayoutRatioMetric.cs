@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
 
         private List<Range> payoutRatio { get; init; }
 
-        public void AddPayoutRatio(Range payoutRatioRange)
-        {
-            payoutRatio.Add(payoutRatioRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !payoutRatio.Any(range => range.WithinRange(security.PayoutRatio)));

@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
 
         private List<Range> workingCapital { get; init; }
 
-        public void AddWorkingCapital(Range workingCapitalRange)
-        {
-            workingCapital.Add(workingCapitalRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !workingCapital.Any(range => range.WithinRange(security.WorkingCapital)));

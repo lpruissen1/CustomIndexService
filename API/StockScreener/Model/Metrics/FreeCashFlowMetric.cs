@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
 
         private List<Range> freeCashFlow { get; init; }
 
-        public void AddFreeCashFlowRange(Range freeCashFlowRange)
-        {
-            freeCashFlow.Add(freeCashFlowRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !freeCashFlow.Any(range => range.WithinRange(security.FreeCashFlow)));

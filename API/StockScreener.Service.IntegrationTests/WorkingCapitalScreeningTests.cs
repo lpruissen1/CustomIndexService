@@ -9,14 +9,9 @@ using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class WorkingCapitalScreeningTests : StockScreenerServiceTestBase
+	[TestFixture]
+	public class WorkingCapitalScreeningTests : StockScreenerServiceTestBase
 	{
-		[SetUp]
-		public void Setup()
-		{
-
-		}
-
 		[Test]
 		public void ScreenByStockIndex_WorkingCapital()
 		{

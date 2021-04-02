@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
 
         private List<Range> marketCaps { get; init; }
 
-        public void AddMarketCap(Range marketCapRange)
-        {
-            marketCaps.Add(marketCapRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !marketCaps.Any(range => range.WithinRange(security.MarketCap)));

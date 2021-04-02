@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
 
         private List<Range> currentRatio { get; init; }
 
-        public void AddCurrentRatio(Range currentRatioRange)
-        {
-            currentRatio.Add(currentRatioRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !currentRatio.Any(range => range.WithinRange(security.CurrentRatio)));

@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
 
         private List<Range> profitMargin { get; init; }
 
-        public void AddProfitMargin(Range profitMarginRange)
-        {
-            profitMargin.Add(profitMarginRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !profitMargin.Any(range => range.WithinRange(security.ProfitMargin)));

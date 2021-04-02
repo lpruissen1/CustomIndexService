@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
 
         private List<Range> grossMargin { get; init; }
 
-        public void AddGrossMargin(Range grossMarginRange)
-        {
-            grossMargin.Add(grossMarginRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !grossMargin.Any(range => range.WithinRange(security.GrossMargin)));

@@ -9,14 +9,9 @@ using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class ProfitMarginScreeningTests : StockScreenerServiceTestBase
+	[TestFixture]
+	public class ProfitMarginScreeningTests : StockScreenerServiceTestBase
 	{
-		[SetUp]
-		public void Setup()
-		{
-
-		}
-
 		[Test]
 		public void ScreenByStockIndex_ProfitMargin()
 		{

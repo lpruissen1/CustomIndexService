@@ -9,14 +9,9 @@ using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class GrossMarginsScreeningTest : StockScreenerServiceTestBase
+	[TestFixture]
+	public class GrossMarginsScreeningTest : StockScreenerServiceTestBase
 	{
-		[SetUp]
-		public void Setup()
-		{
-
-		}
-
 		[Test]
 		public void ScreenByStockIndex_GrossMargin()
 		{

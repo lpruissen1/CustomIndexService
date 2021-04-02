@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
 
         private List<Range> debtToEquityRatio { get; init; }
 
-        public void AddGrossMargin(Range debtToEquityRatioRange)
-        {
-            debtToEquityRatio.Add(debtToEquityRatioRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !debtToEquityRatio.Any(range => range.WithinRange(security.DebtToEquityRatio)));

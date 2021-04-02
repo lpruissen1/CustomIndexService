@@ -15,11 +15,6 @@ namespace StockScreener.Model.Metrics
             entries = ranges;
         }
 
-        public void Add(RangedEntry priceToEarningsRatioRange)
-        {
-            entries.Add(priceToEarningsRatioRange);
-        }
-
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
             securitiesList.RemoveAll(security => !entries.Any(range => range.Valid(security.PriceToEarningsRatioTTM)));
