@@ -6,31 +6,26 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class RevenueGrowthMetric : IMetric
+    public class RevenueGrowthMetric : RangeAndTimeSpanMetric
     {
-        private List<RangedEntry> entries;
+        public RevenueGrowthMetric(List<RangeAndTimeSpan> rangesAndTimeSpans) : base(rangesAndTimeSpans) {}
 
-        public RevenueGrowthMetric(List<RangedEntry> revenueGrowthTargets)
-        {
-            entries = revenueGrowthTargets;
-        }
-
-        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
-        {
-            securitiesList.RemoveAll(s => !entries.Any(entry => entry.Valid(s.RevenueGrowth[entry.GetTimeSpan()])));
-        }
-
-        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
+        public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
             yield return BaseDatapoint.Revenue;
         }
 
-        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
+        public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            foreach(var entry in entries.GroupBy(x => x.GetTimeSpan()).Select(x => x.FirstOrDefault()))
+            foreach(var entry in rangedDatapoint.GroupBy(x => x.GetTimeSpan()).Select(x => x.FirstOrDefault()))
             {
                 yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.RevenueGrowth, Time = entry.GetTimeSpan() };
             }
+        }
+
+        public override Dictionary<TimeSpan, double> GetValue(DerivedSecurity security)
+        {
+            return security.RevenueGrowth;
         }
     }
 }

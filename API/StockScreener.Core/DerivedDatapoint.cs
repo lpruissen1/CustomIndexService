@@ -12,5 +12,8 @@
         ProfitMargin = 8,
         GrossMargin = 9,
         WorkingCapital = 10,
+        DebtToEquityRatio = 11,
+        FreeCashFlow = 12,
+        CurrentRatio = 13,
     }
 }

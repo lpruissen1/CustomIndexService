@@ -10,10 +10,10 @@ using System.Collections.Generic;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-	public class ProfitMarginScreeningTests : StockScreenerServiceTestBase
+	public class FreeCashFlowScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_ProfitMargin()
+		public void ScreenByStockIndex_FreeCashFlow()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -24,11 +24,11 @@ namespace StockScreener.Service.IntegrationTests
 			AddStockFinancials(new StockFinancials 
 			{ 
 				Ticker = ticker1,
-				ProfitMargin = new List<ProfitMargin> 
+				FreeCashFlow = new List<FreeCashFlow> 
 				{ 
-					new ProfitMargin 
+					new FreeCashFlow 
 					{ 
-						profitMargin = 0.4d
+						freeCashFlow = 1_000_000_000d
 					} 
 				} 
 			});
@@ -36,11 +36,11 @@ namespace StockScreener.Service.IntegrationTests
 			AddStockFinancials(new StockFinancials
 			{
 				Ticker = ticker2,
-				ProfitMargin = new List<ProfitMargin>
+				FreeCashFlow = new List<FreeCashFlow>
 				{
-					new ProfitMargin
+					new FreeCashFlow
 					{
-						profitMargin = 0.05d
+						freeCashFlow = 1_000_000d
 					}
 				}
 			}) ;
@@ -54,9 +54,9 @@ namespace StockScreener.Service.IntegrationTests
 						stockIndex1
 					}
 				},
-				ProfitMargin = new List<ProfitMargins>()
+				FreeCashFlow = new List<FreeCashFlows>()
 				{
-					new ProfitMargins {Lower = 0.1, Upper = 0.5}
+					new FreeCashFlows {Lower = 10_000_000, Upper = 10_000_000_000}
 				}
 			};
 

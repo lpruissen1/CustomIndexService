@@ -2,18 +2,18 @@
 
 namespace StockScreener.Model.Metrics
 {
-    public class RangedEntry
+    public class RangeAndTimeSpan
     {
         private Range range;
         private TimeSpan span;
 
-        public RangedEntry(Range range, TimeSpan span)
+        public RangeAndTimeSpan(Range range, TimeSpan span)
         {
             this.range = range;
             this.span = span;
         }
 
-        public RangedEntry(Range range)
+        public RangeAndTimeSpan(Range range)
         {
             this.range = range;
         }

@@ -2,26 +2,27 @@
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class PayoutRatioMetric : RangedMetric
+    public class FreeCashFlowMetric : RangedMetric
     {
-        public PayoutRatioMetric(List<Range> ranges) : base(ranges) { }
+        public FreeCashFlowMetric(List<Range> ranges) : base(ranges) { }
 
         public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
-            yield return BaseDatapoint.PayoutRatio;
+            yield return BaseDatapoint.FreeCashFlow;
         }
 
         public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.PayoutRatio };
+            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.FreeCashFlow };
         }
 
         public override double GetValue(DerivedSecurity security)
         {
-            return security.PayoutRatio;
+            return security.FreeCashFlow;
         }
     }
 }

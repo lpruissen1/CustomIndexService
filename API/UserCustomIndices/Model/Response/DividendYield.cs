@@ -2,7 +2,7 @@
 {
     public struct DividendYield
     {
-        public decimal Upper;
-        public decimal Lower;
+        public double Upper;
+        public double Lower;
     }
 }

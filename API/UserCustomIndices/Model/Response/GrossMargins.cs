@@ -1,8 +1,7 @@
 ﻿namespace UserCustomIndices.Model.Response
 {
-    public struct EarningsGrowth
+    public struct GrossMargins
     {
-        public int TimePeriod;
         public double Upper;
         public double Lower;
     }

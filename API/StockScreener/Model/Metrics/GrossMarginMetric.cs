@@ -2,37 +2,26 @@
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class GrossMarginMetric : IMetric
+    public class GrossMarginMetric : RangedMetric
     {
-        public GrossMarginMetric(List<Range> ranges)
-        {
-            grossMargin = ranges;
-        }
+        public GrossMarginMetric(List<Range> ranges) : base(ranges) { }
 
-        private List<Range> grossMargin { get; init; }
-
-        public void AddGrossMargin(Range grossMarginRange)
-        {
-            grossMargin.Add(grossMarginRange);
-        }
-
-        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
-        {
-            securitiesList.RemoveAll(security => !grossMargin.Any(range => range.WithinRange(security.GrossMargin)));
-        }
-
-        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
+        public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
             yield return BaseDatapoint.GrossMargin;
         }
 
-        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
+        public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
             yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.GrossMargin };
+        }
+
+        public override double GetValue(DerivedSecurity security)
+        {
+            return security.GrossMargin;
         }
     }
 }

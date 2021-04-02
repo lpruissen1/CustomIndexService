@@ -9,14 +9,9 @@ using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class RevenueGrowthScreeningTests : StockScreenerServiceTestBase
+	[TestFixture]
+	public class RevenueGrowthScreeningTests : StockScreenerServiceTestBase
 	{
-		[SetUp]
-		public void Setup()
-		{
-
-		}
-
 		[Test]
 		public void ScreenByStockIndex_RevenueGrowth_Biannual()
 		{

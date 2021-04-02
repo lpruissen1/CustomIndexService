@@ -2,38 +2,27 @@
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class PriceToEarningsRatioTTMMetric : IMetric
+    public class PriceToEarningsRatioTTMMetric : RangedMetric
     {
-        private List<RangedEntry> entries;
+        public PriceToEarningsRatioTTMMetric(List<Range> ranges) : base(ranges) { }
 
-        public PriceToEarningsRatioTTMMetric(List<RangedEntry> ranges)
-        {
-            entries = ranges;
-        }
-
-        public void Add(RangedEntry priceToEarningsRatioRange)
-        {
-            entries.Add(priceToEarningsRatioRange);
-        }
-
-        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
-        {
-            securitiesList.RemoveAll(security => !entries.Any(range => range.Valid(security.PriceToEarningsRatioTTM)));
-        }
-
-        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
+        public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
             yield return BaseDatapoint.Price;
             yield return BaseDatapoint.QuarterlyEarningsPerShare;
         }
 
-        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
+        public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
             yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.PriceToEarningsRatioTTM };
+        }
+
+        public override double GetValue(DerivedSecurity security)
+        {
+            return security.PriceToEarningsRatioTTM;
         }
     }
 }

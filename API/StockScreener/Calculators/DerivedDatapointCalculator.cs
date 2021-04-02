@@ -26,7 +26,10 @@ namespace StockScreener.Calculators
                     PayoutRatio = security.PayoutRatio,
                     ProfitMargin = security.ProfitMargin,
                     GrossMargin = security.GrossMargin,
-                    WorkingCapital = security.WorkingCapital
+                    WorkingCapital = security.WorkingCapital,
+                    DebtToEquityRatio = security.DebtToEquityRatio,
+                    FreeCashFlow = security.FreeCashFlow,
+                    CurrentRatio = security.CurrentRatio
                 });
             }
             

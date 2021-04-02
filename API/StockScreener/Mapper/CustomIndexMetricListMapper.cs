@@ -21,7 +21,9 @@ namespace StockScreener.Mapper
             metricList.Add(MapProfitMargin(index.ProfitMargin));
             metricList.Add(MapGrossMargin(index.GrossMargin));
             metricList.Add(MapWorkingCapital(index.WorkingCapital));
-
+            metricList.Add(MapDebtToEquityRatio(index.DebtToEquityRatio));
+            metricList.Add(MapFreeCashFlow(index.FreeCashFlow));
+            metricList.Add(MapCurrentRatio(index.CurrentRatio));
 
             return metricList;
         }
@@ -76,6 +78,51 @@ namespace StockScreener.Mapper
             return new WorkingCapitalMetric(list);
         }
 
+        private IMetric MapCurrentRatio(List<CurrentRatios> currentRatios)
+        {
+            if (!currentRatios.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var currentRatiosRange in currentRatios)
+            {
+                list.Add(new Range(currentRatiosRange.Upper, currentRatiosRange.Lower));
+            }
+
+            return new CurrentRatioMetric(list);
+        }
+
+        private IMetric MapFreeCashFlow(List<FreeCashFlows> freeCashFlows)
+        {
+            if (!freeCashFlows.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var freeCashFlowsRange in freeCashFlows)
+            {
+                list.Add(new Range(freeCashFlowsRange.Upper, freeCashFlowsRange.Lower));
+            }
+
+            return new FreeCashFlowMetric(list);
+        }
+
+        private IMetric MapDebtToEquityRatio(List<DebtToEquityRatios> debtToEquityRatios)
+        {
+            if (!debtToEquityRatios.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var debtToEquityRatioRange in debtToEquityRatios)
+            {
+                list.Add(new Range(debtToEquityRatioRange.Upper, debtToEquityRatioRange.Lower));
+            }
+
+            return new DebtToEquityRatioMetric(list);
+        }
+
         private IMetric MapPayoutRatio(List<PayoutRatios> payoutRatio)
         {
             if (!payoutRatio.Any())
@@ -126,11 +173,11 @@ namespace StockScreener.Mapper
             if(!revenueGrowth.Any())
                 return null;
 
-            var list = new List<RangedEntry>();
+            var list = new List<RangeAndTimeSpan>();
 
             foreach(var revenueGrowthTarget in revenueGrowth)
             {
-                list.Add(new RangedEntry(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
+                list.Add(new RangeAndTimeSpan(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
             }
 
             return new RevenueGrowthMetric(list);
@@ -141,11 +188,11 @@ namespace StockScreener.Mapper
             if (!priceToEarningsRatioTTM.Any())
                 return null;
 
-            var list = new List<RangedEntry>();
+            var list = new List<Range>();
 
             foreach (var priceToEarningsRatioTTMTarget in priceToEarningsRatioTTM)
             {
-                list.Add(new RangedEntry(new Range(priceToEarningsRatioTTMTarget.Upper, priceToEarningsRatioTTMTarget.Lower)));
+                list.Add(new Range(priceToEarningsRatioTTMTarget.Upper, priceToEarningsRatioTTMTarget.Lower));
             }
 
             return new PriceToEarningsRatioTTMMetric(list);

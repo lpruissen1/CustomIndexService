@@ -12,14 +12,9 @@ using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class MarketCapScreeningTests : StockScreenerServiceTestBase
+	[TestFixture]
+	public class MarketCapScreeningTests : StockScreenerServiceTestBase
 	{
-		[SetUp]
-		public void Setup()
-		{
-
-		}
-
 		[Test]
 		public void ScreenByStockIndex_MarketCap()
 		{

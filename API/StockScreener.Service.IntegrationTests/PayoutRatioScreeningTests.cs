@@ -9,14 +9,9 @@ using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public class PayoutRatioScreeningTests : StockScreenerServiceTestBase
+	[TestFixture]
+	public class PayoutRatioScreeningTests : StockScreenerServiceTestBase
 	{
-		[SetUp]
-		public void Setup()
-		{
-
-		}
-
 		[Test]
 		public void ScreenByStockIndex_PayoutRatio()
 		{
