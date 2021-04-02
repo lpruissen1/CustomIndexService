@@ -18,13 +18,19 @@ namespace Database.Repositories
                 {BaseDatapoint.ProfitMargin, AddProfitMargin },
                 {BaseDatapoint.GrossMargin, AddGrossMargin },
                 {BaseDatapoint.WorkingCapital, AddWorkingCapital },
-                {BaseDatapoint.DebtToEquityRatio, AddDebtToEquityRatio }
+                {BaseDatapoint.DebtToEquityRatio, AddDebtToEquityRatio },
+                {BaseDatapoint.FreeCashFlow, AddFreeCashFlow }
             };
         }
 
         private void AddRevenue()
         {
             projection.Include(x => x.Revenues);
+        }
+
+        private void AddFreeCashFlow()
+        {
+            projection.Include(x => x.FreeCashFlow);
         }
 
         private void AddDebtToEquityRatio()

@@ -19,6 +19,7 @@ namespace Database.Model.User.CustomIndices
         public List<ProfitMargins> ProfitMargin { get; init; } = new List<ProfitMargins>();
         public List<GrossMargins> GrossMargin { get; set; } = new List<GrossMargins>();
         public List<WorkingCapitals> WorkingCapital { get; set; } = new List<WorkingCapitals>();
+        public List<FreeCashFlows> FreeCashFlow { get; set; } = new List<FreeCashFlows>();
         public List<DebtToEquityRatios> DebtToEquityRatio { get; set; } = new List<DebtToEquityRatios>();
         public string Test { get; init; }
     }

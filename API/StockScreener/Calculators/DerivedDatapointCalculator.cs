@@ -27,7 +27,8 @@ namespace StockScreener.Calculators
                     ProfitMargin = security.ProfitMargin,
                     GrossMargin = security.GrossMargin,
                     WorkingCapital = security.WorkingCapital,
-                    DebtToEquityRatio = security.DebtToEquityRatio
+                    DebtToEquityRatio = security.DebtToEquityRatio,
+                    FreeCashFlow = security.FreeCashFlow
                 });
             }
             

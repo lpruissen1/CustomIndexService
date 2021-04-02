@@ -13,5 +13,6 @@
         GrossMargin = 9,
         WorkingCapital = 10,
         DebtToEquityRatio = 11,
+        FreeCashFlow = 12,
     }
 }
