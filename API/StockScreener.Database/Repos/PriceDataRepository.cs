@@ -71,11 +71,9 @@ namespace StockScreener.Database.Repos
 			return Builders<TPriceType>.Update.PushEach<Candle>("Candle", candles);
 		}
 
-    public List<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData
-		{
-			var filter = Builders<TPriceEntry>.Filter.Eq(e => e.Ticker, ticker);
-			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(filter).FirstOrDefault();
-			return prices.Candle;
-		}
-  }
+        public double GetPriceData<TPriceEntry>(string ticker, TimeSpan timeSpan) where TPriceEntry : PriceData
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
