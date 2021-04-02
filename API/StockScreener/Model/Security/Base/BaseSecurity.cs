@@ -22,6 +22,7 @@ namespace StockScreener.Model.BaseSecurity
             WorkingCapital = security.WorkingCapital != 0 ? security.WorkingCapital : WorkingCapital;
             DebtToEquityRatio = security.DebtToEquityRatio != 0 ? security.DebtToEquityRatio : DebtToEquityRatio;
             FreeCashFlow = security.FreeCashFlow != 0 ? security.FreeCashFlow : FreeCashFlow;
+            CurrentRatio = security.CurrentRatio != 0 ? security.CurrentRatio : CurrentRatio;
         }
     }
 

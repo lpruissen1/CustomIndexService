@@ -12,5 +12,6 @@
         public double WorkingCapital;
         public double DebtToEquityRatio;
         public double FreeCashFlow;
+        public double CurrentRatio;
     }
 }

@@ -23,6 +23,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapWorkingCapital(index.WorkingCapital));
             metricList.Add(MapDebtToEquityRatio(index.DebtToEquityRatio));
             metricList.Add(MapFreeCashFlow(index.FreeCashFlow));
+            metricList.Add(MapCurrentRatio(index.CurrentRatio));
 
             return metricList;
         }
@@ -75,6 +76,21 @@ namespace StockScreener.Mapper
             }
 
             return new WorkingCapitalMetric(list);
+        }
+
+        private IMetric MapCurrentRatio(List<CurrentRatios> currentRatios)
+        {
+            if (!currentRatios.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var currentRatiosRange in currentRatios)
+            {
+                list.Add(new Range(currentRatiosRange.Upper, currentRatiosRange.Lower));
+            }
+
+            return new CurrentRatioMetric(list);
         }
 
         private IMetric MapFreeCashFlow(List<FreeCashFlows> freeCashFlows)
