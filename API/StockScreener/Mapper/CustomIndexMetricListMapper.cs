@@ -21,7 +21,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapProfitMargin(index.ProfitMargin));
             metricList.Add(MapGrossMargin(index.GrossMargin));
             metricList.Add(MapWorkingCapital(index.WorkingCapital));
-
+            metricList.Add(MapDebtToEquityRatio(index.DebtToEquityRatio));
 
             return metricList;
         }
@@ -74,6 +74,21 @@ namespace StockScreener.Mapper
             }
 
             return new WorkingCapitalMetric(list);
+        }
+
+        private IMetric MapDebtToEquityRatio(List<DebtToEquityRatios> debtToEquityRatios)
+        {
+            if (!debtToEquityRatios.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var debtToEquityRatioRange in debtToEquityRatios)
+            {
+                list.Add(new Range(debtToEquityRatioRange.Upper, debtToEquityRatioRange.Lower));
+            }
+
+            return new DebtToEquityRatioMetric(list);
         }
 
         private IMetric MapPayoutRatio(List<PayoutRatios> payoutRatio)

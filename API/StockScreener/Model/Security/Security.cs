@@ -10,5 +10,6 @@
         public double ProfitMargin;
         public double GrossMargin;
         public double WorkingCapital;
+        public double DebtToEquityRatio;
     }
 }

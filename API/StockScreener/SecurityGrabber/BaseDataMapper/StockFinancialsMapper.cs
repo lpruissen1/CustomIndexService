@@ -19,7 +19,8 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
                 {BaseDatapoint.PayoutRatio, AddPayoutRatio },
                 {BaseDatapoint.ProfitMargin, AddProfitMargin },
                 {BaseDatapoint.GrossMargin, AddGrossMargin },
-                {BaseDatapoint.WorkingCapital, AddWorkingCapital }
+                {BaseDatapoint.WorkingCapital, AddWorkingCapital },
+                {BaseDatapoint.DebtToEquityRatio, AddDebtToEquityRatio }
             };
         }
 
@@ -33,6 +34,11 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
         public void AddMarketCap(StockFinancials stockFinancials)
         {
             security.MarketCap = stockFinancials.MarketCap.Last().marketCap;
+        }
+
+        public void AddDebtToEquityRatio(StockFinancials stockFinancials)
+        {
+            security.DebtToEquityRatio = stockFinancials.DebtToEquityRatio.Last().debtToEquityRatio;
         }
 
         public void AddGrossMargin(StockFinancials stockFinancials)

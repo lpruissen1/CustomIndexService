@@ -20,6 +20,7 @@ namespace StockScreener.Model.BaseSecurity
             ProfitMargin = security.ProfitMargin != 0 ? security.ProfitMargin : ProfitMargin;
             GrossMargin = security.GrossMargin != 0 ? security.GrossMargin : GrossMargin;
             WorkingCapital = security.WorkingCapital != 0 ? security.WorkingCapital : WorkingCapital;
+            DebtToEquityRatio = security.DebtToEquityRatio != 0 ? security.DebtToEquityRatio : DebtToEquityRatio;
         }
     }
 

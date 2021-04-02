@@ -15,9 +15,10 @@ namespace StockScreener.Core
         ProfitMargin = 128,
         GrossMargin = 256,
         WorkingCapital = 512,
+        DebtToEquityRatio = 1024,
 
 
         CompanyInfo  = Sector | Industry,
-        StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio | ProfitMargin | GrossMargin | WorkingCapital
+        StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio | ProfitMargin | GrossMargin | WorkingCapital | DebtToEquityRatio
     }
 }
