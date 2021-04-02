@@ -6,5 +6,6 @@ namespace Database.Core
     {
         IMongoCollection<T> GetCollection<T>(string name);
         void ClearAll();
+        void DropCollection(string name);
     }
 }

@@ -26,5 +26,10 @@ namespace Database
         {
             _mongoClient.DropDatabase(settings.DatabaseName);
         }
+
+        public void DropCollection(string name)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

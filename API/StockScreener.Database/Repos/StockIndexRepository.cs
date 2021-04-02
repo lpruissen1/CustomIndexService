@@ -3,6 +3,7 @@ using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Database.Model.StockIndex;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StockScreener.Database.Repos
 {
@@ -23,6 +24,11 @@ namespace StockScreener.Database.Repos
             }
 
             return tickers;
+        }
+
+        public StockIndex GetIndex(string name)
+        {
+            return dbCollection.Find(index => index.Name == name).FirstOrDefault();
         }
     }
 }

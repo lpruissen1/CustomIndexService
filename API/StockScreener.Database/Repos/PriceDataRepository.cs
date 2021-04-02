@@ -3,6 +3,7 @@ using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Database.Model.Price;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StockScreener.Database.Repos
@@ -19,6 +20,25 @@ namespace StockScreener.Database.Repos
 			hourIntervalCollection = mongoContext.GetCollection<HourPriceData>(typeof(HourPriceData).Name);
 		}
 
+		public void Create(HourPriceData obj)
+		{
+			hourIntervalCollection.InsertOne(obj);
+		}
+
+		public void Create(DayPriceData obj)
+		{
+			dayIntervalCollection.InsertOne(obj);
+		}
+
+		public void Update(DayPriceData entry)
+		{
+			UpdatePriceData(entry);
+		}
+
+		public void Update(HourPriceData entry)
+		{
+			UpdatePriceData(entry);
+		}
 
 		public double GetMostRecentPriceEntry<TPriceEntry>(string ticker) where TPriceEntry : PriceData
 		{
@@ -30,6 +50,24 @@ namespace StockScreener.Database.Repos
         public double GetPriceData<TPriceEntry>(string ticker, TimeSpan timeSpan) where TPriceEntry : PriceData
         {
             throw new NotImplementedException();
-        }
-    }
+		}
+
+		private void UpdatePriceData<TPriceType>(TPriceType entry) where TPriceType : PriceData
+		{
+			var filter = Builders<TPriceType>.Filter.Eq(e => e.Ticker, entry.Ticker);
+
+			var updateDefinition = new List<UpdateDefinition<TPriceType>>();
+
+			updateDefinition.Add(AddCandleUpdate<TPriceType>(entry.Candle));
+
+			var combinedUpdate = Builders<TPriceType>.Update.Combine(updateDefinition);
+
+			mongoContext.GetCollection<TPriceType>(typeof(TPriceType).Name).FindOneAndUpdate<TPriceType>(filter, combinedUpdate);
+		}
+
+		private UpdateDefinition<TPriceType> AddCandleUpdate<TPriceType>(List<Candle> candles)
+		{
+			return Builders<TPriceType>.Update.PushEach<Candle>("Candle", candles);
+		}
+	}
 }
