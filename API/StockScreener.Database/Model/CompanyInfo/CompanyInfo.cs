@@ -12,5 +12,7 @@ namespace StockScreener.Database.Model.CompanyInfo
         public string Name;
         public string Industry;
         public string Sector;
+
+        public double LastUpdated;
     }
 }

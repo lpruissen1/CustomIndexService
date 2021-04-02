@@ -38,16 +38,14 @@ namespace UserCustomIndices.Services
 
         public async Task<IActionResult> CreateIndex(Guid userId, CustomIndexResponse customIndex)
         {
-            var insert = indicesRepository.Create( new CustomIndex 
+            indicesRepository.Create(new CustomIndex
             {
                 UserId = userId.ToString(),
                 Test = customIndex.Test,
                 Markets = new Database.Model.User.CustomIndices.ComposedMarkets { Markets = customIndex.Markets.Markets }
             });
 
-            insert.Wait();
-
-            return insert.IsCompletedSuccessfully ? new OkResult() : new BadRequestResult(); 
+            return new OkResult(); 
         }
 
         Task<IActionResult> ICustomIndexService.UpdateIndex(Guid userId, CustomIndexResponse customIndexUpdated)

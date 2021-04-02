@@ -2,6 +2,7 @@
 using Database.Core;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using StockScreener.Database;
 using StockScreener.Database.Config;
 using StockScreener.Database.Model.CompanyInfo;
 using StockScreener.Database.Model.Price;

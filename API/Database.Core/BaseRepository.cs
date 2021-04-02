@@ -1,13 +1,12 @@
 ﻿using Database.Core;
 using MongoDB.Driver;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Database.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : DbEntity
     {
-
         protected readonly IMongoDBContext mongoContext;
         protected IMongoCollection<TEntity> dbCollection;
 
@@ -17,9 +16,9 @@ namespace Database.Repositories
             dbCollection = mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public Task Create(TEntity obj)
+        public void Create(TEntity obj)
         {
-            return dbCollection.InsertOneAsync(obj);
+            dbCollection.InsertOne(obj);
         }
 
         public void Delete(string id)
@@ -27,14 +26,26 @@ namespace Database.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<TEntity> Get(string id)
+        public TEntity Get(string ticker)
         {
-            return await dbCollection.FindAsync(i => i.Id == id).Result.FirstOrDefaultAsync();
+            FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Eq("Ticker", ticker);
+
+            return dbCollection.Find(filter).FirstOrDefault();
+        }
+
+        public IEnumerable<TEntity> Get()
+        {
+            return dbCollection.Find(Builders<TEntity>.Filter.Empty).ToEnumerable();
         }
 
         public void Update(TEntity obj)
         {
             throw new NotImplementedException();
+        }
+
+        public void Clear(string collectionName)
+        {
+            mongoContext.DropCollection(collectionName);
         }
     }
 }

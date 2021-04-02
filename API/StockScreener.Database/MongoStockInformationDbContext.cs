@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using StockScreener.Database.Config;
 
-namespace Database
+namespace StockScreener.Database
 {
     public class MongoStockInformationDbContext : IMongoDBContext
     {
@@ -10,6 +10,7 @@ namespace Database
         private MongoClient _mongoClient { get; set; }
         public IClientSessionHandle Session { get; set; }
         private IStockDataDatabaseSettings settings { get; set; }
+
         public MongoStockInformationDbContext(IStockDataDatabaseSettings settings)
         {
             this.settings = settings;
@@ -25,6 +26,11 @@ namespace Database
         public void ClearAll()
         {
             _mongoClient.DropDatabase(settings.DatabaseName);
+        }
+
+        public void DropCollection(string name)
+        {
+            _db.DropCollection(name);
         }
     }
 }

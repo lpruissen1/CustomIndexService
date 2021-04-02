@@ -7,5 +7,6 @@ namespace StockScreener.Database.Repos
     public interface IStockIndexRepository : IBaseRepository<StockIndex>
     {
         IEnumerable<string> Get(IEnumerable<string> indices);
+        public StockIndex GetIndex(string name);
     }
 }
