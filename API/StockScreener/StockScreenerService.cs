@@ -1,5 +1,7 @@
 ﻿using Database.Model.User.CustomIndices;
+using StockScreener.Calculators;
 using StockScreener.Mapper;
+using StockScreener.Model.BaseSecurity;
 using StockScreener.SecurityGrabber;
 
 namespace StockScreener
@@ -13,17 +15,21 @@ namespace StockScreener
             this.securitiesGrabber = securitiesGrabber;
         }
 
-        public SecuritiesList Screen(CustomIndex index)
+        public SecuritiesList<DerivedSecurity> Screen(CustomIndex index)
         {
             var mapper = new CustomIndexMapper();
             var metricList = mapper.MapToMetricList(index);
 
-            var queryParams = new SecuritiesSearchParams { Indices = metricList.Indices, Datapoints = metricList.GetRelevantDatapoints() };
+            var queryParams = new SecuritiesSearchParams { Indices = metricList.Indices, Datapoints = metricList.GetBaseDatapoints() };
             var securities = securitiesGrabber.GetSecurities(queryParams);
 
-            metricList.Apply(ref securities);
+            var derivedDatapointCalculator = new DerivedDatapointCalculator();
+
+            var derivedSecurityList = derivedDatapointCalculator.Derive(securities, metricList.GetDerivedDatapoints());
+
+            metricList.Apply(ref derivedSecurityList);
             
-            return securities;
+            return derivedSecurityList;
         }
     }
 }

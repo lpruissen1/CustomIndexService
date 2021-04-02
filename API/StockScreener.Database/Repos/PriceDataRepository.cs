@@ -65,10 +65,17 @@ namespace StockScreener.Database.Repos
 
 			mongoContext.GetCollection<TPriceType>(typeof(TPriceType).Name).FindOneAndUpdate<TPriceType>(filter, combinedUpdate);
 		}
-
+    
 		private UpdateDefinition<TPriceType> AddCandleUpdate<TPriceType>(List<Candle> candles)
 		{
 			return Builders<TPriceType>.Update.PushEach<Candle>("Candle", candles);
 		}
-	}
+
+    public List<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData
+		{
+			var filter = Builders<TPriceEntry>.Filter.Eq(e => e.Ticker, ticker);
+			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(filter).FirstOrDefault();
+			return prices.Candle;
+		}
+  }
 }

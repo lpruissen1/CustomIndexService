@@ -15,11 +15,11 @@ namespace Database.Repositories
         private StockFinancialsProjectionBuilder projectionBuilder = new StockFinancialsProjectionBuilder();
         public StockFinancialsRepository(IMongoDBContext context) : base(context) { }
 
-        public IEnumerable<StockFinancials> Get(IEnumerable<string> tickers, IEnumerable<Datapoint> datapoints)
+        public IEnumerable<StockFinancials> Get(IEnumerable<string> tickers, IEnumerable<BaseDatapoint> datapoints)
         {
             var projection = Builders<StockFinancials>.Projection.Include(x => x.Ticker).Include(x => x.MarketCap);
 
-            if (datapoints.Contains(Datapoint.MarketCap))
+            if (datapoints.Contains(BaseDatapoint.MarketCap))
             {
                 projection.Include(x => x.MarketCap.Last());
             }
@@ -27,7 +27,7 @@ namespace Database.Repositories
             return dbCollection.Find(x => tickers.Contains(x.Ticker)).Project<StockFinancials>(projection).ToEnumerable();
         }
 
-        public StockFinancials? Get(string ticker, IEnumerable<Datapoint> datapoints)
+        public StockFinancials Get(string ticker, IEnumerable<BaseDatapoint> datapoints)
         {
             var projection = projectionBuilder.BuildProjection(datapoints);
 
