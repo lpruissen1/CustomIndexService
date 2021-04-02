@@ -173,11 +173,11 @@ namespace StockScreener.Mapper
             if(!revenueGrowth.Any())
                 return null;
 
-            var list = new List<RangedEntry>();
+            var list = new List<RangeAndTimeSpan>();
 
             foreach(var revenueGrowthTarget in revenueGrowth)
             {
-                list.Add(new RangedEntry(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
+                list.Add(new RangeAndTimeSpan(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
             }
 
             return new RevenueGrowthMetric(list);
@@ -188,11 +188,11 @@ namespace StockScreener.Mapper
             if (!priceToEarningsRatioTTM.Any())
                 return null;
 
-            var list = new List<RangedEntry>();
+            var list = new List<Range>();
 
             foreach (var priceToEarningsRatioTTMTarget in priceToEarningsRatioTTM)
             {
-                list.Add(new RangedEntry(new Range(priceToEarningsRatioTTMTarget.Upper, priceToEarningsRatioTTMTarget.Lower)));
+                list.Add(new Range(priceToEarningsRatioTTMTarget.Upper, priceToEarningsRatioTTMTarget.Lower));
             }
 
             return new PriceToEarningsRatioTTMMetric(list);

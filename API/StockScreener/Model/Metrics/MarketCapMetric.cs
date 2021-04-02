@@ -6,28 +6,23 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class MarketCapMetric : IMetric
+    public class MarketCapMetric : RangedMetric
     {
-        public MarketCapMetric(List<Range> ranges)
-        {
-            marketCaps = ranges;
-        }
+        public MarketCapMetric(List<Range> ranges) : base(ranges) { }
 
-        private List<Range> marketCaps { get; init; }
-
-        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
-        {
-            securitiesList.RemoveAll(security => !marketCaps.Any(range => range.WithinRange(security.MarketCap)));
-        }
-
-        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
+        public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
             yield return BaseDatapoint.MarketCap;
         }
 
-        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
+        public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
             yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.MarketCap };
+        }
+
+        public override double GetValue(DerivedSecurity security)
+        {
+            return security.MarketCap;
         }
     }
 }

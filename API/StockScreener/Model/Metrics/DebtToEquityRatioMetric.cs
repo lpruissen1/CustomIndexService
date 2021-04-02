@@ -2,32 +2,26 @@
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class DebtToEquityRatioMetric : IMetric
+    public class DebtToEquityRatioMetric : RangedMetric
     {
-        public DebtToEquityRatioMetric(List<Range> ranges)
-        {
-            debtToEquityRatio = ranges;
-        }
+        public DebtToEquityRatioMetric(List<Range> ranges) : base(ranges) { }
 
-        private List<Range> debtToEquityRatio { get; init; }
-
-        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
-        {
-            securitiesList.RemoveAll(security => !debtToEquityRatio.Any(range => range.WithinRange(security.DebtToEquityRatio)));
-        }
-
-        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
+        public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
             yield return BaseDatapoint.DebtToEquityRatio;
         }
 
-        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
+        public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
             yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.DebtToEquityRatio };
+        }
+
+        public override double GetValue(DerivedSecurity security)
+        {
+            return security.DebtToEquityRatio;
         }
     }
 }

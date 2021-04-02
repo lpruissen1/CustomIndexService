@@ -6,28 +6,23 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class FreeCashFlowMetric : IMetric
+    public class FreeCashFlowMetric : RangedMetric
     {
-        public FreeCashFlowMetric(List<Range> ranges)
-        {
-            freeCashFlow = ranges;
-        }
+        public FreeCashFlowMetric(List<Range> ranges) : base(ranges) { }
 
-        private List<Range> freeCashFlow { get; init; }
-
-        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
-        {
-            securitiesList.RemoveAll(security => !freeCashFlow.Any(range => range.WithinRange(security.FreeCashFlow)));
-        }
-
-        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
+        public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
             yield return BaseDatapoint.FreeCashFlow;
         }
 
-        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
+        public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
             yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.FreeCashFlow };
+        }
+
+        public override double GetValue(DerivedSecurity security)
+        {
+            return security.FreeCashFlow;
         }
     }
 }

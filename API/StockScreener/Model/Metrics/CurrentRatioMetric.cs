@@ -2,32 +2,26 @@
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class CurrentRatioMetric : IMetric
+    public class CurrentRatioMetric : RangedMetric
     {
-        public CurrentRatioMetric(List<Range> ranges)
-        {
-            currentRatio = ranges;
-        }
+        public CurrentRatioMetric(List<Range> ranges) : base(ranges) { }
 
-        private List<Range> currentRatio { get; init; }
-
-        public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
-        {
-            securitiesList.RemoveAll(security => !currentRatio.Any(range => range.WithinRange(security.CurrentRatio)));
-        }
-
-        public IEnumerable<BaseDatapoint> GetBaseDatapoints()
+        public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
             yield return BaseDatapoint.CurrentRatio;
         }
 
-        public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
+        public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
             yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.CurrentRatio };
+        }
+
+        public override double GetValue(DerivedSecurity security)
+        {
+            return security.CurrentRatio;
         }
     }
 }

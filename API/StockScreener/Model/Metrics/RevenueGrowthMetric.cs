@@ -8,9 +8,9 @@ namespace StockScreener.Model.Metrics
 {
     public class RevenueGrowthMetric : IMetric
     {
-        private List<RangedEntry> entries;
+        private List<RangeAndTimeSpan> entries;
 
-        public RevenueGrowthMetric(List<RangedEntry> revenueGrowthTargets)
+        public RevenueGrowthMetric(List<RangeAndTimeSpan> revenueGrowthTargets)
         {
             entries = revenueGrowthTargets;
         }
