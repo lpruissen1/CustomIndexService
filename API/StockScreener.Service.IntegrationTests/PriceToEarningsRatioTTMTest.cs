@@ -1,5 +1,4 @@
-﻿using Database.Model.User.CustomIndices;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;

@@ -1,4 +1,4 @@
-using Database.Repositories;
+﻿using Database.Repositories;
 using NUnit.Framework;
 using StockScreener.Database.Model.CompanyInfo;
 using StockScreener.Database.Model.StockIndex;
@@ -9,66 +9,8 @@ using System.Linq;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-    public class StockScreenerTests : StockScreenerServiceTestBase
+    public class SectorAndIndustryScreeningTests : StockScreenerServiceTestBase
 	{
-        [Test]
-        public void ScreenByStockIndex_SingleIndexTest()
-        {
-			var stockIndex1 = "Lee's Index";
-			var stockIndex2 = "Lee's second Index";
-
-			var ticker1 = "LEE";
-			var ticker2 = "PEE";
-			var ticker3 = "EEL";
-
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-            AddStockIndex(new StockIndex { Name = stockIndex2, Tickers = new[] { ticker3 } });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker1 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker2 });
-
-			AddMarketToCustomIndex(stockIndex1);
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
-
-			var result = sut.Screen(customIndex);
-
-			Assert.AreEqual(2, result.Count);
-
-			Assert.AreEqual(ticker1, result.First().Ticker);
-			Assert.AreEqual(ticker2, result.Last().Ticker);
-        }
-
-        [Test]
-        public void ScreenByStockIndex_MultipleIndicesTest()
-        {
-			var stockIndex1 = "Lee's Index";
-			var stockIndex2 = "Lee's second Index";
-			var stockIndex3 = "Lee's third Index";
-
-			var ticker1 = "LEE";
-			var ticker2 = "PEE";
-			var ticker3 = "EEL";
-
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1 } });
-            AddStockIndex(new StockIndex { Name = stockIndex2, Tickers = new[] { ticker2 } });
-            AddStockIndex(new StockIndex { Name = stockIndex3, Tickers = new[] { ticker3 } });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker1 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker2 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker3 });
-
-			AddMarketToCustomIndex(stockIndex1);
-			AddMarketToCustomIndex(stockIndex3);
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
-
-			var result = sut.Screen(customIndex);
-
-			Assert.AreEqual(2, result.Count);
-
-			Assert.AreEqual(ticker1, result.First().Ticker);
-			Assert.AreEqual(ticker3, result.Last().Ticker);
-        }
-
         [Test]
         public void ScreenStockBySectorTest()
         {
