@@ -15,5 +15,6 @@
         DebtToEquityRatio = 11,
         FreeCashFlow = 12,
         CurrentRatio = 13,
+        PriceToSalesRatioTTM = 14
     }
 }

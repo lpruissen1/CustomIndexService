@@ -13,6 +13,7 @@ namespace Database.Model.User.CustomIndices
         public List<RevenueGrowth> RevenueGrowths { get; init; } = new List<RevenueGrowth>();
         public EarningsGrowth EarningsGrowth { get; init; }
         public List<PriceToEarningsRatioTTM> PriceToEarningsRatioTTM { get; init; } = new List<PriceToEarningsRatioTTM>();
+        public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();
         public Sectors SectorAndIndsutry { get; init; } = new Sectors();
         public MarketCaps MarketCaps { get; init; } = new MarketCaps();
         public List<PayoutRatios> PayoutRatio { get; init; } = new List<PayoutRatios>();

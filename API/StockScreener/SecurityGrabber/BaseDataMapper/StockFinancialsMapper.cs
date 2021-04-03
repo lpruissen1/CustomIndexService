@@ -22,7 +22,8 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
                 {BaseDatapoint.WorkingCapital, AddWorkingCapital },
                 {BaseDatapoint.DebtToEquityRatio, AddDebtToEquityRatio },
                 {BaseDatapoint.FreeCashFlow, AddFreeCashFlow },
-                {BaseDatapoint.CurrentRatio, AddCurrentRatio }
+                {BaseDatapoint.CurrentRatio, AddCurrentRatio },
+                {BaseDatapoint.QuarterlySalesPerShare, AddQuarterlySalesPerShare }
             };
         }
 
@@ -76,6 +77,11 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
         public void AddQuarterlyEarningsPerShare(StockFinancials stockFinancials)
         {
             security.QuarterlyEarnings = stockFinancials.EarningsPerShare.Select(stock => new EarningsEntry() { Earnings = stock.earningsPerShare, Timestamp = stock.timestamp }).ToList();
+        }
+
+        public void AddQuarterlySalesPerShare(StockFinancials stockFinancials)
+        {
+            security.QuarterlySalesPerShare = stockFinancials.SalesPerShare.Select(stock => new SalesPerShareEntry() { SalesPerShare = stock.salesPerShare, Timestamp = stock.timestamp }).ToList();
         }
     }
 

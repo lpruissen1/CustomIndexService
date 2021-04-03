@@ -7,6 +7,7 @@ namespace StockScreener.Model.BaseSecurity
         public List<EarningsEntry> QuarterlyEarnings;
         public List<RevenueEntry> QuarterlyRevenue;
         public List<PriceEntry> DailyPrice;
+        public List<SalesPerShareEntry> QuarterlySalesPerShare;
 
         public void Map(BaseSecurity security)
         {
@@ -23,6 +24,7 @@ namespace StockScreener.Model.BaseSecurity
             DebtToEquityRatio = security.DebtToEquityRatio != 0 ? security.DebtToEquityRatio : DebtToEquityRatio;
             FreeCashFlow = security.FreeCashFlow != 0 ? security.FreeCashFlow : FreeCashFlow;
             CurrentRatio = security.CurrentRatio != 0 ? security.CurrentRatio : CurrentRatio;
+            QuarterlySalesPerShare = security.QuarterlySalesPerShare != null ? security.QuarterlySalesPerShare : QuarterlySalesPerShare;
         }
     }
 

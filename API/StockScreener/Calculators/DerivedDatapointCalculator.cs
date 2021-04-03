@@ -29,7 +29,8 @@ namespace StockScreener.Calculators
                     WorkingCapital = security.WorkingCapital,
                     DebtToEquityRatio = security.DebtToEquityRatio,
                     FreeCashFlow = security.FreeCashFlow,
-                    CurrentRatio = security.CurrentRatio
+                    CurrentRatio = security.CurrentRatio,
+                    PriceToSalesRatioTTM = DerivePriceToSalesTTM(derivedDatapoints, security)
                 });
             }
             
@@ -64,6 +65,19 @@ namespace StockScreener.Calculators
             var yearlyEarnings = earningsEntries.Sum(x => x.Earnings);
 
             return security.DailyPrice.Last().Price / yearlyEarnings;
+
+        }
+
+        private double DerivePriceToSalesTTM(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.PriceToSalesRatioTTM))
+                return 0;
+
+            var salesPerShareEntries = GetAllEntriesForTimeSpan(security.QuarterlySalesPerShare, TimeSpan.OneYear);
+
+            var yearlySalesPerShare = salesPerShareEntries.Sum(x => x.SalesPerShare);
+
+            return security.DailyPrice.Last().Price / yearlySalesPerShare;
 
         }
 

@@ -24,6 +24,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapDebtToEquityRatio(index.DebtToEquityRatio));
             metricList.Add(MapFreeCashFlow(index.FreeCashFlow));
             metricList.Add(MapCurrentRatio(index.CurrentRatio));
+            metricList.Add(MapPriceToSalesTTM(index.PriceToSalesRatioTTM));
 
             return metricList;
         }
@@ -196,6 +197,21 @@ namespace StockScreener.Mapper
             }
 
             return new PriceToEarningsRatioTTMMetric(list);
+        }
+
+        private IMetric MapPriceToSalesTTM(List<PriceToSalesRatioTTM> priceToSalesRatioTTM)
+        {
+            if (!priceToSalesRatioTTM.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var priceToSalesRatioTTMTarget in priceToSalesRatioTTM)
+            {
+                list.Add(new Range(priceToSalesRatioTTMTarget.Upper, priceToSalesRatioTTMTarget.Lower));
+            }
+
+            return new PriceToSalesRatioTTMMetric(list);
         }
 
         private TimeSpan GetTimeSpan(int timeRange)
