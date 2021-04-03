@@ -156,9 +156,9 @@ namespace StockScreener.Service.IntegrationTests
 						stockIndex1
 					}
 				},
-				TrailingPerformance = new List<TrailingPerformance>()
+				TrailingPerformance = new List<AnnualizedTrailingPerformance>()
 				{
-					new TrailingPerformance { Lower = 0, Upper = 100, TimePeriod = 1}
+					new AnnualizedTrailingPerformance { Lower = 0, Upper = 100, TimePeriod = 1}
                 }
 			};
 
@@ -171,6 +171,7 @@ namespace StockScreener.Service.IntegrationTests
 			Assert.AreEqual(ticker1, result[0].Ticker);
 		}
 	}
+
 	[TestFixture]
 	public class RevenueGrowthScreeningTests : StockScreenerServiceTestBase
 	{

@@ -1,6 +1,6 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class TrailingPerformance : MetricRange
+    public class AnnualizedTrailingPerformance : MetricRange
     {
         public int TimePeriod;
     }

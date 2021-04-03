@@ -185,7 +185,7 @@ namespace StockScreener.Mapper
             return new RevenueGrowthMetric(list);
         }
 
-        private IMetric MapTrailingPerformance(List<TrailingPerformance> trailingPerformances)
+        private IMetric MapTrailingPerformance(List<AnnualizedTrailingPerformance> trailingPerformances)
         {
             if (!trailingPerformances.Any())
                 return null;
