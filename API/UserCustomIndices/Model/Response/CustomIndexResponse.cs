@@ -1,9 +1,11 @@
-﻿namespace UserCustomIndices.Model.Response
+﻿using System.Collections.Generic;
+
+namespace UserCustomIndices.Model.Response
 {
     public class CustomIndexResponse
     {
         public string Id { get; set; }
-        public ComposedMarkets Markets { get; set; }
+        public List<string> Markets { get; set; }
         public DividendYield DividendYield { get; set; }
         public GrossMargins GrossMargins { get; set; }
         public PayoutRatio PayoutRatio { get; set; }

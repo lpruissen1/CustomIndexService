@@ -40,22 +40,10 @@ namespace StockScreener.Service.IntegrationTests
 						workingCapital = 1_000_000d
 					}
 				}
-			}) ;
+			});
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				WorkingCapital = new List<WorkingCapitals>()
-				{
-					new WorkingCapitals {Lower = 5_000_000, Upper = 15_000_000}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex1);
+			AddWorkingCapitalToCustomIndex(15_000_000, 5_000_000);
 
 			var result = sut.Screen(customIndex);
 

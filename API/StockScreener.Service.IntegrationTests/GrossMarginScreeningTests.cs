@@ -42,20 +42,9 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			}) ;
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				GrossMargin = new List<GrossMargins>()
-				{
-					new GrossMargins {Lower = 0.1, Upper = 0.5}
-				}
-			};
+
+			AddMarketToCustomIndex(stockIndex1);
+            AddGrossMarginToCustomIndex(0.5, 0.1);
 
 			var result = sut.Screen(customIndex);
 

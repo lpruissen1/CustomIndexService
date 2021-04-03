@@ -40,22 +40,10 @@ namespace StockScreener.Service.IntegrationTests
 						profitMargin = 0.05d
 					}
 				}
-			}) ;
+			});
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				ProfitMargin = new List<ProfitMargins>()
-				{
-					new ProfitMargins {Lower = 0.1, Upper = 0.5}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex1);
+			AddProfitMarginToCustomIndex(.5, .1);
 
 			var result = sut.Screen(customIndex);
 

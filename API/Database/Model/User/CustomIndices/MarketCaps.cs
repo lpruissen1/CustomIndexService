@@ -2,7 +2,7 @@
 {
     public class MarketCaps
     {
-        public MarketCap[] MarketCapGroups;
+        public MarketCapitalzation[] MarketCapGroups;
 
         public bool IsNull()
         {

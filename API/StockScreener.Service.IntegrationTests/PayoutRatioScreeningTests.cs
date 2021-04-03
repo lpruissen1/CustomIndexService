@@ -42,20 +42,8 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			}) ;
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				PayoutRatio = new List<PayoutRatios>()
-				{
-					new PayoutRatios {Lower = 0, Upper = 0.15}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex1);
+			AddPayoutRatioToCustomIndex(0.15, 0);
 
 			var result = sut.Screen(customIndex);
 

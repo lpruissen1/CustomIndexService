@@ -12,7 +12,7 @@ namespace StockScreener.Mapper
         public MetricList MapToMetricList(CustomIndex index)
         {
             MetricList metricList = new MetricList();
-            metricList.Indices = index.Markets.Markets;
+            metricList.Indices = index.Markets.ToArray();
 
             metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
             metricList.Add(MapMarketCap(index.MarketCaps));
@@ -30,34 +30,34 @@ namespace StockScreener.Mapper
             return metricList;
         }
 
-        private IMetric MapSectorsAndIndustries(Sectors sectors)
+        private IMetric MapSectorsAndIndustries(List<Sector> sectors)
         {
-            if (sectors.IsNull())
+            if (!sectors.Any())
                 return null;
 
             var sectorList = new List<string>();
             var industryList = new List<string>();
 
-            foreach(var sectorGroup in sectors.SectorGroups)
+            foreach(var sector in sectors)
             {
-                if (sectorGroup.Industries is null)
-                    sectorList.Add(sectorGroup.Name);
+                if (sector.Industries is null)
+                    sectorList.Add(sector.Name);
 
                 else
-                    industryList.AddRange(sectorGroup.Industries);
+                    industryList.AddRange(sector.Industries);
             }
 
             return new SectorAndIndustryMetric(sectorList, industryList);
         }
 
-        private IMetric MapMarketCap(MarketCaps marketCaps)
+        private IMetric MapMarketCap(List<MarketCapitalzation> marketCaps)
         {
-            if(marketCaps.IsNull())
+            if(!marketCaps.Any())
                 return null;
 
             var list = new List<Range>();
 
-            foreach(var marketCapRange in marketCaps.MarketCapGroups)
+            foreach(var marketCapRange in marketCaps)
             {
                 list.Add(new Range(marketCapRange.Upper, marketCapRange.Lower));
             }

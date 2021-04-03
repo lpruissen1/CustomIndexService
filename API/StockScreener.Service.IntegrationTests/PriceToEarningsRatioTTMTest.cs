@@ -99,20 +99,8 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			});
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				PriceToEarningsRatioTTM = new List<PriceToEarningsRatioTTM>()
-				{
-					new PriceToEarningsRatioTTM {Upper = 25}
-                }
-			};
+			AddMarketToCustomIndex(stockIndex1);
+			AddPriceToEarningsRatioToCustomIndex(25, 0);
 
 			var result = sut.Screen(customIndex);
 

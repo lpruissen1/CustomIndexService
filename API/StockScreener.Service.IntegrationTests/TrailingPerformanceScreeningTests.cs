@@ -1,5 +1,6 @@
 ﻿using Database.Model.User.CustomIndices;
 using NUnit.Framework;
+using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
 using System.Collections.Generic;
@@ -7,10 +8,10 @@ using System.Collections.Generic;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-	public class DebtToEquityRatioScreeningTests : StockScreenerServiceTestBase
+	public class TrailingPerformanceScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_DebtToEquityRatio()
+		public void ScreenByStockIndex_TrailingPerformance_Quarterly()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -18,32 +19,44 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
+			AddDayPriceData(new DayPriceData 
 			{ 
 				Ticker = ticker1,
-				DebtToEquityRatio = new List<DebtToEquityRatio> 
-				{ 
-					new DebtToEquityRatio 
-					{ 
-						debtToEquityRatio = 0.75d
-					} 
-				} 
-			});
-
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				DebtToEquityRatio = new List<DebtToEquityRatio>
+				Candle = new List<Candle>
 				{
-					new DebtToEquityRatio
+					new Candle
 					{
-						debtToEquityRatio = 2.5d
+						timestamp =  1609480830,
+						closePrice = 143.69
+					},
+					new Candle
+					{
+						timestamp = 1617411630,
+						closePrice = 149.20
 					}
 				}
-			}) ;
+			});
+
+			AddDayPriceData(new DayPriceData
+			{
+				Ticker = ticker2,
+				Candle = new List<Candle>
+				{
+					new Candle
+					{
+						timestamp =  1609480830,
+						closePrice = 27.92
+					},
+					new Candle
+					{
+						timestamp = 1617411630,
+						closePrice = 21.45
+					}
+				}
+			});
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddDebtToEquityRatioToCustomIndex(1, 0);
+			AddAnnualizedTrailingPerformanceoCustomIndex(100, 0, 1);
 
 			var result = sut.Screen(customIndex);
 

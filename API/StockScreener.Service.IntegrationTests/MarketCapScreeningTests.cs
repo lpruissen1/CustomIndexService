@@ -1,10 +1,7 @@
-﻿using Database.Model.User.CustomIndices;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
 using System.Collections.Generic;
-using CustomIndexMarketCap = Database.Model.User.CustomIndices.MarketCap;
-using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -44,20 +41,8 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			});
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				MarketCaps = new MarketCaps()
-                {
-				   MarketCapGroups = new[] { new CustomIndexMarketCap { Lower = 200_000d, Upper = 2_000_000d } }
-                }
-			};
+			AddMarketToCustomIndex(stockIndex1);
+			AddMarketCapToCustomIndex(2_000_000d, 200_000d);
 
 			var result = sut.Screen(customIndex);
 

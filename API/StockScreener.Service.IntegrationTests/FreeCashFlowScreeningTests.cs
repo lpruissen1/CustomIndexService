@@ -42,20 +42,8 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			}) ;
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				FreeCashFlow = new List<FreeCashFlows>()
-				{
-					new FreeCashFlows {Lower = 10_000_000, Upper = 10_000_000_000}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex1);
+			AddFreeCashFlowToCustomIndex(10_000_000_000, 10_000_000);
 
 			var result = sut.Screen(customIndex);
 

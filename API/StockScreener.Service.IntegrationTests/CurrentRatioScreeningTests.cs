@@ -40,22 +40,10 @@ namespace StockScreener.Service.IntegrationTests
 						currentRatio = 0.75d
 					}
 				}
-			}) ;
+			});
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				CurrentRatio = new List<CurrentRatios>()
-				{
-					new CurrentRatios {Lower = 1, Upper = 4}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex1);
+			AddCurrentRatioToCustomIndex(4, 1);
 
 			var result = sut.Screen(customIndex);
 

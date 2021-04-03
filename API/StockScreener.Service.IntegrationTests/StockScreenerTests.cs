@@ -28,16 +28,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker1 });
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker2 });
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex1);
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
@@ -67,17 +58,8 @@ namespace StockScreener.Service.IntegrationTests
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker2 });
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker3 });
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1,
-						stockIndex3
-					}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToCustomIndex(stockIndex3);
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
@@ -104,23 +86,8 @@ namespace StockScreener.Service.IntegrationTests
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = sector1, Industry = industry1 });
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = sector2, Industry = industry2 });
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex
-					}
-				},
-				SectorAndIndsutry = new Sectors
-				{
-					SectorGroups = new[]
-					{
-						new Sector { Name = sector1}
-					}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex);
+			AddSectorToCustomIndex(sector1);
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
@@ -152,23 +119,8 @@ namespace StockScreener.Service.IntegrationTests
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = energySector, Industry = energyIndustry2 });
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker3, Sector = materialsSector, Industry = materialsIndustry1 });
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex
-					}
-				},
-				SectorAndIndsutry = new Sectors
-				{
-					SectorGroups = new[]
-					{
-						new Sector { Name = energySector, Industries = new[] { energyIndustry1 }}
-					}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex);
+			AddIndustryToCustomIndex(energyIndustry1);
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
@@ -203,24 +155,9 @@ namespace StockScreener.Service.IntegrationTests
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = energySector, Industry = energyIndustry2 });
 			AddCompanyInfo(new CompanyInfo { Ticker = ticker3, Sector = materialsSector, Industry = materialsIndustry });
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex
-					}
-				},
-				SectorAndIndsutry = new Sectors
-				{
-					SectorGroups = new[]
-					{
-						new Sector { Name = energySector, Industries = new[] { energyIndustry1 }},
-						new Sector { Name = materialsSector}
-					}
-				}
-			};
+			AddMarketToCustomIndex(stockIndex);
+			AddIndustryToCustomIndex(energyIndustry1);
+			AddSectorToCustomIndex(materialsSector);
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
