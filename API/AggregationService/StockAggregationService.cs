@@ -1,4 +1,4 @@
-using AggregationService;
+using Core;
 using AggregationService.Core;
 using ApiClient;
 using ApiClient.Models;
@@ -67,14 +67,14 @@ namespace AggregationService
 
 		public void InsertHourlyPriceData(string ticker)
 		{
-			var response = polygonApiClient.GetPriceData(ticker, 1, TimeResolution.Hour);
+			var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Hour);
 
 			if (response.Results.Count != 0)
 				priceDataRepository.Create(MapToPriceData<HourPriceData>(response));
 		}
 		public void InsertDailyPriceData(string ticker)
 		{
-			var response = polygonApiClient.GetPriceData(ticker, 1, TimeResolution.Day);
+			var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Day);
 
 			if (response.Results.Count != 0)
 				priceDataRepository.Create(MapToPriceData<DayPriceData>(response));
@@ -138,7 +138,7 @@ namespace AggregationService
 		}
 		public void UpdateDailyPriceData(string ticker)
 		{
-			var response = polygonApiClient.GetPriceData(ticker, 1, TimeResolution.Day);
+			var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Day);
 
 			if (response.Results is null)
 				return;
@@ -150,7 +150,7 @@ namespace AggregationService
 
 		public void UpdateHourlyPriceData(string ticker)
 		{
-			var response = polygonApiClient.GetPriceData(ticker, 1, TimeResolution.Hour);
+			var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Hour);
 
 			if(response.Results is null)
 				return;

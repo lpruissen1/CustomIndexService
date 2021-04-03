@@ -1,6 +1,6 @@
-﻿using Database.Core;
+﻿using Core;
+using Database.Core;
 using StockScreener.Database.Model.Price;
-using System;
 using System.Collections.Generic;
 
 namespace StockScreener.Database.Repos
@@ -12,7 +12,7 @@ namespace StockScreener.Database.Repos
         void Update(HourPriceData obj);
         void Update(DayPriceData obj);
         double GetMostRecentPriceEntry<TPriceEntry>(string ticker) where TPriceEntry : PriceData;
-        double GetPriceData<TPriceEntry>(string ticker, TimeSpan timeSpan) where TPriceEntry : PriceData;
+        double GetPriceData<TPriceEntry>(string ticker, TimePeriod timeSpan) where TPriceEntry : PriceData;
         List<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Database.Model.User.CustomIndices;
+﻿using Core;
+using Database.Model.User.CustomIndices;
 using StockScreener.Core;
 using StockScreener.Model.Metrics;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapDebtToEquityRatio(index.DebtToEquityRatio));
             metricList.Add(MapFreeCashFlow(index.FreeCashFlow));
             metricList.Add(MapCurrentRatio(index.CurrentRatio));
+            metricList.Add(MapTrailingPerformance(index.TrailingPerformance));
 
             return metricList;
         }
@@ -173,14 +175,29 @@ namespace StockScreener.Mapper
             if(!revenueGrowth.Any())
                 return null;
 
-            var list = new List<RangeAndTimeSpan>();
+            var list = new List<RangeAndTimePeriod>();
 
             foreach(var revenueGrowthTarget in revenueGrowth)
             {
-                list.Add(new RangeAndTimeSpan(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
+                list.Add(new RangeAndTimePeriod(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
             }
 
             return new RevenueGrowthMetric(list);
+        }
+
+        private IMetric MapTrailingPerformance(List<TrailingPerformance> trailingPerformances)
+        {
+            if (!trailingPerformances.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var trailingPerformance in trailingPerformances)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(trailingPerformance.Upper, trailingPerformance.Lower), GetTimeSpan(trailingPerformance.TimePeriod)));
+            }
+
+            return new TrailingPerformanceMetric(list);
         }
 
         private IMetric MapPriceToEarningsTTM(List<PriceToEarningsRatioTTM> priceToEarningsRatioTTM)
@@ -198,20 +215,20 @@ namespace StockScreener.Mapper
             return new PriceToEarningsRatioTTMMetric(list);
         }
 
-        private TimeSpan GetTimeSpan(int timeRange)
+        private TimePeriod GetTimeSpan(int timeRange)
         {
             switch (timeRange)
             {
                 case 1:
-                    return TimeSpan.Quarterly;
+                    return TimePeriod.Quarter;
                 case 2:
-                    return TimeSpan.HalfYear;
+                    return TimePeriod.HalfYear;
                 case 4:
-                    return TimeSpan.OneYear;
+                    return TimePeriod.Year;
                 case 12:
-                    return TimeSpan.ThreeYear;
+                    return TimePeriod.ThreeYear;
                 case 20:
-                    return TimeSpan.FiveYear;
+                    return TimePeriod.FiveYear;
                 default:
                     throw new System.Exception("Fuck yourself");
             }

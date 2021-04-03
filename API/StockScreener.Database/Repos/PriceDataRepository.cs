@@ -1,4 +1,5 @@
-﻿using Database.Core;
+﻿using Core;
+using Database.Core;
 using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Database.Model.Price;
@@ -71,7 +72,7 @@ namespace StockScreener.Database.Repos
 			return Builders<TPriceType>.Update.PushEach<Candle>("Candle", candles);
 		}
 
-        public double GetPriceData<TPriceEntry>(string ticker, TimeSpan timeSpan) where TPriceEntry : PriceData
+        public double GetPriceData<TPriceEntry>(string ticker, TimePeriod timeSpan) where TPriceEntry : PriceData
         {
             throw new NotImplementedException();
         }

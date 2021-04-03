@@ -9,7 +9,7 @@ namespace Database.Model.User.CustomIndices
         public ComposedMarkets Markets { get; init; } = new ComposedMarkets();
         public DividendYield DividendYield { get; init; } 
         public Volitility Volitility { get; init; }
-        public TrailingPerformance TrailingPerformance { get; init; }
+        public List<TrailingPerformance> TrailingPerformance { get; init; } = new List<TrailingPerformance>();
         public List<RevenueGrowth> RevenueGrowths { get; init; } = new List<RevenueGrowth>();
         public EarningsGrowth EarningsGrowth { get; init; }
         public List<PriceToEarningsRatioTTM> PriceToEarningsRatioTTM { get; init; } = new List<PriceToEarningsRatioTTM>();
