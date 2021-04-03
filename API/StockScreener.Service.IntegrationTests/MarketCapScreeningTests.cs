@@ -1,18 +1,14 @@
-﻿//using Database.Model.User.CustomIndices;
-using Database.Model.User.CustomIndices;
-using Database.Repositories;
+﻿using Database.Model.User.CustomIndices;
 using NUnit.Framework;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
 using CustomIndexMarketCap = Database.Model.User.CustomIndices.MarketCap;
 using MarketCap = StockScreener.Database.Model.StockFinancials.MarketCap;
 
 namespace StockScreener.Service.IntegrationTests
 {
-	[TestFixture]
+    [TestFixture]
 	public class MarketCapScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -62,8 +58,6 @@ namespace StockScreener.Service.IntegrationTests
 				   MarketCapGroups = new[] { new CustomIndexMarketCap { Lower = 200_000d, Upper = 2_000_000d } }
                 }
 			};
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 

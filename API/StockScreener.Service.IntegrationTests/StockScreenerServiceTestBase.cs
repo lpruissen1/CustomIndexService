@@ -1,5 +1,5 @@
-﻿using Database;
-using Database.Core;
+﻿using Database.Core;
+using Database.Repositories;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using StockScreener.Database;
@@ -8,10 +8,12 @@ using StockScreener.Database.Model.CompanyInfo;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
+using StockScreener.Database.Repos;
+using StockScreener.SecurityGrabber;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    public abstract class StockScreenerServiceTestBase
+	public abstract class StockScreenerServiceTestBase
 	{
 		protected IMongoDBContext context;
 
@@ -26,10 +28,10 @@ namespace StockScreener.Service.IntegrationTests
 			context = new MongoStockInformationDbContext(dbSettings);
 		}
 
-		[OneTimeTearDown]
-		public virtual void OneTimeTearDown()
-		{
-			context.ClearAll();
+		[SetUp]
+		public virtual void SetUp()
+        {
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 		}
 
 		[TearDown]

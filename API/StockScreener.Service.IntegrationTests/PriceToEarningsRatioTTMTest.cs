@@ -1,16 +1,13 @@
 ﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
 using NUnit.Framework;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-	[TestFixture]
+    [TestFixture]
     public class PriceToEarningsRatioTTMTest : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -116,8 +113,6 @@ namespace StockScreener.Service.IntegrationTests
 					new PriceToEarningsRatioTTM {Upper = 25}
                 }
 			};
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 

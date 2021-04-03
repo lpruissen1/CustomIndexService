@@ -9,13 +9,9 @@ using System.Linq;
 
 namespace StockScreener.Service.IntegrationTests
 {
+	[TestFixture]
     public class StockScreenerTests : StockScreenerServiceTestBase
 	{
-        [SetUp]
-        public void Setup()
-        {
-
-        }
 
         [Test]
         public void ScreenByStockIndex_SingleIndexTest()

@@ -1,16 +1,13 @@
 ﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
 using NUnit.Framework;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-	[TestFixture]
+    [TestFixture]
 	public class TrailingPerformanceScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -93,8 +90,6 @@ namespace StockScreener.Service.IntegrationTests
                 }
 			};
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
-
 			var result = sut.Screen(customIndex);
 
 			Assert.AreEqual(1, result.Count);
@@ -161,8 +156,6 @@ namespace StockScreener.Service.IntegrationTests
 					new AnnualizedTrailingPerformance { Lower = 0, Upper = 100, TimePeriod = 1}
                 }
 			};
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 
@@ -255,8 +248,6 @@ namespace StockScreener.Service.IntegrationTests
                 }
 			};
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
-
 			var result = sut.Screen(customIndex);
 
 			Assert.AreEqual(1, result.Count);
@@ -343,8 +334,6 @@ namespace StockScreener.Service.IntegrationTests
 					new RevenueGrowth { Lower = 404, Upper = 407, TimePeriod = 1}
                 }
 			};
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 
