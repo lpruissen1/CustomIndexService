@@ -25,6 +25,7 @@ namespace StockScreener.Model.BaseSecurity
             FreeCashFlow = security.FreeCashFlow != 0 ? security.FreeCashFlow : FreeCashFlow;
             CurrentRatio = security.CurrentRatio != 0 ? security.CurrentRatio : CurrentRatio;
             QuarterlySalesPerShare = security.QuarterlySalesPerShare != null ? security.QuarterlySalesPerShare : QuarterlySalesPerShare;
+            BookValuePerShare = security.BookValuePerShare != 0 ? security.BookValuePerShare : BookValuePerShare;
         }
     }
 

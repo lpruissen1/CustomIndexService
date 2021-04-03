@@ -25,6 +25,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapFreeCashFlow(index.FreeCashFlow));
             metricList.Add(MapCurrentRatio(index.CurrentRatio));
             metricList.Add(MapPriceToSalesTTM(index.PriceToSalesRatioTTM));
+            metricList.Add(MapPriceToBook(index.PriceToBookValue));
 
             return metricList;
         }
@@ -197,6 +198,21 @@ namespace StockScreener.Mapper
             }
 
             return new PriceToEarningsRatioTTMMetric(list);
+        }
+
+        private IMetric MapPriceToBook(List<PriceToBookValue> priceToBookValue)
+        {
+            if (!priceToBookValue.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var priceToBookValueTarget in priceToBookValue)
+            {
+                list.Add(new Range(priceToBookValueTarget.Upper, priceToBookValueTarget.Lower));
+            }
+
+            return new PriceToBookRatioMetric(list);
         }
 
         private IMetric MapPriceToSalesTTM(List<PriceToSalesRatioTTM> priceToSalesRatioTTM)

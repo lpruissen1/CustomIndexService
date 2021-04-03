@@ -13,5 +13,6 @@
         public double DebtToEquityRatio;
         public double FreeCashFlow;
         public double CurrentRatio;
+        public double BookValuePerShare;
     }
 }

@@ -30,7 +30,8 @@ namespace StockScreener.Calculators
                     DebtToEquityRatio = security.DebtToEquityRatio,
                     FreeCashFlow = security.FreeCashFlow,
                     CurrentRatio = security.CurrentRatio,
-                    PriceToSalesRatioTTM = DerivePriceToSalesTTM(derivedDatapoints, security)
+                    PriceToSalesRatioTTM = DerivePriceToSalesTTM(derivedDatapoints, security),
+                    PriceToBookValue = DerivePriceToBook(derivedDatapoints, security)
                 });
             }
             
@@ -65,6 +66,15 @@ namespace StockScreener.Calculators
             var yearlyEarnings = earningsEntries.Sum(x => x.Earnings);
 
             return security.DailyPrice.Last().Price / yearlyEarnings;
+
+        }
+
+        private double DerivePriceToBook(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.PriceToBookValue))
+                return 0;
+
+            return security.DailyPrice.Last().Price / security.BookValuePerShare;
 
         }
 

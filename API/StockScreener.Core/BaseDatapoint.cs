@@ -19,9 +19,10 @@ namespace StockScreener.Core
         FreeCashFlow = 2048,
         CurrentRatio = 4096,
         QuarterlySalesPerShare = 8192,
+        BookValuePerShare = 16384,
 
 
         CompanyInfo  = Sector | Industry,
-        StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio | ProfitMargin | GrossMargin | WorkingCapital | DebtToEquityRatio | FreeCashFlow | CurrentRatio | QuarterlySalesPerShare
+        StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio | ProfitMargin | GrossMargin | WorkingCapital | DebtToEquityRatio | FreeCashFlow | CurrentRatio | QuarterlySalesPerShare | BookValuePerShare
     }
 }

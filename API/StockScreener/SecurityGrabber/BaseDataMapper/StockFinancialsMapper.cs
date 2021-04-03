@@ -23,7 +23,8 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
                 {BaseDatapoint.DebtToEquityRatio, AddDebtToEquityRatio },
                 {BaseDatapoint.FreeCashFlow, AddFreeCashFlow },
                 {BaseDatapoint.CurrentRatio, AddCurrentRatio },
-                {BaseDatapoint.QuarterlySalesPerShare, AddQuarterlySalesPerShare }
+                {BaseDatapoint.QuarterlySalesPerShare, AddQuarterlySalesPerShare },
+                {BaseDatapoint.BookValuePerShare, AddBookValuePerShare }
             };
         }
 
@@ -42,6 +43,11 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
         public void AddCurrentRatio(StockFinancials stockFinancials)
         {
             security.CurrentRatio = stockFinancials.CurrentRatio.Last().currentRatio;
+        }
+
+        public void AddBookValuePerShare(StockFinancials stockFinancials)
+        {
+            security.BookValuePerShare = stockFinancials.BookValuePerShare.Last().bookValuePerShare;
         }
 
         public void AddFreeCashFlow(StockFinancials stockFinancials)
