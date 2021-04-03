@@ -10,6 +10,7 @@ namespace StockScreener.Model.BaseSecurity
         public double PriceToEarningsRatioTTM;
         public double PriceToSalesRatioTTM;
         public double PriceToBookValue;
+        public double DividendYield;
         public Dictionary<TimeSpan, double> TrailingPerformance;
     }
 

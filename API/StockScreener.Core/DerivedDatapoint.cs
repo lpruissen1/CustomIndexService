@@ -17,5 +17,6 @@
         CurrentRatio = 13,
         PriceToSalesRatioTTM = 14,
         PriceToBookValue = 15,
+        DividendYield = 16,
     }
 }

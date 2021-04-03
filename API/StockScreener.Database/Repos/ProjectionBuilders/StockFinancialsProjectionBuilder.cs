@@ -23,6 +23,7 @@ namespace Database.Repositories
                 {BaseDatapoint.CurrentRatio, AddCurrentRatio },
                 {BaseDatapoint.QuarterlySalesPerShare, AddQuarterlySalesPerShare },
                 {BaseDatapoint.BookValuePerShare, AddBookValuePerShare },
+                {BaseDatapoint.DividendsPerShare, AddDividendsPerShare },
             };
         }
 
@@ -34,6 +35,11 @@ namespace Database.Repositories
         private void AddCurrentRatio()
         {
             projection.Include(x => x.CurrentRatio);
+        }
+
+        private void AddDividendsPerShare()
+        {
+            projection.Include(x => x.DividendsPerShare);
         }
 
         private void AddBookValuePerShare()

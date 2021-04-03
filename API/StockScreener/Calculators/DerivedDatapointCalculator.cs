@@ -31,7 +31,8 @@ namespace StockScreener.Calculators
                     FreeCashFlow = security.FreeCashFlow,
                     CurrentRatio = security.CurrentRatio,
                     PriceToSalesRatioTTM = DerivePriceToSalesTTM(derivedDatapoints, security),
-                    PriceToBookValue = DerivePriceToBook(derivedDatapoints, security)
+                    PriceToBookValue = DerivePriceToBook(derivedDatapoints, security),
+                    DividendYield = DeriveDividendYield(derivedDatapoints, security)
                 });
             }
             
@@ -66,6 +67,19 @@ namespace StockScreener.Calculators
             var yearlyEarnings = earningsEntries.Sum(x => x.Earnings);
 
             return security.DailyPrice.Last().Price / yearlyEarnings;
+
+        }
+
+        private double DeriveDividendYield(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.DividendYield))
+                return 0;
+
+            var dividendEntries = GetAllEntriesForTimeSpan(security.QuarterlyDividendsPerShare, TimeSpan.OneYear);
+
+            var yearlyDividends = dividendEntries.Sum(x => x.QuarterlyDividends);
+
+            return (yearlyDividends / security.DailyPrice.Last().Price) * 100 ;
 
         }
 

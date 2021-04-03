@@ -7,7 +7,7 @@ namespace Database.Model.User.CustomIndices
     {
         public string UserId { get; init; }
         public ComposedMarkets Markets { get; init; } = new ComposedMarkets();
-        public DividendYield DividendYield { get; init; } 
+        public List<DividendYield> DividendYield { get; init; } = new List<DividendYield>();
         public Volitility Volitility { get; init; }
         public TrailingPerformance TrailingPerformance { get; init; }
         public List<RevenueGrowth> RevenueGrowths { get; init; } = new List<RevenueGrowth>();

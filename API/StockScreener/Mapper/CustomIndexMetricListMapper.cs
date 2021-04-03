@@ -26,6 +26,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapCurrentRatio(index.CurrentRatio));
             metricList.Add(MapPriceToSalesTTM(index.PriceToSalesRatioTTM));
             metricList.Add(MapPriceToBook(index.PriceToBookValue));
+            metricList.Add(MapDividendYield(index.DividendYield));
 
             return metricList;
         }
@@ -198,6 +199,21 @@ namespace StockScreener.Mapper
             }
 
             return new PriceToEarningsRatioTTMMetric(list);
+        }
+
+        private IMetric MapDividendYield(List<DividendYield> dividendYield)
+        {
+            if (!dividendYield.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var dividendYieldTarget in dividendYield)
+            {
+                list.Add(new Range(dividendYieldTarget.Upper, dividendYieldTarget.Lower));
+            }
+
+            return new DividendYieldMetric(list);
         }
 
         private IMetric MapPriceToBook(List<PriceToBookValue> priceToBookValue)
