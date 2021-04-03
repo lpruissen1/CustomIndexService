@@ -1,6 +1,6 @@
 ﻿namespace UserCustomIndices.Model.Response
 {
-    public struct TrailingPerformance
+    public struct AnnualizedTrailingPerformance
     {
         public int TimePeriod;
         public double Upper;

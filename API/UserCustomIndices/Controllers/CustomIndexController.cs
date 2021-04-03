@@ -12,7 +12,6 @@ namespace UserCustomIndices.Controllers
     [Route("[controller]")]
     public class CustomIndexController : ControllerBase
     {
-        private readonly ILogger<CustomIndexController> logger;
         private readonly ICustomIndexService indexService;
 
         public CustomIndexController(ICustomIndexService indexService)

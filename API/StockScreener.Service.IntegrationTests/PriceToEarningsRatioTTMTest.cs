@@ -50,7 +50,7 @@ namespace StockScreener.Service.IntegrationTests
 				} 
 			});
 
-			AddDailyPriceData(new DayPriceData
+			AddDayPriceData(new DayPriceData
 			{
 				Ticker = ticker1,
 				Candle = new List<Candle>
@@ -90,7 +90,7 @@ namespace StockScreener.Service.IntegrationTests
 				}
 			});
 
-			AddDailyPriceData(new DayPriceData
+			AddDayPriceData(new DayPriceData
 			{
 				Ticker = ticker2,
 				Candle = new List<Candle>
