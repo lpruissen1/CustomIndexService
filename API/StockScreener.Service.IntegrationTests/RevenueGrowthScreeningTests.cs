@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
