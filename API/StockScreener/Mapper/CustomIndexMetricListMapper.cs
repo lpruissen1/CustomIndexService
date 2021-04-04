@@ -12,7 +12,7 @@ namespace StockScreener.Mapper
         public MetricList MapToMetricList(CustomIndex index)
         {
             MetricList metricList = new MetricList();
-            metricList.Indices = index.Markets.Markets;
+            metricList.Indices = index.Markets.ToArray();
 
             metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
             metricList.Add(MapMarketCap(index.MarketCaps));
@@ -27,41 +27,41 @@ namespace StockScreener.Mapper
             metricList.Add(MapCurrentRatio(index.CurrentRatio));
             metricList.Add(MapPriceToSalesTTM(index.PriceToSalesRatioTTM));
             metricList.Add(MapPriceToBook(index.PriceToBookValue));
-            metricList.Add(MapDividendYield(index.DividendYield));
+            metricList.Add(MapDividendYield(index.DividendYields));
             metricList.Add(MapEPSGrowthAnnualized(index.EPSGrowthAnnualized));
             metricList.Add(MapTrailingPerformance(index.TrailingPerformance));
 
             return metricList;
         }
 
-        private IMetric MapSectorsAndIndustries(Sectors sectors)
+        private IMetric MapSectorsAndIndustries(List<Sector> sectors)
         {
-            if (sectors.IsNull())
+            if (!sectors.Any())
                 return null;
 
             var sectorList = new List<string>();
             var industryList = new List<string>();
 
-            foreach(var sectorGroup in sectors.SectorGroups)
+            foreach(var sector in sectors)
             {
-                if (sectorGroup.Industries is null)
-                    sectorList.Add(sectorGroup.Name);
+                if (sector.Industries is null)
+                    sectorList.Add(sector.Name);
 
                 else
-                    industryList.AddRange(sectorGroup.Industries);
+                    industryList.AddRange(sector.Industries);
             }
 
             return new SectorAndIndustryMetric(sectorList, industryList);
         }
 
-        private IMetric MapMarketCap(MarketCaps marketCaps)
+        private IMetric MapMarketCap(List<MarketCapitalization> marketCaps)
         {
-            if(marketCaps.IsNull())
+            if(!marketCaps.Any())
                 return null;
 
             var list = new List<Range>();
 
-            foreach(var marketCapRange in marketCaps.MarketCapGroups)
+            foreach(var marketCapRange in marketCaps)
             {
                 list.Add(new Range(marketCapRange.Upper, marketCapRange.Lower));
             }
@@ -186,7 +186,7 @@ namespace StockScreener.Mapper
                 list.Add(new RangeAndTimePeriod(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
             }
 
-            return new RevenueGrowthMetric(list);
+            return new RevenueGrowthAnnualizedMetric(list);
         }
 
         private IMetric MapEPSGrowthAnnualized(List<EPSGrowthAnnualized> epsGrowth)

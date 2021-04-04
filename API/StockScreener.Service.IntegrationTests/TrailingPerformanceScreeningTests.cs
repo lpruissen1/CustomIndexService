@@ -4,10 +4,10 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-	public class GrossMarginsScreeningTest : StockScreenerServiceTestBase
+	public class TrailingPerformanceScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_GrossMargin()
+		public void ScreenByStockIndex_TrailingPerformance_Quarterly()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -15,11 +15,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddGrossMargin(0.4d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddGrossMargin(0.05d));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1617411630));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
 			AddMarketToCustomIndex(stockIndex1);
-            AddGrossMarginToCustomIndex(0.5, 0.1);
+			AddAnnualizedTrailingPerformanceoCustomIndex(100, 0, 1);
 
 			var result = sut.Screen(customIndex);
 

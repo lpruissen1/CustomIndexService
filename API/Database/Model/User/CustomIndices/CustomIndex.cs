@@ -6,16 +6,16 @@ namespace Database.Model.User.CustomIndices
     public class CustomIndex : DbEntity
     {
         public string UserId { get; init; }
-        public ComposedMarkets Markets { get; init; } = new ComposedMarkets();
-        public List<DividendYield> DividendYield { get; init; } = new List<DividendYield>();
+        public List<string> Markets { get; init; } = new List<string>();
+        public List<DividendYield> DividendYields { get; init; } = new List<DividendYield>();
         public Volitility Volitility { get; init; }
         public List<RevenueGrowthAnnualized> RevenueGrowthAnnualized { get; init; } = new List<RevenueGrowthAnnualized>();
         public List<EPSGrowthAnnualized> EPSGrowthAnnualized { get; init; } = new List<EPSGrowthAnnualized>();
         public List<AnnualizedTrailingPerformance> TrailingPerformance { get; init; } = new List<AnnualizedTrailingPerformance>();
         public List<PriceToEarningsRatioTTM> PriceToEarningsRatioTTM { get; init; } = new List<PriceToEarningsRatioTTM>();
         public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();
-        public Sectors SectorAndIndsutry { get; init; } = new Sectors();
-        public MarketCaps MarketCaps { get; init; } = new MarketCaps();
+        public List<Sector> SectorAndIndsutry { get; init; } = new List<Sector>();
+        public List<MarketCapitalization> MarketCaps { get; init; } = new List<MarketCapitalization>();
         public List<PayoutRatios> PayoutRatio { get; init; } = new List<PayoutRatios>();
         public List<ProfitMargins> ProfitMargin { get; init; } = new List<ProfitMargins>();
         public List<PriceToBookValue> PriceToBookValue { get; init; } = new List<PriceToBookValue>();

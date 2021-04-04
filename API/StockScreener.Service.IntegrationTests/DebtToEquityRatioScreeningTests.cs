@@ -1,15 +1,9 @@
-﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
-	[TestFixture]
+    [TestFixture]
 	public class DebtToEquityRatioScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -20,47 +14,12 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
-			{ 
-				Ticker = ticker1,
-				DebtToEquityRatio = new List<DebtToEquityRatio> 
-				{ 
-					new DebtToEquityRatio 
-					{ 
-						debtToEquityRatio = 0.75d
-					} 
-				} 
-			});
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddDebtToEquityRatio(0.75d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddDebtToEquityRatio(2.5d));
 
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				DebtToEquityRatio = new List<DebtToEquityRatio>
-				{
-					new DebtToEquityRatio
-					{
-						debtToEquityRatio = 2.5d
-					}
-				}
-			}) ;
-
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				DebtToEquityRatio = new List<DebtToEquityRatios>()
-				{
-					new DebtToEquityRatios {Lower = 0, Upper = 1}
-				}
-			};
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
+			AddMarketToCustomIndex(stockIndex1);
+			AddDebtToEquityRatioToCustomIndex(1, 0);
 
 			var result = sut.Screen(customIndex);
 

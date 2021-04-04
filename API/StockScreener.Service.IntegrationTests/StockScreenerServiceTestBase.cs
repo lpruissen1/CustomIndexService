@@ -1,13 +1,15 @@
-﻿using Database;
-using Database.Core;
+﻿using Database.Core;
+using Database.Model.User.CustomIndices;
+using Database.Repositories;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using StockScreener.Database;
 using StockScreener.Database.Config;
-using StockScreener.Database.Model.CompanyInfo;
-using StockScreener.Database.Model.Price;
-using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
+using StockScreener.Database.Repos;
+using StockScreener.SecurityGrabber;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -16,6 +18,8 @@ namespace StockScreener.Service.IntegrationTests
 		protected IMongoDBContext context;
 
 		protected StockScreenerService sut;
+
+		protected  CustomIndex customIndex;
 
 		[OneTimeSetUp]
 		public virtual void OneTimeSetUp()
@@ -26,36 +30,113 @@ namespace StockScreener.Service.IntegrationTests
 			context = new MongoStockInformationDbContext(dbSettings);
 		}
 
-		[OneTimeTearDown]
-		public virtual void OneTimeTearDown()
+		[SetUp]
+		public virtual void SetUp()
 		{
 			context.ClearAll();
+
+			customIndex = new CustomIndex();
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 		}
 
-		[TearDown]
-		public virtual void TearDown()
+		public void AddStockIndex(string indexName, IEnumerable<string> stockIndex)
+        {
+			context.GetCollection<StockIndex>("StockIndex").InsertOne(new StockIndex { Name = indexName, Tickers = stockIndex.ToList() });
+        }
+
+		public void InsertData<TEntry>(TEntry dBEntry)
+        {
+			context.GetCollection<TEntry>(typeof(TEntry).Name).InsertOne(dBEntry);
+		}
+
+		public void AddMarketToCustomIndex(string market)
+        {
+			customIndex.Markets.Add(market);
+        }
+
+		public void AddSectorToCustomIndex(string sector)
+        {
+			customIndex.SectorAndIndsutry.Add(new Sector() { Name = sector });
+        }
+
+		public void AddIndustryToCustomIndex(string industry)
+        {
+			customIndex.SectorAndIndsutry.Add(new Sector() { Industries = new[] { industry } });
+		}
+
+		public void AddWorkingCapitalToCustomIndex(double upper, double lower)
+        {
+			customIndex.WorkingCapital.Add(new WorkingCapitals {Upper = upper, Lower = lower});
+        }
+
+		public void AddProfitMarginToCustomIndex(double upper, double lower)
+        {
+			customIndex.ProfitMargin.Add(new ProfitMargins {Upper = upper, Lower = lower});
+        }
+
+		public void AddPriceToEarningsRatioToCustomIndex(double upper, double lower)
+        {
+			customIndex.PriceToEarningsRatioTTM.Add(new PriceToEarningsRatioTTM { Upper = upper, Lower = lower});
+        }
+
+		public void AddDividendYieldToCustomIndex(double upper, double lower)
 		{
-			context.ClearAll();
+			customIndex.DividendYields.Add(new DividendYield { Upper = upper, Lower = lower });
 		}
 
-		public void AddStockIndex(StockIndex stockIndex)
-        {
-			context.GetCollection<StockIndex>("StockIndex").InsertOne(stockIndex);
-        }
-
-		public void AddCompanyInfo(CompanyInfo companyInfo)
-        {
-			context.GetCollection<CompanyInfo>("CompanyInfo").InsertOne(companyInfo);
-        }
-
-		public void AddStockFinancials(StockFinancials stockFinancials)
-        {
-			context.GetCollection<StockFinancials>("StockFinancials").InsertOne(stockFinancials);
-        }
-
-		public void AddDayPriceData(DayPriceData dayPriceData)
+		public void AddPriceToBookRatioToCustomIndex(double upper, double lower)
 		{
-			context.GetCollection<DayPriceData>("DayPriceData").InsertOne(dayPriceData);
+			customIndex.PriceToBookValue.Add(new PriceToBookValue { Upper = upper, Lower = lower });
 		}
+
+		public void AddPriceToSalesRatioToCustomIndex(double upper, double lower)
+		{
+			customIndex.PriceToSalesRatioTTM.Add(new PriceToSalesRatioTTM { Upper = upper, Lower = lower });
+		}
+
+		public void AddPayoutRatioToCustomIndex(double upper, double lower)
+        {
+			customIndex.PayoutRatio.Add(new PayoutRatios {Upper = upper, Lower = lower});
+        }
+
+		public void AddMarketCapToCustomIndex(double upper, double lower)
+        {
+			customIndex.MarketCaps.Add(new MarketCapitalization { Upper = upper, Lower = lower });
+        }
+
+		public void AddGrossMarginToCustomIndex(double upper, double lower)
+        {
+			customIndex.GrossMargin.Add(new GrossMargins { Upper = upper, Lower = lower});
+        }
+
+		public void AddFreeCashFlowToCustomIndex(double upper, double lower)
+        {
+			customIndex.FreeCashFlow.Add(new FreeCashFlows {Upper = upper, Lower = lower});
+        }
+
+		public void AddDebtToEquityRatioToCustomIndex(double upper, double lower)
+        {
+			customIndex.DebtToEquityRatio.Add(new DebtToEquityRatios { Upper = upper, Lower = lower});
+        }
+
+		public void AddCurrentRatioToCustomIndex(double upper, double lower)
+        {
+			customIndex.CurrentRatio.Add(new CurrentRatios { Upper = upper, Lower = lower});
+        }
+
+		public void AddAnnualizedRevenueGrowthToCustomIndex(double upper, double lower, int range)
+        {
+			customIndex.RevenueGrowthAnnualized.Add(new RevenueGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
+        }
+
+		public void AddPriceToEarningsRatioGrowthToCustomIndex(double upper, double lower, int range)
+        {
+			customIndex.EPSGrowthAnnualized.Add(new EPSGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
+        }
+
+		public void AddAnnualizedTrailingPerformanceoCustomIndex(double upper, double lower, int range)
+        {
+			customIndex.TrailingPerformance.Add(new AnnualizedTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range});
+        }
 	}
 }

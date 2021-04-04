@@ -1,98 +1,68 @@
-﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
 	public class AnnualizedRevenueGrowthScreeningTests : StockScreenerServiceTestBase
 	{
+
 		[Test]
-		public void ScreenByStockIndex_AnnualizedRevenueGrowth_Biannual()
+		public void ScreenByStockIndex_RevenueGrowth_Biannual()
 		{
 			var stockIndex1 = "Lee's Index";
 
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
-			{ 
-				Ticker = ticker1,
-				Revenues = new List<Revenues> 
-				{ 
-					new Revenues 
-					{ 
-						revenues = 500_000d,
-						timestamp = 1561867200
-					},
-					new Revenues 
-					{ 
-						revenues = 750_000d,
-						timestamp = 1569816000
-					},
-					new Revenues 
-					{ 
-						revenues = 1_000_000d,
-						timestamp = 1577768400
-					},
-					new Revenues 
-					{ 
-						revenues = 1_500_000d,
-						timestamp = 1585627200
-					} 
-				} 
-			});
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
 
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				Revenues = new List<Revenues>
-				{
-					new Revenues
-					{
-						revenues = 500_000d,
-						timestamp = 1561867200
-					},
-					new Revenues
-					{
-						revenues = 750_000d,
-						timestamp = 1569816000
-					},
-					new Revenues
-					{
-						revenues = 1_000_000d,
-						timestamp = 1577768400
-					},
-					new Revenues
-					{
-						revenues = 400_000d,
-						timestamp = 1585627200
-					}
-				}
-			});
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(1_500_000d, 1585627200));
 
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				RevenueGrowthAnnualized = new List<RevenueGrowthAnnualized>()
-				{
-					new RevenueGrowthAnnualized { Lower = 299, Upper = 301, TimePeriod = 2}
-                }
-			};
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(-400_000d, 1585627200));
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
+			AddMarketToCustomIndex(stockIndex1);
+			AddAnnualizedRevenueGrowthToCustomIndex(301, 299, 2);
+
+			var result = sut.Screen(customIndex);
+
+			Assert.AreEqual(1, result.Count);
+
+			Assert.AreEqual(ticker1, result[0].Ticker);
+		}
+
+		[Test]
+		public void ScreenByStockIndex_RevenueGrowth_Quarterly()
+		{
+			var stockIndex1 = "Lee's Index";
+
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
+
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(1_500_000d, 1585627200));
+
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(400_000d, 1585627200));
+
+			AddMarketToCustomIndex(stockIndex1);
+			AddAnnualizedRevenueGrowthToCustomIndex(407, 404, 1);
 
 			var result = sut.Screen(customIndex);
 
