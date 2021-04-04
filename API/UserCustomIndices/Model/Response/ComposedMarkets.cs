@@ -1,7 +1,9 @@
-﻿namespace UserCustomIndices.Model.Response
+﻿using System.Collections.Generic;
+
+namespace UserCustomIndices.Model.Response
 {
     public class ComposedMarkets
     {
-        public string[] Markets;
+        public List<string> Markets;
     }
 }

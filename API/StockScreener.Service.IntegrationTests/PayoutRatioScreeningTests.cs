@@ -1,15 +1,9 @@
-﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
-	[TestFixture]
+    [TestFixture]
 	public class PayoutRatioScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -20,47 +14,12 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
-			{ 
-				Ticker = ticker1,
-				PayoutRatio = new List<PayoutRatio> 
-				{ 
-					new PayoutRatio 
-					{ 
-						payoutRatio = 0.1d
-					} 
-				} 
-			});
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddPayoutRatio(0.1d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddPayoutRatio(0.2d));
 
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				PayoutRatio = new List<PayoutRatio>
-				{
-					new PayoutRatio
-					{
-						payoutRatio = 0.2d
-					}
-				}
-			}) ;
-
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				PayoutRatio = new List<PayoutRatios>()
-				{
-					new PayoutRatios {Lower = 0, Upper = 0.15}
-				}
-			};
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
+			AddMarketToCustomIndex(stockIndex1);
+			AddPayoutRatioToCustomIndex(0.15, 0);
 
 			var result = sut.Screen(customIndex);
 

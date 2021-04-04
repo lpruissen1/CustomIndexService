@@ -1,16 +1,9 @@
-﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Model.Price;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
-	[TestFixture]
+    [TestFixture]
     public class PriceToEarningsRatioTTMTest : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -21,103 +14,24 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
-			{ 
-				Ticker = ticker1,
-				EarningsPerShare = new List<EarningsPerShare> 
-				{ 
-					new EarningsPerShare 
-					{ 
-						earningsPerShare = 1d,
-						timestamp = 1561867200
-					},
-					new EarningsPerShare 
-					{ 
-						earningsPerShare = 1.2d,
-						timestamp = 1569816000
-					},
-					new EarningsPerShare 
-					{ 
-						earningsPerShare = 1.07d,
-						timestamp = 1577768400
-					},
-					new EarningsPerShare 
-					{ 
-						earningsPerShare = 1.1d,
-						timestamp = 1585627200
-					} 
-				} 
-			});
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
 
-			AddDayPriceData(new DayPriceData
-			{
-				Ticker = ticker1,
-				Candle = new List<Candle>
-				{
-					new Candle
-					{
-						closePrice = 61.42
-					}
-				}
-			});
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
+				.AddEarningsPerShare(1d, 1561867200)
+				.AddEarningsPerShare(1.2d, 1569816000)
+				.AddEarningsPerShare(1.07d, 1577768400)
+				.AddEarningsPerShare(1.1d, 1585627200));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(61.42));
 
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				EarningsPerShare = new List<EarningsPerShare>
-				{
-					new EarningsPerShare
-					{
-						earningsPerShare = 0.03d,
-						timestamp = 1561867200
-					},
-					new EarningsPerShare
-					{
-						earningsPerShare = 0.09d,
-						timestamp = 1569816000
-					},
-					new EarningsPerShare
-					{
-						earningsPerShare = 0.42d,
-						timestamp = 1577768400
-					},
-					new EarningsPerShare
-					{
-						earningsPerShare = -0.45d,
-						timestamp = 1585627200
-					}
-				}
-			});
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
+				.AddEarningsPerShare(0.03d, 1561867200)
+				.AddEarningsPerShare(0.09d, 1569816000)
+				.AddEarningsPerShare(0.42d, 1577768400)
+				.AddEarningsPerShare(-0.45d, 1585627200));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(143.69));
 
-			AddDayPriceData(new DayPriceData
-			{
-				Ticker = ticker2,
-				Candle = new List<Candle>
-				{
-					new Candle
-					{
-						closePrice = 143.69
-					}
-				}
-			});
-
-			var customIndex = new CustomIndex()
-			{
-				Markets = new ComposedMarkets
-				{
-					Markets = new[]
-					{
-						stockIndex1
-					}
-				},
-				PriceToEarningsRatioTTM = new List<PriceToEarningsRatioTTM>()
-				{
-					new PriceToEarningsRatioTTM {Upper = 25}
-                }
-			};
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
+			AddMarketToCustomIndex(stockIndex1);
+			AddPriceToEarningsRatioToCustomIndex(25, 0);
 
 			var result = sut.Screen(customIndex);
 
