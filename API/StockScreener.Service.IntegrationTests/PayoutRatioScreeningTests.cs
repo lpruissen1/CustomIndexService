@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using System.Collections.Generic;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -16,30 +14,9 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
-			{ 
-				Ticker = ticker1,
-				PayoutRatio = new List<PayoutRatio> 
-				{ 
-					new PayoutRatio 
-					{ 
-						payoutRatio = 0.1d
-					} 
-				} 
-			});
-
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				PayoutRatio = new List<PayoutRatio>
-				{
-					new PayoutRatio
-					{
-						payoutRatio = 0.2d
-					}
-				}
-			}) ;
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddPayoutRatio(0.1d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddPayoutRatio(0.2d));
 
 			AddMarketToCustomIndex(stockIndex1);
 			AddPayoutRatioToCustomIndex(0.15, 0);

@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using System.Collections.Generic;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -16,30 +14,9 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
-			{ 
-				Ticker = ticker1,
-				FreeCashFlow = new List<FreeCashFlow> 
-				{ 
-					new FreeCashFlow 
-					{ 
-						freeCashFlow = 1_000_000_000d
-					} 
-				} 
-			});
-
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				FreeCashFlow = new List<FreeCashFlow>
-				{
-					new FreeCashFlow
-					{
-						freeCashFlow = 1_000_000d
-					}
-				}
-			}) ;
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddFreeCashFlow(1_000_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddFreeCashFlow(1_000_000d));
 
 			AddMarketToCustomIndex(stockIndex1);
 			AddFreeCashFlowToCustomIndex(10_000_000_000, 10_000_000);

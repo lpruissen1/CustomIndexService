@@ -5,17 +5,15 @@ using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using StockScreener.Database;
 using StockScreener.Database.Config;
-using StockScreener.Database.Model.CompanyInfo;
-using StockScreener.Database.Model.Price;
-using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
 using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace StockScreener.Service.IntegrationTests
 {
-	public abstract class StockScreenerServiceTestBase
+    public abstract class StockScreenerServiceTestBase
 	{
 		protected IMongoDBContext context;
 
@@ -45,29 +43,14 @@ namespace StockScreener.Service.IntegrationTests
 			context.ClearAll();
 		}
 
-		public void AddStockIndex(StockIndex stockIndex)
-        {
-			context.GetCollection<StockIndex>("StockIndex").InsertOne(stockIndex);
-        }
-
 		public void AddStockIndex(string indexName, IEnumerable<string> stockIndex)
         {
-			context.GetCollection<StockIndex>("StockIndex").InsertOne(new StockIndex { Name = indexName, Tickers = stockIndex.ToArray() });
+			context.GetCollection<StockIndex>("StockIndex").InsertOne(new StockIndex { Name = indexName, Tickers = stockIndex.ToList() });
         }
 
-		public void AddCompanyInfo(CompanyInfo companyInfo)
+		public void InsertData<TEntry>(TEntry dBEntry)
         {
-			context.GetCollection<CompanyInfo>("CompanyInfo").InsertOne(companyInfo);
-        }
-
-		public void AddStockFinancials(StockFinancials stockFinancials)
-        {
-			context.GetCollection<StockFinancials>("StockFinancials").InsertOne(stockFinancials);
-        }
-
-		public void AddDayPriceData(DayPriceData dayPriceData)
-		{
-			context.GetCollection<DayPriceData>("DayPriceData").InsertOne(dayPriceData);
+			context.GetCollection<TEntry>(typeof(TEntry).Name).InsertOne(dBEntry);
 		}
 
 		public void AddMarketToCustomIndex(string market)

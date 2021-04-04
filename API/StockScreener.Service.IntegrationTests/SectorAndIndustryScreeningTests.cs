@@ -1,9 +1,8 @@
 ﻿using Database.Repositories;
 using NUnit.Framework;
-using StockScreener.Database.Model.CompanyInfo;
-using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
 using StockScreener.SecurityGrabber;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 using System.Linq;
 
 namespace StockScreener.Service.IntegrationTests
@@ -22,9 +21,9 @@ namespace StockScreener.Service.IntegrationTests
 			var sector2 = "Materials";
 			var industry2 = "Plastics";
 
-			AddStockIndex(new StockIndex { Name = stockIndex, Tickers = new[] { ticker1, ticker2 } });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = sector1, Industry = industry1 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = sector2, Industry = industry2 });
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex).AddTicker(ticker1).AddTicker(ticker2));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker1).AddSector(sector1).AddIndustry(industry1));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddSector(sector2).AddIndustry(industry2));
 
 			AddMarketToCustomIndex(stockIndex);
 			AddSectorToCustomIndex(sector1);
@@ -54,15 +53,13 @@ namespace StockScreener.Service.IntegrationTests
 			var materialsSector = "Materials";
 			var materialsIndustry1 = "Plastics";
 
-			AddStockIndex(new StockIndex { Name = stockIndex, Tickers = new[] { ticker1, ticker2, ticker3 } });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = energySector, Industry = energyIndustry1 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = energySector, Industry = energyIndustry2 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker3, Sector = materialsSector, Industry = materialsIndustry1 });
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex).AddTicker(ticker1).AddTicker(ticker2).AddTicker(ticker3));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker1).AddSector(energySector).AddIndustry(energyIndustry1));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddSector(energySector).AddIndustry(energyIndustry2));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker3).AddSector(materialsSector).AddIndustry(materialsIndustry1));
 
 			AddMarketToCustomIndex(stockIndex);
 			AddIndustryToCustomIndex(energyIndustry1);
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 
@@ -90,16 +87,14 @@ namespace StockScreener.Service.IntegrationTests
 			var materialsSector = "Materials";
 			var materialsIndustry = "Plastics";
 
-			AddStockIndex(new StockIndex { Name = stockIndex, Tickers = new[] { ticker1, ticker2, ticker3 } });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker1, Sector = energySector, Industry = energyIndustry1 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker2, Sector = energySector, Industry = energyIndustry2 });
-			AddCompanyInfo(new CompanyInfo { Ticker = ticker3, Sector = materialsSector, Industry = materialsIndustry });
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex).AddTicker(ticker1).AddTicker(ticker2).AddTicker(ticker3));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker1).AddSector(energySector).AddIndustry(energyIndustry1));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddSector(energySector).AddIndustry(energyIndustry2));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker3).AddSector(materialsSector).AddIndustry(materialsIndustry));
 
 			AddMarketToCustomIndex(stockIndex);
 			AddIndustryToCustomIndex(energyIndustry1);
 			AddSectorToCustomIndex(materialsSector);
-
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
 			var result = sut.Screen(customIndex);
 

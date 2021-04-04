@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockIndex;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
@@ -16,42 +17,9 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddDayPriceData(new DayPriceData 
-			{ 
-				Ticker = ticker1,
-				Candle = new List<Candle>
-				{
-					new Candle
-					{
-						timestamp =  1609480830,
-						closePrice = 143.69
-					},
-					new Candle
-					{
-						timestamp = 1617411630,
-						closePrice = 149.20
-					}
-				}
-			});
-
-			AddDayPriceData(new DayPriceData
-			{
-				Ticker = ticker2,
-				Candle = new List<Candle>
-				{
-					new Candle
-					{
-						timestamp =  1609480830,
-						closePrice = 27.92
-					},
-					new Candle
-					{
-						timestamp = 1617411630,
-						closePrice = 21.45
-					}
-				}
-			});
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1617411630));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
 			AddMarketToCustomIndex(stockIndex1);
 			AddAnnualizedTrailingPerformanceoCustomIndex(100, 0, 1);

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Model.StockIndex;
+using StockScreener.Service.IntegrationTests.StockDataHelpers;
 using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
@@ -17,62 +18,19 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
-			{ 
-				Ticker = ticker1,
-				Revenues = new List<Revenues> 
-				{ 
-					new Revenues 
-					{ 
-						revenues = 500_000d,
-						timestamp = 1561867200
-					},
-					new Revenues 
-					{ 
-						revenues = 750_000d,
-						timestamp = 1569816000
-					},
-					new Revenues 
-					{ 
-						revenues = 1_000_000d,
-						timestamp = 1577768400
-					},
-					new Revenues 
-					{ 
-						revenues = 1_500_000d,
-						timestamp = 1585627200
-					} 
-				} 
-			});
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
 
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				Revenues = new List<Revenues>
-				{
-					new Revenues
-					{
-						revenues = 500_000d,
-						timestamp = 1561867200
-					},
-					new Revenues
-					{
-						revenues = 750_000d,
-						timestamp = 1569816000
-					},
-					new Revenues
-					{
-						revenues = 1_000_000d,
-						timestamp = 1577768400
-					},
-					new Revenues
-					{
-						revenues = 400_000d,
-						timestamp = 1585627200
-					}
-				}
-			});
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(1_500_000d, 1585627200));
+
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(-400_000d, 1585627200));
 
 			AddMarketToCustomIndex(stockIndex1);
 			AddRevenueGrowthToCustomIndex(301, 299, 2);
@@ -92,63 +50,19 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			AddStockIndex(new StockIndex { Name = stockIndex1, Tickers = new[] { ticker1, ticker2 } });
-			AddStockFinancials(new StockFinancials 
-			{ 
-				Ticker = ticker1,
-				Revenues = new List<Revenues> 
-				{ 
-					new Revenues 
-					{ 
-						revenues = 500_000d,
-						timestamp = 1561867200
-					},
-					new Revenues 
-					{ 
-						revenues = 750_000d,
-						timestamp = 1569816000
-					},
-					new Revenues 
-					{ 
-						revenues = 1_000_000d,
-						timestamp = 1577768400
-					},
-					new Revenues 
-					{ 
-						revenues = 1_500_000d,
-						timestamp = 1585627200
-					} 
-				} 
-			});
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
 
-			AddStockFinancials(new StockFinancials
-			{
-				Ticker = ticker2,
-				Revenues = new List<Revenues>
-				{
-					new Revenues
-					{
-						revenues = 500_000d,
-						timestamp = 1561867200
-					},
-					new Revenues
-					{
-						revenues = 750_000d,
-						timestamp = 1569816000
-					},
-					new Revenues
-					{
-						revenues = 1_000_000d,
-						timestamp = 1577768400
-					},
-					new Revenues
-					{
-						revenues = 400_000d,
-						timestamp = 1585627200
-					}
-				}
-			});
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(1_500_000d, 1585627200));
 
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(400_000d, 1585627200));
 
 			AddMarketToCustomIndex(stockIndex1);
 			AddRevenueGrowthToCustomIndex(407, 404, 1);
