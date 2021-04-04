@@ -27,6 +27,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapPriceToSalesTTM(index.PriceToSalesRatioTTM));
             metricList.Add(MapPriceToBook(index.PriceToBookValue));
             metricList.Add(MapDividendYield(index.DividendYield));
+            metricList.Add(MapEPSGrowthAnnualized(index.EPSGrowthAnnualized));
 
             return metricList;
         }
@@ -184,6 +185,21 @@ namespace StockScreener.Mapper
             }
 
             return new RevenueGrowthMetric(list);
+        }
+
+        private IMetric MapEPSGrowthAnnualized(List<EPSGrowthAnnualized> epsGrowth)
+        {
+            if (!epsGrowth.Any())
+                return null;
+
+            var list = new List<RangeAndTimeSpan>();
+
+            foreach (var epsGrowthTarget in epsGrowth)
+            {
+                list.Add(new RangeAndTimeSpan(new Range(epsGrowthTarget.Upper, epsGrowthTarget.Lower), GetTimeSpan(epsGrowthTarget.TimePeriod)));
+            }
+
+            return new EPSGrowthAnnualizedMetric(list);
         }
 
         private IMetric MapPriceToEarningsTTM(List<PriceToEarningsRatioTTM> priceToEarningsRatioTTM)

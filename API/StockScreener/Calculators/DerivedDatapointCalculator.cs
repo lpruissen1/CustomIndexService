@@ -32,7 +32,8 @@ namespace StockScreener.Calculators
                     CurrentRatio = security.CurrentRatio,
                     PriceToSalesRatioTTM = DerivePriceToSalesTTM(derivedDatapoints, security),
                     PriceToBookValue = DerivePriceToBook(derivedDatapoints, security),
-                    DividendYield = DeriveDividendYield(derivedDatapoints, security)
+                    DividendYield = DeriveDividendYield(derivedDatapoints, security),
+                    EPSGrowthAnnualized = DeriveAnnualizedEPSGrowth(derivedDatapoints, security)
                 });
             }
             
@@ -52,6 +53,24 @@ namespace StockScreener.Calculators
 
                 var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyRevenue, span);
                 dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimeSpan(span)));
+            }
+
+            return dic;
+        }
+
+        private Dictionary<TimeSpan, double> DeriveAnnualizedEPSGrowth(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any())
+                return null;
+
+            var dic = new Dictionary<TimeSpan, double>();
+
+            foreach (var epsGrowthConstructionData in constructionData)
+            {
+                var span = epsGrowthConstructionData.Time;
+
+                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyEarnings, span);
+                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Earnings, past.Earnings, GetUnixFromTimeSpan(span)));
             }
 
             return dic;

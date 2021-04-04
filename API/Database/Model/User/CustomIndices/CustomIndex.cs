@@ -11,7 +11,7 @@ namespace Database.Model.User.CustomIndices
         public Volitility Volitility { get; init; }
         public TrailingPerformance TrailingPerformance { get; init; }
         public List<RevenueGrowth> RevenueGrowths { get; init; } = new List<RevenueGrowth>();
-        public EarningsGrowth EarningsGrowth { get; init; }
+        public List<EPSGrowthAnnualized> EPSGrowthAnnualized { get; init; } = new List<EPSGrowthAnnualized>();
         public List<PriceToEarningsRatioTTM> PriceToEarningsRatioTTM { get; init; } = new List<PriceToEarningsRatioTTM>();
         public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();
         public Sectors SectorAndIndsutry { get; init; } = new Sectors();

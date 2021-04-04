@@ -22,7 +22,6 @@ namespace StockScreener.Core
         BookValuePerShare = 16384,
         DividendsPerShare = 32768,
 
-
         CompanyInfo  = Sector | Industry,
         StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio | ProfitMargin | GrossMargin | WorkingCapital | DebtToEquityRatio | FreeCashFlow | CurrentRatio | QuarterlySalesPerShare | BookValuePerShare | DividendsPerShare
     }

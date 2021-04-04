@@ -18,5 +18,6 @@
         PriceToSalesRatioTTM = 14,
         PriceToBookValue = 15,
         DividendYield = 16,
+        EPSGrowthAnnualized = 17,
     }
 }
