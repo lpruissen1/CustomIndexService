@@ -1,5 +1,5 @@
 ﻿
-using AggregationService.Core;
+using Core;
 using ApiClient.Models;
 using Newtonsoft.Json;
 using System;
@@ -17,7 +17,7 @@ namespace ApiClient
 		protected string route = "https://api.polygon.io/";
 		protected HttpClient client;
 
-		private Dictionary<TimeResolution, string> TimeResolutionMapper;
+		private Dictionary<TimePeriod, string> TimeResolutionMapper;
 
 		public PolygonClient(ApiSettings settings)
 		{
@@ -25,15 +25,15 @@ namespace ApiClient
 			backupApiKey = settings.Backup;
 			client = new HttpClient();
 
-			TimeResolutionMapper = new Dictionary<TimeResolution, string>
+			TimeResolutionMapper = new Dictionary<TimePeriod, string>
 			{
-				{ TimeResolution.Minute, "minute" },
-				{ TimeResolution.Hour, "hour" },
-				{ TimeResolution.Day, "day" },
-				{ TimeResolution.Week, "week" },
-				{ TimeResolution.Month, "month" },
-				{ TimeResolution.Quarter, "quarter" },
-				{ TimeResolution.Year, "year" },
+				{ TimePeriod.Minute, "minute" },
+				{ TimePeriod.Hour, "hour" },
+				{ TimePeriod.Day, "day" },
+				{ TimePeriod.Week, "week" },
+				{ TimePeriod.Month, "month" },
+				{ TimePeriod.Quarter, "quarter" },
+				{ TimePeriod.Year, "year" },
 			};
 		}
 
@@ -55,7 +55,7 @@ namespace ApiClient
 			return MakeRequest<PolygonCompanyInfoResponse>(request);
 		}
 
-		public PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimeResolution timeResolution)
+		public PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimePeriod timeResolution)
 		{
 			var request = $"{route}v2/aggs/ticker/{ticker}/range/{interval}/{TimeResolutionMapper[timeResolution]}/2019-03-19/2021-03-19?unadjusted=false&sort=asc&limit=50000";
 

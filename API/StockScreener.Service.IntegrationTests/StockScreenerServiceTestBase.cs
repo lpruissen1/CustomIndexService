@@ -53,7 +53,7 @@ namespace StockScreener.Service.IntegrationTests
 			context.GetCollection<StockFinancials>("StockFinancials").InsertOne(stockFinancials);
         }
 
-		public void AddDailyPriceData(DayPriceData dayPriceData)
+		public void AddDayPriceData(DayPriceData dayPriceData)
 		{
 			context.GetCollection<DayPriceData>("DayPriceData").InsertOne(dayPriceData);
 		}

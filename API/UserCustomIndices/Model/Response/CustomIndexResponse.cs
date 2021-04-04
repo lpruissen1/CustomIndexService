@@ -11,7 +11,7 @@
         public ProfitMargins ProfitMargins { get; set; }
         public WorkingCapital WorkingCapital { get; set; }
         public Volitility Volitility { get; set; }
-        public TrailingPerformance TrailingPerformance { get; set; }
+        public AnnualizedTrailingPerformance TrailingPerformance { get; set; }
         public RevenueGrowth RevenueGrowth { get; set; }
         public EarningsGrowth EarningsGrowth { get; set; }
         public Sectors SectorAndIndsutry { get; set; }

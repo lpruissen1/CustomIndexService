@@ -1,19 +1,20 @@
-﻿using StockScreener.Core;
+﻿using Core;
+using StockScreener.Core;
 
 namespace StockScreener.Model.Metrics
 {
-    public class RangeAndTimeSpan
+    public class RangeAndTimePeriod
     {
         private Range range;
-        private TimeSpan span;
+        private TimePeriod span;
 
-        public RangeAndTimeSpan(Range range, TimeSpan span)
+        public RangeAndTimePeriod(Range range, TimePeriod span)
         {
             this.range = range;
             this.span = span;
         }
 
-        public RangeAndTimeSpan(Range range)
+        public RangeAndTimePeriod(Range range)
         {
             this.range = range;
         }
@@ -23,7 +24,7 @@ namespace StockScreener.Model.Metrics
             return range.WithinRange(value);
         }
 
-        public TimeSpan GetTimeSpan()
+        public TimePeriod GetTimePeriod()
         {
             return span;
         }

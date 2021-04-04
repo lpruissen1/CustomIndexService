@@ -6,7 +6,7 @@
         Industry = 2,
         MarketCap = 3,
         RevenueGrowthAnnualized = 4,
-        TrailingPrice = 5,
+        TrailingPerformance = 5,
         PriceToEarningsRatioTTM = 6,
         PayoutRatio = 7,
         ProfitMargin = 8,

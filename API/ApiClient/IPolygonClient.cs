@@ -1,5 +1,5 @@
 ﻿
-using AggregationService.Core;
+using Core;
 using ApiClient.Models;
 
 namespace ApiClient
@@ -7,7 +7,7 @@ namespace ApiClient
 	public interface IPolygonClient
 	{
 		PolygonCompanyInfoResponse GetCompanyInfo(string ticker);
-		PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimeResolution timeResolution);
+		PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimePeriod timeResolution);
 		PolygonStockFinancialsResponse GetStockFinancials(string ticker);
 	}
 }

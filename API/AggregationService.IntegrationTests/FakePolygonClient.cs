@@ -1,4 +1,4 @@
-﻿using AggregationService.Core;
+﻿using Core;
 using ApiClient;
 using ApiClient.Models;
 
@@ -35,7 +35,7 @@ namespace AggregationService.IntegrationTests
 			return stubCompanyInfoResponse;
 		}
 
-		public PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimeResolution timeResolution)
+		public PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimePeriod timeResolution)
 		{
 			return stubPriceDataResponse;
 		}
