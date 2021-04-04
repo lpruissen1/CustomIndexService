@@ -16,7 +16,7 @@ namespace StockScreener.Mapper
 
             metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
             metricList.Add(MapMarketCap(index.MarketCaps));
-            metricList.Add(MapRevenueGrowth(index.RevenueGrowths));
+            metricList.Add(MapRevenueGrowth(index.RevenueGrowthAnnualized));
             metricList.Add(MapPriceToEarningsTTM(index.PriceToEarningsRatioTTM));
             metricList.Add(MapPayoutRatio(index.PayoutRatio));
             metricList.Add(MapProfitMargin(index.ProfitMargin));
@@ -25,6 +25,10 @@ namespace StockScreener.Mapper
             metricList.Add(MapDebtToEquityRatio(index.DebtToEquityRatio));
             metricList.Add(MapFreeCashFlow(index.FreeCashFlow));
             metricList.Add(MapCurrentRatio(index.CurrentRatio));
+            metricList.Add(MapPriceToSalesTTM(index.PriceToSalesRatioTTM));
+            metricList.Add(MapPriceToBook(index.PriceToBookValue));
+            metricList.Add(MapDividendYield(index.DividendYields));
+            metricList.Add(MapEPSGrowthAnnualized(index.EPSGrowthAnnualized));
             metricList.Add(MapTrailingPerformance(index.TrailingPerformance));
 
             return metricList;
@@ -50,7 +54,7 @@ namespace StockScreener.Mapper
             return new SectorAndIndustryMetric(sectorList, industryList);
         }
 
-        private IMetric MapMarketCap(List<MarketCapitalzation> marketCaps)
+        private IMetric MapMarketCap(List<MarketCapitalization> marketCaps)
         {
             if(!marketCaps.Any())
                 return null;
@@ -170,7 +174,7 @@ namespace StockScreener.Mapper
             return new GrossMarginMetric(list);
         }
 
-        private IMetric MapRevenueGrowth(List<RevenueGrowth> revenueGrowth)
+        private IMetric MapRevenueGrowth(List<RevenueGrowthAnnualized> revenueGrowth)
         {
             if(!revenueGrowth.Any())
                 return null;
@@ -182,7 +186,22 @@ namespace StockScreener.Mapper
                 list.Add(new RangeAndTimePeriod(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
             }
 
-            return new RevenueGrowthMetric(list);
+            return new RevenueGrowthAnnualizedMetric(list);
+        }
+
+        private IMetric MapEPSGrowthAnnualized(List<EPSGrowthAnnualized> epsGrowth)
+        {
+            if (!epsGrowth.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var epsGrowthTarget in epsGrowth)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(epsGrowthTarget.Upper, epsGrowthTarget.Lower), GetTimeSpan(epsGrowthTarget.TimePeriod)));
+            }
+
+            return new EPSGrowthAnnualizedMetric(list);
         }
 
         private IMetric MapTrailingPerformance(List<AnnualizedTrailingPerformance> trailingPerformances)
@@ -215,6 +234,50 @@ namespace StockScreener.Mapper
             return new PriceToEarningsRatioTTMMetric(list);
         }
 
+        private IMetric MapDividendYield(List<DividendYield> dividendYield)
+        {
+            if (!dividendYield.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var dividendYieldTarget in dividendYield)
+            {
+                list.Add(new Range(dividendYieldTarget.Upper, dividendYieldTarget.Lower));
+            }
+
+            return new DividendYieldMetric(list);
+        }
+
+        private IMetric MapPriceToBook(List<PriceToBookValue> priceToBookValue)
+        {
+            if (!priceToBookValue.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var priceToBookValueTarget in priceToBookValue)
+            {
+                list.Add(new Range(priceToBookValueTarget.Upper, priceToBookValueTarget.Lower));
+            }
+
+            return new PriceToBookRatioMetric(list);
+        }
+
+        private IMetric MapPriceToSalesTTM(List<PriceToSalesRatioTTM> priceToSalesRatioTTM)
+        {
+            if (!priceToSalesRatioTTM.Any())
+                return null;
+
+            var list = new List<Range>();
+
+            foreach (var priceToSalesRatioTTMTarget in priceToSalesRatioTTM)
+            {
+                list.Add(new Range(priceToSalesRatioTTMTarget.Upper, priceToSalesRatioTTMTarget.Lower));
+            }
+
+            return new PriceToSalesRatioTTMMetric(list);
+        }
         private TimePeriod GetTimeSpan(int timeRange)
         {
             switch (timeRange)

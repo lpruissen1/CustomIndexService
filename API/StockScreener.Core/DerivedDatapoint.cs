@@ -5,7 +5,7 @@
         Sector = 1,
         Industry = 2,
         MarketCap = 3,
-        RevenueGrowth = 4,
+        RevenueGrowthAnnualized = 4,
         TrailingPerformance = 5,
         PriceToEarningsRatioTTM = 6,
         PayoutRatio = 7,
@@ -15,5 +15,9 @@
         DebtToEquityRatio = 11,
         FreeCashFlow = 12,
         CurrentRatio = 13,
+        PriceToSalesRatioTTM = 14,
+        PriceToBookValue = 15,
+        DividendYield = 16,
+        EPSGrowthAnnualized = 17,
     }
 }

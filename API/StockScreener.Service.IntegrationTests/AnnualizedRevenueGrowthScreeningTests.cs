@@ -3,10 +3,10 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
-
-    [TestFixture]
-	public class RevenueGrowthScreeningTests : StockScreenerServiceTestBase
+	[TestFixture]
+	public class AnnualizedRevenueGrowthScreeningTests : StockScreenerServiceTestBase
 	{
+
 		[Test]
 		public void ScreenByStockIndex_RevenueGrowth_Biannual()
 		{
@@ -30,7 +30,7 @@ namespace StockScreener.Service.IntegrationTests
 				.AddRevenue(-400_000d, 1585627200));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddRevenueGrowthToCustomIndex(301, 299, 2);
+			AddAnnualizedRevenueGrowthToCustomIndex(301, 299, 2);
 
 			var result = sut.Screen(customIndex);
 
@@ -62,7 +62,7 @@ namespace StockScreener.Service.IntegrationTests
 				.AddRevenue(400_000d, 1585627200));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddRevenueGrowthToCustomIndex(407, 404, 1);
+			AddAnnualizedRevenueGrowthToCustomIndex(407, 404, 1);
 
 			var result = sut.Screen(customIndex);
 

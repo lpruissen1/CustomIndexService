@@ -20,7 +20,10 @@ namespace Database.Repositories
                 {BaseDatapoint.WorkingCapital, AddWorkingCapital },
                 {BaseDatapoint.DebtToEquityRatio, AddDebtToEquityRatio },
                 {BaseDatapoint.FreeCashFlow, AddFreeCashFlow },
-                {BaseDatapoint.CurrentRatio, AddCurrentRatio }
+                {BaseDatapoint.CurrentRatio, AddCurrentRatio },
+                {BaseDatapoint.QuarterlySalesPerShare, AddQuarterlySalesPerShare },
+                {BaseDatapoint.BookValuePerShare, AddBookValuePerShare },
+                {BaseDatapoint.DividendsPerShare, AddDividendsPerShare },
             };
         }
 
@@ -32,6 +35,16 @@ namespace Database.Repositories
         private void AddCurrentRatio()
         {
             projection.Include(x => x.CurrentRatio);
+        }
+
+        private void AddDividendsPerShare()
+        {
+            projection.Include(x => x.DividendsPerShare);
+        }
+
+        private void AddBookValuePerShare()
+        {
+            projection.Include(x => x.BookValuePerShare);
         }
 
         private void AddFreeCashFlow()
@@ -72,6 +85,11 @@ namespace Database.Repositories
         private void AddQuarterlyEarningsPerShare()
         {
             projection.Include(x => x.EarningsPerShare);
+        }
+
+        private void AddQuarterlySalesPerShare()
+        {
+            projection.Include(x => x.SalesPerShare);
         }
     }
 }

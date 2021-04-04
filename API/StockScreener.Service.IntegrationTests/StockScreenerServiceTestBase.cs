@@ -79,6 +79,21 @@ namespace StockScreener.Service.IntegrationTests
 			customIndex.PriceToEarningsRatioTTM.Add(new PriceToEarningsRatioTTM { Upper = upper, Lower = lower});
         }
 
+		public void AddDividendYieldToCustomIndex(double upper, double lower)
+		{
+			customIndex.DividendYields.Add(new DividendYield { Upper = upper, Lower = lower });
+		}
+
+		public void AddPriceToBookRatioToCustomIndex(double upper, double lower)
+		{
+			customIndex.PriceToBookValue.Add(new PriceToBookValue { Upper = upper, Lower = lower });
+		}
+
+		public void AddPriceToSalesRatioToCustomIndex(double upper, double lower)
+		{
+			customIndex.PriceToSalesRatioTTM.Add(new PriceToSalesRatioTTM { Upper = upper, Lower = lower });
+		}
+
 		public void AddPayoutRatioToCustomIndex(double upper, double lower)
         {
 			customIndex.PayoutRatio.Add(new PayoutRatios {Upper = upper, Lower = lower});
@@ -86,7 +101,7 @@ namespace StockScreener.Service.IntegrationTests
 
 		public void AddMarketCapToCustomIndex(double upper, double lower)
         {
-			customIndex.MarketCaps.Add(new MarketCapitalzation { Upper = upper, Lower = lower });
+			customIndex.MarketCaps.Add(new MarketCapitalization { Upper = upper, Lower = lower });
         }
 
 		public void AddGrossMarginToCustomIndex(double upper, double lower)
@@ -99,11 +114,6 @@ namespace StockScreener.Service.IntegrationTests
 			customIndex.FreeCashFlow.Add(new FreeCashFlows {Upper = upper, Lower = lower});
         }
 
-		public void AddDividendYieldToCustomIndex(double upper, double lower)
-        {
-			customIndex.DividendYields.Add(new DividendYield { Upper = upper, Lower = lower});
-        }
-
 		public void AddDebtToEquityRatioToCustomIndex(double upper, double lower)
         {
 			customIndex.DebtToEquityRatio.Add(new DebtToEquityRatios { Upper = upper, Lower = lower});
@@ -114,9 +124,14 @@ namespace StockScreener.Service.IntegrationTests
 			customIndex.CurrentRatio.Add(new CurrentRatios { Upper = upper, Lower = lower});
         }
 
-		public void AddRevenueGrowthToCustomIndex(double upper, double lower, int range)
+		public void AddAnnualizedRevenueGrowthToCustomIndex(double upper, double lower, int range)
         {
-			customIndex.RevenueGrowths.Add(new RevenueGrowth { Upper = upper, Lower = lower, TimePeriod = range});
+			customIndex.RevenueGrowthAnnualized.Add(new RevenueGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
+        }
+
+		public void AddPriceToEarningsRatioGrowthToCustomIndex(double upper, double lower, int range)
+        {
+			customIndex.EPSGrowthAnnualized.Add(new EPSGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
         }
 
 		public void AddAnnualizedTrailingPerformanceoCustomIndex(double upper, double lower, int range)

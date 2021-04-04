@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public abstract class RangeAndTimPeriodMetric : IMetric
+    public abstract class RangeAndTimePeriodMetric : IMetric
     {
-        public RangeAndTimPeriodMetric(List<RangeAndTimePeriod> rangesAndTimeSpans)
+        public RangeAndTimePeriodMetric(List<RangeAndTimePeriod> rangesAndTimeSpans)
         {
             rangedDatapoint = rangesAndTimeSpans;
         }

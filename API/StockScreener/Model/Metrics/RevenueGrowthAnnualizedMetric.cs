@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class RevenueGrowthMetric : RangeAndTimPeriodMetric
+    public class RevenueGrowthAnnualizedMetric : RangeAndTimePeriodMetric
     {
-        public RevenueGrowthMetric(List<RangeAndTimePeriod> rangesAndTimeSpans) : base(rangesAndTimeSpans) {}
+        public RevenueGrowthAnnualizedMetric(List<RangeAndTimePeriod> rangesAndTimeSpans) : base(rangesAndTimeSpans) { }
 
         public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
@@ -18,15 +18,15 @@ namespace StockScreener.Model.Metrics
 
         public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            foreach(var entry in rangedDatapoint.GroupBy(x => x.GetTimePeriod()).Select(x => x.FirstOrDefault()))
+            foreach (var entry in rangedDatapoint.GroupBy(x => x.GetTimePeriod()).Select(x => x.FirstOrDefault()))
             {
-                yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.RevenueGrowth, Time = entry.GetTimePeriod() };
+                yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.RevenueGrowthAnnualized, Time = entry.GetTimePeriod() };
             }
         }
 
         public override Dictionary<TimePeriod, double> GetValue(DerivedSecurity security)
         {
-            return security.RevenueGrowth;
+            return security.RevenueGrowthAnnualized;
         }
     }
 }

@@ -22,7 +22,10 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
                 {BaseDatapoint.WorkingCapital, AddWorkingCapital },
                 {BaseDatapoint.DebtToEquityRatio, AddDebtToEquityRatio },
                 {BaseDatapoint.FreeCashFlow, AddFreeCashFlow },
-                {BaseDatapoint.CurrentRatio, AddCurrentRatio }
+                {BaseDatapoint.CurrentRatio, AddCurrentRatio },
+                {BaseDatapoint.QuarterlySalesPerShare, AddQuarterlySalesPerShare },
+                {BaseDatapoint.BookValuePerShare, AddBookValuePerShare },
+                {BaseDatapoint.DividendsPerShare, AddQuarterlyDividendsPerShare }
             };
         }
 
@@ -41,6 +44,11 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
         public void AddCurrentRatio(StockFinancials stockFinancials)
         {
             security.CurrentRatio = stockFinancials.CurrentRatio.Last().currentRatio;
+        }
+
+        public void AddBookValuePerShare(StockFinancials stockFinancials)
+        {
+            security.BookValuePerShare = stockFinancials.BookValuePerShare.Last().bookValuePerShare;
         }
 
         public void AddFreeCashFlow(StockFinancials stockFinancials)
@@ -76,6 +84,16 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
         public void AddQuarterlyEarningsPerShare(StockFinancials stockFinancials)
         {
             security.QuarterlyEarnings = stockFinancials.EarningsPerShare.Select(stock => new EarningsEntry() { Earnings = stock.earningsPerShare, Timestamp = stock.timestamp }).ToList();
+        }
+
+        public void AddQuarterlyDividendsPerShare(StockFinancials stockFinancials)
+        {
+            security.QuarterlyDividendsPerShare = stockFinancials.DividendsPerShare.Select(stock => new DividendEntry() { QuarterlyDividends = stock.dividendsPerShare, Timestamp = stock.timestamp }).ToList();
+        }
+
+        public void AddQuarterlySalesPerShare(StockFinancials stockFinancials)
+        {
+            security.QuarterlySalesPerShare = stockFinancials.SalesPerShare.Select(stock => new SalesPerShareEntry() { SalesPerShare = stock.salesPerShare, Timestamp = stock.timestamp }).ToList();
         }
     }
 

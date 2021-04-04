@@ -68,5 +68,23 @@ namespace StockScreener.Service.IntegrationTests.StockDataHelpers
             stockFinancials.EarningsPerShare.Add(new EarningsPerShare { earningsPerShare = value, timestamp = timestamp });
             return stockFinancials;
         }
+
+        public static StockFinancials AddDividendsPerShare(this StockFinancials stockFinancials, double value, double timestamp = 0)
+        {
+            stockFinancials.DividendsPerShare.Add(new DividendsPerShare { dividendsPerShare = value, timestamp = timestamp });
+            return stockFinancials;
+        }
+
+        public static StockFinancials AddBookValuePerShare(this StockFinancials stockFinancials, double value, double timestamp = 0)
+        {
+            stockFinancials.BookValuePerShare.Add(new BookValuePerShare { bookValuePerShare = value, timestamp = timestamp });
+            return stockFinancials;
+        }
+
+        public static StockFinancials AddSalesPerShare(this StockFinancials stockFinancials, double value, double timestamp = 0)
+        {
+            stockFinancials.SalesPerShare.Add(new SalesPerShare { salesPerShare = value, timestamp = timestamp });
+            return stockFinancials;
+        }
     }
 }

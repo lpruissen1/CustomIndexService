@@ -1,6 +1,6 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class RevenueGrowth : MetricRange
+    public class RevenueGrowthAnnualized : MetricRange
     {
         public int TimePeriod;
     }
