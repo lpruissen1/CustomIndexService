@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class RevenueGrowthMetric : RangeAndTimeSpanMetric
+    public class RevenueGrowthAnnualizedMetric : RangeAndTimeSpanMetric
     {
-        public RevenueGrowthMetric(List<RangeAndTimeSpan> rangesAndTimeSpans) : base(rangesAndTimeSpans) {}
+        public RevenueGrowthAnnualizedMetric(List<RangeAndTimeSpan> rangesAndTimeSpans) : base(rangesAndTimeSpans) {}
 
         public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {

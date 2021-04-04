@@ -20,7 +20,7 @@ namespace StockScreener.Calculators
                     Ticker = security.Ticker,
                     Sector = security.Sector,
                     Industry = security.Industry,
-                    RevenueGrowth = DeriveRevenueGrowth(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.RevenueGrowth), security),
+                    RevenueGrowthAnnualized = DeriveRevenueGrowth(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.RevenueGrowthAnnualized), security),
                     MarketCap = security.MarketCap,
                     PriceToEarningsRatioTTM = DerivePriceToEarningsTTM(derivedDatapoints, security),
                     PayoutRatio = security.PayoutRatio,
@@ -60,7 +60,7 @@ namespace StockScreener.Calculators
 
         private Dictionary<TimeSpan, double> DeriveAnnualizedEPSGrowth(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
         {
-            if (!constructionData.Any())
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.EPSGrowthAnnualized))
                 return null;
 
             var dic = new Dictionary<TimeSpan, double>();

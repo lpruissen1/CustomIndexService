@@ -15,7 +15,7 @@ namespace StockScreener.Mapper
 
             metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
             metricList.Add(MapMarketCap(index.MarketCaps));
-            metricList.Add(MapRevenueGrowth(index.RevenueGrowths));
+            metricList.Add(MapRevenueGrowth(index.RevenueGrowthAnnualized));
             metricList.Add(MapPriceToEarningsTTM(index.PriceToEarningsRatioTTM));
             metricList.Add(MapPayoutRatio(index.PayoutRatio));
             metricList.Add(MapProfitMargin(index.ProfitMargin));
@@ -172,7 +172,7 @@ namespace StockScreener.Mapper
             return new GrossMarginMetric(list);
         }
 
-        private IMetric MapRevenueGrowth(List<RevenueGrowth> revenueGrowth)
+        private IMetric MapRevenueGrowth(List<RevenueGrowthAnnualized> revenueGrowth)
         {
             if(!revenueGrowth.Any())
                 return null;

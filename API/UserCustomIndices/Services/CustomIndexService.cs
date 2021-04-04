@@ -65,12 +65,12 @@ namespace UserCustomIndices.Services
             {
                 Id = index.Id,
                 Markets = new API.ComposedMarkets { Markets = index.Markets.Markets },
-                DividendYield = new API.DividendYield { Lower = index.DividendYield.Lower, Upper = index.DividendYield.Upper },
+                //DividendYield = new API.DividendYield { Lower = index.DividendYield.Lower, Upper = index.DividendYield.Upper },
                 Volitility = new API.Volitility { Lower = index.Volitility.Lower, Upper = index.Volitility.Upper },
                 TrailingPerformance = new API.TrailingPerformance { Lower = index.TrailingPerformance.Lower, Upper = index.TrailingPerformance.Upper, TimePeriod = index.TrailingPerformance.TimePeriod },
                 // Need to access elements in the list for revenue growth
                 //RevenueGrowth = new API.RevenueGrowth { Lower = index.RevenueGrowths.Lower, Upper = index.RevenueGrowths.Upper, TimePeriod = index.RevenueGrowths.TimePeriod },
-                EarningsGrowth = new API.EarningsGrowth { Lower = index.EarningsGrowth.Lower, Upper = index.EarningsGrowth.Upper },
+                //EarningsGrowth = new API.EarningsGrowth { Lower = index.EarningsGrowth.Lower, Upper = index.EarningsGrowth.Upper },
                 SectorAndIndsutry = new API.Sectors { SectorGroups = index.SectorAndIndsutry.SectorGroups.Select(sector => new API.Sector { Name = sector.Name, Industries = sector.Industries }).ToArray() },
                 MarketCaps = new API.MarketCaps { MarketCapGroups = index.MarketCaps.MarketCapGroups.Select(marketCap => new API.MarketCap { Lower = marketCap.Lower, Upper = marketCap.Upper }).ToArray() },
                 Test = index.Test

@@ -5,7 +5,7 @@ namespace StockScreener.Model.BaseSecurity
 {
     public class DerivedSecurity : Security
     {
-        public Dictionary<TimeSpan, double> RevenueGrowth;
+        public Dictionary<TimeSpan, double> RevenueGrowthAnnualized;
         public Dictionary<TimeSpan, double> EPSGrowthAnnualized;
         public double PriceToEarningsRatioTTM;
         public double PriceToSalesRatioTTM;
