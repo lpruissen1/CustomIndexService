@@ -32,15 +32,11 @@ namespace StockScreener.Service.IntegrationTests
 
 		[SetUp]
 		public virtual void SetUp()
-        {
-			customIndex = new CustomIndex();
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
-		}
-
-		[TearDown]
-		public virtual void TearDown()
 		{
 			context.ClearAll();
+
+			customIndex = new CustomIndex();
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 		}
 
 		public void AddStockIndex(string indexName, IEnumerable<string> stockIndex)
