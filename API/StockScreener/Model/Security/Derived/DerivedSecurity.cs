@@ -8,6 +8,7 @@ namespace StockScreener.Model.BaseSecurity
     {
         public Dictionary<TimePeriod, double> RevenueGrowthAnnualized;
         public Dictionary<TimePeriod, double> EPSGrowthAnnualized;
+        public Dictionary<TimePeriod, double> RevenueGrowthRaw;
         public double PriceToEarningsRatioTTM;
         public double PriceToSalesRatioTTM;
         public double PriceToBookValue;
