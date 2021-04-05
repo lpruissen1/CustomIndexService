@@ -20,5 +20,6 @@
         DividendYield = 16,
         EPSGrowthAnnualized = 17,
         RevenueGrowthRaw = 18,
+        EPSGrowthRaw = 19,
     }
 }

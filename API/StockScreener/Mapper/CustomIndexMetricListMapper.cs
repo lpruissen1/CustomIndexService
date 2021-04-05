@@ -31,6 +31,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapEPSGrowthAnnualized(index.EPSGrowthAnnualized));
             metricList.Add(MapTrailingPerformance(index.TrailingPerformance));
             metricList.Add(MapRevenueGrowthRaw(index.RevenueGrowthRaw));
+            metricList.Add(MapEPSGrowthRaw(index.EPSGrowthRaw));
 
             return metricList;
         }
@@ -218,6 +219,21 @@ namespace StockScreener.Mapper
             }
 
             return new EPSGrowthAnnualizedMetric(list);
+        }
+
+        private IMetric MapEPSGrowthRaw(List<EPSGrowthRaw> epsGrowth)
+        {
+            if (!epsGrowth.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var epsGrowthTarget in epsGrowth)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(epsGrowthTarget.Upper, epsGrowthTarget.Lower), GetTimeSpan(epsGrowthTarget.TimePeriod)));
+            }
+
+            return new EPSGrowthRawMetric(list);
         }
 
         private IMetric MapTrailingPerformance(List<AnnualizedTrailingPerformance> trailingPerformances)

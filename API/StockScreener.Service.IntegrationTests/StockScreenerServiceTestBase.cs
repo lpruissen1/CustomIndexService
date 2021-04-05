@@ -134,10 +134,15 @@ namespace StockScreener.Service.IntegrationTests
 			customIndex.RevenueGrowthRaw.Add(new RevenueGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
 		}
 
-		public void AddPriceToEarningsRatioGrowthToCustomIndex(double upper, double lower, int range)
+		public void AddAnnualizedEPSGrowthToCustomIndex(double upper, double lower, int range)
         {
 			customIndex.EPSGrowthAnnualized.Add(new EPSGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
         }
+
+		public void AddRawEPSGrowthToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.EPSGrowthRaw.Add(new EPSGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
+		}
 
 		public void AddAnnualizedTrailingPerformanceoCustomIndex(double upper, double lower, int range)
         {
