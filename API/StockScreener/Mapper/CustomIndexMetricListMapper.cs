@@ -32,6 +32,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapTrailingPerformance(index.TrailingPerformance));
             metricList.Add(MapRevenueGrowthRaw(index.RevenueGrowthRaw));
             metricList.Add(MapEPSGrowthRaw(index.EPSGrowthRaw));
+            metricList.Add(MapDividendGrowthAnnualized(index.DividendGrowthAnnualized));
 
             return metricList;
         }
@@ -204,6 +205,21 @@ namespace StockScreener.Mapper
             }
 
             return new RevenueGrowthRawMetric(list);
+        }
+
+        private IMetric MapDividendGrowthAnnualized(List<DividendGrowthAnnualized> dividendGrowth)
+        {
+            if (!dividendGrowth.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var dividendGrowthTarget in dividendGrowth)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(dividendGrowthTarget.Upper, dividendGrowthTarget.Lower), GetTimeSpan(dividendGrowthTarget.TimePeriod)));
+            }
+
+            return new DividendGrowthAnnualizedMetric(list);
         }
 
         private IMetric MapEPSGrowthAnnualized(List<EPSGrowthAnnualized> epsGrowth)

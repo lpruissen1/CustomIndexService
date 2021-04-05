@@ -13,6 +13,7 @@ namespace Database.Model.User.CustomIndices
         public List<RevenueGrowthRaw> RevenueGrowthRaw { get; init; } = new List<RevenueGrowthRaw>();
         public List<EPSGrowthAnnualized> EPSGrowthAnnualized { get; init; } = new List<EPSGrowthAnnualized>();
         public List<EPSGrowthRaw> EPSGrowthRaw { get; init; } = new List<EPSGrowthRaw>();
+        public List<DividendGrowthAnnualized> DividendGrowthAnnualized { get; init; } = new List<DividendGrowthAnnualized>();
         public List<AnnualizedTrailingPerformance> TrailingPerformance { get; init; } = new List<AnnualizedTrailingPerformance>();
         public List<PriceToEarningsRatioTTM> PriceToEarningsRatioTTM { get; init; } = new List<PriceToEarningsRatioTTM>();
         public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();

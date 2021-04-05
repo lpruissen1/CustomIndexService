@@ -37,7 +37,8 @@ namespace StockScreener.Calculators
                     EPSGrowthAnnualized = DeriveAnnualizedEPSGrowth(derivedDatapoints, security),
                     TrailingPerformance = DeriveTrailingPerformance(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.TrailingPerformance), security),
                     RevenueGrowthRaw = DeriveRevenueGrowthRaw(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.RevenueGrowthRaw), security),
-                    EPSGrowthRaw = DeriveRawEPSGrowth(derivedDatapoints, security)
+                    EPSGrowthRaw = DeriveRawEPSGrowth(derivedDatapoints, security),
+                    DividendGrowthAnnualized = DeriveDividendGrowthAnnualized(derivedDatapoints, security)
                 });
             }
             
@@ -111,6 +112,24 @@ namespace StockScreener.Calculators
 
                 var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyEarnings, span);
                 dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Earnings, past.Earnings));
+            }
+
+            return dic;
+        }
+
+        private Dictionary<TimePeriod, double> DeriveDividendGrowthAnnualized(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any())
+                return null;
+
+            var dic = new Dictionary<TimePeriod, double>();
+
+            foreach (var dividendGrowthConstructionData in constructionData)
+            {
+                var span = dividendGrowthConstructionData.Time;
+
+                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyDividendsPerShare, span);
+                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends, GetUnixFromTimeSpan(span)));
             }
 
             return dic;
