@@ -134,6 +134,11 @@ namespace StockScreener.Service.IntegrationTests
 			customIndex.DividendGrowthAnnualized.Add(new DividendGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range });
 		}
 
+		public void AddRawDividendGrowthToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.DividendGrowthRaw.Add(new DividendGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
+		}
+
 		public void AddRawRevenueGrowthToCustomIndex(double upper, double lower, int range)
 		{
 			customIndex.RevenueGrowthRaw.Add(new RevenueGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });

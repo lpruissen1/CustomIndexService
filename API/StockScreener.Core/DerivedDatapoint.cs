@@ -22,5 +22,6 @@
         RevenueGrowthRaw = 18,
         EPSGrowthRaw = 19,
         DividendGrowthAnnualized = 20,
+        DividendGrowthRaw = 21
     }
 }
