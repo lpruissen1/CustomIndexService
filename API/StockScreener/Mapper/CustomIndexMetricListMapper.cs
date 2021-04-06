@@ -16,7 +16,7 @@ namespace StockScreener.Mapper
 
             metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
             metricList.Add(MapMarketCap(index.MarketCaps));
-            metricList.Add(MapRevenueGrowth(index.RevenueGrowthAnnualized));
+            metricList.Add(MapRevenueGrowthAnnualized(index.RevenueGrowthAnnualized));
             metricList.Add(MapPriceToEarningsTTM(index.PriceToEarningsRatioTTM));
             metricList.Add(MapPayoutRatio(index.PayoutRatio));
             metricList.Add(MapProfitMargin(index.ProfitMargin));
@@ -29,7 +29,12 @@ namespace StockScreener.Mapper
             metricList.Add(MapPriceToBook(index.PriceToBookValue));
             metricList.Add(MapDividendYield(index.DividendYields));
             metricList.Add(MapEPSGrowthAnnualized(index.EPSGrowthAnnualized));
-            metricList.Add(MapTrailingPerformance(index.TrailingPerformance));
+            metricList.Add(MapAnnualizedTrailingPerformance(index.TrailingPerformanceAnnualized));
+            metricList.Add(MapRevenueGrowthRaw(index.RevenueGrowthRaw));
+            metricList.Add(MapEPSGrowthRaw(index.EPSGrowthRaw));
+            metricList.Add(MapDividendGrowthAnnualized(index.DividendGrowthAnnualized));
+            metricList.Add(MapDividendGrowthRaw(index.DividendGrowthRaw));
+            metricList.Add(MapRawTrailingPerformance(index.TrailingPerformanceRaw));
 
             return metricList;
         }
@@ -174,7 +179,7 @@ namespace StockScreener.Mapper
             return new GrossMarginMetric(list);
         }
 
-        private IMetric MapRevenueGrowth(List<RevenueGrowthAnnualized> revenueGrowth)
+        private IMetric MapRevenueGrowthAnnualized(List<RevenueGrowthAnnualized> revenueGrowth)
         {
             if(!revenueGrowth.Any())
                 return null;
@@ -187,6 +192,51 @@ namespace StockScreener.Mapper
             }
 
             return new RevenueGrowthAnnualizedMetric(list);
+        }
+
+        private IMetric MapRevenueGrowthRaw(List<RevenueGrowthRaw> revenueGrowth)
+        {
+            if (!revenueGrowth.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var revenueGrowthTarget in revenueGrowth)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
+            }
+
+            return new RevenueGrowthRawMetric(list);
+        }
+
+        private IMetric MapDividendGrowthAnnualized(List<DividendGrowthAnnualized> dividendGrowth)
+        {
+            if (!dividendGrowth.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var dividendGrowthTarget in dividendGrowth)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(dividendGrowthTarget.Upper, dividendGrowthTarget.Lower), GetTimeSpan(dividendGrowthTarget.TimePeriod)));
+            }
+
+            return new DividendGrowthAnnualizedMetric(list);
+        }
+
+        private IMetric MapDividendGrowthRaw(List<DividendGrowthRaw> dividendGrowth)
+        {
+            if (!dividendGrowth.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var dividendGrowthTarget in dividendGrowth)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(dividendGrowthTarget.Upper, dividendGrowthTarget.Lower), GetTimeSpan(dividendGrowthTarget.TimePeriod)));
+            }
+
+            return new DividendGrowthRawMetric(list);
         }
 
         private IMetric MapEPSGrowthAnnualized(List<EPSGrowthAnnualized> epsGrowth)
@@ -204,7 +254,22 @@ namespace StockScreener.Mapper
             return new EPSGrowthAnnualizedMetric(list);
         }
 
-        private IMetric MapTrailingPerformance(List<AnnualizedTrailingPerformance> trailingPerformances)
+        private IMetric MapEPSGrowthRaw(List<EPSGrowthRaw> epsGrowth)
+        {
+            if (!epsGrowth.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var epsGrowthTarget in epsGrowth)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(epsGrowthTarget.Upper, epsGrowthTarget.Lower), GetTimeSpan(epsGrowthTarget.TimePeriod)));
+            }
+
+            return new EPSGrowthRawMetric(list);
+        }
+
+        private IMetric MapAnnualizedTrailingPerformance(List<AnnualizedTrailingPerformance> trailingPerformances)
         {
             if (!trailingPerformances.Any())
                 return null;
@@ -216,7 +281,22 @@ namespace StockScreener.Mapper
                 list.Add(new RangeAndTimePeriod(new Range(trailingPerformance.Upper, trailingPerformance.Lower), GetTimeSpan(trailingPerformance.TimePeriod)));
             }
 
-            return new TrailingPerformanceMetric(list);
+            return new TrailingPerformanceAnnualizedMetric(list);
+        }
+
+        private IMetric MapRawTrailingPerformance(List<RawTrailingPerformance> trailingPerformances)
+        {
+            if (!trailingPerformances.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var trailingPerformance in trailingPerformances)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(trailingPerformance.Upper, trailingPerformance.Lower), GetTimeSpan(trailingPerformance.TimePeriod)));
+            }
+
+            return new TrailingPerformanceRawMetric(list);
         }
 
         private IMetric MapPriceToEarningsTTM(List<PriceToEarningsRatioTTM> priceToEarningsRatioTTM)

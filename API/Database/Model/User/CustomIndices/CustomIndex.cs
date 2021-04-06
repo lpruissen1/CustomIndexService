@@ -10,8 +10,13 @@ namespace Database.Model.User.CustomIndices
         public List<DividendYield> DividendYields { get; init; } = new List<DividendYield>();
         public Volitility Volitility { get; init; }
         public List<RevenueGrowthAnnualized> RevenueGrowthAnnualized { get; init; } = new List<RevenueGrowthAnnualized>();
+        public List<RevenueGrowthRaw> RevenueGrowthRaw { get; init; } = new List<RevenueGrowthRaw>();
         public List<EPSGrowthAnnualized> EPSGrowthAnnualized { get; init; } = new List<EPSGrowthAnnualized>();
-        public List<AnnualizedTrailingPerformance> TrailingPerformance { get; init; } = new List<AnnualizedTrailingPerformance>();
+        public List<EPSGrowthRaw> EPSGrowthRaw { get; init; } = new List<EPSGrowthRaw>();
+        public List<DividendGrowthAnnualized> DividendGrowthAnnualized { get; init; } = new List<DividendGrowthAnnualized>();
+        public List<DividendGrowthRaw> DividendGrowthRaw { get; init; } = new List<DividendGrowthRaw>();
+        public List<AnnualizedTrailingPerformance> TrailingPerformanceAnnualized { get; init; } = new List<AnnualizedTrailingPerformance>();
+        public List<RawTrailingPerformance> TrailingPerformanceRaw { get; init; } = new List<RawTrailingPerformance>();
         public List<PriceToEarningsRatioTTM> PriceToEarningsRatioTTM { get; init; } = new List<PriceToEarningsRatioTTM>();
         public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();
         public List<Sector> SectorAndIndsutry { get; init; } = new List<Sector>();

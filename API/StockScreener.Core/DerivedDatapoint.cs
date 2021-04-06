@@ -6,7 +6,7 @@
         Industry = 2,
         MarketCap = 3,
         RevenueGrowthAnnualized = 4,
-        TrailingPerformance = 5,
+        TrailingPerformanceAnnualized = 5,
         PriceToEarningsRatioTTM = 6,
         PayoutRatio = 7,
         ProfitMargin = 8,
@@ -19,5 +19,10 @@
         PriceToBookValue = 15,
         DividendYield = 16,
         EPSGrowthAnnualized = 17,
+        RevenueGrowthRaw = 18,
+        EPSGrowthRaw = 19,
+        DividendGrowthAnnualized = 20,
+        DividendGrowthRaw = 21,
+        TrailingPerformanceRaw = 22
     }
 }

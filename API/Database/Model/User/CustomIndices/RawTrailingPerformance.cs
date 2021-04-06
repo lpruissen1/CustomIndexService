@@ -1,6 +1,6 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class EPSGrowthRaw : MetricRange
+    public class RawTrailingPerformance : MetricRange
     {
         public int TimePeriod;
     }

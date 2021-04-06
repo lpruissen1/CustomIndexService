@@ -7,26 +7,26 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class TrailingPerformanceMetric : RangeAndTimePeriodMetric
+    public class RevenueGrowthRawMetric : RangeAndTimePeriodMetric
     {
-        public TrailingPerformanceMetric(List<RangeAndTimePeriod> rangesAndTimeSpans) : base(rangesAndTimeSpans) {}
+        public RevenueGrowthRawMetric(List<RangeAndTimePeriod> rangesAndTimeSpans) : base(rangesAndTimeSpans) { }
 
         public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
-            yield return BaseDatapoint.Price;
+            yield return BaseDatapoint.Revenue;
         }
 
         public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            foreach(var entry in rangedDatapoint.GroupBy(x => x.GetTimePeriod()).Select(x => x.FirstOrDefault()))
+            foreach (var entry in rangedDatapoint.GroupBy(x => x.GetTimePeriod()).Select(x => x.FirstOrDefault()))
             {
-                yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.TrailingPerformance, Time = entry.GetTimePeriod() };
+                yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.RevenueGrowthRaw, Time = entry.GetTimePeriod() };
             }
         }
 
         public override Dictionary<TimePeriod, double> GetValue(DerivedSecurity security)
         {
-            return security.TrailingPerformance;
+            return security.RevenueGrowthRaw;
         }
     }
 }

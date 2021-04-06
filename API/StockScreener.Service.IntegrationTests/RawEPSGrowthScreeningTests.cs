@@ -4,10 +4,10 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-	public class AnnualizedEPSGrowthScreeningTests : StockScreenerServiceTestBase
+	public class RawEPSGrowthScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_AnnualizedEPSGrowth_Biannual()
+		public void ScreenByStockIndex_RawEPSGrowth_Biannual()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -21,12 +21,12 @@ namespace StockScreener.Service.IntegrationTests
 				.AddEarningsPerShare(1.77d, 1585627200));
 
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddEarningsPerShare(0.75d, 1561867200)
-				.AddEarningsPerShare(0.77d, 1569816000)
+				.AddEarningsPerShare(1.77d, 1569816000)
 				.AddEarningsPerShare(1.76d, 1577768400)
 				.AddEarningsPerShare(1.76d, 1585627200));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddAnnualizedEPSGrowthToCustomIndex(130, 10, 2);
+			AddRawEPSGrowthToCustomIndex(50, 10, 2);
 
 			var result = sut.Screen(customIndex);
 

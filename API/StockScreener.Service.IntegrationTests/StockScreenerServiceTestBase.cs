@@ -129,14 +129,39 @@ namespace StockScreener.Service.IntegrationTests
 			customIndex.RevenueGrowthAnnualized.Add(new RevenueGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
         }
 
-		public void AddPriceToEarningsRatioGrowthToCustomIndex(double upper, double lower, int range)
+		public void AddAnnualizedDividendGrowthToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.DividendGrowthAnnualized.Add(new DividendGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range });
+		}
+
+		public void AddRawDividendGrowthToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.DividendGrowthRaw.Add(new DividendGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
+		}
+
+		public void AddRawRevenueGrowthToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.RevenueGrowthRaw.Add(new RevenueGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
+		}
+
+		public void AddAnnualizedEPSGrowthToCustomIndex(double upper, double lower, int range)
         {
 			customIndex.EPSGrowthAnnualized.Add(new EPSGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
         }
 
+		public void AddRawEPSGrowthToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.EPSGrowthRaw.Add(new EPSGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
+		}
+
 		public void AddAnnualizedTrailingPerformanceoCustomIndex(double upper, double lower, int range)
         {
-			customIndex.TrailingPerformance.Add(new AnnualizedTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range});
+			customIndex.TrailingPerformanceAnnualized.Add(new AnnualizedTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range});
         }
+
+		public void AddRawTrailingPerformanceToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.TrailingPerformanceRaw.Add(new RawTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range });
+		}
 	}
 }

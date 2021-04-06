@@ -21,7 +21,7 @@ namespace StockScreener.Calculators
                     Ticker = security.Ticker,
                     Sector = security.Sector,
                     Industry = security.Industry,
-                    RevenueGrowthAnnualized = DeriveRevenueGrowth(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.RevenueGrowthAnnualized), security),
+                    RevenueGrowthAnnualized = DeriveRevenueGrowthAnnualized(derivedDatapoints, security),
                     MarketCap = security.MarketCap,
                     PriceToEarningsRatioTTM = DerivePriceToEarningsTTM(derivedDatapoints, security),
                     PayoutRatio = security.PayoutRatio,
@@ -35,16 +35,21 @@ namespace StockScreener.Calculators
                     PriceToBookValue = DerivePriceToBook(derivedDatapoints, security),
                     DividendYield = DeriveDividendYield(derivedDatapoints, security),
                     EPSGrowthAnnualized = DeriveAnnualizedEPSGrowth(derivedDatapoints, security),
-                    TrailingPerformance = DeriveTrailingPerformance(derivedDatapoints.Where(x => x.datapoint == DerivedDatapoint.TrailingPerformance), security)
+                    TrailingPerformanceAnnualized = DeriveAnnualizedTrailingPerformance(derivedDatapoints, security),
+                    RevenueGrowthRaw = DeriveRevenueGrowthRaw(derivedDatapoints, security),
+                    EPSGrowthRaw = DeriveRawEPSGrowth(derivedDatapoints, security),
+                    DividendGrowthAnnualized = DeriveDividendGrowthAnnualized(derivedDatapoints, security),
+                    DividendGrowthRaw = DeriveDividendGrowthRaw(derivedDatapoints, security),
+                    TrailingPerformanceRaw = DeriveRawTrailingPerformance(derivedDatapoints, security)
                 });
             }
             
             return derivedSecurities;
         }
 
-        private Dictionary<TimePeriod, double> DeriveRevenueGrowth(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        private Dictionary<TimePeriod, double> DeriveRevenueGrowthAnnualized(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
         {
-            if (!constructionData.Any())
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.RevenueGrowthAnnualized))
                 return null;
 
             var dic = new Dictionary<TimePeriod, double>();
@@ -55,6 +60,24 @@ namespace StockScreener.Calculators
 
                 var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyRevenue, span);
                 dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimeSpan(span)));
+            }
+
+            return dic;
+        }
+
+        private Dictionary<TimePeriod, double> DeriveRevenueGrowthRaw(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.RevenueGrowthRaw))
+                return null;
+
+            var dic = new Dictionary<TimePeriod, double>();
+
+            foreach (var revenueGrowthConstructionData in constructionData)
+            {
+                var span = revenueGrowthConstructionData.Time;
+
+                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyRevenue, span);
+                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Revenue, past.Revenue));
             }
 
             return dic;
@@ -78,9 +101,63 @@ namespace StockScreener.Calculators
             return dic;
         }
 
-        private Dictionary<TimePeriod, double> DeriveTrailingPerformance(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        private Dictionary<TimePeriod, double> DeriveRawEPSGrowth(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
         {
-            if (!constructionData.Any())
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.EPSGrowthRaw))
+                return null;
+
+            var dic = new Dictionary<TimePeriod, double>();
+
+            foreach (var epsGrowthConstructionData in constructionData)
+            {
+                var span = epsGrowthConstructionData.Time;
+
+                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyEarnings, span);
+                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Earnings, past.Earnings));
+            }
+
+            return dic;
+        }
+
+        private Dictionary<TimePeriod, double> DeriveDividendGrowthAnnualized(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.DividendGrowthAnnualized))
+                return null;
+
+            var dic = new Dictionary<TimePeriod, double>();
+
+            foreach (var dividendGrowthConstructionData in constructionData)
+            {
+                var span = dividendGrowthConstructionData.Time;
+
+                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyDividendsPerShare, span);
+                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends, GetUnixFromTimeSpan(span)));
+            }
+
+            return dic;
+        }
+
+        private Dictionary<TimePeriod, double> DeriveDividendGrowthRaw(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.DividendGrowthRaw))
+                return null;
+
+            var dic = new Dictionary<TimePeriod, double>();
+
+            foreach (var dividendGrowthConstructionData in constructionData)
+            {
+                var span = dividendGrowthConstructionData.Time;
+
+                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyDividendsPerShare, span);
+                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends));
+            }
+
+            return dic;
+        }
+
+        private Dictionary<TimePeriod, double> DeriveAnnualizedTrailingPerformance(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.TrailingPerformanceAnnualized))
                 return null;
 
             var dic = new Dictionary<TimePeriod, double>();
@@ -91,6 +168,24 @@ namespace StockScreener.Calculators
 
                 var (present, past) = GetEndpointDataForPrice(security.DailyPrice, span);
                 dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Price, past.Price, GetUnixFromTimeSpan(span)));
+            }
+
+            return dic;
+        }
+
+        private Dictionary<TimePeriod, double> DeriveRawTrailingPerformance(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.TrailingPerformanceRaw))
+                return null;
+
+            var dic = new Dictionary<TimePeriod, double>();
+
+            foreach (var trailingPerformance in constructionData)
+            {
+                var span = trailingPerformance.Time;
+
+                var (present, past) = GetEndpointDataForPrice(security.DailyPrice, span);
+                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Price, past.Price));
             }
 
             return dic;

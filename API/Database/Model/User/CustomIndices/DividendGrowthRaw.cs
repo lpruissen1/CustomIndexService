@@ -1,6 +1,6 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class EPSGrowthRaw : MetricRange
+    public class DividendGrowthRaw : MetricRange
     {
         public int TimePeriod;
     }
