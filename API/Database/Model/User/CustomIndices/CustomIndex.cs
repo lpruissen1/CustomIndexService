@@ -15,7 +15,8 @@ namespace Database.Model.User.CustomIndices
         public List<EPSGrowthRaw> EPSGrowthRaw { get; init; } = new List<EPSGrowthRaw>();
         public List<DividendGrowthAnnualized> DividendGrowthAnnualized { get; init; } = new List<DividendGrowthAnnualized>();
         public List<DividendGrowthRaw> DividendGrowthRaw { get; init; } = new List<DividendGrowthRaw>();
-        public List<AnnualizedTrailingPerformance> TrailingPerformance { get; init; } = new List<AnnualizedTrailingPerformance>();
+        public List<AnnualizedTrailingPerformance> TrailingPerformanceAnnualized { get; init; } = new List<AnnualizedTrailingPerformance>();
+        public List<RawTrailingPerformance> TrailingPerformanceRaw { get; init; } = new List<RawTrailingPerformance>();
         public List<PriceToEarningsRatioTTM> PriceToEarningsRatioTTM { get; init; } = new List<PriceToEarningsRatioTTM>();
         public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();
         public List<Sector> SectorAndIndsutry { get; init; } = new List<Sector>();

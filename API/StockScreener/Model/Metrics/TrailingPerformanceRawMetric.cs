@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class TrailingPerformanceMetric : RangeAndTimePeriodMetric
+    public class TrailingPerformanceRawMetric : RangeAndTimePeriodMetric
     {
-        public TrailingPerformanceMetric(List<RangeAndTimePeriod> rangesAndTimeSpans) : base(rangesAndTimeSpans) {}
+        public TrailingPerformanceRawMetric(List<RangeAndTimePeriod> rangesAndTimeSpans) : base(rangesAndTimeSpans) {}
 
         public override IEnumerable<BaseDatapoint> GetBaseDatapoints()
         {
@@ -20,13 +20,13 @@ namespace StockScreener.Model.Metrics
         {
             foreach(var entry in rangedDatapoint.GroupBy(x => x.GetTimePeriod()).Select(x => x.FirstOrDefault()))
             {
-                yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.TrailingPerformance, Time = entry.GetTimePeriod() };
+                yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.TrailingPerformanceRaw, Time = entry.GetTimePeriod() };
             }
         }
 
         public override Dictionary<TimePeriod, double> GetValue(DerivedSecurity security)
         {
-            return security.TrailingPerformance;
+            return security.TrailingPerformanceRaw;
         }
     }
 }

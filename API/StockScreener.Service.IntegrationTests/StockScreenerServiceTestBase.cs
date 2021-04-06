@@ -156,7 +156,12 @@ namespace StockScreener.Service.IntegrationTests
 
 		public void AddAnnualizedTrailingPerformanceoCustomIndex(double upper, double lower, int range)
         {
-			customIndex.TrailingPerformance.Add(new AnnualizedTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range});
+			customIndex.TrailingPerformanceAnnualized.Add(new AnnualizedTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range});
         }
+
+		public void AddRawTrailingPerformanceToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.TrailingPerformanceRaw.Add(new RawTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range });
+		}
 	}
 }

@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-	public class TrailingPerformanceScreeningTests : StockScreenerServiceTestBase
+	public class AnnualizedTrailingPerformanceScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_TrailingPerformance_Quarterly()

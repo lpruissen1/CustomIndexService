@@ -29,11 +29,12 @@ namespace StockScreener.Mapper
             metricList.Add(MapPriceToBook(index.PriceToBookValue));
             metricList.Add(MapDividendYield(index.DividendYields));
             metricList.Add(MapEPSGrowthAnnualized(index.EPSGrowthAnnualized));
-            metricList.Add(MapTrailingPerformance(index.TrailingPerformance));
+            metricList.Add(MapAnnualizedTrailingPerformance(index.TrailingPerformanceAnnualized));
             metricList.Add(MapRevenueGrowthRaw(index.RevenueGrowthRaw));
             metricList.Add(MapEPSGrowthRaw(index.EPSGrowthRaw));
             metricList.Add(MapDividendGrowthAnnualized(index.DividendGrowthAnnualized));
             metricList.Add(MapDividendGrowthRaw(index.DividendGrowthRaw));
+            metricList.Add(MapRawTrailingPerformance(index.TrailingPerformanceRaw));
 
             return metricList;
         }
@@ -268,7 +269,7 @@ namespace StockScreener.Mapper
             return new EPSGrowthRawMetric(list);
         }
 
-        private IMetric MapTrailingPerformance(List<AnnualizedTrailingPerformance> trailingPerformances)
+        private IMetric MapAnnualizedTrailingPerformance(List<AnnualizedTrailingPerformance> trailingPerformances)
         {
             if (!trailingPerformances.Any())
                 return null;
@@ -280,7 +281,22 @@ namespace StockScreener.Mapper
                 list.Add(new RangeAndTimePeriod(new Range(trailingPerformance.Upper, trailingPerformance.Lower), GetTimeSpan(trailingPerformance.TimePeriod)));
             }
 
-            return new TrailingPerformanceMetric(list);
+            return new TrailingPerformanceAnnualizedMetric(list);
+        }
+
+        private IMetric MapRawTrailingPerformance(List<RawTrailingPerformance> trailingPerformances)
+        {
+            if (!trailingPerformances.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var trailingPerformance in trailingPerformances)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(trailingPerformance.Upper, trailingPerformance.Lower), GetTimeSpan(trailingPerformance.TimePeriod)));
+            }
+
+            return new TrailingPerformanceRawMetric(list);
         }
 
         private IMetric MapPriceToEarningsTTM(List<PriceToEarningsRatioTTM> priceToEarningsRatioTTM)
