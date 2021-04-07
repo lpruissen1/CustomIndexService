@@ -1,7 +1,9 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿using System.Collections.Generic;
+
+namespace Database.Model.User.CustomIndices
 {
     public class DividendGrowthAnnualized : MetricRange
     {
-        public int TimePeriod;
+        public List<TimedRangeMetric> ranges;
     }
 }
