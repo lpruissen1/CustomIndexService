@@ -15,7 +15,7 @@ namespace StockScreener.Service.IntegrationTests
     public class AnnualizedDividendGrowthScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_DividendGrowthAnnualized()
+		public void ScreenByStockIndex_DividendGrowthAnnualized_Quarterly()
 		{
 			var stockIndex1 = "Lee's Index";
 
