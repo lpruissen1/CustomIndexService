@@ -1,13 +1,13 @@
 ﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
-namespace StockScreener.Service.IntegrationTests
+namespace StockScreener.Service.IntegrationTests.Screening
 {
     [TestFixture]
-    public class CurrentRatioScreeningTests : StockScreenerServiceTestBase
+	public class WorkingCapitalScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_CurrentRatio()
+		public void ScreenByStockIndex_WorkingCapital()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -15,11 +15,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddCurrentRatio(3.1d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddCurrentRatio(0.75d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddWorkingCapital(10_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddWorkingCapital(1_000_000d));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddCurrentRatioToCustomIndex(4, 1);
+			AddWorkingCapitalToCustomIndex(15_000_000, 5_000_000);
 
 			var result = sut.Screen(customIndex);
 

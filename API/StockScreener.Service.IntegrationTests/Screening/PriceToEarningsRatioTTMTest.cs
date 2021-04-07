@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
-namespace StockScreener.Service.IntegrationTests
+namespace StockScreener.Service.IntegrationTests.Screening
 {
     [TestFixture]
     public class PriceToEarningsRatioTTMTest : StockScreenerServiceTestBase

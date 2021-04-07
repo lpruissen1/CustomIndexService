@@ -11,7 +11,7 @@ using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StockScreener.Service.IntegrationTests
+namespace StockScreener.Service.IntegrationTests.Screening
 {
     public abstract class StockScreenerServiceTestBase
 	{
@@ -19,7 +19,7 @@ namespace StockScreener.Service.IntegrationTests
 
 		protected StockScreenerService sut;
 
-		protected  CustomIndex customIndex;
+		protected CustomIndex customIndex;
 
 		[OneTimeSetUp]
 		public virtual void OneTimeSetUp()

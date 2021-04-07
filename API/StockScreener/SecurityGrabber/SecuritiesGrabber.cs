@@ -35,6 +35,17 @@ namespace StockScreener.SecurityGrabber
             return list;
         }
 
+        public SecuritiesList<BaseSecurity> GetSecurities(IEnumerable<string> tickers, IEnumerable<BaseDatapoint> datapoints)
+        {
+            list = new SecuritiesList<BaseSecurity>(tickers.Select(ticker => new BaseSecurity() { Ticker = ticker}));
+
+            AddCompanyInfo(datapoints);
+            AddStockFinancials(datapoints);
+            AddPrice(datapoints);
+
+            return list;
+        }
+
         private void AddCompanyInfo(IEnumerable<BaseDatapoint> datapoints)
         {
             if (!datapoints.Any())

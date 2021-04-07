@@ -1,21 +1,13 @@
-﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Model.Price;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
+﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
-namespace StockScreener.Service.IntegrationTests
+namespace StockScreener.Service.IntegrationTests.Screening
 {
-	[TestFixture]
-    public class AnnualizedDividendGrowthScreeningTests : StockScreenerServiceTestBase
+    [TestFixture]
+    public class RawDividendGrowthScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_DividendGrowthAnnualized()
+		public void ScreenByStockIndex_DividendGrowthRaw()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -37,7 +29,7 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.03d, 1585627200));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddAnnualizedDividendGrowthToCustomIndex(75, 50, 2);
+			AddRawDividendGrowthToCustomIndex(30, 20, 2);
 
 			var result = sut.Screen(customIndex);
 
