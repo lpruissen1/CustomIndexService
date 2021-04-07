@@ -23,6 +23,7 @@
         EPSGrowthRaw = 19,
         DividendGrowthAnnualized = 20,
         DividendGrowthRaw = 21,
-        TrailingPerformanceRaw = 22
+        TrailingPerformanceRaw = 22,
+        CoefficientOfVariation = 23
     }
 }

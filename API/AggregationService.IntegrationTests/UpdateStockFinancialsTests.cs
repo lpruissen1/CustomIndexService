@@ -1,6 +1,5 @@
-﻿using AggregationService;
-using AggregationService.Core;
-using ApiClient.Models;
+﻿using ApiClient.Models;
+using Core;
 using NUnit.Framework;
 using StockScreener.Database.Model.StockFinancials;
 using System;

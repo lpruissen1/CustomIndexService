@@ -1,5 +1,5 @@
-﻿using AggregationService.Core;
-using ApiClient.Models;
+﻿using ApiClient.Models;
+using Core;
 using StockScreener.Database.Model;
 using System;
 using System.Collections.Generic;

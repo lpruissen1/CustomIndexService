@@ -1,6 +1,7 @@
 ﻿using Core;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,7 +41,8 @@ namespace StockScreener.Calculators
                     EPSGrowthRaw = DeriveRawEPSGrowth(derivedDatapoints, security),
                     DividendGrowthAnnualized = DeriveDividendGrowthAnnualized(derivedDatapoints, security),
                     DividendGrowthRaw = DeriveDividendGrowthRaw(derivedDatapoints, security),
-                    TrailingPerformanceRaw = DeriveRawTrailingPerformance(derivedDatapoints, security)
+                    TrailingPerformanceRaw = DeriveRawTrailingPerformance(derivedDatapoints, security),
+                    CoefficientOfVariation = DeriveCoefficientOfVariation(derivedDatapoints, security)
                 });
             }
             
@@ -186,6 +188,29 @@ namespace StockScreener.Calculators
 
                 var (present, past) = GetEndpointDataForPrice(security.DailyPrice, span);
                 dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Price, past.Price));
+            }
+
+            return dic;
+        }
+
+        private Dictionary<TimePeriod, double> DeriveCoefficientOfVariation(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        {
+            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.CoefficientOfVariation))
+                return null;
+
+            var dic = new Dictionary<TimePeriod, double>();
+
+            foreach (var timePeriod in constructionData)
+            {
+                var span = timePeriod.Time;
+
+                var priceEntries = security.DailyPrice.Where(x => x.Timestamp > DateTime.UtcNow.ToUnix() - GetUnixFromTimeSpan(timePeriod.Time));
+
+                var standardDeviation = priceEntries.Select(x => x.Price).StandardDeviation();
+
+                var coefficients = standardDeviation / priceEntries.Select(x => x.Price).Average() * 100;
+
+                dic.Add(span, coefficients);
             }
 
             return dic;

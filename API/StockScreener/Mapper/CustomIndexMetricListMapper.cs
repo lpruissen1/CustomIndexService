@@ -35,6 +35,7 @@ namespace StockScreener.Mapper
             metricList.Add(MapDividendGrowthAnnualized(index.DividendGrowthAnnualized));
             metricList.Add(MapDividendGrowthRaw(index.DividendGrowthRaw));
             metricList.Add(MapRawTrailingPerformance(index.TrailingPerformanceRaw));
+            metricList.Add(MapCoefficientOfVariation(index.CoefficientOfVariation));
 
             return metricList;
         }
@@ -297,6 +298,21 @@ namespace StockScreener.Mapper
             }
 
             return new TrailingPerformanceRawMetric(list);
+        }
+
+        private IMetric MapCoefficientOfVariation(List<CoefficientOfVariation> coefficientOfVariations)
+        {
+            if (!coefficientOfVariations.Any())
+                return null;
+
+            var list = new List<RangeAndTimePeriod>();
+
+            foreach (var coefficientOfVariation in coefficientOfVariations)
+            {
+                list.Add(new RangeAndTimePeriod(new Range(coefficientOfVariation.Upper, coefficientOfVariation.Lower), GetTimeSpan(coefficientOfVariation.TimePeriod)));
+            }
+
+            return new CoefficientOfVariationMetric(list);
         }
 
         private IMetric MapPriceToEarningsTTM(List<PriceToEarningsRatioTTM> priceToEarningsRatioTTM)
