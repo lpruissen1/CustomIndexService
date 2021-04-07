@@ -8,7 +8,7 @@ namespace Database.Model.User.CustomIndices
         public string UserId { get; init; }
         public List<string> Markets { get; init; } = new List<string>();
         public List<DividendYield> DividendYields { get; init; } = new List<DividendYield>();
-        public Volitility Volitility { get; init; }
+        public List<CoefficientOfVariation> CoefficientOfVariation { get; init; } = new List<CoefficientOfVariation>();
         public List<RevenueGrowthAnnualized> RevenueGrowthAnnualized { get; init; } = new List<RevenueGrowthAnnualized>();
         public List<RevenueGrowthRaw> RevenueGrowthRaw { get; init; } = new List<RevenueGrowthRaw>();
         public List<EPSGrowthAnnualized> EPSGrowthAnnualized { get; init; } = new List<EPSGrowthAnnualized>();

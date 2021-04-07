@@ -1,5 +1,4 @@
 using Core;
-using AggregationService.Core;
 using ApiClient;
 using ApiClient.Models;
 using Database.Core;

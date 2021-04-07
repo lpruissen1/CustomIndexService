@@ -1,5 +1,5 @@
-using AggregationService.Core;
 using ApiClient.Models;
+using Core;
 using NUnit.Framework;
 using System;
 

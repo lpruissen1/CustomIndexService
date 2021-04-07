@@ -18,6 +18,7 @@ namespace StockScreener.Model.BaseSecurity
         public double DividendYield;
         public Dictionary<TimePeriod, double> TrailingPerformanceAnnualized;
         public Dictionary<TimePeriod, double> TrailingPerformanceRaw;
+        public Dictionary<TimePeriod, double> CoefficientOfVariation;
     }
 
 }

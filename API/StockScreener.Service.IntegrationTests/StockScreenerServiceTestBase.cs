@@ -163,5 +163,10 @@ namespace StockScreener.Service.IntegrationTests
 		{
 			customIndex.TrailingPerformanceRaw.Add(new RawTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range });
 		}
+
+		public void AddCoefficientOfVariationToCustomIndex(double upper, double lower, int range)
+		{
+			customIndex.CoefficientOfVariation.Add(new CoefficientOfVariation { Upper = upper, Lower = lower, TimePeriod = range });
+		}
 	}
 }
