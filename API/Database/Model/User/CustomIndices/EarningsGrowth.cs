@@ -1,7 +1,10 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿using System.Collections.Generic;
+
+namespace Database.Model.User.CustomIndices
 {
-    public class EPSGrowthRaw : MetricRange
+    // this one
+    public class EPSGrowthRaw : Rule
     {
-        public int TimePeriod;
+        public List<Range> TimedRanges;
     }
 }

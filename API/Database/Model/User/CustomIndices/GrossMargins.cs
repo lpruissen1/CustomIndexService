@@ -1,4 +1,9 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿using System.Collections.Generic;
+
+namespace Database.Model.User.CustomIndices
 {
-    public class GrossMargins : MetricRange { }
+    public class GrossMargins : Rule 
+    {
+        public List<Range> Ranges;
+    }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class RevenueGrowthRaw : MetricRange
+    public class RevenueGrowthRaw : Rule
     {
-        public int TimePeriod;
+        public Range TimedRange;
     }
 }

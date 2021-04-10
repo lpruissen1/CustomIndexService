@@ -1,4 +1,6 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿using System.Collections.Generic;
+
+namespace Database.Model.User.CustomIndices
 {
-    public class DividendYield : MetricRange {} 
+    public class DividendYield : RangedRule { }
 }

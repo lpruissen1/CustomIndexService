@@ -2,8 +2,8 @@
 
 namespace Database.Model.User.CustomIndices
 {
-    public class FreeCashFlows : Rule 
+    public class TimedRangeRule : Rule
     {
-        public List<Range> Ranges;
+        public List<TimedRange> TimedRanges;
     }
 }

@@ -1,12 +1,9 @@
-﻿namespace Database.Model.User.CustomIndices
-{
-    public class MarketCaps
-    {
-        public MarketCapitalization[] MarketCapGroups;
+﻿using System.Collections.Generic;
 
-        public bool IsNull()
-        {
-            return MarketCapGroups is null;
-        }
+namespace Database.Model.User.CustomIndices
+{
+    public class MarketCaps : Rule
+    {
+        public List<MarketCapitalization> MarketCapGroups;
     }
 }

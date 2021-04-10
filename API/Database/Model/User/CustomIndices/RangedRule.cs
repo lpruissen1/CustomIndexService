@@ -2,7 +2,7 @@
 
 namespace Database.Model.User.CustomIndices
 {
-    public class FreeCashFlows : Rule 
+    public class RangedRule : Rule
     {
         public List<Range> Ranges;
     }

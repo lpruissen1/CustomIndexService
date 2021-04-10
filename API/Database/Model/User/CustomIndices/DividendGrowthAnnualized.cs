@@ -2,8 +2,8 @@
 
 namespace Database.Model.User.CustomIndices
 {
-    public class DividendGrowthAnnualized : MetricRange
+    public class DividendGrowthAnnualized : Rule
     {
-        public List<TimedRangeMetric> ranges;
+        public List<Range> TimedRanges;
     }
 }

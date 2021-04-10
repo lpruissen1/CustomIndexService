@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
+using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -31,7 +32,8 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(143.69));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddPriceToEarningsRatioToCustomIndex(25, 0);
+			AddPriceToEarningsRatioToCustomIndex(new List<(double, double)> { (25, 0) });
+
 
 			var result = sut.Screen(customIndex);
 

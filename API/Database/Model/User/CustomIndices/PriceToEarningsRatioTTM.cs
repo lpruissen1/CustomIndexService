@@ -1,4 +1,6 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿using System.Collections.Generic;
+
+namespace Database.Model.User.CustomIndices
 {
-    public class PriceToEarningsRatioTTM : MetricRange { }
+    public class PriceToEarningsRatioTTM : RangedRule { }
 }

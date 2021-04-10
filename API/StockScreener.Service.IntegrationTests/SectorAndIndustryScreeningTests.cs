@@ -3,6 +3,7 @@ using NUnit.Framework;
 using StockScreener.Database.Repos;
 using StockScreener.SecurityGrabber;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StockScreener.Service.IntegrationTests
@@ -26,7 +27,7 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddSector(sector2).AddIndustry(industry2));
 
 			AddMarketToCustomIndex(stockIndex);
-			AddSectorToCustomIndex(sector1);
+			AddSectorAndIndustryToCustomIndex(new List<string>() { sector1 }, new List<string>());
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 
@@ -59,7 +60,7 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker3).AddSector(materialsSector).AddIndustry(materialsIndustry1));
 
 			AddMarketToCustomIndex(stockIndex);
-			AddIndustryToCustomIndex(energyIndustry1);
+			AddSectorAndIndustryToCustomIndex(new List<string>(), new List<string>() { energyIndustry1 });
 
 			var result = sut.Screen(customIndex);
 
@@ -93,8 +94,8 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker3).AddSector(materialsSector).AddIndustry(materialsIndustry));
 
 			AddMarketToCustomIndex(stockIndex);
-			AddIndustryToCustomIndex(energyIndustry1);
-			AddSectorToCustomIndex(materialsSector);
+			AddSectorAndIndustryToCustomIndex(new List<string>() { materialsSector }, new List<string>() { energyIndustry1 });
+
 
 			var result = sut.Screen(customIndex);
 

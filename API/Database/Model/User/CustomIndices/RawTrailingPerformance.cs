@@ -1,7 +1,9 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿using System.Collections.Generic;
+
+namespace Database.Model.User.CustomIndices
 {
-    public class RawTrailingPerformance : MetricRange
+    public class RawTrailingPerformance : Rule
     {
-        public int TimePeriod;
+        public List<Range> TimedRanges;
     }
 }

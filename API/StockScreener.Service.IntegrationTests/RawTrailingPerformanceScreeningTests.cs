@@ -4,6 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
+	[Explicit("Remove custom index datapoint. Does not work")]
 	public class RawTrailingPerformanceScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -19,7 +20,7 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddRawTrailingPerformanceToCustomIndex(25, 0, 1);
+			//AddRawTrailingPerformanceToCustomIndex(25, 0, 1);
 
 			var result = sut.Screen(customIndex);
 

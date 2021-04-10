@@ -1,4 +1,5 @@
-﻿using Database.Core;
+﻿using Core;
+using Database.Core;
 using Database.Model.User.CustomIndices;
 using Database.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -54,119 +55,49 @@ namespace StockScreener.Service.IntegrationTests
 			customIndex.Markets.Add(market);
         }
 
-		public void AddSectorToCustomIndex(string sector)
+		public void AddSectorAndIndustryToCustomIndex(List<string> sector, List<string> industry)
         {
-			customIndex.SectorAndIndsutry.Add(new Sector() { Name = sector });
+			customIndex.Add(new Sector() { Sectors = sector, Industries = industry });
         }
 
-		public void AddIndustryToCustomIndex(string industry)
+		public void AddPriceToEarningsRatioToCustomIndex(List<(double Upper, double Lower)> ranges)
         {
-			customIndex.SectorAndIndsutry.Add(new Sector() { Industries = new[] { industry } });
+			customIndex.Add(new PriceToEarningsRatioTTM { Ranges = ranges.Select(range => new Range { Upper = range.Upper, Lower = range.Lower }).ToList() });
+        }
+
+		public void AddDividendYieldToCustomIndex(List<(double Upper, double Lower)> ranges)
+		{
+			customIndex.Add(new DividendYield { Ranges = ranges.Select(range => new Range { Upper = range.Upper, Lower = range.Lower }).ToList() });
 		}
 
-		public void AddWorkingCapitalToCustomIndex(double upper, double lower)
-        {
-			customIndex.WorkingCapital.Add(new WorkingCapitals {Upper = upper, Lower = lower});
-        }
-
-		public void AddProfitMarginToCustomIndex(double upper, double lower)
-        {
-			customIndex.ProfitMargin.Add(new ProfitMargins {Upper = upper, Lower = lower});
-        }
-
-		public void AddPriceToEarningsRatioToCustomIndex(double upper, double lower)
-        {
-			customIndex.PriceToEarningsRatioTTM.Add(new PriceToEarningsRatioTTM { Upper = upper, Lower = lower});
-        }
-
-		public void AddDividendYieldToCustomIndex(double upper, double lower)
+		public void AddPriceToSalesRatioToCustomIndex(List<(double Upper, double Lower)> ranges)
 		{
-			customIndex.DividendYields.Add(new DividendYield { Upper = upper, Lower = lower });
+			customIndex.Add(new PriceToSalesRatioTTM { Ranges = ranges.Select(range => new Range { Upper = range.Upper, Lower = range.Lower }).ToList() });
 		}
 
-		public void AddPriceToBookRatioToCustomIndex(double upper, double lower)
+		public void AddMarketCapToCustomIndex(List<(double Upper, double Lower)> ranges)
+        {
+			customIndex.Add(new MarketCapitalization { Ranges = ranges.Select(range => new Range { Upper = range.Upper, Lower = range.Lower }).ToList() });
+        }
+
+		public void AddAnnualizedRevenueGrowthToCustomIndex(List<(double Upper, double Lower, TimePeriod timePeriod)> ranges)
+        {
+			customIndex.Add(new RevenueGrowthAnnualized { TimedRanges = ranges.Select(range => new TimedRange { Upper = range.Upper, Lower = range.Lower, TimePeriod = range.timePeriod }).ToList() });
+        }
+
+		public void AddAnnualizedEPSGrowthToCustomIndex(List<(double Upper, double Lower, TimePeriod timePeriod)> ranges)
+        {
+			customIndex.Add(new EPSGrowthAnnualized { TimedRanges = ranges.Select(range => new TimedRange { Upper = range.Upper, Lower = range.Lower, TimePeriod = range.timePeriod }).ToList() });
+        }
+
+		public void AddAnnualizedTrailingPerformanceoCustomIndex(List<(double Upper, double Lower, TimePeriod timePeriod)> ranges)
+        {
+			customIndex.Add(new AnnualizedTrailingPerformance { TimedRanges = ranges.Select(range => new TimedRange { Upper = range.Upper, Lower = range.Lower, TimePeriod = range.timePeriod }).ToList() });
+        }
+
+		public void AddCoefficientOfVariationToCustomIndex(List<(double Upper, double Lower, TimePeriod timePeriod)> ranges)
 		{
-			customIndex.PriceToBookValue.Add(new PriceToBookValue { Upper = upper, Lower = lower });
-		}
-
-		public void AddPriceToSalesRatioToCustomIndex(double upper, double lower)
-		{
-			customIndex.PriceToSalesRatioTTM.Add(new PriceToSalesRatioTTM { Upper = upper, Lower = lower });
-		}
-
-		public void AddPayoutRatioToCustomIndex(double upper, double lower)
-        {
-			customIndex.PayoutRatio.Add(new PayoutRatios {Upper = upper, Lower = lower});
-        }
-
-		public void AddMarketCapToCustomIndex(double upper, double lower)
-        {
-			customIndex.MarketCaps.Add(new MarketCapitalization { Upper = upper, Lower = lower });
-        }
-
-		public void AddGrossMarginToCustomIndex(double upper, double lower)
-        {
-			customIndex.GrossMargin.Add(new GrossMargins { Upper = upper, Lower = lower});
-        }
-
-		public void AddFreeCashFlowToCustomIndex(double upper, double lower)
-        {
-			customIndex.FreeCashFlow.Add(new FreeCashFlows {Upper = upper, Lower = lower});
-        }
-
-		public void AddDebtToEquityRatioToCustomIndex(double upper, double lower)
-        {
-			customIndex.DebtToEquityRatio.Add(new DebtToEquityRatios { Upper = upper, Lower = lower});
-        }
-
-		public void AddCurrentRatioToCustomIndex(double upper, double lower)
-        {
-			customIndex.CurrentRatio.Add(new CurrentRatios { Upper = upper, Lower = lower});
-        }
-
-		public void AddAnnualizedRevenueGrowthToCustomIndex(double upper, double lower, int range)
-        {
-			customIndex.RevenueGrowthAnnualized.Add(new RevenueGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
-        }
-
-		public void AddAnnualizedDividendGrowthToCustomIndex(double upper, double lower, int range)
-		{
-			customIndex.DividendGrowthAnnualized.Add(new DividendGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range });
-		}
-
-		public void AddRawDividendGrowthToCustomIndex(double upper, double lower, int range)
-		{
-			customIndex.DividendGrowthRaw.Add(new DividendGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
-		}
-
-		public void AddRawRevenueGrowthToCustomIndex(double upper, double lower, int range)
-		{
-			customIndex.RevenueGrowthRaw.Add(new RevenueGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
-		}
-
-		public void AddAnnualizedEPSGrowthToCustomIndex(double upper, double lower, int range)
-        {
-			customIndex.EPSGrowthAnnualized.Add(new EPSGrowthAnnualized { Upper = upper, Lower = lower, TimePeriod = range});
-        }
-
-		public void AddRawEPSGrowthToCustomIndex(double upper, double lower, int range)
-		{
-			customIndex.EPSGrowthRaw.Add(new EPSGrowthRaw { Upper = upper, Lower = lower, TimePeriod = range });
-		}
-
-		public void AddAnnualizedTrailingPerformanceoCustomIndex(double upper, double lower, int range)
-        {
-			customIndex.TrailingPerformanceAnnualized.Add(new AnnualizedTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range});
-        }
-
-		public void AddRawTrailingPerformanceToCustomIndex(double upper, double lower, int range)
-		{
-			customIndex.TrailingPerformanceRaw.Add(new RawTrailingPerformance { Upper = upper, Lower = lower, TimePeriod = range });
-		}
-
-		public void AddCoefficientOfVariationToCustomIndex(double upper, double lower, int range)
-		{
-			customIndex.CoefficientOfVariation.Add(new CoefficientOfVariation { Upper = upper, Lower = lower, TimePeriod = range });
+			customIndex.Add(new CoefficientOfVariation { TimedRanges = ranges.Select(range => new TimedRange { Upper = range.Upper, Lower = range.Lower, TimePeriod = range.timePeriod }).ToList() });
 		}
 	}
 }

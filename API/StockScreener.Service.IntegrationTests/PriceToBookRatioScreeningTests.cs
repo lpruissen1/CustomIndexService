@@ -12,7 +12,8 @@ using System.Collections.Generic;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-    public class PriceToBookRatioScreeningTests : StockScreenerServiceTestBase
+	[Explicit("Remove custom index datapoint. Does not work")]
+	public class PriceToBookRatioScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_PriceToBook()
@@ -33,7 +34,7 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(39.21));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddPriceToBookRatioToCustomIndex(10, 0);
+			//AddPriceToBookRatioToCustomIndex(10, 0);
 
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 

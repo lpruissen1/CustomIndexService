@@ -1,4 +1,4 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class PayoutRatios : MetricRange { }
+    public class PayoutRatios : Range { }
 }

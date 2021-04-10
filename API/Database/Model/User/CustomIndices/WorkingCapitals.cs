@@ -1,4 +1,4 @@
 ﻿namespace Database.Model.User.CustomIndices
 {
-    public class WorkingCapitals : MetricRange { }
+    public class WorkingCapitals : Range { }
 }

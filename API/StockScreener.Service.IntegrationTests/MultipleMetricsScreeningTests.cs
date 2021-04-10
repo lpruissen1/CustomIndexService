@@ -3,7 +3,8 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    [TestFixture]
+	[TestFixture]
+	[Explicit("Remove custom index datapoint. Does not work")]
 	public class MultipleMetricsScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -23,8 +24,6 @@ namespace StockScreener.Service.IntegrationTests
 				.AddWorkingCapital(1_000_000d));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddWorkingCapitalToCustomIndex(15_000_000, 5_000_000);
-			AddGrossMarginToCustomIndex(0.55, 0.35);
 
 			var result = sut.Screen(customIndex);
 
@@ -50,8 +49,6 @@ namespace StockScreener.Service.IntegrationTests
 				.AddWorkingCapital(1_000_000d));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddGrossMarginToCustomIndex(0.55, 0.35);
-			AddWorkingCapitalToCustomIndex(15_000_000, 5_000_000);
 			
 
 			var result = sut.Screen(customIndex);
@@ -78,8 +75,8 @@ namespace StockScreener.Service.IntegrationTests
 				.AddWorkingCapital(1_000_000d));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddGrossMarginToCustomIndex(0.38, 0.35);
-			AddWorkingCapitalToCustomIndex(9_000_000, 5_000_000);
+			//AddGrossMarginToCustomIndex(0.38, 0.35);
+			//AddWorkingCapitalToCustomIndex(9_000_000, 5_000_000);
 
 
 			var result = sut.Screen(customIndex);

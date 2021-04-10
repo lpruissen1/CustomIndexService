@@ -1,7 +1,7 @@
 ﻿using Core;
 using Database.Model.User.CustomIndices;
-using StockScreener.Core;
 using StockScreener.Model.Metrics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,388 +9,100 @@ namespace StockScreener.Mapper
 {
     public class CustomIndexMapper : IMetricListMapper<CustomIndex>
     {
+        private Dictionary<Type, Func<Rule, IMetric>> metricActionMapper = new Dictionary<Type, Func<Rule, IMetric>>();
+
+        public CustomIndexMapper()
+        {
+            metricActionMapper.Add(typeof(Sector), MapSectorsAndIndustries);
+            metricActionMapper.Add(typeof(MarketCapitalization), MapMarketCap);
+            metricActionMapper.Add(typeof(RevenueGrowthAnnualized), MapRevenueGrowthAnnualized);
+            metricActionMapper.Add(typeof(CoefficientOfVariation), MapCoefficientOfVariation);
+            metricActionMapper.Add(typeof(EPSGrowthAnnualized), MapEPSGrowthAnnualized);
+            metricActionMapper.Add(typeof(AnnualizedTrailingPerformance), MapTrailingPerformanceAnnualized);
+            metricActionMapper.Add(typeof(PriceToEarningsRatioTTM), MapPriceToEarningsRatioTTM);
+            metricActionMapper.Add(typeof(PriceToSalesRatioTTM), MapPriceToSalesRatioTTM);
+            metricActionMapper.Add(typeof(DividendYield), MapDividendYield);
+        }
+
         public MetricList MapToMetricList(CustomIndex index)
         {
             MetricList metricList = new MetricList();
             metricList.Indices = index.Markets.ToArray();
 
-            metricList.Add(MapSectorsAndIndustries(index.SectorAndIndsutry));
-            metricList.Add(MapMarketCap(index.MarketCaps));
-            metricList.Add(MapRevenueGrowthAnnualized(index.RevenueGrowthAnnualized));
-            metricList.Add(MapPriceToEarningsTTM(index.PriceToEarningsRatioTTM));
-            metricList.Add(MapPayoutRatio(index.PayoutRatio));
-            metricList.Add(MapProfitMargin(index.ProfitMargin));
-            metricList.Add(MapGrossMargin(index.GrossMargin));
-            metricList.Add(MapWorkingCapital(index.WorkingCapital));
-            metricList.Add(MapDebtToEquityRatio(index.DebtToEquityRatio));
-            metricList.Add(MapFreeCashFlow(index.FreeCashFlow));
-            metricList.Add(MapCurrentRatio(index.CurrentRatio));
-            metricList.Add(MapPriceToSalesTTM(index.PriceToSalesRatioTTM));
-            metricList.Add(MapPriceToBook(index.PriceToBookValue));
-            metricList.Add(MapDividendYield(index.DividendYields));
-            metricList.Add(MapEPSGrowthAnnualized(index.EPSGrowthAnnualized));
-            metricList.Add(MapAnnualizedTrailingPerformance(index.TrailingPerformanceAnnualized));
-            metricList.Add(MapRevenueGrowthRaw(index.RevenueGrowthRaw));
-            metricList.Add(MapEPSGrowthRaw(index.EPSGrowthRaw));
-            metricList.Add(MapDividendGrowthAnnualized(index.DividendGrowthAnnualized));
-            metricList.Add(MapDividendGrowthRaw(index.DividendGrowthRaw));
-            metricList.Add(MapRawTrailingPerformance(index.TrailingPerformanceRaw));
-            metricList.Add(MapCoefficientOfVariation(index.CoefficientOfVariation));
+            metricList.AddRange(index.Rules.Select(rule => metricActionMapper[rule.GetType()].Invoke(rule)));
 
             return metricList;
         }
 
-        private IMetric MapSectorsAndIndustries(List<Sector> sectors)
+        private IMetric MapSectorsAndIndustries(Rule rule)
         {
-            if (!sectors.Any())
-                return null;
+            var sectors = rule as Sector;
 
-            var sectorList = new List<string>();
-            var industryList = new List<string>();
-
-            foreach(var sector in sectors)
-            {
-                if (sector.Industries is null)
-                    sectorList.Add(sector.Name);
-
-                else
-                    industryList.AddRange(sector.Industries);
-            }
-
-            return new SectorAndIndustryMetric(sectorList, industryList);
+            return new SectorAndIndustryMetric(sectors.Sectors, sectors.Industries);
         }
 
-        private IMetric MapMarketCap(List<MarketCapitalization> marketCaps)
+        private IMetric MapMarketCap(Rule rule)
         {
-            if(!marketCaps.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach(var marketCapRange in marketCaps)
-            {
-                list.Add(new Range(marketCapRange.Upper, marketCapRange.Lower));
-            }
-
-            return new MarketCapMetric(list);
+            return MapRangedRule<MarketCapMetric>(rule as RangedRule);
         }
 
-        private IMetric MapWorkingCapital(List<WorkingCapitals> workingCapitals)
+        private IMetric MapPriceToSalesRatioTTM(Rule rule)
         {
-            if (!workingCapitals.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var workingCapitalRange in workingCapitals)
-            {
-                list.Add(new Range(workingCapitalRange.Upper, workingCapitalRange.Lower));
-            }
-
-            return new WorkingCapitalMetric(list);
+            return MapRangedRule<PriceToSalesRatioTTMMetric>(rule as RangedRule);
         }
 
-        private IMetric MapCurrentRatio(List<CurrentRatios> currentRatios)
+        private IMetric MapDividendYield(Rule rule)
         {
-            if (!currentRatios.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var currentRatiosRange in currentRatios)
-            {
-                list.Add(new Range(currentRatiosRange.Upper, currentRatiosRange.Lower));
-            }
-
-            return new CurrentRatioMetric(list);
+            return MapRangedRule<DividendYieldMetric>(rule as RangedRule);
         }
 
-        private IMetric MapFreeCashFlow(List<FreeCashFlows> freeCashFlows)
+        private IMetric MapPriceToEarningsRatioTTM(Rule rule)
         {
-            if (!freeCashFlows.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var freeCashFlowsRange in freeCashFlows)
-            {
-                list.Add(new Range(freeCashFlowsRange.Upper, freeCashFlowsRange.Lower));
-            }
-
-            return new FreeCashFlowMetric(list);
+            return MapRangedRule<PriceToEarningsRatioTTMMetric>(rule as RangedRule);
         }
 
-        private IMetric MapDebtToEquityRatio(List<DebtToEquityRatios> debtToEquityRatios)
+        private IMetric MapRevenueGrowthAnnualized(Rule rule)
         {
-            if (!debtToEquityRatios.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var debtToEquityRatioRange in debtToEquityRatios)
-            {
-                list.Add(new Range(debtToEquityRatioRange.Upper, debtToEquityRatioRange.Lower));
-            }
-
-            return new DebtToEquityRatioMetric(list);
+            return MapTimeRangedRule<RevenueGrowthAnnualizedMetric>(rule as TimedRangeRule);
         }
 
-        private IMetric MapPayoutRatio(List<PayoutRatios> payoutRatio)
+        private IMetric MapCoefficientOfVariation(Rule rule)
         {
-            if (!payoutRatio.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var payoutRatioRange in payoutRatio)
-            {
-                list.Add(new Range(payoutRatioRange.Upper, payoutRatioRange.Lower));
-            }
-
-            return new PayoutRatioMetric(list);
+            return MapTimeRangedRule<CoefficientOfVariationMetric>(rule as TimedRangeRule);
         }
 
-        private IMetric MapProfitMargin(List<ProfitMargins> profitMargins)
+        private IMetric MapEPSGrowthAnnualized(Rule rule)
         {
-            if (!profitMargins.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var profitMarginRange in profitMargins)
-            {
-                list.Add(new Range(profitMarginRange.Upper, profitMarginRange.Lower));
-            }
-
-            return new ProfitMarginMetric(list);
+            return MapTimeRangedRule<EPSGrowthAnnualizedMetric>(rule as TimedRangeRule);
         }
 
-        private IMetric MapGrossMargin(List<GrossMargins> grossMargins)
+        private IMetric MapTrailingPerformanceAnnualized(Rule rule)
         {
-            if (!grossMargins.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var grossMarginRange in grossMargins)
-            {
-                list.Add(new Range(grossMarginRange.Upper, grossMarginRange.Lower));
-            }
-
-            return new GrossMarginMetric(list);
+            return MapTimeRangedRule<TrailingPerformanceAnnualizedMetric>(rule as TimedRangeRule);
         }
 
-        private IMetric MapRevenueGrowthAnnualized(List<RevenueGrowthAnnualized> revenueGrowth)
+        private TMetricType MapRangedRule<TMetricType>(RangedRule rule)
         {
-            if(!revenueGrowth.Any())
-                return null;
+            var list = new List<Core.Range>();
 
+            foreach (var range in rule.Ranges)
+            {
+                list.Add(new Core.Range(range.Upper, range.Lower));
+            }
+
+            return (TMetricType)Activator.CreateInstance(typeof(TMetricType), list);
+        }
+
+        private TMetricType MapTimeRangedRule<TMetricType>(TimedRangeRule rule)
+        {
             var list = new List<RangeAndTimePeriod>();
 
-            foreach(var revenueGrowthTarget in revenueGrowth)
+            foreach (var timedRange in rule.TimedRanges)
             {
-                list.Add(new RangeAndTimePeriod(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
+                list.Add(new RangeAndTimePeriod(new Core.Range(timedRange.Upper, timedRange.Lower), timedRange.TimePeriod));
             }
 
-            return new RevenueGrowthAnnualizedMetric(list);
-        }
-
-        private IMetric MapRevenueGrowthRaw(List<RevenueGrowthRaw> revenueGrowth)
-        {
-            if (!revenueGrowth.Any())
-                return null;
-
-            var list = new List<RangeAndTimePeriod>();
-
-            foreach (var revenueGrowthTarget in revenueGrowth)
-            {
-                list.Add(new RangeAndTimePeriod(new Range(revenueGrowthTarget.Upper, revenueGrowthTarget.Lower), GetTimeSpan(revenueGrowthTarget.TimePeriod)));
-            }
-
-            return new RevenueGrowthRawMetric(list);
-        }
-
-        private IMetric MapDividendGrowthAnnualized(List<DividendGrowthAnnualized> dividendGrowth)
-        {
-            if (!dividendGrowth.Any())
-                return null;
-
-            var list = new List<RangeAndTimePeriod>();
-
-            foreach (var dividendGrowthTarget in dividendGrowth)
-            {
-                list.Add(new RangeAndTimePeriod(new Range(dividendGrowthTarget.Upper, dividendGrowthTarget.Lower), GetTimeSpan(dividendGrowthTarget.TimePeriod)));
-            }
-
-            return new DividendGrowthAnnualizedMetric(list);
-        }
-
-        private IMetric MapDividendGrowthRaw(List<DividendGrowthRaw> dividendGrowth)
-        {
-            if (!dividendGrowth.Any())
-                return null;
-
-            var list = new List<RangeAndTimePeriod>();
-
-            foreach (var dividendGrowthTarget in dividendGrowth)
-            {
-                list.Add(new RangeAndTimePeriod(new Range(dividendGrowthTarget.Upper, dividendGrowthTarget.Lower), GetTimeSpan(dividendGrowthTarget.TimePeriod)));
-            }
-
-            return new DividendGrowthRawMetric(list);
-        }
-
-        private IMetric MapEPSGrowthAnnualized(List<EPSGrowthAnnualized> epsGrowth)
-        {
-            if (!epsGrowth.Any())
-                return null;
-
-            var list = new List<RangeAndTimePeriod>();
-
-            foreach (var epsGrowthTarget in epsGrowth)
-            {
-                list.Add(new RangeAndTimePeriod(new Range(epsGrowthTarget.Upper, epsGrowthTarget.Lower), GetTimeSpan(epsGrowthTarget.TimePeriod)));
-            }
-
-            return new EPSGrowthAnnualizedMetric(list);
-        }
-
-        private IMetric MapEPSGrowthRaw(List<EPSGrowthRaw> epsGrowth)
-        {
-            if (!epsGrowth.Any())
-                return null;
-
-            var list = new List<RangeAndTimePeriod>();
-
-            foreach (var epsGrowthTarget in epsGrowth)
-            {
-                list.Add(new RangeAndTimePeriod(new Range(epsGrowthTarget.Upper, epsGrowthTarget.Lower), GetTimeSpan(epsGrowthTarget.TimePeriod)));
-            }
-
-            return new EPSGrowthRawMetric(list);
-        }
-
-        private IMetric MapAnnualizedTrailingPerformance(List<AnnualizedTrailingPerformance> trailingPerformances)
-        {
-            if (!trailingPerformances.Any())
-                return null;
-
-            var list = new List<RangeAndTimePeriod>();
-
-            foreach (var trailingPerformance in trailingPerformances)
-            {
-                list.Add(new RangeAndTimePeriod(new Range(trailingPerformance.Upper, trailingPerformance.Lower), GetTimeSpan(trailingPerformance.TimePeriod)));
-            }
-
-            return new TrailingPerformanceAnnualizedMetric(list);
-        }
-
-        private IMetric MapRawTrailingPerformance(List<RawTrailingPerformance> trailingPerformances)
-        {
-            if (!trailingPerformances.Any())
-                return null;
-
-            var list = new List<RangeAndTimePeriod>();
-
-            foreach (var trailingPerformance in trailingPerformances)
-            {
-                list.Add(new RangeAndTimePeriod(new Range(trailingPerformance.Upper, trailingPerformance.Lower), GetTimeSpan(trailingPerformance.TimePeriod)));
-            }
-
-            return new TrailingPerformanceRawMetric(list);
-        }
-
-        private IMetric MapCoefficientOfVariation(List<CoefficientOfVariation> coefficientOfVariations)
-        {
-            if (!coefficientOfVariations.Any())
-                return null;
-
-            var list = new List<RangeAndTimePeriod>();
-
-            foreach (var coefficientOfVariation in coefficientOfVariations)
-            {
-                list.Add(new RangeAndTimePeriod(new Range(coefficientOfVariation.Upper, coefficientOfVariation.Lower), GetTimeSpan(coefficientOfVariation.TimePeriod)));
-            }
-
-            return new CoefficientOfVariationMetric(list);
-        }
-
-        private IMetric MapPriceToEarningsTTM(List<PriceToEarningsRatioTTM> priceToEarningsRatioTTM)
-        {
-            if (!priceToEarningsRatioTTM.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var priceToEarningsRatioTTMTarget in priceToEarningsRatioTTM)
-            {
-                list.Add(new Range(priceToEarningsRatioTTMTarget.Upper, priceToEarningsRatioTTMTarget.Lower));
-            }
-
-            return new PriceToEarningsRatioTTMMetric(list);
-        }
-
-        private IMetric MapDividendYield(List<DividendYield> dividendYield)
-        {
-            if (!dividendYield.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var dividendYieldTarget in dividendYield)
-            {
-                list.Add(new Range(dividendYieldTarget.Upper, dividendYieldTarget.Lower));
-            }
-
-            return new DividendYieldMetric(list);
-        }
-
-        private IMetric MapPriceToBook(List<PriceToBookValue> priceToBookValue)
-        {
-            if (!priceToBookValue.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var priceToBookValueTarget in priceToBookValue)
-            {
-                list.Add(new Range(priceToBookValueTarget.Upper, priceToBookValueTarget.Lower));
-            }
-
-            return new PriceToBookRatioMetric(list);
-        }
-
-        private IMetric MapPriceToSalesTTM(List<PriceToSalesRatioTTM> priceToSalesRatioTTM)
-        {
-            if (!priceToSalesRatioTTM.Any())
-                return null;
-
-            var list = new List<Range>();
-
-            foreach (var priceToSalesRatioTTMTarget in priceToSalesRatioTTM)
-            {
-                list.Add(new Range(priceToSalesRatioTTMTarget.Upper, priceToSalesRatioTTMTarget.Lower));
-            }
-
-            return new PriceToSalesRatioTTMMetric(list);
-        }
-        private TimePeriod GetTimeSpan(int timeRange)
-        {
-            switch (timeRange)
-            {
-                case 1:
-                    return TimePeriod.Quarter;
-                case 2:
-                    return TimePeriod.HalfYear;
-                case 4:
-                    return TimePeriod.Year;
-                case 12:
-                    return TimePeriod.ThreeYear;
-                case 20:
-                    return TimePeriod.FiveYear;
-                default:
-                    throw new System.Exception("Fuck yourself");
-            }
+            return (TMetricType)Activator.CreateInstance(typeof(TMetricType), list);
         }
     }
 

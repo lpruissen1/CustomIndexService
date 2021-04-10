@@ -1,5 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Core;
+using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
+using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -19,7 +21,7 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddAnnualizedTrailingPerformanceoCustomIndex(100, 0, 1);
+			AddAnnualizedTrailingPerformanceoCustomIndex(new List<(double, double, TimePeriod)> { (100, 0, TimePeriod.Quarter) });
 
 			var result = sut.Screen(customIndex);
 

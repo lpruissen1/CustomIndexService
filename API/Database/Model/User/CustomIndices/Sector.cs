@@ -1,8 +1,10 @@
-﻿namespace Database.Model.User.CustomIndices
+﻿using System.Collections.Generic;
+
+namespace Database.Model.User.CustomIndices
 {
-    public class Sector
+    public class Sector : Rule
     {
-        public string Name;
-        public string[] Industries;
+        public List<string> Sectors;
+        public List<string> Industries;
     }
 }

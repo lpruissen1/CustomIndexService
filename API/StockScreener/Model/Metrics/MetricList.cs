@@ -4,7 +4,6 @@ using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
-
 {
     public class MetricList : IMetric
     {
@@ -32,10 +31,12 @@ namespace StockScreener.Model.Metrics
 
         public void Add(IMetric metric)
         {
-            if (metric is null)
-                return;
-
             metrics.Add(metric);
+        }
+
+        public void AddRange(IEnumerable<IMetric> metric)
+        {
+            metrics.AddRange(metric);
         }
 
         public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()

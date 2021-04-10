@@ -61,7 +61,7 @@ namespace StockScreener.Calculators
                 var span = revenueGrowthConstructionData.Time;
 
                 var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyRevenue, span);
-                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimeSpan(span)));
+                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimePeriod(span)));
             }
 
             return dic;
@@ -97,7 +97,7 @@ namespace StockScreener.Calculators
                 var span = epsGrowthConstructionData.Time;
 
                 var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyEarnings, span);
-                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Earnings, past.Earnings, GetUnixFromTimeSpan(span)));
+                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Earnings, past.Earnings, GetUnixFromTimePeriod(span)));
             }
 
             return dic;
@@ -133,7 +133,7 @@ namespace StockScreener.Calculators
                 var span = dividendGrowthConstructionData.Time;
 
                 var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyDividendsPerShare, span);
-                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends, GetUnixFromTimeSpan(span)));
+                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends, GetUnixFromTimePeriod(span)));
             }
 
             return dic;
@@ -169,7 +169,7 @@ namespace StockScreener.Calculators
                 var span = trailingPerformance.Time;
 
                 var (present, past) = GetEndpointDataForPrice(security.DailyPrice, span);
-                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Price, past.Price, GetUnixFromTimeSpan(span)));
+                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Price, past.Price, GetUnixFromTimePeriod(span)));
             }
 
             return dic;
@@ -204,7 +204,7 @@ namespace StockScreener.Calculators
             {
                 var span = timePeriod.Time;
 
-                var priceEntries = security.DailyPrice.Where(x => x.Timestamp > DateTime.UtcNow.ToUnix() - GetUnixFromTimeSpan(timePeriod.Time));
+                var priceEntries = security.DailyPrice.Where(x => x.Timestamp > DateTime.UtcNow.ToUnix() - GetUnixFromTimePeriod(timePeriod.Time));
 
                 var standardDeviation = priceEntries.Select(x => x.Price).StandardDeviation();
 
@@ -267,7 +267,7 @@ namespace StockScreener.Calculators
         private (TEntry present, TEntry past) GetEndpointDataForTimeRange<TEntry>(List<TEntry> timeEntries, TimePeriod range) where TEntry : TimeEntry
         {
             var present = timeEntries.Last();
-            var timeRangeInUnix = GetUnixFromTimeSpan(range);
+            var timeRangeInUnix = GetUnixFromTimePeriod(range);
             var past = timeEntries.First(x => x.Timestamp > (present.Timestamp - timeRangeInUnix - weekErrorFactor) && x.Timestamp < (present.Timestamp - timeRangeInUnix + weekErrorFactor));
 
             return (present, past);
@@ -276,7 +276,7 @@ namespace StockScreener.Calculators
         private (PriceEntry present, PriceEntry past) GetEndpointDataForPrice(List<PriceEntry> timeEntries, TimePeriod range)
         {
             var present = timeEntries.Last();
-            var timeRangeInUnix = GetUnixFromTimeSpan(range);
+            var timeRangeInUnix = GetUnixFromTimePeriod(range);
             var past = timeEntries.Last(priceEntry => priceEntry.Timestamp <= present.Timestamp - timeRangeInUnix);
 
             return (present, past);
@@ -285,12 +285,12 @@ namespace StockScreener.Calculators
         private IEnumerable<TEntry> GetAllEntriesForTimeSpan<TEntry>(List<TEntry> timeEntries, TimePeriod range) where TEntry : TimeEntry
         {
             var present = timeEntries.Last().Timestamp;
-            var timeRangeInUnix = GetUnixFromTimeSpan(range);
+            var timeRangeInUnix = GetUnixFromTimePeriod(range);
 
             return timeEntries.Where(x => x.Timestamp > (present - yearUnixTime - weekErrorFactor));
         }
 
-        private double GetUnixFromTimeSpan(TimePeriod timespan)
+        private double GetUnixFromTimePeriod(TimePeriod timespan)
         {
             switch (timespan)
             {
