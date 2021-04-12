@@ -9,7 +9,7 @@
   </ItemGroup>
 	
 	<ItemGroup>
-		<ProjectReference Include="..\Database\Database.csproj" />
+		<ProjectReference Include="..\UserCustomIndices.Database\UserCustomIndices.Database.csproj" />
 		<ProjectReference Include="..\StockScreener.Core\StockScreener.Core.csproj" />
 		<ProjectReference Include="..\Core\Core.csproj" />
 		<ProjectReference Include="..\StockScreener.Database\StockScreener.Database.csproj" />

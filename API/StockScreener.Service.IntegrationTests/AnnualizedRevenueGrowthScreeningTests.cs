@@ -1,5 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Core;
+using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
+using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -30,7 +32,8 @@ namespace StockScreener.Service.IntegrationTests
 				.AddRevenue(-400_000d, 1585627200));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddAnnualizedRevenueGrowthToCustomIndex(301, 299, 2);
+			AddAnnualizedRevenueGrowthToCustomIndex(new List<(double, double, TimePeriod)> { (301, 299, TimePeriod.HalfYear) });
+
 
 			var result = sut.Screen(customIndex);
 
@@ -62,7 +65,7 @@ namespace StockScreener.Service.IntegrationTests
 				.AddRevenue(400_000d, 1585627200));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddAnnualizedRevenueGrowthToCustomIndex(407, 404, 1);
+			AddAnnualizedRevenueGrowthToCustomIndex(new List<(double, double, TimePeriod)> { (407, 404, TimePeriod.Quarter) });
 
 			var result = sut.Screen(customIndex);
 

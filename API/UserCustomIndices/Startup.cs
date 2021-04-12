@@ -1,5 +1,4 @@
 using Database;
-using Database.Config;
 using Database.Core;
 using Database.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using UserCustomIndices.Database.Config;
 using UserCustomIndices.Services;
 using UserCustomIndices.Validators;
 

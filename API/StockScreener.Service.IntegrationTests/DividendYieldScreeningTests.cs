@@ -39,7 +39,7 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(80.01));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddDividendYieldToCustomIndex(5, 1);
+			AddDividendYieldToCustomIndex(new List<(double, double)> { (5, 1) });
 
 			var result = sut.Screen(customIndex);
 

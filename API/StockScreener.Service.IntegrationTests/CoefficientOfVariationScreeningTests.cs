@@ -1,5 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Core;
+using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
+using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -33,7 +35,7 @@ namespace StockScreener.Service.IntegrationTests
 				.AddClosePrice(118.79, 1617411630));
 
 			AddMarketToCustomIndex(stockIndex1);
-			AddCoefficientOfVariationToCustomIndex(4.3, 0, 1);
+			AddCoefficientOfVariationToCustomIndex(new List<(double, double, TimePeriod)> { (4.3, 0, TimePeriod.Quarter) });
 
 			var result = sut.Screen(customIndex);
 
