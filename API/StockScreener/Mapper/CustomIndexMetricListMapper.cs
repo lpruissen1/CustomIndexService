@@ -1,9 +1,9 @@
-﻿using Core;
-using Database.Model.User.CustomIndices;
+﻿using Database.Model.User.CustomIndices;
 using StockScreener.Model.Metrics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UserCustomIndices.Database.Model.User.CustomIndices;
 
 namespace StockScreener.Mapper
 {

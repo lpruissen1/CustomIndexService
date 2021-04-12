@@ -12,7 +12,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<ProjectReference Include="..\Database\Database.csproj" />
+		<ProjectReference Include="..\UserCustomIndices.Database\UserCustomIndices.Database.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>

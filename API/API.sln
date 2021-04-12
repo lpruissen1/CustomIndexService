@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserCustomIndices", "UserCustomIndices\UserCustomIndices.csproj", "{E435769E-A978-4F7F-B9D1-B74722B9A9C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Database.csproj", "{53CFA62B-49EB-40D5-8400-7038BD845309}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserCustomIndices.Database", "UserCustomIndices.Database\UserCustomIndices.Database.csproj", "{53CFA62B-49EB-40D5-8400-7038BD845309}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserCustomIndicesTests", "UserCustomIndicesTests\UserCustomIndicesTests.csproj", "{A7E646C9-98B4-43E7-8034-0708D9691BAC}"
 EndProject
@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregationService", "Aggre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiClient", "ApiClient\ApiClient.csproj", "{83919B8F-87DB-4AFF-90AB-90D1425186E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{8F616D01-90AB-4B53-85AC-C12516299017}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{8F616D01-90AB-4B53-85AC-C12516299017}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserCustomIndices.Core", "UserCustomIndices.Core\UserCustomIndices.Core.csproj", "{8C230173-65C3-4E30-9F04-F2E0CCA229BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{8F616D01-90AB-4B53-85AC-C12516299017}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F616D01-90AB-4B53-85AC-C12516299017}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F616D01-90AB-4B53-85AC-C12516299017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C230173-65C3-4E30-9F04-F2E0CCA229BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C230173-65C3-4E30-9F04-F2E0CCA229BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C230173-65C3-4E30-9F04-F2E0CCA229BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C230173-65C3-4E30-9F04-F2E0CCA229BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,14 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using Database.Core;
+using System.Collections.Generic;
+using UserCustomIndices.Database.Model.User.CustomIndices;
 
-namespace UserCustomIndices.Model.Response
+namespace Database.Model.User.CustomIndices
 {
-    public class CustomIndexResponse
+    public class CustomIndex : DbEntity
     {
-        public string Id { get; set; }
-        public List<string> Markets { get; set; }
-        public List<string> Sectors { get; set; }
-        public List<string> Industries { get; set; }
+        public string UserId { get; init; }
+
         public List<Rule> Rules { get; init; } = new List<Rule>();
+
+        public List<string> Markets { get; init; } = new List<string>();
+
+        public void Add(Rule rule)
+        {
+            Rules.Add(rule);
+        }
 
         //public List<DividendYield> DividendYields { get; init; } = new List<DividendYield>();
         //public List<CoefficientOfVariation> CoefficientOfVariation { get; init; } = new List<CoefficientOfVariation>();
@@ -19,8 +26,6 @@ namespace UserCustomIndices.Model.Response
         //public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();
         //public List<Sector> SectorAndIndsutry { get; init; } = new List<Sector>();
         //public List<MarketCapitalization> MarketCaps { get; init; } = new List<MarketCapitalization>();
-        public string Test { get; set; }
+        public string Test { get; init; }
     }
-
-    public class Rule
 }
