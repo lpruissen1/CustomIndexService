@@ -13,10 +13,10 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\UserCustomIndices.Database\UserCustomIndices.Database.csproj" />
+		<ProjectReference Include="..\UserCustomIndices.Core\UserCustomIndices.Core.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Folder Include="Model\Requests\" />
 	  <Folder Include="Mappers\" />
 	</ItemGroup>
 </Project>
