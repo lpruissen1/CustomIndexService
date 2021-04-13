@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiClient", "ApiClient\ApiC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{8F616D01-90AB-4B53-85AC-C12516299017}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserCustomIndices.Core", "UserCustomIndices.Core\UserCustomIndices.Core.csproj", "{8C230173-65C3-4E30-9F04-F2E0CCA229BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserCustomIndices.Core", "UserCustomIndices.Core\UserCustomIndices.Core.csproj", "{8C230173-65C3-4E30-9F04-F2E0CCA229BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockScreener.Service", "StockScreener.Service\StockScreener.Service.csproj", "{9461F60D-878C-42D8-9D01-3CBD5B722235}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

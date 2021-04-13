@@ -9,9 +9,9 @@ namespace StockScreener.Database
         private IMongoDatabase _db { get; set; }
         private MongoClient _mongoClient { get; set; }
         public IClientSessionHandle Session { get; set; }
-        private IStockDataDatabaseSettings settings { get; set; }
+        private IStockInformationDatabaseSettings settings { get; set; }
 
-        public MongoStockInformationDbContext(IStockDataDatabaseSettings settings)
+        public MongoStockInformationDbContext(IStockInformationDatabaseSettings settings)
         {
             this.settings = settings;
             _mongoClient = new MongoClient(settings.ConnectionString);

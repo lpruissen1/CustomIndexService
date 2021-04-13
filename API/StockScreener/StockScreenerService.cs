@@ -6,7 +6,7 @@ using StockScreener.SecurityGrabber;
 
 namespace StockScreener
 {
-    public class StockScreenerService
+    public class StockScreenerService : IStockScreenerService
     {
         private readonly ISecuritiesGrabber securitiesGrabber;
 

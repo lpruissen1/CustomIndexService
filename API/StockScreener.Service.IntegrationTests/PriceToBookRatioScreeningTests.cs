@@ -36,8 +36,6 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToCustomIndex(stockIndex1);
 			//AddPriceToBookRatioToCustomIndex(10, 0);
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
-
 			var result = sut.Screen(customIndex);
 
 			Assert.AreEqual(1, result.Count);

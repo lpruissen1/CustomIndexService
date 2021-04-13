@@ -32,6 +32,11 @@ namespace StockScreener.Model.BaseSecurity
 
         public TSecurity this[int index] => securities[index];
 
+        public IEnumerable<string> GetTickers()
+        {
+            return securities.Select(x => x.Ticker);
+        }
+
         public IEnumerator<TSecurity> GetEnumerator()
         {
             return securities.GetEnumerator();
