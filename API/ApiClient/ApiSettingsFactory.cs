@@ -8,7 +8,7 @@ namespace ApiClient
 
 		public ApiSettingsFactory()
 		{
-			config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\Custom\\Agg\\AggregationService").AddJsonFile("appsettings.json").Build();
+			config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\CustomIndexService\\API\\AggregationService").AddJsonFile("appsettings.json").Build();
 		}
 
 		public ApiSettings GetPolygonSettings()

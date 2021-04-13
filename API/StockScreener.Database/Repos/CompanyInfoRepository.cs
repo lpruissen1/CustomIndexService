@@ -1,13 +1,13 @@
 ﻿using Database.Core;
+using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Core;
 using StockScreener.Database.Model.CompanyInfo;
-using StockScreener.Database.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Database.Repositories
+namespace StockScreener.Database.Repos
 {
     public class CompanyInfoRepository : BaseRepository<CompanyInfo>, ICompanyInfoRepository
     {
