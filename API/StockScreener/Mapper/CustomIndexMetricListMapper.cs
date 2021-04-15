@@ -87,7 +87,10 @@ namespace StockScreener.Mapper
 
             foreach (var range in rule.Ranges)
             {
-                list.Add(new Core.Range(range.Upper, range.Lower));
+                if (range.Upper == 0)
+                    list.Add(new Core.Range(range.Upper, range.Lower));
+                else
+                    list.Add(new Core.Range(double.MaxValue, range.Lower));
             }
 
             return (TMetricType)Activator.CreateInstance(typeof(TMetricType), list);
@@ -99,15 +102,13 @@ namespace StockScreener.Mapper
 
             foreach (var timedRange in rule.TimedRanges)
             {
-                list.Add(new RangeAndTimePeriod(new Core.Range(timedRange.Upper, timedRange.Lower), timedRange.TimePeriod));
+                if(timedRange.Upper == 0)
+                    list.Add(new RangeAndTimePeriod(new Core.Range(timedRange.Upper, timedRange.Lower), timedRange.TimePeriod));
+                else
+                    list.Add(new RangeAndTimePeriod(new Core.Range(double.MaxValue, timedRange.Lower), timedRange.TimePeriod));
             }
 
             return (TMetricType)Activator.CreateInstance(typeof(TMetricType), list);
         }
-    }
-
-    public interface IMetricListMapper<TInput>
-    {
-        MetricList MapToMetricList(TInput input);
     }
 }

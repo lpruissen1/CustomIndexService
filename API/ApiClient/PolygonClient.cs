@@ -39,18 +39,18 @@ namespace ApiClient
 
 		private string GetApiKeyRequestPhrase()
 		{
-			return "&apiKey=" + apiKey;
+			return "apiKey=" + apiKey;
 		}
 
 		private string GetBackupApiKeyRequestPhrase()
 		{
-			return "&apiKey=" + backupApiKey;
+			return "apiKey=" + backupApiKey;
 		}
 
 
 		public PolygonCompanyInfoResponse GetCompanyInfo(string ticker)
 		{
-            var request = $"{route}v2/reference/financials/{ticker}?type=Q&sort=reportPeriod";
+            var request = $"{route}v1/meta/symbols/{ticker}/company?";
 
 			return MakeRequest<PolygonCompanyInfoResponse>(request);
 		}
