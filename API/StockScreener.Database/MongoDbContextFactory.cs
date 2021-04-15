@@ -10,7 +10,7 @@ namespace StockScreener.Database
 
         public MongoDbContextFactory()
         {
-            config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\Agg\\Agg\\AggregationService").AddJsonFile("appsettings.json").Build();
+            config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\CustomIndexService\\API\\AggregationService").AddJsonFile("appsettings.json").Build();
         }
 
         public IMongoDBContext GetPriceContext()

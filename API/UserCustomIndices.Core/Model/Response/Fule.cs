@@ -2,7 +2,7 @@
 
 namespace UserCustomIndices.Model.Response
 {
-    public class Rule
+    public class Fule
     {
         RuleType RuleType;
     }
