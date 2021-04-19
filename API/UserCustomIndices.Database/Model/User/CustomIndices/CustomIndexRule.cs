@@ -2,7 +2,7 @@
 
 namespace UserCustomIndices.Database.Model.User.CustomIndices
 {
-    public class Rule : DbEntity, IRule
+    public class CustomIndexRule : DbEntity, IRule
     {
     }
 }

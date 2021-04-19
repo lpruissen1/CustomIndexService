@@ -1,10 +1,12 @@
-﻿using Database.Model.User.CustomIndices;
+﻿using AutoMapper;
+using Database.Model.User.CustomIndices;
 using Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UserCustomIndices.Core.Model.Requests;
 using UserCustomIndices.Model.Response;
 using API = UserCustomIndices.Model.Response;
 
@@ -15,10 +17,12 @@ namespace UserCustomIndices.Services
     public class CustomIndexService : ICustomIndexService
     {
         private readonly IIndicesRepository indicesRepository;
+        private readonly IMapper mapper;
 
-        public CustomIndexService(IIndicesRepository indicesRepository)
+        public CustomIndexService(IIndicesRepository indicesRepository, IMapper mapper)
         {
             this.indicesRepository = indicesRepository;
+            this.mapper = mapper;
         }
 
         public async Task<ActionResult<CustomIndexResponse>> GetIndex(Guid userId, string indexId)
@@ -36,14 +40,9 @@ namespace UserCustomIndices.Services
             return new ActionResult<IEnumerable<CustomIndexResponse>>(result.Select(index => CreateResponse(index)));
         }
 
-        public async Task<IActionResult> CreateIndex(Guid userId, CustomIndexResponse customIndex)
+        public IActionResult CreateIndex(Guid userId, CustomIndexRequest customIndex)
         {
-            indicesRepository.Create(new CustomIndex
-            {
-                UserId = userId.ToString(),
-                Test = customIndex.Test,
-                Markets = customIndex.Markets
-            });
+            indicesRepository.Create(mapper.Map<CustomIndexRequest, CustomIndex>(customIndex));
 
             return new OkResult(); 
         }

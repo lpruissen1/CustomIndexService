@@ -23,6 +23,7 @@ namespace StockScreener.Service.Controllers
         }
 
         [HttpPost("FuckYourself")]
+        [Consumes("application/json")]
         public IEnumerable<string> GetByCustomIndexResponse(CustomIndexResponse customIndex)
         {
             return screenerService.Screen(customIndex).GetTickers();

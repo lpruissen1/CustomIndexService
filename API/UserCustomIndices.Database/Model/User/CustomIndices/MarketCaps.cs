@@ -2,7 +2,7 @@
 
 namespace UserCustomIndices.Database.Model.User.CustomIndices
 {
-    public class MarketCaps : Rule
+    public class MarketCaps : CustomIndexRule
     {
         public List<MarketCapitalization> MarketCapGroups;
     }

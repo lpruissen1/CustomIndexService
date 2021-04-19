@@ -9,7 +9,7 @@ namespace StockScreener.Mapper
 {
     public class CustomIndexMapper : IMetricListMapper<CustomIndex>
     {
-        private Dictionary<Type, Func<Rule, IMetric>> metricActionMapper = new Dictionary<Type, Func<Rule, IMetric>>();
+        private Dictionary<Type, Func<CustomIndexRule, IMetric>> metricActionMapper = new Dictionary<Type, Func<CustomIndexRule, IMetric>>();
 
         public CustomIndexMapper()
         {
@@ -34,49 +34,49 @@ namespace StockScreener.Mapper
             return metricList;
         }
 
-        private IMetric MapSectorsAndIndustries(Rule rule)
+        private IMetric MapSectorsAndIndustries(CustomIndexRule rule)
         {
             var sectors = rule as Sector;
 
             return new SectorAndIndustryMetric(sectors.Sectors, sectors.Industries);
         }
 
-        private IMetric MapMarketCap(Rule rule)
+        private IMetric MapMarketCap(CustomIndexRule rule)
         {
             return MapRangedRule<MarketCapMetric>(rule as RangedRule);
         }
 
-        private IMetric MapPriceToSalesRatioTTM(Rule rule)
+        private IMetric MapPriceToSalesRatioTTM(CustomIndexRule rule)
         {
             return MapRangedRule<PriceToSalesRatioTTMMetric>(rule as RangedRule);
         }
 
-        private IMetric MapDividendYield(Rule rule)
+        private IMetric MapDividendYield(CustomIndexRule rule)
         {
             return MapRangedRule<DividendYieldMetric>(rule as RangedRule);
         }
 
-        private IMetric MapPriceToEarningsRatioTTM(Rule rule)
+        private IMetric MapPriceToEarningsRatioTTM(CustomIndexRule rule)
         {
             return MapRangedRule<PriceToEarningsRatioTTMMetric>(rule as RangedRule);
         }
 
-        private IMetric MapRevenueGrowthAnnualized(Rule rule)
+        private IMetric MapRevenueGrowthAnnualized(CustomIndexRule rule)
         {
             return MapTimeRangedRule<RevenueGrowthAnnualizedMetric>(rule as TimedRangeRule);
         }
 
-        private IMetric MapCoefficientOfVariation(Rule rule)
+        private IMetric MapCoefficientOfVariation(CustomIndexRule rule)
         {
             return MapTimeRangedRule<CoefficientOfVariationMetric>(rule as TimedRangeRule);
         }
 
-        private IMetric MapEPSGrowthAnnualized(Rule rule)
+        private IMetric MapEPSGrowthAnnualized(CustomIndexRule rule)
         {
             return MapTimeRangedRule<EPSGrowthAnnualizedMetric>(rule as TimedRangeRule);
         }
 
-        private IMetric MapTrailingPerformanceAnnualized(Rule rule)
+        private IMetric MapTrailingPerformanceAnnualized(CustomIndexRule rule)
         {
             return MapTimeRangedRule<TrailingPerformanceAnnualizedMetric>(rule as TimedRangeRule);
         }

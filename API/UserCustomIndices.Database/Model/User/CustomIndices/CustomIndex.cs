@@ -8,11 +8,11 @@ namespace Database.Model.User.CustomIndices
     {
         public string UserId { get; init; }
 
-        public List<Rule> Rules { get; init; } = new List<Rule>();
+        public List<CustomIndexRule> Rules { get; init; } = new List<CustomIndexRule>();
 
         public List<string> Markets { get; init; } = new List<string>();
 
-        public void Add(Rule rule)
+        public void Add(CustomIndexRule rule)
         {
             Rules.Add(rule);
         }
@@ -26,6 +26,5 @@ namespace Database.Model.User.CustomIndices
         //public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();
         //public List<Sector> SectorAndIndsutry { get; init; } = new List<Sector>();
         //public List<MarketCapitalization> MarketCaps { get; init; } = new List<MarketCapitalization>();
-        public string Test { get; init; }
     }
 }

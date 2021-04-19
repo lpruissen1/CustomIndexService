@@ -1,6 +1,6 @@
 ﻿using Core;
 
-namespace UserCustomIndices.Model.Response
+namespace UserCustomIndices.Core.Model
 {
     public class TimedRangeRule : RangedRule
     {

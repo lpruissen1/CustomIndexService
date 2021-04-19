@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using UserCustomIndices.Model.Response;
+using UserCustomIndices.Core.Model.Requests;
 
 namespace UserCustomIndices.Controllers
 {
@@ -33,7 +34,7 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> Create(Guid userId, CustomIndexResponse index)
+        public IActionResult Create(Guid userId, CustomIndexRequest index)
         {
             return indexService.CreateIndex(userId, index);
         }

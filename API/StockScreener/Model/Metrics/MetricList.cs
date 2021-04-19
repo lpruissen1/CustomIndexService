@@ -47,7 +47,6 @@ namespace StockScreener.Model.Metrics
                 {
                     yield return datapoint;
                 }
-
             };
         }
     }
