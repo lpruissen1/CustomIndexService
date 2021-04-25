@@ -12,4 +12,20 @@
         PriceToSalesRatioTTM,
         MarketCap
     }
+
+    public enum TimedRangeRuleType
+    {
+        CoefficientOfVariation,
+        RevenueGrowthAnnualized,
+        EPSGrowthAnnualized,
+        AnnualizedTraillingPerformance
+    }
+
+    public enum RangedRuleType
+    {
+        DividendYield,
+        PriceToEarningsRatioTTM,
+        PriceToSalesRatioTTM,
+        MarketCap
+    }
 }

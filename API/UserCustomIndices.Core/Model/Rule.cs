@@ -2,14 +2,9 @@
 
 namespace UserCustomIndices.Core.Model
 {
-    public class Rule
+    public class Sector
     {
-        RuleType RuleType;
-    }
-
-    public class Sector : Rule
-    {
-        List<string> Sectors { get; set; }
-        List<string> Industries { get; set; }
+        public List<string> Sectors { get; set; }
+        public List<string> Industry { get; set; }
     }
 }

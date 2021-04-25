@@ -2,8 +2,11 @@
 
 namespace UserCustomIndices.Core.Model
 {
-    public class TimedRangeRule : RangedRule
+    public class TimedRangeRule
     {
+        public RuleType RuleType;
+        public double Upper;
+        public double Lower;
         public TimePeriod TimePeriod;
     }
 }

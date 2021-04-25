@@ -13,10 +13,8 @@ namespace UserCustomIndices.Mappers
         {
             return new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<CustomIndex, CustomIndexResponse>();
+                cfg.CreateMap<CustomIndex, CustomIndexRequest>();
                 cfg.CreateMap<CustomIndexRequest, CustomIndex>().ForMember(x => x.Id, opt => opt.Ignore());
-                cfg.CreateMap<CustomIndexRule, Rule>();
-                cfg.CreateMap<Rule, CustomIndexRule>().ForMember(x => x.Id, opt => opt.Ignore());
             });
         }
     }

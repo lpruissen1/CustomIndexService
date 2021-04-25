@@ -1,8 +1,7 @@
-using Core;
 using ApiClient;
 using ApiClient.Models;
+using Core;
 using Database.Core;
-using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Database;
 using StockScreener.Database.Model.CompanyInfo;
@@ -135,16 +134,17 @@ namespace AggregationService
 				WorkingCapital = GetNewWorkingCapital(result, response).ToList()
 			});
 		}
+
 		public void UpdateDailyPriceData(string ticker)
 		{
-			var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Day);
+			var mostRecentTimestamp = priceDataRepository.GetMostRecentPriceEntry<DayPriceData>(ticker);
+
+			var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Day, mostRecentTimestamp * 1000, DateTime.UtcNow.ToUnix() * 1000);
 
 			if (response.Results is null)
 				return;
-			
-			var result = priceDataRepository.Get(ticker);
 
-			priceDataRepository.Update(MapToPriceData<DayPriceData>(response, priceDataRepository.GetMostRecentPriceEntry<DayPriceData>(ticker)));
+			priceDataRepository.Update(MapToPriceData<DayPriceData>(response));
 		}
 
 		public void UpdateHourlyPriceData(string ticker)
@@ -154,7 +154,6 @@ namespace AggregationService
 			if(response.Results is null)
 				return;
 
-			var result = priceDataRepository.Get(ticker);
 			priceDataRepository.Update(MapToPriceData<HourPriceData>(response, priceDataRepository.GetMostRecentPriceEntry<HourPriceData>(ticker)));
 		}
 

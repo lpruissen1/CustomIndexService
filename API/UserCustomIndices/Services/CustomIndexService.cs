@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UserCustomIndices.Core.Model.Requests;
+using UserCustomIndices.Mappers;
 using UserCustomIndices.Model.Response;
 using API = UserCustomIndices.Model.Response;
 
@@ -18,36 +19,38 @@ namespace UserCustomIndices.Services
     {
         private readonly IIndicesRepository indicesRepository;
         private readonly IMapper mapper;
+        private readonly IRequestMapper responseMapper;
 
-        public CustomIndexService(IIndicesRepository indicesRepository, IMapper mapper)
+        public CustomIndexService(IIndicesRepository indicesRepository, IMapper mapper, IRequestMapper responseMapper)
         {
             this.indicesRepository = indicesRepository;
             this.mapper = mapper;
+            this.responseMapper = responseMapper;
         }
 
-        public async Task<ActionResult<CustomIndexResponse>> GetIndex(Guid userId, string indexId)
+        public async Task<ActionResult<CustomIndexRequest>> GetIndex(Guid userId, string indexId)
         {
             var index = await indicesRepository.Get(userId, indexId);
 
 
-            return new ActionResult<CustomIndexResponse>(CreateResponse(index));
+            return new ActionResult<CustomIndexRequest>(CreateResponse(index));
         }
 
-        public async Task<ActionResult<IEnumerable<CustomIndexResponse>>> GetAllForUser(Guid userid)
+        public async Task<ActionResult<IEnumerable<CustomIndexRequest>>> GetAllForUser(Guid userid)
         {
             var result = await indicesRepository.GetAllForUser(userid);
 
-            return new ActionResult<IEnumerable<CustomIndexResponse>>(result.Select(index => CreateResponse(index)));
+            return new ActionResult<IEnumerable<CustomIndexRequest>>(result.Select(index => CreateResponse(index)));
         }
 
         public IActionResult CreateIndex(Guid userId, CustomIndexRequest customIndex)
         {
-            indicesRepository.Create(mapper.Map<CustomIndexRequest, CustomIndex>(customIndex));
+            indicesRepository.Create(responseMapper.Map(customIndex));
 
             return new OkResult(); 
         }
 
-        Task<IActionResult> ICustomIndexService.UpdateIndex(Guid userId, CustomIndexResponse customIndexUpdated)
+        Task<IActionResult> ICustomIndexService.UpdateIndex(Guid userId, CustomIndexRequest customIndexUpdated)
         {
             throw new NotImplementedException();
         }
@@ -58,9 +61,9 @@ namespace UserCustomIndices.Services
         }
 
 
-        private CustomIndexResponse CreateResponse(CustomIndex index)
+        private CustomIndexRequest CreateResponse(CustomIndex index)
         {
-            return new CustomIndexResponse
+            return new CustomIndexRequest
             {
                // Id = index.Id,
                // Markets = new API.ComposedMarkets { Markets = index.Markets.Markets },

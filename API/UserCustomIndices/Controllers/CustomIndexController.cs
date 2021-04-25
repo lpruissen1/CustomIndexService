@@ -21,13 +21,13 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpGet]
-        public Task<ActionResult<IEnumerable<CustomIndexResponse>>> Get(Guid userId)
+        public Task<ActionResult<IEnumerable<CustomIndexRequest>>> Get(Guid userId)
         {
             return indexService.GetAllForUser(userId);
         }
 
         [HttpGet("{indexId:length(24)}", Name = "GetCustomIndex")]
-        public Task<ActionResult<CustomIndexResponse>> GetById(Guid userId, string indexId)
+        public Task<ActionResult<CustomIndexRequest>> GetById(Guid userId, string indexId)
         {
 
             return indexService.GetIndex(userId, indexId);
@@ -40,7 +40,7 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpPut("{userId:length(24)}")]
-        public Task<IActionResult> Update(Guid userId, CustomIndexResponse updatedIndex)
+        public Task<IActionResult> Update(Guid userId, CustomIndexRequest updatedIndex)
         {
             return indexService.UpdateIndex(userId, updatedIndex);
         }

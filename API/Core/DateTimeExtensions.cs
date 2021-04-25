@@ -4,7 +4,7 @@ namespace Core
 {
     public static class DateTimeExtensions
     {
-        public static long ToUnix(this DateTime time)
+        public static double ToUnix(this DateTime time)
         {
             return ((DateTimeOffset)time).ToUnixTimeSeconds();
         }

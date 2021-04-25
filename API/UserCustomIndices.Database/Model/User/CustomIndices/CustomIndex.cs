@@ -7,15 +7,10 @@ namespace Database.Model.User.CustomIndices
     public class CustomIndex : DbEntity
     {
         public string UserId { get; init; }
-
-        public List<CustomIndexRule> Rules { get; init; } = new List<CustomIndexRule>();
-
         public List<string> Markets { get; init; } = new List<string>();
-
-        public void Add(CustomIndexRule rule)
-        {
-            Rules.Add(rule);
-        }
+        public Sector Sector { get; set; }
+        public List<TimedRangeRule> TimedRangeRule { get; init; } = new List<TimedRangeRule>();
+        public List<RangedRule> RangedRule { get; init; } = new List<RangedRule>();
 
         //public List<DividendYield> DividendYields { get; init; } = new List<DividendYield>();
         //public List<CoefficientOfVariation> CoefficientOfVariation { get; init; } = new List<CoefficientOfVariation>();

@@ -1,7 +1,6 @@
 using AutoMapper;
 using Database;
 using Database.Core;
-using Database.Model.User.CustomIndices;
 using Database.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,10 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using System;
 using UserCustomIndices.Database.Config;
 using UserCustomIndices.Mappers;
-using UserCustomIndices.Model.Response;
 using UserCustomIndices.Services;
 using UserCustomIndices.Validators;
 
@@ -39,6 +36,7 @@ namespace UserCustomIndices
             services.AddScoped<IIndicesRepository, IndiciesRepository>();
             services.AddScoped<ICustomIndexService, CustomIndexService>();
             services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();
+            services.AddScoped<IRequestMapper, RequestMapper>();
 
             services.AddSingleton(_ => MapperConfigurationRepository.Create());
             services.AddScoped<IMapper, Mapper>();
