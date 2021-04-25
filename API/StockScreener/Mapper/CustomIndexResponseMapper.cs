@@ -37,8 +37,8 @@ namespace StockScreener.Mapper
             MetricList metricList = new MetricList();
             metricList.Indices = input.Markets.ToArray();
 
-            if(!input.Sectors.Any() && !input.Industries.Any())
-                metricList.Add(new SectorAndIndustryMetric(input.Sectors, input.Industries));
+            if (input.Sectors.Any() || input.Industries.Any())
+                metricList.Add(new SectorAndIndustryMetric(input.Sectors, input.Industries));   
 
             foreach(var rangedRule in input.RangedRule)
             {
