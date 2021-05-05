@@ -13,5 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\StockScreener.Core\StockScreener.Core.csproj" />
     <ProjectReference Include="..\Database.Core\Database.Core.csproj" />
+    <ProjectReference Include="..\UserCustomIndices.Core\UserCustomIndices.Core.csproj" />
   </ItemGroup>
 </Project>

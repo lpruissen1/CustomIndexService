@@ -2,6 +2,7 @@
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {

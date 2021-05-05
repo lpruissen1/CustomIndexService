@@ -7,6 +7,7 @@ namespace Database.Core
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
+        [BsonIgnoreIfDefault]
         public string Id { get; set; }
     }
 

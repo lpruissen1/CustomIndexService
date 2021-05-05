@@ -39,5 +39,10 @@ namespace AggregationService.IntegrationTests
 		{
 			return stubPriceDataResponse;
 		}
-	}
+
+        public PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimePeriod timeResolution, double start, double end)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using UserCustomIndices.Core.Model;
 
-namespace UserCustomIndices.Model.Response
+namespace UserCustomIndices.Core.Model.Requests
 {
-    public class CustomIndexResponse
+    public class CustomIndexRequest
     {
         public string UserId { get; set; }
         public List<string> Markets { get; set; }

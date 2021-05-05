@@ -1,3 +1,4 @@
+using AutoMapper;
 using Database;
 using Database.Core;
 using Database.Repositories;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using UserCustomIndices.Database.Config;
+using UserCustomIndices.Mappers;
 using UserCustomIndices.Services;
 using UserCustomIndices.Validators;
 
@@ -34,7 +36,11 @@ namespace UserCustomIndices
             services.AddScoped<IIndicesRepository, IndiciesRepository>();
             services.AddScoped<ICustomIndexService, CustomIndexService>();
             services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();
+            services.AddScoped<IRequestMapper, RequestMapper>();
 
+            services.AddSingleton(_ => MapperConfigurationRepository.Create());
+            services.AddScoped<IMapper, Mapper>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CustomIndex", Version = "v1" });

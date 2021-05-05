@@ -7,15 +7,10 @@ namespace Database.Model.User.CustomIndices
     public class CustomIndex : DbEntity
     {
         public string UserId { get; init; }
-
-        public List<Rule> Rules { get; init; } = new List<Rule>();
-
         public List<string> Markets { get; init; } = new List<string>();
-
-        public void Add(Rule rule)
-        {
-            Rules.Add(rule);
-        }
+        public Sector Sector { get; set; }
+        public List<TimedRangeRule> TimedRangeRule { get; init; } = new List<TimedRangeRule>();
+        public List<RangedRule> RangedRule { get; init; } = new List<RangedRule>();
 
         //public List<DividendYield> DividendYields { get; init; } = new List<DividendYield>();
         //public List<CoefficientOfVariation> CoefficientOfVariation { get; init; } = new List<CoefficientOfVariation>();
@@ -26,6 +21,5 @@ namespace Database.Model.User.CustomIndices
         //public List<PriceToSalesRatioTTM> PriceToSalesRatioTTM { get; init; } = new List<PriceToSalesRatioTTM>();
         //public List<Sector> SectorAndIndsutry { get; init; } = new List<Sector>();
         //public List<MarketCapitalization> MarketCaps { get; init; } = new List<MarketCapitalization>();
-        public string Test { get; init; }
     }
 }

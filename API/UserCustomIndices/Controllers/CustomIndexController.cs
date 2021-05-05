@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using UserCustomIndices.Model.Response;
+using UserCustomIndices.Core.Model.Requests;
 
 namespace UserCustomIndices.Controllers
 {
@@ -20,26 +21,26 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpGet]
-        public Task<ActionResult<IEnumerable<CustomIndexResponse>>> Get(Guid userId)
+        public Task<ActionResult<IEnumerable<CustomIndexRequest>>> Get(Guid userId)
         {
             return indexService.GetAllForUser(userId);
         }
 
         [HttpGet("{indexId:length(24)}", Name = "GetCustomIndex")]
-        public Task<ActionResult<CustomIndexResponse>> GetById(Guid userId, string indexId)
+        public Task<ActionResult<CustomIndexRequest>> GetById(Guid userId, string indexId)
         {
 
             return indexService.GetIndex(userId, indexId);
         }
 
         [HttpPost]
-        public Task<IActionResult> Create(Guid userId, CustomIndexResponse index)
+        public IActionResult Create(Guid userId, CustomIndexRequest index)
         {
             return indexService.CreateIndex(userId, index);
         }
 
         [HttpPut("{userId:length(24)}")]
-        public Task<IActionResult> Update(Guid userId, CustomIndexResponse updatedIndex)
+        public Task<IActionResult> Update(Guid userId, CustomIndexRequest updatedIndex)
         {
             return indexService.UpdateIndex(userId, updatedIndex);
         }
