@@ -10,6 +10,8 @@ using StockScreener.Database;
 using StockScreener.Database.Config;
 using StockScreener.Database.Repos;
 using StockScreener.SecurityGrabber;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace StockScreener.Service
 {
@@ -35,6 +37,11 @@ namespace StockScreener.Service
             services.AddScoped<IPriceDataRepository, PriceDataRepository>();
             services.AddScoped<ISecuritiesGrabber, SecuritiesGrabber>();
             services.AddScoped<IStockScreenerService, StockScreenerService>();
+            
+            services.AddControllers().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
