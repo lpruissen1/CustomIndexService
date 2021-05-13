@@ -63,6 +63,13 @@ namespace UserCustomIndices
 
             app.UseAuthorization();
 
+            app.UseCors(options =>
+            {
+                options.WithOrigins("https://localhost:6001")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
