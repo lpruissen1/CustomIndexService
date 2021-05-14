@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 using UserCustomIndices.Database.Config;
 using UserCustomIndices.Mappers;
 using UserCustomIndices.Services;
@@ -40,7 +41,12 @@ namespace UserCustomIndices
 
             services.AddSingleton(_ => MapperConfigurationRepository.Create());
             services.AddScoped<IMapper, Mapper>();
-            
+
+            services.AddControllers().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CustomIndex", Version = "v1" });
