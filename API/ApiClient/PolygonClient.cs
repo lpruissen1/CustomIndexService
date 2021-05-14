@@ -57,7 +57,7 @@ namespace ApiClient
 
 		public PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimePeriod timeResolution)
 		{
-			var request = $"{route}v2/aggs/ticker/{ticker}/range/{interval}/{TimeResolutionMapper[timeResolution]}/2019-03-19/2021-03-19?unadjusted=false&sort=asc&limit=50000?";
+			var request = $"{route}v2/aggs/ticker/{ticker}/range/{interval}/{TimeResolutionMapper[timeResolution]}/2019-03-19/2021-03-19?unadjusted=false&sort=asc&limit=50000&";
 
 			return MakeRequest<PolygonPriceDataResponse>(request);
 		}

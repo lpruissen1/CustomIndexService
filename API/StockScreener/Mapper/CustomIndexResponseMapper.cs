@@ -98,9 +98,9 @@ namespace StockScreener.Mapper
             var list = new List<Core.Range>();
 
             if (rule.Upper == 0)
-                list.Add(new Core.Range(rule.Upper, rule.Lower));
-            else
                 list.Add(new Core.Range(double.MaxValue, rule.Lower));
+            else
+                list.Add(new Core.Range(rule.Upper, rule.Lower));
 
             return (TMetricType)Activator.CreateInstance(typeof(TMetricType), list);
         }
@@ -110,9 +110,9 @@ namespace StockScreener.Mapper
             var list = new List<RangeAndTimePeriod>();
 
             if (rule.Upper == 0)
-                list.Add(new RangeAndTimePeriod(new Core.Range(rule.Upper, rule.Lower), rule.TimePeriod));
-            else
                 list.Add(new RangeAndTimePeriod(new Core.Range(double.MaxValue, rule.Lower), rule.TimePeriod));
+            else
+                list.Add(new RangeAndTimePeriod(new Core.Range(rule.Upper, rule.Lower), rule.TimePeriod));
 
             return (TMetricType)Activator.CreateInstance(typeof(TMetricType), list);
         }
