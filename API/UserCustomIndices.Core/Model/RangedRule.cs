@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace UserCustomIndices.Core.Model
+﻿namespace UserCustomIndices.Core.Model
 {
     public class RangedRule
     {
-        [JsonConverter(typeof(StringEnumConverter))]  // JSON.Net
-        public RuleType RuleType;
-        public double Upper;
-        public double Lower;
+        public RuleType RuleType { get; set; }
+        public double Upper { get; set; }
+        public double Lower { get; set; }
     }
 }
