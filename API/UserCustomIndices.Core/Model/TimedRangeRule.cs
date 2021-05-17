@@ -4,9 +4,9 @@ namespace UserCustomIndices.Core.Model
 {
     public class TimedRangeRule
     {
-        public RuleType RuleType;
-        public double Upper;
-        public double Lower;
-        public TimePeriod TimePeriod;
+        public RuleType RuleType { get; set; }
+        public double Upper { get; set; }
+        public double Lower { get; set; }
+        public TimePeriod TimePeriod { get; set; }
     }
 }

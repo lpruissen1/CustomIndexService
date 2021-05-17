@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using UserCustomIndices.Services;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using UserCustomIndices.Model.Response;
+using System.Threading.Tasks;
 using UserCustomIndices.Core.Model.Requests;
+using UserCustomIndices.Services;
 
 namespace UserCustomIndices.Controllers
 {
