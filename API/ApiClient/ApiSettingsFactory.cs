@@ -2,13 +2,13 @@
 
 namespace ApiClient
 {
-	public class ApiSettingsFactory
+	public class ApiSettingsFactory : IApiSettingsFactory
 	{
 		private IConfigurationRoot config;
 
 		public ApiSettingsFactory()
 		{
-			config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\CustomIndexService\\API\\AggregationService").AddJsonFile("appsettings.json").Build();
+			config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\CustomIndexService\\API\\StockAggregation.Service").AddJsonFile("appsettings.json").Build();
 		}
 
 		public ApiSettings GetPolygonSettings()

@@ -5,19 +5,19 @@ namespace StockAggregation.Service.Controllers
 {
 	[ApiController]
     [Route("[controller]")]
-    public class CompanyInfoController : ControllerBase
+	public class StockFinancialsController : ControllerBase
     {
         private readonly IStockAggregationService stockAggregationService;
 
-        public CompanyInfoController(IStockAggregationService stockAggregationService)
+        public StockFinancialsController(IStockAggregationService stockAggregationService)
         {
             this.stockAggregationService = stockAggregationService;
         }
 
         [HttpPost]
-        public void UpdateCompanyInfo(string market)
+        public void UpdateStockFinancials(string market)
         {
-            stockAggregationService.UpdateCompanyInfoForMarket(market);
+            stockAggregationService.UpdateStockFinancialsForMarket(market);
         }
     }
 }

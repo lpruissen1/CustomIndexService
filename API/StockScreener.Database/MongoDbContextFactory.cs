@@ -4,13 +4,13 @@ using StockScreener.Database.Config;
 
 namespace StockScreener.Database
 {
-    public class MongoDbContextFactory
-    {
+    public class MongoDbContextFactory : IMongoDbContextFactory
+	{
         private IConfigurationRoot config;
 
         public MongoDbContextFactory()
         {
-            config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\CustomIndexService\\API\\AggregationService").AddJsonFile("appsettings.json").Build();
+            config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\CustomIndexService\\API\\StockAggregation.Service").AddJsonFile("appsettings.json").Build();
         }
 
         public IMongoDBContext GetPriceContext()

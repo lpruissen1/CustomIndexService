@@ -32,7 +32,9 @@ namespace StockAggregation
             stockIndexRepository = new StockIndexRepository(stockDataContext);
         }
 
-        public static StockAggregationService New()
+        public StockAggregationService(IMongoDbContextFactory dbContextFactory, IApiSettingsFactory apiSettingsFactory) : this(dbContextFactory.GetStockContext(), dbContextFactory.GetPriceContext(), new PolygonClient(apiSettingsFactory.GetPolygonSettings())) { }
+
+		public static StockAggregationService New()
         {
             var contextFactory = new MongoDbContextFactory();
             var apiSettingsFactory = new ApiSettingsFactory();
