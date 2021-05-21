@@ -1,11 +1,10 @@
-using AggregationService;
 using ApiClient.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace AggregationService.IntegrationTests
+namespace StockAggregation.IntegrationTests
 {
-    [TestFixture]
+	[TestFixture]
 	public class InsertPriceDataTest : AggregationServiceTestBase
 	{
 		private StockAggregationService sut;
@@ -55,7 +54,7 @@ namespace AggregationService.IntegrationTests
 
 			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
 
-			sut.InsertHourlyPriceData(ticker);
+			sut.UpdateHourlyPriceDataForMarket(market);
 
 			var result = GetPriceData(ticker);
 

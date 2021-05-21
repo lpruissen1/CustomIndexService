@@ -58,9 +58,10 @@ namespace StockScreener.Database.Repos
 
 
 			var combinedUpdate = Builders<StockFinancials>.Update.Combine(updateDefinition);
-			var updated = dbCollection.FindOneAndUpdate(filter, combinedUpdate);
+			var updated = dbCollection.FindOneAndUpdate(filter, combinedUpdate, new FindOneAndUpdateOptions<StockFinancials, StockFinancials>() { IsUpsert = true });
 		}
 
+		// this can be moved to a builder
 		private UpdateDefinition<StockFinancials> AddMarketCapUpdate(List<MarketCap> marketCaps)
 		{
 			return Builders<StockFinancials>.Update.PushEach<MarketCap>("MarketCap", marketCaps);

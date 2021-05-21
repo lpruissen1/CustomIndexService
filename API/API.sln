@@ -23,11 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.Core", "Database.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockScreener.Core.Test", "StockScreener.Core.Test\StockScreener.Core.Test.csproj", "{007D595B-82E7-4524-A9F7-FB6CABA895EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregationService.IntegrationTests", "AggregationService.IntegrationTests\AggregationService.IntegrationTests.csproj", "{7E9789F0-40CD-4D3E-A67B-B148DF61916E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockAggregation.IntegrationTests", "StockAggregation.IntegrationTests\StockAggregation.IntegrationTests.csproj", "{7E9789F0-40CD-4D3E-A67B-B148DF61916E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregationService.Core", "AggregationService.Core\AggregationService.Core.csproj", "{922AD28A-9E29-41F8-865F-2DA3E7E6CC33}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregationService", "AggregationService\AggregationService.csproj", "{4F039874-34D1-4134-AF13-923317A9627A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockAggregation", "StockAggregation\StockAggregation.csproj", "{4F039874-34D1-4134-AF13-923317A9627A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiClient", "ApiClient\ApiClient.csproj", "{83919B8F-87DB-4AFF-90AB-90D1425186E4}"
 EndProject
@@ -35,7 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserCustomIndices.Core", "UserCustomIndices.Core\UserCustomIndices.Core.csproj", "{8C230173-65C3-4E30-9F04-F2E0CCA229BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockScreener.Service", "StockScreener.Service\StockScreener.Service.csproj", "{9461F60D-878C-42D8-9D01-3CBD5B722235}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockScreener.Service", "StockScreener.Service\StockScreener.Service.csproj", "{9461F60D-878C-42D8-9D01-3CBD5B722235}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockAggregation.Service", "StockAggregation.Service\StockAggregation.Service.csproj", "{723D6CF5-F204-4F5A-B612-FF3E202E222A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockAggregation.Core", "StockAggregation.Core\StockAggregation.Core.csproj", "{6CEB1594-B3B1-4453-9796-92F1C753139F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,10 +89,6 @@ Global
 		{7E9789F0-40CD-4D3E-A67B-B148DF61916E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E9789F0-40CD-4D3E-A67B-B148DF61916E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E9789F0-40CD-4D3E-A67B-B148DF61916E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{922AD28A-9E29-41F8-865F-2DA3E7E6CC33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{922AD28A-9E29-41F8-865F-2DA3E7E6CC33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{922AD28A-9E29-41F8-865F-2DA3E7E6CC33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{922AD28A-9E29-41F8-865F-2DA3E7E6CC33}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F039874-34D1-4134-AF13-923317A9627A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F039874-34D1-4134-AF13-923317A9627A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F039874-34D1-4134-AF13-923317A9627A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -111,6 +109,14 @@ Global
 		{9461F60D-878C-42D8-9D01-3CBD5B722235}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9461F60D-878C-42D8-9D01-3CBD5B722235}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9461F60D-878C-42D8-9D01-3CBD5B722235}.Release|Any CPU.Build.0 = Release|Any CPU
+		{723D6CF5-F204-4F5A-B612-FF3E202E222A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{723D6CF5-F204-4F5A-B612-FF3E202E222A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{723D6CF5-F204-4F5A-B612-FF3E202E222A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{723D6CF5-F204-4F5A-B612-FF3E202E222A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CEB1594-B3B1-4453-9796-92F1C753139F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CEB1594-B3B1-4453-9796-92F1C753139F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CEB1594-B3B1-4453-9796-92F1C753139F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CEB1594-B3B1-4453-9796-92F1C753139F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

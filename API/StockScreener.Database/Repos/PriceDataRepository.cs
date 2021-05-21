@@ -57,15 +57,15 @@ namespace StockScreener.Database.Repos
 
 		private void UpdatePriceData<TPriceType>(TPriceType entry) where TPriceType : PriceData
 		{
-			//var filter = Builders<TPriceType>.Filter.Eq(e => e.Ticker, entry.Ticker);
+			var filter = Builders<TPriceType>.Filter.Eq(e => e.Ticker, entry.Ticker);
 
-			//var updateDefinition = new List<UpdateDefinition<TPriceType>>();
+			var updateDefinition = new List<UpdateDefinition<TPriceType>>();
 
-			//updateDefinition.Add(AddCandleUpdate<TPriceType>(entry.Candle));
+			updateDefinition.Add(AddCandleUpdate<TPriceType>(entry.Candle));
 
-			//var combinedUpdate = Builders<TPriceType>.Update.Combine(updateDefinition);
+			var combinedUpdate = Builders<TPriceType>.Update.Combine(updateDefinition);
 
-			mongoContext.GetCollection<TPriceType>(typeof(TPriceType).Name).ReplaceOne<TPriceType>(x => x.Ticker == entry.Ticker, entry, new ReplaceOptions { IsUpsert = true });
+			mongoContext.GetCollection<TPriceType>(typeof(TPriceType).Name).FindOneAndUpdate(filter, combinedUpdate, new FindOneAndUpdateOptions<TPriceType, TPriceType>() { IsUpsert = true});
 		}
     
 		private UpdateDefinition<TPriceType> AddCandleUpdate<TPriceType>(List<Candle> candles)

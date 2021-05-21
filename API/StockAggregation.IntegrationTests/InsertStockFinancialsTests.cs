@@ -3,16 +3,16 @@ using Core;
 using NUnit.Framework;
 using System;
 
-namespace AggregationService.IntegrationTests
+namespace StockAggregation.IntegrationTests
 {
-    [TestFixture]
-    public class InsertStockFinancialsTest : AggregationServiceTestBase
-    {
+	[TestFixture]
+	public class InsertStockFinancialsTest : AggregationServiceTestBase
+	{
 		private StockAggregationService sut;
 
-        [Test]
-        public void InsertStockFinancials()
-        {
+		[Test]
+		public void InsertStockFinancials()
+		{
 			var ticker = "EXMP";
 
 			var marketCap1 = 12_345_678d;
@@ -29,7 +29,7 @@ namespace AggregationService.IntegrationTests
 			var grossMargin1 = 0.4d;
 			var profitMargin1 = 0.05d;
 			var revenues1 = 111_111_111d;
-			var workingCapital1 = 222_222_222d; 
+			var workingCapital1 = 222_222_222d;
 			var reportPeriod1 = new DateTime(2001, 1, 1);
 
 			var marketCap2 = 12_345_111d;
@@ -100,7 +100,7 @@ namespace AggregationService.IntegrationTests
 
 			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
 
-			sut.InsertStockFinancials(ticker);
+			sut.UpdateStockFinancialsForMarket(market);
 
 			var result = GetStockFinancials(ticker);
 
