@@ -2,7 +2,7 @@
 using ApiClient;
 using ApiClient.Models;
 
-namespace AggregationService.IntegrationTests
+namespace StockAggregation.IntegrationTests
 {
 	internal class FakePolygonClient : IPolygonClient
 	{
@@ -12,7 +12,7 @@ namespace AggregationService.IntegrationTests
 
 		public FakePolygonClient(PolygonStockFinancialsResponse response)
 		{
-				stubStockFinancialsResponse = response;
+			stubStockFinancialsResponse = response;
 		}
 
 		public FakePolygonClient(PolygonCompanyInfoResponse response)
@@ -40,9 +40,9 @@ namespace AggregationService.IntegrationTests
 			return stubPriceDataResponse;
 		}
 
-        public PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimePeriod timeResolution, double start, double end)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+		public PolygonPriceDataResponse GetPriceData(string ticker, int interval, TimePeriod timeResolution, double start, double end)
+		{
+			return stubPriceDataResponse;
+		}
+	}
 }

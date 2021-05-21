@@ -6,17 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AggregationService.IntegrationTests
+namespace StockAggregation.IntegrationTests
 {
-    [TestFixture]
-    public class UpdateStockFinancialsTests : AggregationServiceTestBase
-    {
-        private StockAggregationService sut;
+	[TestFixture]
+	public class UpdateStockFinancialsTests : AggregationServiceTestBase
+	{
+		private StockAggregationService sut;
 
-        [Test]
-        public void UpdateStockFinancials_CreatesNewDatabaseEntry_WhenEntryIsLessThanResponse()
-        {
-            var ticker = "EXMP";
+		[Test]
+		public void UpdateStockFinancials_CreatesNewDatabaseEntry_WhenEntryIsLessThanResponse()
+		{
+			var ticker = "EXMP";
 
 			var marketCap1 = 12_345_678d;
 			var dividendsPerShare1 = 0.45d;
@@ -53,9 +53,9 @@ namespace AggregationService.IntegrationTests
 			var reportPeriod2 = new DateTime(2001, 4, 1);
 
 			var stubResponse = new PolygonStockFinancialsResponse()
-            {
-                Results = new[]
-                {
+			{
+				Results = new[]
+				{
 					new QuarterlyStockFinancialsData
 					{
 						Ticker = ticker,
@@ -77,11 +77,11 @@ namespace AggregationService.IntegrationTests
 						ReportPeriod = reportPeriod2
 					},
 				}
-            };
+			};
 
-            InsertStockFinancials(new StockFinancials
-            {
-                Ticker = ticker,
+			InsertStockFinancials(new StockFinancials
+			{
+				Ticker = ticker,
 				MarketCap = new List<MarketCap>()
 				{
 					new MarketCap { marketCap = marketCap1, timestamp = reportPeriod1.ToUnix() }
@@ -99,9 +99,9 @@ namespace AggregationService.IntegrationTests
 					new SalesPerShare { salesPerShare = salesPerShare1, timestamp = reportPeriod1.ToUnix()}
 				},
 				BookValuePerShare = new List<BookValuePerShare>()
-                {
-                    new BookValuePerShare { bookValuePerShare = bookValuePerShare1, timestamp = reportPeriod1.ToUnix() }
-                },
+				{
+					new BookValuePerShare { bookValuePerShare = bookValuePerShare1, timestamp = reportPeriod1.ToUnix() }
+				},
 				PayoutRatio = new List<PayoutRatio>()
 				{
 					new PayoutRatio { payoutRatio = payoutRatio1, timestamp = reportPeriod1.ToUnix()}
@@ -109,7 +109,7 @@ namespace AggregationService.IntegrationTests
 				CurrentRatio = new List<CurrentRatio>()
 				{
 					new CurrentRatio { currentRatio = currentRatio1, timestamp = reportPeriod1.ToUnix() }
-				}, 
+				},
 				DebtToEquityRatio = new List<DebtToEquityRatio>()
 				{
 					new DebtToEquityRatio { debtToEquityRatio = debtToEquityRatio1, timestamp = reportPeriod1.ToUnix()}
@@ -144,11 +144,11 @@ namespace AggregationService.IntegrationTests
 				}
 			});
 
-            sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
+			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
 
-            sut.UpdateStockFinancials(ticker);
+			sut.UpdateStockFinancialsForMarket(market);
 
-            var result = GetStockFinancials(ticker);
+			var result = GetStockFinancials(ticker);
 
 			Assert.AreEqual(2, result.MarketCap.Count());
 			Assert.AreEqual(2, result.DividendsPerShare.Count());
@@ -375,7 +375,7 @@ namespace AggregationService.IntegrationTests
 
 			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
 
-			sut.UpdateStockFinancials(ticker);
+			sut.UpdateStockFinancialsForMarket(market);
 
 			var result = GetStockFinancials(ticker);
 
@@ -628,7 +628,7 @@ namespace AggregationService.IntegrationTests
 
 			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
 
-			sut.UpdateStockFinancials(ticker);
+			sut.UpdateStockFinancialsForMarket(market);
 
 			var result = GetStockFinancials(ticker);
 

@@ -23,7 +23,14 @@ namespace StockScreener.Database.Repos
         {
             var projection = Builders<CompanyInfo>.Projection.Include(x => x.Ticker).Include(x => x.Sector).Include(x => x.Industry);
             return dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection).FirstOrDefault();
-        }
-    }
+		}
+
+		public void Update(CompanyInfo info)
+		{
+			var filter = Builders<CompanyInfo>.Filter.Eq(e => e.Ticker, info.Ticker);
+
+			dbCollection.FindOneAndReplace(filter, info, new FindOneAndReplaceOptions<CompanyInfo, CompanyInfo>() { IsUpsert = true});
+		}
+	}
 }
 

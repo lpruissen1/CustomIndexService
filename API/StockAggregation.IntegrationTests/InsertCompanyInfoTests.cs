@@ -3,16 +3,16 @@ using Core;
 using NUnit.Framework;
 using System;
 
-namespace AggregationService.IntegrationTests
+namespace StockAggregation.IntegrationTests
 {
-    [TestFixture]
-    public class InsertCompanyInfoTests : AggregationServiceTestBase
-    {
+	[TestFixture]
+	public class InsertCompanyInfoTests : AggregationServiceTestBase
+	{
 		private StockAggregationService sut;
 
-        [Test]
-        public void InsertCompanyInfo()
-        {
+		[Test]
+		public void InsertCompanyInfo()
+		{
 			var ticker = "EXMP";
 			var sector = "Energy";
 			var industry = "Oil";
@@ -29,7 +29,7 @@ namespace AggregationService.IntegrationTests
 
 			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
 
-			sut.InsertCompanyInfo(ticker);
+			sut.UpdateCompanyInfoForMarket(market);
 
 			var result = GetCompanyInfo(ticker);
 

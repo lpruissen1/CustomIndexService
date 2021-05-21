@@ -7,21 +7,26 @@ using StockScreener.Database.Config;
 using StockScreener.Database.Model.CompanyInfo;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;
+using StockScreener.Database.Model.StockIndex;
+using System.Collections.Generic;
 
-namespace AggregationService.IntegrationTests
+namespace StockAggregation.IntegrationTests
 {
-    public abstract class AggregationServiceTestBase
+	public abstract class AggregationServiceTestBase
 	{
 		protected IMongoDBContext stockContext;
 		protected IMongoDBContext priceContext;
 
+		protected const string market = "ExampleMarket";
+
 		[OneTimeSetUp]
 		public virtual void OneTimeSetUp()
 		{
-			var config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\Agg\\Agg\\AggregationService").AddJsonFile("appsettings.json").Build();
+			var config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\CustomIndexService\\API\\StockAggregation.IntegrationTests").AddJsonFile("appsettings.json").Build();
 			var stockDBSettings = new StockInformationDatabaseSettings() { ConnectionString = config["StockDatabaseSettings:ConnectionString"], DatabaseName = config["StockDatabaseSettings:DatabaseName"] };
 			var priceDBSettings = new StockInformationDatabaseSettings() { ConnectionString = config["PriceDatabaseSettings:ConnectionString"], DatabaseName = config["PriceDatabaseSettings:DatabaseName"] };
 
+			stockContext = new MongoStockInformationDbContext(stockDBSettings);
 			stockContext = new MongoStockInformationDbContext(stockDBSettings);
 			priceContext = new MongoStockInformationDbContext(priceDBSettings);
 		}
@@ -30,6 +35,12 @@ namespace AggregationService.IntegrationTests
 		public virtual void OneTimeTearDown()
 		{
 
+		}
+
+		[SetUp]
+		public virtual void SetUp()
+		{
+			InsertStockIndexData(new StockIndex() { Name = market, Tickers = new List<string> { "EXMP" } });
 		}
 
 		[TearDown]
@@ -67,6 +78,11 @@ namespace AggregationService.IntegrationTests
 		protected void InsertHourlyPriceData(PriceData priceData)
 		{
 			priceContext.GetCollection<PriceData>("HourPriceData").InsertOne(priceData);
+		}
+
+		protected void InsertStockIndexData(StockIndex index)
+		{
+			stockContext.GetCollection<StockIndex>("StockIndex").InsertOne(index);
 		}
 	}
 }
