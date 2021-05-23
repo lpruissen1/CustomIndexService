@@ -1,11 +1,10 @@
 ﻿using Database.Core;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 
 namespace Database.Repositories
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : DbEntity
+	public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : DbEntity
     {
         protected readonly IMongoDBContext mongoContext;
         protected IMongoCollection<TEntity> dbCollection;
@@ -16,14 +15,16 @@ namespace Database.Repositories
             dbCollection = mongoContext.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public void Create(TEntity obj)
+        public TEntity Create(TEntity obj)
         {
             dbCollection.InsertOne(obj);
+
+			return obj;
         }
 
         public void Delete(string id)
         {
-            throw new NotImplementedException();
+			dbCollection.FindOneAndDelete(x => x.Id == id);
         }
 
         public TEntity Get(string ticker)
@@ -40,7 +41,7 @@ namespace Database.Repositories
 
         public void Update(TEntity obj)
         {
-            throw new NotImplementedException();
+			dbCollection.FindOneAndReplace(x => x.Id == obj.Id, obj);
         }
 
         public void Clear(string collectionName)
