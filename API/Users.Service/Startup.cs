@@ -62,7 +62,7 @@ namespace Users.Service
 
 			app.UseCors(options =>
 			{
-				options.WithOrigins("https://localhost:9001")
+				options.WithOrigins("https://localhost:6001")
 					.AllowAnyHeader()
 					.AllowAnyMethod();
 			});
