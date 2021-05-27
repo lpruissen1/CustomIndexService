@@ -32,7 +32,9 @@ namespace Users
 			passwordListRepository.Create(new PasswordList() { UserId = user.UserId, CurrentPassword = request.PasswordHash });
 			var token = GenerateJSONWebToken(user.Id.ToString());
 
-			return new OkObjectResult(token);
+			var token = GenerateJSONWebToken(user.UserId.ToString());
+
+			return new OkObjectResult(GenerateJSONWebToken(user.UserId.ToString()));
 		}
 
 		public IActionResult Login(LoginRequest request)
@@ -58,7 +60,7 @@ namespace Users
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 			};
 
-			var token = new JwtSecurityToken(jwtConfig.Issuer,
+			var token = new JwtSecurityToken (jwtConfig.Issuer,
 			  jwtConfig.Issuer,
 			  claims,
 			  expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtConfig.Expiration)),
