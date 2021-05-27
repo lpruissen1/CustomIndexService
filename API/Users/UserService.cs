@@ -30,8 +30,9 @@ namespace Users
 		{
 			var user = userRepository.Create(UserMapper.MapCreateUserRequest(request));
 			passwordListRepository.Create(new PasswordList() { UserId = user.UserId, CurrentPassword = request.PasswordHash });
+			var token = GenerateJSONWebToken(user.Id.ToString());
 
-			return new OkResult();
+			return new OkObjectResult(token);
 		}
 
 		public IActionResult Login(LoginRequest request)

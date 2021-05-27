@@ -15,13 +15,13 @@ namespace Users.Service.Controllers
 			this.userService = userService;
 		}
 
-        [HttpPost]
+        [HttpPost("create")]
         public IActionResult Create(CreateUserRequest request)
         {
 			return userService.CreateUser(request);
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {
 			return userService.Login(request);
