@@ -15,7 +15,7 @@ namespace Users.Service.Controllers
 			this.userService = userService;
 		}
 
-        [HttpPost]
+        [HttpPost("Create")]
         public IActionResult Create(CreateUserRequest request)
         {
 			return userService.CreateUser(request);
