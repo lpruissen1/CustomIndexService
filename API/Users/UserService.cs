@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using Users.Core;
 using Users.Core.Request;
+using Users.Core.Response;
 using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
 
@@ -30,21 +31,19 @@ namespace Users
 		{
 			var user = userRepository.Create(UserMapper.MapCreateUserRequest(request));
 			passwordListRepository.Create(new PasswordList() { UserId = user.UserId, CurrentPassword = request.PasswordHash });
-			var token = GenerateJSONWebToken(user.Id.ToString());
 
-			var token = GenerateJSONWebToken(user.UserId.ToString());
-
-			return new OkObjectResult(GenerateJSONWebToken(user.UserId.ToString()));
+			return new OkObjectResult(new LoginResponse() { Token = GenerateJSONWebToken(user.UserId)});
 		}
 
 		public IActionResult Login(LoginRequest request)
 		{
+			// and handling here for unfound usernames
 			var userId = userRepository.GetByUsername(request.Username).UserId;
 			var currentPassword = passwordListRepository.Get(userId).CurrentPassword;
 			if (currentPassword == request.PasswordHash)
 			{
 				var token = GenerateJSONWebToken(userId.ToString());
-				return new OkObjectResult(token);
+				return new OkObjectResult(new LoginResponse() { Token = token });
 			}
 
 			return new BadRequestObjectResult("Get fucked nerd");

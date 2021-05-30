@@ -27,7 +27,7 @@ namespace Database.Repositories
 			dbCollection.FindOneAndDelete(x => x.Id == id);
         }
 
-        public TEntity Get(string ticker)
+        public virtual TEntity Get(string ticker)
         {
             FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Eq("Ticker", ticker);
 
