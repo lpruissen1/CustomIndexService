@@ -11,7 +11,7 @@ namespace Users.Database.Repositories
 	{
 		public PasswordListRepository(IMongoDBContext context) : base(context) { }
 
-		public PasswordList Get(Guid userId)
+		public override PasswordList Get(string userId)
 		{
 			FilterDefinition<PasswordList> filter = Builders<PasswordList>.Filter.Eq("UserId", userId);
 

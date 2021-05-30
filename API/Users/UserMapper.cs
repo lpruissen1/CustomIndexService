@@ -9,7 +9,7 @@ namespace Users
 		public static User MapCreateUserRequest(CreateUserRequest request)
 		{
 			return new User {
-				UserId = Guid.NewGuid(),
+				UserId = Guid.NewGuid().ToString(),
 				UserName = request.UserName, 
 				EmailAddress = request.Email, 
 				FirstName = request.FirstName, 

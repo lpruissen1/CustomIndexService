@@ -31,11 +31,12 @@ namespace Users
 		{
 			var user = userRepository.Create(UserMapper.MapCreateUserRequest(request));
 			passwordListRepository.Create(new PasswordList() { UserId = user.UserId, CurrentPassword = request.PasswordHash });
-			return new OkObjectResult(new LoginResponse() { Token = GenerateJSONWebToken(user.UserId.ToString())});
+			return new OkObjectResult(new LoginResponse() { Token = GenerateJSONWebToken(user.UserId)});
 		}
 
 		public IActionResult Login(LoginRequest request)
 		{
+			// and handling here for unfound usernames
 			var userId = userRepository.GetByUsername(request.Username).UserId;
 			var currentPassword = passwordListRepository.Get(userId).CurrentPassword;
 			if (currentPassword == request.PasswordHash)
