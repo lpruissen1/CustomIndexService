@@ -32,7 +32,7 @@ namespace Users
 			var user = userRepository.Create(UserMapper.MapCreateUserRequest(request));
 			passwordListRepository.Create(new PasswordList() { UserId = user.UserId, CurrentPassword = request.PasswordHash });
 
-			return new OkObjectResult(new LoginResponse() { Token = GenerateJSONWebToken(user.UserId)});
+			return new OkObjectResult(new LoginResponse() { Token = GenerateJSONWebToken(user.UserId), UserID = user.UserId });
 		}
 
 		public IActionResult Login(LoginRequest request)
