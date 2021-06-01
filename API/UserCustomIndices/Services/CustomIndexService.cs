@@ -43,7 +43,7 @@ namespace UserCustomIndices.Services
             return new ActionResult<IEnumerable<CustomIndexRequest>>(result.Select(index => CreateResponse(index)));
         }
 
-        public IActionResult CreateIndex(Guid userId, CustomIndexRequest customIndex)
+        public IActionResult CreateIndex(string userId, CustomIndexRequest customIndex)
         {
             indicesRepository.Create(responseMapper.Map(customIndex));
 

@@ -10,7 +10,7 @@ namespace UserCustomIndices.Services
     {
         Task<ActionResult<CustomIndexRequest>> GetIndex(Guid userId, string indexId);
         Task<ActionResult<IEnumerable<CustomIndexRequest>>> GetAllForUser(Guid userid);
-        IActionResult CreateIndex(Guid userId, CustomIndexRequest customIndex);
+        IActionResult CreateIndex(string userId, CustomIndexRequest customIndex);
         Task<IActionResult> UpdateIndex(Guid userId, CustomIndexRequest customIndexUpdated);
         Task<IActionResult> RemoveIndex(Guid userId, string id);
     }

@@ -32,7 +32,7 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Guid userId, CustomIndexRequest index)
+        public IActionResult Create(string userId, CustomIndexRequest index)
         {
             return indexService.CreateIndex(userId, index);
         }
