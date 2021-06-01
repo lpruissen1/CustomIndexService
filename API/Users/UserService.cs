@@ -43,7 +43,7 @@ namespace Users
 			if (currentPassword == request.PasswordHash)
 			{
 				var token = GenerateJSONWebToken(userId.ToString());
-				return new OkObjectResult(new LoginResponse() { Token = token });
+				return new OkObjectResult(new LoginResponse() { Token = token, UserID = userId });
 			}
 
 			return new BadRequestObjectResult("Get fucked nerd");
