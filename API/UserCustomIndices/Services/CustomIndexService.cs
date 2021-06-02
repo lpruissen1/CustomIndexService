@@ -36,7 +36,7 @@ namespace UserCustomIndices.Services
             return new ActionResult<CustomIndexRequest>(CreateResponse(index));
         }
 
-        public async Task<ActionResult<IEnumerable<CustomIndexRequest>>> GetAllForUser(Guid userid)
+        public async Task<ActionResult<IEnumerable<CustomIndexRequest>>> GetAllForUser(string userid)
         {
             var result = await indicesRepository.GetAllForUser(userid);
 
@@ -65,6 +65,11 @@ namespace UserCustomIndices.Services
         {
             return new CustomIndexRequest
             {
+				UserId = index.UserId,
+				Markets = index.Markets,
+				Sectors = index.Sector.Sectors,
+				Industries = index.Sector.Industries
+				//TimedRangeRule = 
                // Id = index.Id,
                // Markets = new API.ComposedMarkets { Markets = index.Markets.Markets },
                // DividendYield = new API.DividendYield { Lower = index.DividendYield.Lower, Upper = index.DividendYield.Upper },

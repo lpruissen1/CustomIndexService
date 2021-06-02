@@ -19,7 +19,7 @@ namespace UserCustomIndices.Controllers
         }
 
         [HttpGet]
-        public Task<ActionResult<IEnumerable<CustomIndexRequest>>> Get(Guid userId)
+        public Task<ActionResult<IEnumerable<CustomIndexRequest>>> Get(string userId)
         {
             return indexService.GetAllForUser(userId);
         }

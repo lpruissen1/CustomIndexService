@@ -16,7 +16,7 @@ namespace Database.Repositories
             return await dbCollection.FindAsync(i => i.Id == id && i.UserId == userId.ToString()).Result.FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<CustomIndex>> GetAllForUser(Guid userId)
+        public async Task<IEnumerable<CustomIndex>> GetAllForUser(string userId)
         {
             return await dbCollection.FindAsync(i => i.UserId == userId.ToString()).Result.ToListAsync();
         }
