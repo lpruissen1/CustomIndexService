@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UserCustomIndices.Core.Model.Requests;
 using UserCustomIndices.Database.Model.User.CustomIndices;
+using UserCustomIndices.Model.Response;
 
 namespace UserCustomIndices.Mappers
 {
     public interface IRequestMapper
     {
         CustomIndex Map(CustomIndexRequest response);
-    }
+        CustomIndex Map(CreateCustomIndexRequest response);
+		CustomIndexResponse Map(CustomIndex index);
+	}
 
     public class RequestMapper : IRequestMapper
     {
@@ -20,8 +23,20 @@ namespace UserCustomIndices.Mappers
                 Markets = response.Markets,
                 Sector = new Sector { Sectors = response.Sectors, Industries = response.Industries },
                 RangedRule = MapRangedRules(response.RangedRule),
-                TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule),
+                TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule)
+            };
+        }
 
+        public CustomIndex Map(CreateCustomIndexRequest response)
+        {
+            return new CustomIndex()
+            {
+				UserId = response.UserId,
+				IndexId = System.Guid.NewGuid().ToString(),
+                Markets = response.Markets,
+                Sector = new Sector { Sectors = response.Sectors, Industries = response.Industries },
+                RangedRule = MapRangedRules(response.RangedRule),
+                TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule)
             };
         }
 
@@ -57,7 +72,57 @@ namespace UserCustomIndices.Mappers
         private TimedRange CreateTimedRange(Core.Model.TimedRangeRule responseTimedRangeRule)
         {
             return new TimedRange { Upper = responseTimedRangeRule.Upper, Lower = responseTimedRangeRule.Lower, TimePeriod = responseTimedRangeRule.TimePeriod };
-        } 
+        }
 
-    }
+		public CustomIndexResponse Map(CustomIndex index)
+		{
+			return new CustomIndexResponse
+			{
+				UserId = index.UserId,
+				IndexId = index.IndexId,
+				Markets = index.Markets,
+				Sectors = index.Sector.Sectors,
+				Industries = index.Sector.Industries,
+				TimedRangeRule = MapTimedRangeRule(index.TimedRangeRule),
+				RangedRule = MapRangedRule(index.RangedRule)
+			};
+		}
+
+		private static List<Core.Model.TimedRangeRule> MapTimedRangeRule(List<TimedRangeRule> timedRangeRule)
+		{
+			var requestRules = new List<Core.Model.TimedRangeRule>();
+
+			foreach (var rule in timedRangeRule)
+			{
+				requestRules.Add(
+					new Core.Model.TimedRangeRule
+					{
+						RuleType = rule.RuleType,
+						Upper = rule.TimedRanges[0].Upper,
+						Lower = rule.TimedRanges[0].Lower,
+						TimePeriod = rule.TimedRanges[0].TimePeriod
+					});
+			}
+
+			return requestRules;
+		}
+
+		private static List<Core.Model.RangedRule> MapRangedRule(List<Database.Model.User.CustomIndices.RangedRule> rangedRule)
+		{
+			var requestRules = new List<Core.Model.RangedRule>();
+
+			foreach (var rule in rangedRule)
+			{
+				requestRules.Add(
+					new Core.Model.RangedRule
+					{
+						RuleType = rule.RuleType,
+						Upper = rule.Ranges[0].Upper,
+						Lower = rule.Ranges[0].Lower,
+					});
+			}
+
+			return requestRules;
+		}
+	}
 }

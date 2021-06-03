@@ -2,9 +2,10 @@
 
 namespace UserCustomIndices.Core.Model.Requests
 {
-    public class CustomIndexRequest
+	public class CustomIndexRequest
     {
         public string UserId { get; set; }
+		public string IndexId { get; set; }
         public List<string> Markets { get; set; }
         public List<string> Sectors { get; init; } = new List<string>();
         public List<string> Industries { get; init; } = new List<string>();

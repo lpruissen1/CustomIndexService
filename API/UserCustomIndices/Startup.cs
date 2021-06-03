@@ -39,9 +39,6 @@ namespace UserCustomIndices
             services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();
             services.AddScoped<IRequestMapper, RequestMapper>();
 
-            services.AddSingleton(_ => MapperConfigurationRepository.Create());
-            services.AddScoped<IMapper, Mapper>();
-
             services.AddControllers().AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

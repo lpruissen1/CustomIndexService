@@ -12,6 +12,7 @@ namespace UserCustomIndices.Mappers
 			return new CustomIndexRequest
 			{
 				UserId = index.UserId,
+				IndexId = index.IndexId,
 				Markets = index.Markets,
 				Sectors = index.Sector.Sectors,
 				Industries = index.Sector.Industries,
@@ -19,6 +20,7 @@ namespace UserCustomIndices.Mappers
 				RangedRule = MapRangedRule(index.RangedRule)
 			};
 		}
+
 
 		private static List<TimedRangeRule> MapTimedRangeRule(List<Database.Model.User.CustomIndices.TimedRangeRule> timedRangeRule)
 		{
