@@ -10,6 +10,7 @@ namespace UserCustomIndices.Database.Model.User.CustomIndices
     {
         [BsonRepresentation(BsonType.String)]
         public RuleType RuleType;
+		//Dont return list. 
         public List<TimedRange> TimedRanges;
     }
 }
