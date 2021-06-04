@@ -25,10 +25,9 @@ namespace UserCustomIndices.Controllers
             return indexService.GetAllForUser(userId);
         }
 
-        [HttpGet("{indexId:length(24)}", Name = "GetCustomIndex")]
-        public Task<ActionResult<CustomIndexResponse>> GetById(Guid userId, string indexId)
+        [HttpGet("GetCustomIndex")]
+        public Task<ActionResult<CustomIndexResponse>> GetById(string userId, string indexId)
         {
-
             return indexService.GetIndex(userId, indexId);
         }
 

@@ -8,7 +8,7 @@ namespace Database.Repositories
 {
     public interface IIndicesRepository : IBaseRepository<CustomIndex>
     {
-        Task<CustomIndex> Get(Guid userId, string id);
+        Task<CustomIndex> Get(string userId, string id);
         Task<IEnumerable<CustomIndex>> GetAllForUser(string userId);
     }
 }

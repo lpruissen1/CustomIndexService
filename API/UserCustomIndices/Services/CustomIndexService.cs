@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Database.Repositories;
+﻿using Database.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,25 +8,24 @@ using UserCustomIndices.Core.Model.Requests;
 using UserCustomIndices.Mappers;
 using UserCustomIndices.Model.Response;
 
-// convert the fomr API -> DB models
-// This is where I want validation to take place
 namespace UserCustomIndices.Services
 {
-    public class CustomIndexService : ICustomIndexService
+	public class CustomIndexService : ICustomIndexService
     {
         private readonly IIndicesRepository indicesRepository;
-        private readonly IRequestMapper responseMapper;
+        private readonly IResponseMapper responseMapper;
+        private readonly IRequestMapper requestMapper;
 
-        public CustomIndexService(IIndicesRepository indicesRepository, IRequestMapper responseMapper)
+        public CustomIndexService(IIndicesRepository indicesRepository, IRequestMapper requesteMapper, IResponseMapper responseMapper)
         {
             this.indicesRepository = indicesRepository;
+            this.requestMapper = requesteMapper;
             this.responseMapper = responseMapper;
         }
 
-        public async Task<ActionResult<CustomIndexResponse>> GetIndex(Guid userId, string indexId)
+        public async Task<ActionResult<CustomIndexResponse>> GetIndex(string userId, string indexId)
         {
             var index = await indicesRepository.Get(userId, indexId);
-
 
             return new ActionResult<CustomIndexResponse>(responseMapper.Map(index));
         }
@@ -41,7 +39,7 @@ namespace UserCustomIndices.Services
 
         public IActionResult CreateIndex(string userId, CreateCustomIndexRequest customIndex)
         {
-            indicesRepository.Create(responseMapper.Map(customIndex));
+            indicesRepository.Create(requestMapper.Map(customIndex));
 
             return new OkResult(); 
         }

@@ -1,4 +1,3 @@
-using AutoMapper;
 using Database;
 using Database.Core;
 using Database.Repositories;
@@ -38,6 +37,7 @@ namespace UserCustomIndices
             services.AddScoped<ICustomIndexService, CustomIndexService>();
             services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();
             services.AddScoped<IRequestMapper, RequestMapper>();
+            services.AddScoped<IResponseMapper, ResponseMapper>();
 
             services.AddControllers().AddJsonOptions(o =>
             {

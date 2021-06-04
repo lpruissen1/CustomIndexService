@@ -1,7 +1,6 @@
 ﻿using Database.Core;
 using Database.Repositories;
 using MongoDB.Driver;
-using System;
 using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
 

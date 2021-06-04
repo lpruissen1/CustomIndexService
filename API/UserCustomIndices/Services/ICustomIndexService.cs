@@ -9,7 +9,7 @@ namespace UserCustomIndices.Services
 {
 	public interface ICustomIndexService
     {
-        Task<ActionResult<CustomIndexResponse>> GetIndex(Guid userId, string indexId);
+        Task<ActionResult<CustomIndexResponse>> GetIndex(string userId, string indexId);
         Task<ActionResult<IEnumerable<CustomIndexResponse>>> GetAllForUser(string userid);
         IActionResult CreateIndex(string userId, CreateCustomIndexRequest customIndex);
         Task<IActionResult> UpdateIndex(Guid userId, CustomIndexRequest customIndexUpdated);
