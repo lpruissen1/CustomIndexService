@@ -1,5 +1,6 @@
 using Database.Core;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,10 +34,13 @@ namespace Users.Service
 			services.AddSingleton<IJwtConfiguration>(sp => sp.GetRequiredService<IOptions<JwtConfiguration>>().Value);
 
 			services.AddControllers();
+
 			services.AddScoped<IMongoDBContext, MongoUserDbContext>();
 			services.AddScoped<IPasswordListRepository, PasswordListRepository>();
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<ITokenGenerator, TokenGenerator>();
+			services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 			services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -54,6 +58,11 @@ namespace Users.Service
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.Service v1"));
             }
+
+			app.UseCookiePolicy(new CookiePolicyOptions 
+			{ 
+				HttpOnly = HttpOnlyPolicy.Always 
+			});
 
             app.UseHttpsRedirection();
 
