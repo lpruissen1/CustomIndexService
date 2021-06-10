@@ -1,7 +1,6 @@
 ﻿using Database.Core;
 using Database.Model.User.CustomIndices;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,12 +10,12 @@ namespace Database.Repositories
     {
         public IndiciesRepository(IMongoDBContext context) : base(context) { }
 
-        public async Task<CustomIndex> Get(Guid userId, string id)
+        public async Task<CustomIndex> Get(string userId, string indexId)
         {
-            return await dbCollection.FindAsync(i => i.Id == id && i.UserId == userId.ToString()).Result.FirstOrDefaultAsync();
+            return await dbCollection.FindAsync(i => i.IndexId == indexId && i.UserId == userId).Result.FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<CustomIndex>> GetAllForUser(Guid userId)
+        public async Task<IEnumerable<CustomIndex>> GetAllForUser(string userId)
         {
             return await dbCollection.FindAsync(i => i.UserId == userId.ToString()).Result.ToListAsync();
         }
