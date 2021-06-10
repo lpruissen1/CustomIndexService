@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Users.Core;
 using Users.Core.Request;
 using Users.Core.Response;
@@ -41,7 +36,6 @@ namespace Users
 
 		public IActionResult Login(LoginRequest request)
 		{
-			// and handling here for unfound usernames
 			var userId = userRepository.GetByUsername(request.Username)?.UserId;
 
 			if(userId is null)
@@ -62,40 +56,5 @@ namespace Users
 		{
 			return tokenGenerator.GeneratorJsonWebToken(userId);
 		}
-	}
-
-	public class TokenGenerator : ITokenGenerator
-	{
-		private readonly IJwtConfiguration jwtConfig;
-
-		public TokenGenerator(IJwtConfiguration jwtConfig)
-		{
-			this.jwtConfig = jwtConfig;
-		}
-
-		public string GeneratorJsonWebToken(string userId)
-		{
-			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key));
-			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-			var claims = new[] {
-				new Claim(JwtRegisteredClaimNames.NameId, userId),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-			};
-
-			var token = new JwtSecurityToken(jwtConfig.Issuer,
-			  jwtConfig.Issuer,
-			  claims,
-			  
-			  expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtConfig.Expiration)),
-			  signingCredentials: credentials);
-
-			return new JwtSecurityTokenHandler().WriteToken(token);
-		}
-	}
-
-	public interface ITokenGenerator
-	{
-		string GeneratorJsonWebToken(string userId);
 	}
 }
