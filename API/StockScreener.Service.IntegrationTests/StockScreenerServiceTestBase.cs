@@ -1,9 +1,8 @@
 ﻿using Core;
 using Database.Core;
-using Database.Model.User.CustomIndices;
-using Database.Repositories;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using StockScreener.Core.Request;
 using StockScreener.Database;
 using StockScreener.Database.Config;
 using StockScreener.Database.Model.StockIndex;
@@ -11,7 +10,6 @@ using StockScreener.Database.Repos;
 using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
 using System.Linq;
-using UserCustomIndices.Database.Model.User.CustomIndices;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -21,7 +19,7 @@ namespace StockScreener.Service.IntegrationTests
 
 		protected StockScreenerService sut;
 
-		protected  CustomIndex customIndex;
+		protected ScreeningRequest screeningRequest;
 
 		[OneTimeSetUp]
 		public virtual void OneTimeSetUp()
@@ -37,7 +35,7 @@ namespace StockScreener.Service.IntegrationTests
 		{
 			context.ClearAll();
 
-			customIndex = new CustomIndex();
+			screeningRequest = new ScreeningRequest();
 			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
 		}
 
@@ -51,54 +49,55 @@ namespace StockScreener.Service.IntegrationTests
 			context.GetCollection<TEntry>(typeof(TEntry).Name).InsertOne(dBEntry);
 		}
 
-		public void AddMarketToCustomIndex(string market)
+		public void AddMarketToScreeningRequest(string market)
         {
-			customIndex.Markets.Add(market);
+			screeningRequest.Markets.Add(market);
         }
 
-		public void AddSectorAndIndustryToCustomIndex(List<string> sector, List<string> industry)
+		public void AddSectorAndIndustryToScreeningRequest(List<string> sector, List<string> industry)
         {
-			customIndex.Add(new Sector() { Sectors = sector, Industries = industry });
+			screeningRequest.Industries = industry;
+			screeningRequest.Sectors = sector;
         }
 
-		public void AddPriceToEarningsRatioToCustomIndex(List<(double Upper, double Lower)> ranges)
+		public void AddPriceToEarningsRatioToScreeningRequest(double upper, double lower)
         {
-			customIndex.Add(new PriceToEarningsRatioTTM { Ranges = ranges.Select(range => new Range { Upper = range.Upper, Lower = range.Lower }).ToList() });
+			screeningRequest.RangedRule.Add(new RangedRule { Upper = upper, Lower = lower, RuleType = RuleType.PriceToEarningsRatioTTM });
         }
 
-		public void AddDividendYieldToCustomIndex(List<(double Upper, double Lower)> ranges)
+		public void AddDividendYieldToScreeningRequest(double upper, double lower)
 		{
-			customIndex.Add(new DividendYield { Ranges = ranges.Select(range => new Range { Upper = range.Upper, Lower = range.Lower }).ToList() });
+			screeningRequest.RangedRule.Add(new RangedRule { Upper = upper, Lower = lower, RuleType = RuleType.DividendYield });
 		}
 
-		public void AddPriceToSalesRatioToCustomIndex(List<(double Upper, double Lower)> ranges)
+		public void AddPriceToSalesRatioToScreeningRequest(double upper, double lower)
 		{
-			customIndex.Add(new PriceToSalesRatioTTM { Ranges = ranges.Select(range => new Range { Upper = range.Upper, Lower = range.Lower }).ToList() });
+			screeningRequest.RangedRule.Add(new RangedRule { Upper = upper, Lower = lower, RuleType = RuleType.PriceToSalesRatioTTM });
 		}
 
-		public void AddMarketCapToCustomIndex(List<(double Upper, double Lower)> ranges)
+		public void AddMarketCapToScreeningRequest(double upper, double lower)
         {
-			customIndex.Add(new MarketCapitalization { Ranges = ranges.Select(range => new Range { Upper = range.Upper, Lower = range.Lower }).ToList() });
+			screeningRequest.RangedRule.Add(new RangedRule { Upper = upper, Lower = lower, RuleType = RuleType.MarketCap });
         }
 
-		public void AddAnnualizedRevenueGrowthToCustomIndex(List<(double Upper, double Lower, TimePeriod timePeriod)> ranges)
+		public void AddAnnualizedRevenueGrowthToScreeningRequest(double upper, double lower, TimePeriod timePeriod)
         {
-			customIndex.Add(new RevenueGrowthAnnualized { TimedRanges = ranges.Select(range => new TimedRange { Upper = range.Upper, Lower = range.Lower, TimePeriod = range.timePeriod }).ToList() });
+			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.RevenueGrowthAnnualized });
         }
 
-		public void AddAnnualizedEPSGrowthToCustomIndex(List<(double Upper, double Lower, TimePeriod timePeriod)> ranges)
+		public void AddAnnualizedEPSGrowthToScreeningRequest(double upper, double lower, TimePeriod timePeriod)
         {
-			customIndex.Add(new EPSGrowthAnnualized { TimedRanges = ranges.Select(range => new TimedRange { Upper = range.Upper, Lower = range.Lower, TimePeriod = range.timePeriod }).ToList() });
+			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.EPSGrowthAnnualized });
         }
 
-		public void AddAnnualizedTrailingPerformanceoCustomIndex(List<(double Upper, double Lower, TimePeriod timePeriod)> ranges)
+		public void AddAnnualizedTrailingPerformanceoScreeningRequest(double upper, double lower, TimePeriod timePeriod)
         {
-			customIndex.Add(new AnnualizedTrailingPerformance { TimedRanges = ranges.Select(range => new TimedRange { Upper = range.Upper, Lower = range.Lower, TimePeriod = range.timePeriod }).ToList() });
+			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.AnnualizedTraillingPerformance });
         }
 
-		public void AddCoefficientOfVariationToCustomIndex(List<(double Upper, double Lower, TimePeriod timePeriod)> ranges)
+		public void AddCoefficientOfVariationToScreeningRequest(double upper, double lower, TimePeriod timePeriod)
 		{
-			customIndex.Add(new CoefficientOfVariation { TimedRanges = ranges.Select(range => new TimedRange { Upper = range.Upper, Lower = range.Lower, TimePeriod = range.timePeriod }).ToList() });
+			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.CoefficientOfVariation });
 		}
 	}
 }

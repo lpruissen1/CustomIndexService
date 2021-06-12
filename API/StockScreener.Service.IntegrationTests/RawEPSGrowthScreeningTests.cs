@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-	[Explicit("Remove custom index datapoint. Does not work")]
+	[Explicit("Not Implemented")]
 	public class RawEPSGrowthScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -26,10 +26,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddEarningsPerShare(1.76d, 1577768400)
 				.AddEarningsPerShare(1.76d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 			//AddRawEPSGrowthToCustomIndex(50, 10, 2);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

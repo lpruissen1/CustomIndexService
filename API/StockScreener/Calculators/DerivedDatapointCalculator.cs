@@ -12,6 +12,7 @@ namespace StockScreener.Calculators
         private readonly double yearUnixTime = 31_557_600;
         private readonly double weekErrorFactor = 604_800;
 
+		// have a function ampper to reduce work done here
         public SecuritiesList<DerivedSecurity> Derive(SecuritiesList<BaseSecurity> securities, IEnumerable<DerivedDatapointConstructionData> derivedDatapoints)
         {
             var derivedSecurities = new SecuritiesList<DerivedSecurity>();

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using UserCustomIndices.Core.Model;
+﻿using Core;
+using System.Collections.Generic;
 
 namespace UserCustomIndices.Model.Response
 {
-    public class CustomIndexResponse
+	public class CustomIndexResponse
     {
         public string UserId { get; set; }
         public string IndexId { get; set; }

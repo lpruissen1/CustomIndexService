@@ -1,8 +1,8 @@
 ﻿using StockScreener.Calculators;
+using StockScreener.Core.Request;
 using StockScreener.Mapper;
 using StockScreener.Model.BaseSecurity;
 using StockScreener.SecurityGrabber;
-using UserCustomIndices.Model.Response;
 
 namespace StockScreener
 {
@@ -15,10 +15,10 @@ namespace StockScreener
             this.securitiesGrabber = securitiesGrabber;
         }
 
-        public SecuritiesList<DerivedSecurity> Screen(CustomIndexResponse index)
+        public SecuritiesList<DerivedSecurity> Screen(ScreeningRequest request)
         {
-            var mapper = new CustomIndexResponseMapper();
-            var metricList = mapper.MapToMetricList(index);
+            var mapper = new ScreeningRequestMapper();
+            var metricList = mapper.MapToMetricList(request);
 
             var queryParams = new SecuritiesSearchParams { Indices = metricList.Indices, Datapoints = metricList.GetBaseDatapoints() };
             var securities = securitiesGrabber.GetSecurities(queryParams);

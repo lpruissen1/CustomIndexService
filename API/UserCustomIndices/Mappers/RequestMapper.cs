@@ -1,8 +1,8 @@
-﻿using Database.Model.User.CustomIndices;
+﻿using Core;
+using Database.Model.User.CustomIndices;
 using System.Collections.Generic;
 using UserCustomIndices.Core.Model.Requests;
-using UserCustomIndices.Database.Model.User.CustomIndices;
-using UserCustomIndices.Model.Response;
+using DB = UserCustomIndices.Database.Model.User.CustomIndices;
 
 namespace UserCustomIndices.Mappers
 {
@@ -14,7 +14,7 @@ namespace UserCustomIndices.Mappers
             {
 				UserId = response.UserId,
                 Markets = response.Markets,
-                Sector = new Sector { Sectors = response.Sectors, Industries = response.Industries },
+                Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
                 RangedRule = MapRangedRules(response.RangedRule),
                 TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule)
             };
@@ -27,44 +27,44 @@ namespace UserCustomIndices.Mappers
 				UserId = response.UserId,
 				IndexId = System.Guid.NewGuid().ToString(),
                 Markets = response.Markets,
-                Sector = new Sector { Sectors = response.Sectors, Industries = response.Industries },
+                Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
                 RangedRule = MapRangedRules(response.RangedRule),
                 TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule)
             };
         }
 
-        private List<RangedRule> MapRangedRules(List<Core.Model.RangedRule> responseRangedRule)
+        private List<DB.RangedRule> MapRangedRules(List<RangedRule> responseRangedRule)
         {
-            var list = new List<RangedRule>();
+            var list = new List<DB.RangedRule>();
 
             foreach(var rule in responseRangedRule)
             {
-                list.Add(new RangedRule {RuleType = rule.RuleType, Ranges = new List<Range> { CreateRange(rule) } });
+                list.Add(new DB.RangedRule { RuleType = rule.RuleType, Ranges = new List<DB.Range> { CreateRange(rule) } });
             }
 
             return list;
         }
 
-        private List<TimedRangeRule> MapTimedRangedRules(List<Core.Model.TimedRangeRule> reponseTimedRangedRules)
+        private List<DB.TimedRangeRule> MapTimedRangedRules(List<TimedRangeRule> reponseTimedRangedRules)
         {
-            var list = new List<TimedRangeRule>();
+            var list = new List<DB.TimedRangeRule>();
 
             foreach(var rule in reponseTimedRangedRules)
             {
-                list.Add(new TimedRangeRule { RuleType = rule.RuleType, TimedRanges = new List<TimedRange> { CreateTimedRange(rule) } });
+                list.Add(new DB.TimedRangeRule { RuleType = rule.RuleType, TimedRanges = new List<DB.TimedRange> { CreateTimedRange(rule) } });
             }
 
             return list;
         }
 
-        private Range CreateRange(Core.Model.RangedRule responseRangeRule)
+        private DB.Range CreateRange(RangedRule responseRangeRule)
         {
-            return new Range { Upper = responseRangeRule.Upper, Lower = responseRangeRule.Lower };
+            return new DB.Range { Upper = responseRangeRule.Upper, Lower = responseRangeRule.Lower };
         } 
 
-        private TimedRange CreateTimedRange(Core.Model.TimedRangeRule responseTimedRangeRule)
+        private DB.TimedRange CreateTimedRange(TimedRangeRule responseTimedRangeRule)
         {
-            return new TimedRange { Upper = responseTimedRangeRule.Upper, Lower = responseTimedRangeRule.Lower, TimePeriod = responseTimedRangeRule.TimePeriod };
+            return new DB.TimedRange { Upper = responseTimedRangeRule.Upper, Lower = responseTimedRangeRule.Lower, TimePeriod = responseTimedRangeRule.TimePeriod };
         }
 	}
 }

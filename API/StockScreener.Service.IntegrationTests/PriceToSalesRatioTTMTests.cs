@@ -1,10 +1,9 @@
 ﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    [TestFixture]
+	[TestFixture]
     public class PriceToSalesRatioTTMTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -28,10 +27,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddSalesPerShare(1.6d, 1585627200));
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(303.20));
 
-			AddMarketToCustomIndex(stockIndex1);
-			AddPriceToSalesRatioToCustomIndex(new List<(double, double)> { (10, 1) });
+			AddMarketToScreeningRequest(stockIndex1);
+			AddPriceToSalesRatioToScreeningRequest(10, 1);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

@@ -1,19 +1,18 @@
 ﻿using StockScreener.Model.Metrics;
-using UserCustomIndices.Model.Response;
 using System.Linq;
 using System.Collections.Generic;
-using UserCustomIndices.Core.Model;
-using UserCustomIndices.Core;
 using System;
+using Core;
+using StockScreener.Core.Request;
 
 namespace StockScreener.Mapper
 {
-    public class CustomIndexResponseMapper : IMetricListMapper<CustomIndexResponse>
+	public class ScreeningRequestMapper : IMetricListMapper<ScreeningRequest>
     {
         private Dictionary<RuleType, Func<TimedRangeRule, IMetric>> timedRangedRuleMetricMapper = new Dictionary<RuleType, Func<TimedRangeRule, IMetric>>();
         private Dictionary<RuleType, Func<RangedRule, IMetric>> rangedRuleMetricMapper = new Dictionary<RuleType, Func<RangedRule, IMetric>>();
 
-        public CustomIndexResponseMapper()
+        public ScreeningRequestMapper()
         {
             timedRangedRuleMetricMapper = new Dictionary<RuleType, Func<TimedRangeRule, IMetric>>
             {
@@ -32,7 +31,7 @@ namespace StockScreener.Mapper
             };
         }
 
-        public MetricList MapToMetricList(CustomIndexResponse input)
+        public MetricList MapToMetricList(ScreeningRequest input)
         {
             MetricList metricList = new MetricList();
             metricList.Indices = input.Markets.ToArray();

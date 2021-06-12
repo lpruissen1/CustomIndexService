@@ -1,10 +1,10 @@
-﻿using StockScreener.Model.BaseSecurity;
-using UserCustomIndices.Model.Response;
+﻿using StockScreener.Core.Request;
+using StockScreener.Model.BaseSecurity;
 
 namespace StockScreener
 {
     public interface IStockScreenerService
     {
-        SecuritiesList<DerivedSecurity> Screen(CustomIndexResponse index);
+        SecuritiesList<DerivedSecurity> Screen(ScreeningRequest request);
     }
 }

@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-	[Explicit("Remove custom index datapoint. Does not work")]
+	[Explicit("Not Implemented")]
 	public class GrossMarginsScreeningTest : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -19,10 +19,10 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddGrossMargin(0.4d));
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddGrossMargin(0.05d));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
            // AddGrossMarginToCustomIndex(0.5, 0.1);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

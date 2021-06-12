@@ -20,9 +20,9 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex2).AddTicker(ticker3));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(2, result.Count);
 
@@ -45,10 +45,10 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex2).AddTicker(ticker2));
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex3).AddTicker(ticker3));
 
-			AddMarketToCustomIndex(stockIndex1);
-			AddMarketToCustomIndex(stockIndex3);
+			AddMarketToScreeningRequest(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex3);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(2, result.Count);
 

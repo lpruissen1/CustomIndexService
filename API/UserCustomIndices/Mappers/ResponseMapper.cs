@@ -1,7 +1,8 @@
-﻿using Database.Model.User.CustomIndices;
+﻿using Core;
+using Database.Model.User.CustomIndices;
 using System.Collections.Generic;
-using UserCustomIndices.Database.Model.User.CustomIndices;
 using UserCustomIndices.Model.Response;
+using DB = UserCustomIndices.Database.Model.User.CustomIndices;
 
 namespace UserCustomIndices.Mappers
 {
@@ -21,14 +22,14 @@ namespace UserCustomIndices.Mappers
 			};
 		}
 
-		private static List<Core.Model.TimedRangeRule> MapTimedRangeRule(List<TimedRangeRule> timedRangeRule)
+		private static List<TimedRangeRule> MapTimedRangeRule(List<DB.TimedRangeRule> timedRangeRule)
 		{
-			var requestRules = new List<Core.Model.TimedRangeRule>();
+			var requestRules = new List<TimedRangeRule>();
 
 			foreach (var rule in timedRangeRule)
 			{
 				requestRules.Add(
-					new Core.Model.TimedRangeRule
+					new TimedRangeRule
 					{
 						RuleType = rule.RuleType,
 						Upper = rule.TimedRanges[0].Upper,
@@ -40,14 +41,14 @@ namespace UserCustomIndices.Mappers
 			return requestRules;
 		}
 
-		private static List<Core.Model.RangedRule> MapRangedRule(List<RangedRule> rangedRule)
+		private static List<RangedRule> MapRangedRule(List<DB.RangedRule> rangedRule)
 		{
-			var requestRules = new List<Core.Model.RangedRule>();
+			var requestRules = new List<RangedRule>();
 
 			foreach (var rule in rangedRule)
 			{
 				requestRules.Add(
-					new Core.Model.RangedRule
+					new RangedRule
 					{
 						RuleType = rule.RuleType,
 						Upper = rule.Ranges[0].Upper,

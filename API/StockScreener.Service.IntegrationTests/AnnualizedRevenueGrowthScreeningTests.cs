@@ -1,7 +1,6 @@
 ﻿using Core;
 using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -31,11 +30,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddRevenue(1_000_000d, 1577768400)
 				.AddRevenue(-400_000d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
-			AddAnnualizedRevenueGrowthToCustomIndex(new List<(double, double, TimePeriod)> { (301, 299, TimePeriod.HalfYear) });
+			AddMarketToScreeningRequest(stockIndex1);
+			AddAnnualizedRevenueGrowthToScreeningRequest(301, 299, TimePeriod.HalfYear);
 
-
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
@@ -64,10 +62,11 @@ namespace StockScreener.Service.IntegrationTests
 				.AddRevenue(1_000_000d, 1577768400)
 				.AddRevenue(400_000d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
-			AddAnnualizedRevenueGrowthToCustomIndex(new List<(double, double, TimePeriod)> { (407, 404, TimePeriod.Quarter) });
+			AddMarketToScreeningRequest(stockIndex1);
+			AddAnnualizedRevenueGrowthToScreeningRequest(407, 404, TimePeriod.Quarter);
 
-			var result = sut.Screen(customIndex);
+
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

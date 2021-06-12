@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-	[Explicit("Remove custom index datapoint. Does not work")]
+	[Explicit("Not Implemented")]
 	public class PayoutRatioScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -19,10 +19,10 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddPayoutRatio(0.1d));
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddPayoutRatio(0.2d));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 			//AddPayoutRatioToCustomIndex(0.15, 0);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

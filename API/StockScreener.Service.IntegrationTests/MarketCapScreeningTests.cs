@@ -1,10 +1,9 @@
 ﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    [TestFixture]
+	[TestFixture]
 	public class MarketCapScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -19,10 +18,10 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(1_000_000d));
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(10_000d));
 
-			AddMarketToCustomIndex(stockIndex1);
-			AddMarketCapToCustomIndex(new List<(double, double)> { (2_000_000d, 200_000d) });
+			AddMarketToScreeningRequest(stockIndex1);
+			AddMarketCapToScreeningRequest(2_000_000d, 200_000d);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
