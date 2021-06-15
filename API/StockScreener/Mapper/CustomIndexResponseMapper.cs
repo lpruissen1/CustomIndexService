@@ -9,8 +9,8 @@ namespace StockScreener.Mapper
 {
 	public class ScreeningRequestMapper : IMetricListMapper<ScreeningRequest>
     {
-        private Dictionary<RuleType, Func<TimedRangeRule, IMetric>> timedRangedRuleMetricMapper = new Dictionary<RuleType, Func<TimedRangeRule, IMetric>>();
-        private Dictionary<RuleType, Func<RangedRule, IMetric>> rangedRuleMetricMapper = new Dictionary<RuleType, Func<RangedRule, IMetric>>();
+        private Dictionary<RuleType, Func<TimedRangeRule, IMetric>> timedRangedRuleMetricMapper;
+        private Dictionary<RuleType, Func<RangedRule, IMetric>> rangedRuleMetricMapper;
 
         public ScreeningRequestMapper()
         {
@@ -33,13 +33,12 @@ namespace StockScreener.Mapper
 
         public MetricList MapToMetricList(ScreeningRequest input)
         {
-            MetricList metricList = new MetricList();
-            metricList.Indices = input.Markets.ToArray();
+			var metricList = new List<IMetric>();
 
             if (input.Sectors.Any() || input.Industries.Any())
                 metricList.Add(new SectorAndIndustryMetric(input.Sectors, input.Industries));   
 
-            foreach(var rangedRule in input.RangedRule)
+			foreach (var rangedRule in input.RangedRule)
             {
                 metricList.Add(rangedRuleMetricMapper[rangedRule.RuleType].Invoke(rangedRule));
             }
@@ -49,7 +48,9 @@ namespace StockScreener.Mapper
                 metricList.Add(timedRangedRuleMetricMapper[timedRangeRule.RuleType].Invoke(timedRangeRule));
             }
 
-            return metricList;
+			var inclusionExclusionHandler = new InclusionExclusionHandler(input.Inclusions, input.Exclusions);
+
+			return new MetricList(input.Markets.ToArray(), metricList, inclusionExclusionHandler);
         }
 
         private IMetric MapMarketCap(RangedRule rule)

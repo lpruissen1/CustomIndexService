@@ -2,11 +2,10 @@
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class SectorAndIndustryMetric : IMetric
+	public class SectorAndIndustryMetric : IMetric
     {
         public SectorAndIndustryMetric(List<string> sectors, List<string> industries)
         {

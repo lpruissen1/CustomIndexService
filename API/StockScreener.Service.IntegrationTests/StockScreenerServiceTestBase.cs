@@ -54,6 +54,16 @@ namespace StockScreener.Service.IntegrationTests
 			screeningRequest.Markets.Add(market);
         }
 
+		public void AddIncludedTickerToScreeningRequest(string ticker)
+        {
+			screeningRequest.Inclusions.Add(ticker);
+        }
+
+		public void AddExcludedTickerToScreeningRequest(string ticker)
+        {
+			screeningRequest.Exclusions.Add(ticker);
+        }
+
 		public void AddSectorAndIndustryToScreeningRequest(List<string> sector, List<string> industry)
         {
 			screeningRequest.Industries = industry;

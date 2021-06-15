@@ -3,7 +3,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    [TestFixture]
+	[TestFixture]
 	[Explicit("Not Implemented")]
 	public class WorkingCapitalScreeningTests : StockScreenerServiceTestBase
 	{
