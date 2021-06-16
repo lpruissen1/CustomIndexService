@@ -10,5 +10,6 @@ namespace Database.Repositories
     {
         Task<CustomIndex> Get(string userId, string id);
         Task<IEnumerable<CustomIndex>> GetAllForUser(string userId);
+		void UpdateIndex(string userId, CustomIndex updatedIndex);
     }
 }

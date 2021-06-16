@@ -13,6 +13,7 @@ namespace UserCustomIndices.Mappers
             return new CustomIndex()
             {
 				UserId = response.UserId,
+				IndexId = response.IndexId,
                 Markets = response.Markets,
                 Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
                 RangedRule = MapRangedRules(response.RangedRule),

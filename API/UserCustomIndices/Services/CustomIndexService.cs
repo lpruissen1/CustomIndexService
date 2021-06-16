@@ -44,9 +44,11 @@ namespace UserCustomIndices.Services
             return new OkResult(); 
         }
 
-        Task<IActionResult> ICustomIndexService.UpdateIndex(Guid userId, CustomIndexRequest customIndexUpdated)
+        public IActionResult UpdateIndex(string userId, CustomIndexRequest customIndexUpdated)
         {
-            throw new NotImplementedException();
+			indicesRepository.UpdateIndex(userId, requestMapper.Map(customIndexUpdated));
+			
+			return new OkResult();
         }
 
         Task<IActionResult> ICustomIndexService.RemoveIndex(Guid userId, string id)

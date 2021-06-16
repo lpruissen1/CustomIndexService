@@ -19,6 +19,11 @@ namespace Database.Repositories
         {
             return await dbCollection.FindAsync(i => i.UserId == userId.ToString()).Result.ToListAsync();
         }
+
+		public void UpdateIndex(string userId, CustomIndex updatedIndex)
+		{
+			dbCollection.FindOneAndReplace(i => i.UserId == userId.ToString() && i.IndexId == updatedIndex.IndexId, updatedIndex);
+		}
     }
 }
 

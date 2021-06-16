@@ -37,8 +37,8 @@ namespace UserCustomIndices.Controllers
             return indexService.CreateIndex(userId, index);
         }
 
-        [HttpPut("{userId:length(24)}")]
-        public Task<IActionResult> Update(Guid userId, CustomIndexRequest updatedIndex)
+        [HttpPut("UpdateIndex")]
+        public IActionResult Update(string userId, CustomIndexRequest updatedIndex)
         {
             return indexService.UpdateIndex(userId, updatedIndex);
         }
