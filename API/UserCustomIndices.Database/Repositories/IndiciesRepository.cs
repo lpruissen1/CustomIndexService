@@ -24,6 +24,11 @@ namespace Database.Repositories
 		{
 			dbCollection.FindOneAndReplace(i => i.UserId == userId.ToString() && i.IndexId == updatedIndex.IndexId, updatedIndex);
 		}
+
+		public void DeleteIndex(string userId, string indexId)
+		{
+			dbCollection.FindOneAndDelete(i => i.UserId == userId.ToString() && i.IndexId == indexId);
+		}
     }
 }
 

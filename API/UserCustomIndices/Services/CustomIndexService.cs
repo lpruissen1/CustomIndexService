@@ -51,9 +51,11 @@ namespace UserCustomIndices.Services
 			return new OkResult();
         }
 
-        Task<IActionResult> ICustomIndexService.RemoveIndex(Guid userId, string id)
+        public IActionResult RemoveIndex(string userId, string indexId)
         {
-            throw new NotImplementedException();
+			indicesRepository.DeleteIndex(userId, indexId);
+			
+			return new OkResult();
         }
     }
 }

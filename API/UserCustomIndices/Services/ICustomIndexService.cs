@@ -13,6 +13,6 @@ namespace UserCustomIndices.Services
         Task<ActionResult<IEnumerable<CustomIndexResponse>>> GetAllForUser(string userid);
         IActionResult CreateIndex(string userId, CreateCustomIndexRequest customIndex);
         IActionResult UpdateIndex(string userId, CustomIndexRequest customIndexUpdated);
-        Task<IActionResult> RemoveIndex(Guid userId, string id);
+        IActionResult RemoveIndex(string userId, string indexId);
     }
 }
