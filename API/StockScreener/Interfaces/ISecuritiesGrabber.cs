@@ -1,10 +1,10 @@
 ﻿using StockScreener.Model.BaseSecurity;
 using StockScreener.SecurityGrabber;
 
-namespace StockScreener
+namespace StockScreener.Interfaces
 {
-    public interface ISecuritiesGrabber
-    {
-        SecuritiesList<BaseSecurity> GetSecurities(SecuritiesSearchParams searchParams);
-    }
+	public interface ISecuritiesGrabber
+	{
+		SecuritiesList<BaseSecurity> GetSecurities(SecuritiesSearchParams searchParams);
+	}
 }

@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-	[Explicit("Remove custom index datapoint. Does not work")]
+	[Explicit("Not Implemented")]
 	public class AnnualizedDividendGrowthScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -25,10 +25,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.03d, 1577768400)
 				.AddDividendsPerShare(0.03d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
-			//AddAnnualizedDividendGrowthToCustomIndex(50, 20, 1);
+			AddMarketToScreeningRequest(stockIndex1);
+			//AddAnnualizedDividendGrowthToScreeningRequest(50, 20, 1);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
@@ -53,10 +53,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.03d, 1569816000)
 				.AddDividendsPerShare(0.03d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
-			//AddAnnualizedDividendGrowthToCustomIndex(75, 50, 2);
+			AddMarketToScreeningRequest(stockIndex1);
+			//AddAnnualizedDividendGrowthToScreeningRequest(75, 50, 2);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
@@ -81,10 +81,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.75d, 1554004800)
 				.AddDividendsPerShare(0.79d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToCustomIndex(40, 25, 4);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
@@ -109,10 +109,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.75d, 1490954000)
 				.AddDividendsPerShare(0.79d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToCustomIndex(20, 10, 12);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
@@ -137,10 +137,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.75d, 1427839200)
 				.AddDividendsPerShare(0.79d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToCustomIndex(11, 10, 20);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
@@ -170,11 +170,11 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.10d, 1554004800)
 				.AddDividendsPerShare(0.30d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToCustomIndex(40, 25, 4);
 			//AddAnnualizedDividendGrowthToCustomIndex(300, 150, 4);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(2, result.Count);
 
@@ -209,11 +209,11 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.10d, 1554004800)
 				.AddDividendsPerShare(0.14d, 1585627200));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToCustomIndex(45, 30, 4);
 			//AddAnnualizedDividendGrowthToCustomIndex(20, 16, 12);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

@@ -1,14 +1,11 @@
-﻿using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
+﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    [TestFixture]
+	[TestFixture]
     public class SectorAndIndustryScreeningTests : StockScreenerServiceTestBase
 	{
         [Test]
@@ -26,12 +23,10 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker1).AddSector(sector1).AddIndustry(industry1));
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddSector(sector2).AddIndustry(industry2));
 
-			AddMarketToCustomIndex(stockIndex);
-			AddSectorAndIndustryToCustomIndex(new List<string>() { sector1 }, new List<string>());
+			AddMarketToScreeningRequest(stockIndex);
+			AddSectorAndIndustryToScreeningRequest(new List<string>() { sector1 }, new List<string>());
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
-
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
@@ -59,10 +54,10 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddSector(energySector).AddIndustry(energyIndustry2));
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker3).AddSector(materialsSector).AddIndustry(materialsIndustry1));
 
-			AddMarketToCustomIndex(stockIndex);
-			AddSectorAndIndustryToCustomIndex(new List<string>(), new List<string>() { energyIndustry1 });
+			AddMarketToScreeningRequest(stockIndex);
+			AddSectorAndIndustryToScreeningRequest(new List<string>(), new List<string>() { energyIndustry1 });
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
@@ -93,11 +88,11 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddSector(energySector).AddIndustry(energyIndustry2));
 			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker3).AddSector(materialsSector).AddIndustry(materialsIndustry));
 
-			AddMarketToCustomIndex(stockIndex);
-			AddSectorAndIndustryToCustomIndex(new List<string>() { materialsSector }, new List<string>() { energyIndustry1 });
+			AddMarketToScreeningRequest(stockIndex);
+			AddSectorAndIndustryToScreeningRequest(new List<string>() { materialsSector }, new List<string>() { energyIndustry1 });
 
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(2, result.Count);
 

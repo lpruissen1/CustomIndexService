@@ -1,6 +1,7 @@
 ﻿using StockScreener.Core;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Repos;
+using StockScreener.Interfaces;
 using StockScreener.Model.BaseSecurity;
 using StockScreener.SecurityGrabber.BaseDataMapper;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace StockScreener.SecurityGrabber
 {
-    public class SecuritiesGrabber : ISecuritiesGrabber
+	public class SecuritiesGrabber : ISecuritiesGrabber
     {
         private readonly ICompanyInfoRepository companyInfoRespository;
         private readonly IStockFinancialsRepository stockFinancialsRespository;

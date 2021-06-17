@@ -1,13 +1,5 @@
-﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Model.Price;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
+﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
@@ -38,10 +30,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddDividendsPerShare(0.03d, 1585627200));
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(80.01));
 
-			AddMarketToCustomIndex(stockIndex1);
-			AddDividendYieldToCustomIndex(new List<(double, double)> { (5, 1) });
+			AddMarketToScreeningRequest(stockIndex1);
+			AddDividendYieldToScreeningRequest(5, 1);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

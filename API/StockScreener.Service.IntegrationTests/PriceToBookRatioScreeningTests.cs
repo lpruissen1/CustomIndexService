@@ -1,18 +1,10 @@
-﻿using Database.Model.User.CustomIndices;
-using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Model.Price;
-using StockScreener.Database.Model.StockFinancials;
-using StockScreener.Database.Model.StockIndex;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
+﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-	[Explicit("Remove custom index datapoint. Does not work")]
+	[Explicit("Not Implemented")]
 	public class PriceToBookRatioScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -33,10 +25,10 @@ namespace StockScreener.Service.IntegrationTests
 				.AddBookValuePerShare(1.01d));
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(39.21));
 
-			AddMarketToCustomIndex(stockIndex1);
+			AddMarketToScreeningRequest(stockIndex1);
 			//AddPriceToBookRatioToCustomIndex(10, 0);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

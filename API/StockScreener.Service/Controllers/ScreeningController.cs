@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StockScreener.Core.Request;
 using System.Collections.Generic;
-using UserCustomIndices.Model.Response;
 
 namespace StockScreener.Service.Controllers
 {
@@ -17,9 +17,9 @@ namespace StockScreener.Service.Controllers
 
         [HttpPost("FuckYourself")]
         [Consumes("application/json")]
-        public IEnumerable<string> GetByCustomIndexResponse(CustomIndexResponse customIndex)
+        public IEnumerable<string> GetByCustomIndexResponse(ScreeningRequest screeningRequest)
         {
-            return screenerService.Screen(customIndex).GetTickers();
+            return screenerService.Screen(screeningRequest).GetTickers();
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using Core;
 using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    [TestFixture]
+	[TestFixture]
 	public class AnnualizedTrailingPerformanceScreeningTests : StockScreenerServiceTestBase
 	{
 		[Test]
@@ -20,10 +19,10 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1617411630));
 			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
-			AddMarketToCustomIndex(stockIndex1);
-			AddAnnualizedTrailingPerformanceoCustomIndex(new List<(double, double, TimePeriod)> { (100, 0, TimePeriod.Quarter) });
+			AddMarketToScreeningRequest(stockIndex1);
+			AddAnnualizedTrailingPerformanceoScreeningRequest(100, 0, TimePeriod.Quarter);
 
-			var result = sut.Screen(customIndex);
+			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 

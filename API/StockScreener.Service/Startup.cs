@@ -9,13 +9,14 @@ using Microsoft.OpenApi.Models;
 using StockScreener.Database;
 using StockScreener.Database.Config;
 using StockScreener.Database.Repos;
+using StockScreener.Interfaces;
 using StockScreener.SecurityGrabber;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace StockScreener.Service
 {
-    public class Startup
+	public class Startup
     {
         public Startup(IConfiguration configuration)
         {

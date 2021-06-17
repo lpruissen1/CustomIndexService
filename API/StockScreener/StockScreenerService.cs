@@ -1,26 +1,27 @@
 ﻿using StockScreener.Calculators;
+using StockScreener.Core.Request;
+using StockScreener.Interfaces;
 using StockScreener.Mapper;
 using StockScreener.Model.BaseSecurity;
 using StockScreener.SecurityGrabber;
-using UserCustomIndices.Model.Response;
 
 namespace StockScreener
 {
-    public class StockScreenerService : IStockScreenerService
+	public class StockScreenerService : IStockScreenerService
     {
         private readonly ISecuritiesGrabber securitiesGrabber;
 
         public StockScreenerService(ISecuritiesGrabber securitiesGrabber)
         {
             this.securitiesGrabber = securitiesGrabber;
-        }
+		}
 
-        public SecuritiesList<DerivedSecurity> Screen(CustomIndexResponse index)
+        public SecuritiesList<DerivedSecurity> Screen(ScreeningRequest request)
         {
-            var mapper = new CustomIndexResponseMapper();
-            var metricList = mapper.MapToMetricList(index);
+            var mapper = new ScreeningRequestMapper();
+            var metricList = mapper.MapToMetricList(request);
 
-            var queryParams = new SecuritiesSearchParams { Indices = metricList.Indices, Datapoints = metricList.GetBaseDatapoints() };
+			var queryParams = metricList.GetSearchParams();
             var securities = securitiesGrabber.GetSecurities(queryParams);
 
             var derivedDatapointCalculator = new DerivedDatapointCalculator();
@@ -28,7 +29,7 @@ namespace StockScreener
             var derivedSecurityList = derivedDatapointCalculator.Derive(securities, metricList.GetDerivedDatapoints());
 
             metricList.Apply(ref derivedSecurityList);
-            
+
             return derivedSecurityList;
         }
     }
