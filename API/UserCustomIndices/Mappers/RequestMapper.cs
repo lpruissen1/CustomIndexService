@@ -14,6 +14,7 @@ namespace UserCustomIndices.Mappers
             {
 				UserId = response.UserId,
 				IndexId = response.IndexId,
+				Active = true,
                 Markets = response.Markets,
                 Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
                 RangedRule = MapRangedRules(response.RangedRule),
@@ -27,6 +28,7 @@ namespace UserCustomIndices.Mappers
             {
 				UserId = response.UserId,
 				IndexId = response.IndexId,
+				Active = true,
                 Markets = response.Markets,
                 Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
                 RangedRule = MapRangedRules(response.RangedRule),

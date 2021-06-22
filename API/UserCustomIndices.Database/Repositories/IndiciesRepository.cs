@@ -27,7 +27,13 @@ namespace Database.Repositories
 
 		public void DeleteIndex(string userId, string indexId)
 		{
-			dbCollection.FindOneAndDelete(i => i.UserId == userId.ToString() && i.IndexId == indexId);
+			var builder = Builders<CustomIndex>.Filter;
+			var userFilter = builder.Eq(i => i.UserId, userId);
+			var indexFilter = builder.Eq(i => i.IndexId, indexId);
+			var combinedFilter = builder.And(userFilter, indexFilter);
+			var update = Builders<CustomIndex>.Update.Set(i => i.Active, false);
+
+			dbCollection.FindOneAndUpdate(combinedFilter, update);
 		}
     }
 }
