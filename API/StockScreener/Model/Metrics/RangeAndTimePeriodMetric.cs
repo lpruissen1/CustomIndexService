@@ -21,7 +21,7 @@ namespace StockScreener.Model.Metrics
             securitiesList.RemoveAll(security => !rangedDatapoint.Any(entry => entry.Valid(GetValue(security)[entry.GetTimePeriod()])));
         }
 
-        public abstract Dictionary<TimePeriod, double> GetValue(DerivedSecurity security);
+        public abstract Dictionary<TimePeriod, double?> GetValue(DerivedSecurity security);
 
         public abstract IEnumerable<BaseDatapoint> GetBaseDatapoints();
 
