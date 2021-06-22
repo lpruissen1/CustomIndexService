@@ -52,12 +52,14 @@ namespace StockScreener.Calculators
 
         private Dictionary<TimePeriod, double> DeriveRevenueGrowthAnnualized(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
         {
-            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.RevenueGrowthAnnualized))
+			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.RevenueGrowthAnnualized);
+
+			if (!relevantData.Any())
                 return null;
 
             var dic = new Dictionary<TimePeriod, double>();
 
-            foreach(var revenueGrowthConstructionData in constructionData)
+            foreach(var revenueGrowthConstructionData in relevantData)
             {
                 var span = revenueGrowthConstructionData.Time;
 
