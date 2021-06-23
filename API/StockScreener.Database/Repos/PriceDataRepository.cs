@@ -52,7 +52,8 @@ namespace StockScreener.Database.Repos
 		{
 			var filter = Builders<TPriceEntry>.Filter.Eq(e => e.Ticker, ticker);
 			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(filter).FirstOrDefault();
-			return prices.Candle;
+
+			return prices?.Candle ?? new List<Candle>();
 		}
 
 		private void UpdatePriceData<TPriceType>(TPriceType entry) where TPriceType : PriceData

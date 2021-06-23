@@ -147,7 +147,7 @@ namespace StockScreener.Calculators
 
 		private void DeriveCoefficientOfVariation(DerivedSecurity derivedSecurity, TimePeriod timePeriod, BaseSecurity security)
 		{
-			var (present, past) = GetEndpointDataForTimeRange(security.DailyPrice, timePeriod, thirtySixHourErrorFactor);
+			var (_, past) = GetEndpointDataForTimeRange(security.DailyPrice, timePeriod, thirtySixHourErrorFactor);
 
 			if (past is not null)
 			{
@@ -157,6 +157,7 @@ namespace StockScreener.Calculators
 				var coefficients = standardDeviation / priceEntries.Select(x => x.Price).Average() * 100;
 
 				derivedSecurity.CoefficientOfVariation.Add(timePeriod, coefficients);
+				return;
 			}
 
 			derivedSecurity.CoefficientOfVariation.Add(timePeriod, null);
@@ -164,7 +165,7 @@ namespace StockScreener.Calculators
 
 		private void DerivePriceToEarningsTTM(DerivedSecurity derivedSecurity, BaseSecurity security)
 		{
-			if (!security.QuarterlyEarnings.Any())
+			if (!security.QuarterlyEarnings.Any() || !security.DailyPrice.Any())
 			{
 				derivedSecurity.PriceToEarningsRatioTTM = null;
 				return;
@@ -184,7 +185,7 @@ namespace StockScreener.Calculators
 
         private void DeriveDividendYield(DerivedSecurity derivedSecurity, BaseSecurity security)
 		{
-			if (!security.QuarterlyDividendsPerShare.Any())
+			if (!security.QuarterlyDividendsPerShare.Any() || !security.DailyPrice.Any())
 			{
 				derivedSecurity.DividendYield = null;
 				return;
@@ -205,7 +206,7 @@ namespace StockScreener.Calculators
 
         private void DerivePriceToSalesTTM(DerivedSecurity derivedSecurity, BaseSecurity security)
 		{
-			if (!security.QuarterlySalesPerShare.Any()) {
+			if (!security.QuarterlySalesPerShare.Any() || !security.DailyPrice.Any()) {
 				derivedSecurity.PriceToSalesRatioTTM = null;
 				return;
 			}
@@ -225,12 +226,12 @@ namespace StockScreener.Calculators
 
         private (TEntry present, TEntry past) GetEndpointDataForTimeRange<TEntry>(List<TEntry> timeEntries, TimePeriod range, double errorFactor = 0) where TEntry : TimeEntry
         {
-            var present = timeEntries.Last();
+            var mostRecent = timeEntries.Last();
             var timeRangeInUnix = GetUnixFromTimePeriod(range);
 
-            var past = timeEntries.FirstOrDefault(x => x.Timestamp > (present.Timestamp - timeRangeInUnix - errorFactor) && x.Timestamp < (present.Timestamp - timeRangeInUnix + errorFactor));
+            var past = timeEntries.FirstOrDefault(x => x.Timestamp > (mostRecent.Timestamp - timeRangeInUnix - errorFactor) && x.Timestamp < (mostRecent.Timestamp - timeRangeInUnix + errorFactor));
 
-            return (present, past);
+            return (mostRecent, past);
 		}
 
 		private void DerivePayoutRatio(DerivedSecurity derivedSecurity, BaseSecurity security)
