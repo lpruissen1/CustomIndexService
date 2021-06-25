@@ -3,7 +3,6 @@ using StockScreener.Core.Request;
 using StockScreener.Interfaces;
 using StockScreener.Mapper;
 using StockScreener.Model.BaseSecurity;
-using StockScreener.SecurityGrabber;
 
 namespace StockScreener
 {

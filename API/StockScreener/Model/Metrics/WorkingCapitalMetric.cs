@@ -21,7 +21,7 @@ namespace StockScreener.Model.Metrics
             yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.WorkingCapital };
         }
 
-        public override double GetValue(DerivedSecurity security)
+        public override double? GetValue(DerivedSecurity security)
         {
             return security.WorkingCapital;
         }

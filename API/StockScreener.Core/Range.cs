@@ -11,9 +11,12 @@
         private double LowerBound;
         private double UpperBound;
 
-        public bool WithinRange(double value)
+        public bool WithinRange(double? value)
         {
-            return LowerBound <= value && UpperBound >= value;
+			if (value is null)
+				return false;
+
+            return LowerBound <= value.Value && UpperBound >= value.Value;
         }
     }
 }

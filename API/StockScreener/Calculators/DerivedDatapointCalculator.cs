@@ -11,315 +11,288 @@ namespace StockScreener.Calculators
     {
         private readonly double yearUnixTime = 31_557_600;
         private readonly double weekErrorFactor = 604_800;
+        private readonly double thirtySixHourErrorFactor = 129_600;
 
-		// have a function ampper to reduce work done here
-        public SecuritiesList<DerivedSecurity> Derive(SecuritiesList<BaseSecurity> securities, IEnumerable<DerivedDatapointConstructionData> derivedDatapoints)
+		private Dictionary<DerivedDatapoint, Action<DerivedSecurity, TimePeriod, BaseSecurity>> timedRangeFunctionMapper;
+		private Dictionary<DerivedDatapoint, Action<DerivedSecurity, BaseSecurity>> ruleFunctionMapper;
+
+		public DerivedDatapointCalculator()
+		{
+			timedRangeFunctionMapper = new Dictionary<DerivedDatapoint, Action<DerivedSecurity, TimePeriod, BaseSecurity>>()
+			{
+				{DerivedDatapoint.RevenueGrowthAnnualized, DeriveRevenueGrowthAnnualized },
+				{DerivedDatapoint.EPSGrowthAnnualized, DeriveAnnualizedEPSGrowth },
+				{DerivedDatapoint.DividendGrowthAnnualized, DeriveDividendGrowthAnnualized },
+				{DerivedDatapoint.CoefficientOfVariation, DeriveCoefficientOfVariation },
+				{DerivedDatapoint.TrailingPerformanceAnnualized, DeriveAnnualizedTrailingPerformance }
+			};
+
+			ruleFunctionMapper = new Dictionary<DerivedDatapoint, Action<DerivedSecurity, BaseSecurity>>()
+			{
+				{DerivedDatapoint.PriceToEarningsRatioTTM, DerivePriceToEarningsTTM },
+				{DerivedDatapoint.DividendYield, DeriveDividendYield },
+				{DerivedDatapoint.PriceToSalesRatioTTM, DerivePriceToSalesTTM },
+				{DerivedDatapoint.Industry, DeriveIndustry },
+				{DerivedDatapoint.Sector, DeriveSector },
+				{DerivedDatapoint.MarketCap, DeriveMarketCap },
+				{DerivedDatapoint.PayoutRatio, DerivePayoutRatio },
+				{DerivedDatapoint.ProfitMargin, DeriveProfitMargin },
+				{DerivedDatapoint.GrossMargin, DeriveGrossMargin },
+				{DerivedDatapoint.WorkingCapital, DeriveWorkingCapital },
+				{DerivedDatapoint.DebtToEquityRatio, DeriveDebtToEquityRatio },
+				{DerivedDatapoint.FreeCashFlow, DeriveFreeCashFlow },
+				{DerivedDatapoint.CurrentRatio, DeriveCurrentRatio }
+			};
+		}
+
+		public SecuritiesList<DerivedSecurity> Derive(SecuritiesList<BaseSecurity> securities, IEnumerable<DerivedDatapointConstructionData> derivedDatapoints)
         {
             var derivedSecurities = new SecuritiesList<DerivedSecurity>();
 
             foreach (var security in securities) {
-                derivedSecurities.Add(new DerivedSecurity()
-                {
-                    Ticker = security.Ticker,
-                    Sector = security.Sector,
-                    Industry = security.Industry,
-                    RevenueGrowthAnnualized = DeriveRevenueGrowthAnnualized(derivedDatapoints, security),
-                    MarketCap = security.MarketCap,
-                    PriceToEarningsRatioTTM = DerivePriceToEarningsTTM(derivedDatapoints, security),
-                    PayoutRatio = security.PayoutRatio,
-                    ProfitMargin = security.ProfitMargin,
-                    GrossMargin = security.GrossMargin,
-                    WorkingCapital = security.WorkingCapital,
-                    DebtToEquityRatio = security.DebtToEquityRatio,
-                    FreeCashFlow = security.FreeCashFlow,
-                    CurrentRatio = security.CurrentRatio,
-                    PriceToSalesRatioTTM = DerivePriceToSalesTTM(derivedDatapoints, security),
-                    PriceToBookValue = DerivePriceToBook(derivedDatapoints, security),
-                    DividendYield = DeriveDividendYield(derivedDatapoints, security),
-                    EPSGrowthAnnualized = DeriveAnnualizedEPSGrowth(derivedDatapoints, security),
-                    TrailingPerformanceAnnualized = DeriveAnnualizedTrailingPerformance(derivedDatapoints, security),
-                    RevenueGrowthRaw = DeriveRevenueGrowthRaw(derivedDatapoints, security),
-                    EPSGrowthRaw = DeriveRawEPSGrowth(derivedDatapoints, security),
-                    DividendGrowthAnnualized = DeriveDividendGrowthAnnualized(derivedDatapoints, security),
-                    DividendGrowthRaw = DeriveDividendGrowthRaw(derivedDatapoints, security),
-                    TrailingPerformanceRaw = DeriveRawTrailingPerformance(derivedDatapoints, security),
-                    CoefficientOfVariation = DeriveCoefficientOfVariation(derivedDatapoints, security)
-                });
+				var derivedSecurity = new DerivedSecurity();
+				derivedSecurity.Ticker = security.Ticker;
+
+				foreach(var derivedDatapoint in derivedDatapoints)
+				{
+					if(timedRangeFunctionMapper.TryGetValue(derivedDatapoint.datapoint, out var timedRangefunction))
+						timedRangefunction.Invoke(derivedSecurity, derivedDatapoint.Time, security);
+
+					if (ruleFunctionMapper.TryGetValue(derivedDatapoint.datapoint, out var basicRuleFunction))
+						basicRuleFunction.Invoke(derivedSecurity, security);
+					
+				}
+
+				derivedSecurities.Add(derivedSecurity);
             }
             
             return derivedSecurities;
         }
 
-        private Dictionary<TimePeriod, double> DeriveRevenueGrowthAnnualized(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        private void DeriveRevenueGrowthAnnualized(DerivedSecurity derivedSecurity, TimePeriod timePeriod, BaseSecurity security)
         {
-            if (!constructionData.Any(x => x.datapoint == DerivedDatapoint.RevenueGrowthAnnualized))
-                return null;
+			if (!security.QuarterlyRevenue.Any())
+			{
+				derivedSecurity.RevenueGrowthAnnualized.Add(timePeriod, null);
+				return;
+			}
+			
+			var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyRevenue, timePeriod, weekErrorFactor);
 
-            var dic = new Dictionary<TimePeriod, double>();
-
-            foreach(var revenueGrowthConstructionData in constructionData)
-            {
-                var span = revenueGrowthConstructionData.Time;
-
-                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyRevenue, span);
-                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimePeriod(span)));
-            }
-
-            return dic;
-        }
-
-        private Dictionary<TimePeriod, double> DeriveRevenueGrowthRaw(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
-        {
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.RevenueGrowthRaw);
-
-			if (!relevantData.Any())
-                return null;
-
-            var dic = new Dictionary<TimePeriod, double>();
-
-            foreach (var revenueGrowthConstructionData in relevantData)
-            {
-                var span = revenueGrowthConstructionData.Time;
-
-                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyRevenue, span);
-                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Revenue, past.Revenue));
-            }
-
-            return dic;
-        }
-
-		private IEnumerable<DerivedDatapointConstructionData> GetReleventDatapoints(IEnumerable<DerivedDatapointConstructionData> datapoints, DerivedDatapoint type)
-		{
-			return datapoints.Where(x => x.datapoint == type);
+			if (past is not null)
+			{
+				derivedSecurity.RevenueGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimePeriod(timePeriod)));
+				return;
+			}
+			
+			derivedSecurity.RevenueGrowthAnnualized.Add(timePeriod, null);
 		}
 
-        private Dictionary<TimePeriod, double> DeriveAnnualizedEPSGrowth(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        private void DeriveAnnualizedEPSGrowth(DerivedSecurity derivedSecurity, TimePeriod timePeriod, BaseSecurity security)
 		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.EPSGrowthAnnualized);
+			if (!security.QuarterlyEarnings.Any())
+			{
+				derivedSecurity.EPSGrowthAnnualized.Add(timePeriod, null);
+				return;
+			}
 
-			if (!relevantData.Any())
-				return null;
+			var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyEarnings, timePeriod, weekErrorFactor);
 
-            var dic = new Dictionary<TimePeriod, double>();
+			if (past is not null)
+			{
+				derivedSecurity.EPSGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Earnings, past.Earnings, GetUnixFromTimePeriod(timePeriod)));
+				return;
+			}
 
-            foreach (var epsGrowthConstructionData in relevantData)
-            {
-                var span = epsGrowthConstructionData.Time;
-
-                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyEarnings, span);
-                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Earnings, past.Earnings, GetUnixFromTimePeriod(span)));
-            }
-
-            return dic;
+			derivedSecurity.EPSGrowthAnnualized.Add(timePeriod, null);
         }
 
-        private Dictionary<TimePeriod, double> DeriveRawEPSGrowth(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        private void DeriveDividendGrowthAnnualized(DerivedSecurity derivedSecurity, TimePeriod timePeriod, BaseSecurity security)
 		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.EPSGrowthRaw);
+			if (!security.QuarterlyDividendsPerShare.Any())
+			{
+				derivedSecurity.DividendGrowthAnnualized.Add(timePeriod, null);
+				return;
+			}
 
-			if (!relevantData.Any())
-				return null;
+			var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyDividendsPerShare, timePeriod, weekErrorFactor);
 
-            var dic = new Dictionary<TimePeriod, double>();
+			if (past is not null)
+			{
+				derivedSecurity.DividendGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends, GetUnixFromTimePeriod(timePeriod)));
+				return;
+			}
 
-            foreach (var epsGrowthConstructionData in relevantData)
-            {
-                var span = epsGrowthConstructionData.Time;
-
-                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyEarnings, span);
-                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Earnings, past.Earnings));
-            }
-
-            return dic;
+			derivedSecurity.DividendGrowthAnnualized.Add(timePeriod, null);
         }
 
-        private Dictionary<TimePeriod, double> DeriveDividendGrowthAnnualized(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        private void DeriveAnnualizedTrailingPerformance(DerivedSecurity derivedSecurity, TimePeriod timePeriod, BaseSecurity security)
 		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.DividendGrowthAnnualized);
+			if (!security.DailyPrice.Any())
+			{
+				derivedSecurity.TrailingPerformanceAnnualized.Add(timePeriod, null);
+				return;
+			}
 
-			if (!relevantData.Any())
-				return null;
+			var (present, past) = GetEndpointDataForTimeRange(security.DailyPrice, timePeriod, thirtySixHourErrorFactor);
 
-            var dic = new Dictionary<TimePeriod, double>();
+			if (past is not null)
+			{
+				derivedSecurity.TrailingPerformanceAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Price, past.Price, GetUnixFromTimePeriod(timePeriod)));
+				return;
+			}
 
-            foreach (var dividendGrowthConstructionData in relevantData)
-            {
-                var span = dividendGrowthConstructionData.Time;
-
-                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyDividendsPerShare, span);
-                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends, GetUnixFromTimePeriod(span)));
-            }
-
-            return dic;
+			derivedSecurity.TrailingPerformanceAnnualized.Add(timePeriod, null);
         }
 
-        private Dictionary<TimePeriod, double> DeriveDividendGrowthRaw(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+		private void DeriveCoefficientOfVariation(DerivedSecurity derivedSecurity, TimePeriod timePeriod, BaseSecurity security)
 		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.DividendGrowthRaw);
+			var (_, past) = GetEndpointDataForTimeRange(security.DailyPrice, timePeriod, thirtySixHourErrorFactor);
 
-			if (!relevantData.Any())
-				return null;
+			if (past is not null)
+			{
+				var priceEntries = security.DailyPrice.Where(x => x.Timestamp > past.Timestamp);
+				var standardDeviation = priceEntries.Select(x => x.Price).StandardDeviation();
 
-            var dic = new Dictionary<TimePeriod, double>();
+				var coefficients = standardDeviation / priceEntries.Select(x => x.Price).Average() * 100;
 
-            foreach (var dividendGrowthConstructionData in relevantData)
-            {
-                var span = dividendGrowthConstructionData.Time;
+				derivedSecurity.CoefficientOfVariation.Add(timePeriod, coefficients);
+				return;
+			}
 
-                var (present, past) = GetEndpointDataForTimeRange(security.QuarterlyDividendsPerShare, span);
-                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends));
-            }
+			derivedSecurity.CoefficientOfVariation.Add(timePeriod, null);
+		}
 
-            return dic;
-        }
-
-        private Dictionary<TimePeriod, double> DeriveAnnualizedTrailingPerformance(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+		private void DerivePriceToEarningsTTM(DerivedSecurity derivedSecurity, BaseSecurity security)
 		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.TrailingPerformanceAnnualized);
-
-			if (!relevantData.Any())
-				return null;
-
-            var dic = new Dictionary<TimePeriod, double>();
-
-            foreach (var trailingPerformance in relevantData)
-            {
-                var span = trailingPerformance.Time;
-
-                var (present, past) = GetEndpointDataForPrice(security.DailyPrice, span);
-                dic.Add(span, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Price, past.Price, GetUnixFromTimePeriod(span)));
-            }
-
-            return dic;
-        }
-
-        private Dictionary<TimePeriod, double> DeriveRawTrailingPerformance(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
-		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.TrailingPerformanceRaw);
-
-			if (!relevantData.Any())
-				return null;
-
-            var dic = new Dictionary<TimePeriod, double>();
-
-            foreach (var trailingPerformance in relevantData)
-            {
-                var span = trailingPerformance.Time;
-
-                var (present, past) = GetEndpointDataForPrice(security.DailyPrice, span);
-                dic.Add(span, GrowthRateCalculator.CalculateGrowthRate(present.Price, past.Price));
-            }
-
-            return dic;
-        }
-
-        private Dictionary<TimePeriod, double> DeriveCoefficientOfVariation(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
-		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.CoefficientOfVariation);
-
-			if (!relevantData.Any())
-				return null;
-
-            var dic = new Dictionary<TimePeriod, double>();
-
-            foreach (var timePeriod in relevantData)
-            {
-                var span = timePeriod.Time;
-
-                var priceEntries = security.DailyPrice.Where(x => x.Timestamp > DateTime.UtcNow.ToUnix() - GetUnixFromTimePeriod(timePeriod.Time));
-
-                var standardDeviation = priceEntries.Select(x => x.Price).StandardDeviation();
-
-                var coefficients = standardDeviation / priceEntries.Select(x => x.Price).Average() * 100;
-
-                dic.Add(span, coefficients);
-            }
-
-            return dic;
-        }
-
-        private double DerivePriceToEarningsTTM(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
-		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.PriceToEarningsRatioTTM);
-
-			if (!relevantData.Any())
-				return 0;
+			if (!security.QuarterlyEarnings.Any() || !security.DailyPrice.Any())
+			{
+				derivedSecurity.PriceToEarningsRatioTTM = null;
+				return;
+			}
 
             var earningsEntries = GetAllEntriesForTimeSpan(security.QuarterlyEarnings, TimePeriod.Year);
+			if (earningsEntries.Count() < 4)
+			{
+				derivedSecurity.PriceToEarningsRatioTTM = null;
+				return;
+			}
 
             var yearlyEarnings = earningsEntries.Sum(x => x.Earnings);
 
-            return security.DailyPrice.Last().Price / yearlyEarnings;
-
+			derivedSecurity.PriceToEarningsRatioTTM = security.DailyPrice.Last().Price / yearlyEarnings;
         }
 
-        private double DeriveDividendYield(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        private void DeriveDividendYield(DerivedSecurity derivedSecurity, BaseSecurity security)
 		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.DividendYield);
+			if (!security.QuarterlyDividendsPerShare.Any() || !security.DailyPrice.Any())
+			{
+				derivedSecurity.DividendYield = null;
+				return;
+			}
 
-			if (!relevantData.Any())
-				return 0;
+			var dividendEntries = GetAllEntriesForTimeSpan(security.QuarterlyDividendsPerShare, TimePeriod.Year);
 
-            var dividendEntries = GetAllEntriesForTimeSpan(security.QuarterlyDividendsPerShare, TimePeriod.Year);
+			if (dividendEntries.Count() < 4)
+			{
+				derivedSecurity.DividendYield = null;
+				return;
+			}
 
-            var yearlyDividends = dividendEntries.Sum(x => x.QuarterlyDividends);
+			var yearlyDividend = dividendEntries.Sum(x => x.QuarterlyDividends);
 
-            return (yearlyDividends / security.DailyPrice.Last().Price) * 100 ;
-
+			derivedSecurity.DividendYield = (yearlyDividend / security.DailyPrice.Last().Price) * 100;
         }
 
-        private double DerivePriceToBook(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
+        private void DerivePriceToSalesTTM(DerivedSecurity derivedSecurity, BaseSecurity security)
 		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.PriceToBookValue);
-
-			if (!relevantData.Any())
-				return 0;
-
-            return security.DailyPrice.Last().Price / security.BookValuePerShare;
-        }
-
-        private double DerivePriceToSalesTTM(IEnumerable<DerivedDatapointConstructionData> constructionData, BaseSecurity security)
-		{
-			var relevantData = GetReleventDatapoints(constructionData, DerivedDatapoint.PriceToSalesRatioTTM);
-
-			if (!relevantData.Any())
-				return 0;
+			if (!security.QuarterlySalesPerShare.Any() || !security.DailyPrice.Any()) {
+				derivedSecurity.PriceToSalesRatioTTM = null;
+				return;
+			}
 
             var salesPerShareEntries = GetAllEntriesForTimeSpan(security.QuarterlySalesPerShare, TimePeriod.Year);
 
+			if (salesPerShareEntries.Count() < 4)
+			{
+				derivedSecurity.PriceToSalesRatioTTM = null;
+				return;
+			}
+
             var yearlySalesPerShare = salesPerShareEntries.Sum(x => x.SalesPerShare);
 
-            return security.DailyPrice.Last().Price / yearlySalesPerShare;
-
+            derivedSecurity.PriceToSalesRatioTTM = security.DailyPrice.Last().Price / yearlySalesPerShare;
         }
 
-        private (TEntry present, TEntry past) GetEndpointDataForTimeRange<TEntry>(List<TEntry> timeEntries, TimePeriod range) where TEntry : TimeEntry
+        private (TEntry present, TEntry past) GetEndpointDataForTimeRange<TEntry>(List<TEntry> timeEntries, TimePeriod range, double errorFactor = 0) where TEntry : TimeEntry
         {
-            var present = timeEntries.Last();
+            var mostRecent = timeEntries.Last();
             var timeRangeInUnix = GetUnixFromTimePeriod(range);
-            var past = timeEntries.First(x => x.Timestamp > (present.Timestamp - timeRangeInUnix - weekErrorFactor) && x.Timestamp < (present.Timestamp - timeRangeInUnix + weekErrorFactor));
 
-            return (present, past);
-        }
+            var past = timeEntries.FirstOrDefault(x => x.Timestamp > (mostRecent.Timestamp - timeRangeInUnix - errorFactor) && x.Timestamp < (mostRecent.Timestamp - timeRangeInUnix + errorFactor));
 
-        private (PriceEntry present, PriceEntry past) GetEndpointDataForPrice(List<PriceEntry> timeEntries, TimePeriod range)
-        {
-            var present = timeEntries.Last();
-            var timeRangeInUnix = GetUnixFromTimePeriod(range);
-            var past = timeEntries.Last(priceEntry => priceEntry.Timestamp <= present.Timestamp - timeRangeInUnix);
+            return (mostRecent, past);
+		}
 
-            return (present, past);
-        }
+		private void DerivePayoutRatio(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.PayoutRatio = security.PayoutRatio ?? null;
+		}
 
-        private IEnumerable<TEntry> GetAllEntriesForTimeSpan<TEntry>(List<TEntry> timeEntries, TimePeriod range) where TEntry : TimeEntry
+		private void DeriveProfitMargin(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.ProfitMargin = security.ProfitMargin ?? null;
+		}
+
+		private void DeriveGrossMargin(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.GrossMargin = security.GrossMargin ?? null;
+		}
+
+		private void DeriveWorkingCapital(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.WorkingCapital = security.WorkingCapital ?? null;
+		}
+
+		private void DeriveDebtToEquityRatio(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.DebtToEquityRatio = security.DebtToEquityRatio ?? null;
+		}
+
+		private void DeriveFreeCashFlow(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.FreeCashFlow = security.FreeCashFlow ?? null;
+		}
+
+		private void DeriveCurrentRatio(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.CurrentRatio = security.CurrentRatio ?? null;
+		}
+
+		private void DeriveIndustry(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.Industry = security.Industry;
+		}
+
+		private void DeriveMarketCap(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.MarketCap = security.MarketCap;
+		}
+
+		private void DeriveSector(DerivedSecurity derivedSecurity, BaseSecurity security)
+		{
+			derivedSecurity.Sector = security.Sector;
+		}
+
+		private IEnumerable<TEntry> GetAllEntriesForTimeSpan<TEntry>(List<TEntry> timeEntries, TimePeriod range) where TEntry : TimeEntry
         {
             var present = timeEntries.Last().Timestamp;
             var timeRangeInUnix = GetUnixFromTimePeriod(range);
 
             return timeEntries.Where(x => x.Timestamp > (present - yearUnixTime - weekErrorFactor));
-        }
+		}
 
-        private double GetUnixFromTimePeriod(TimePeriod timespan)
+		private double GetUnixFromTimePeriod(TimePeriod timespan)
         {
             switch (timespan)
             {

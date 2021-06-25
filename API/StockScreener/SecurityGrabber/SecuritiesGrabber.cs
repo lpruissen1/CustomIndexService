@@ -38,10 +38,11 @@ namespace StockScreener.SecurityGrabber
 
         private void AddCompanyInfo(IEnumerable<BaseDatapoint> datapoints)
         {
-            if (!datapoints.Any())
+			var relevantDatapoints = datapoints.Where(x => BaseDatapoint.CompanyInfo.HasFlag(x));
+
+			if (!relevantDatapoints.Any())
                 return;
 
-            var relevantDatapoints = datapoints.Where(x => BaseDatapoint.CompanyInfo.HasFlag(x));
             var companyInfoMapper = new CompanyInfoMapper();
 
             foreach (var security in list)

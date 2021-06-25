@@ -20,7 +20,7 @@ namespace StockScreener.Model.Metrics
             securitiesList.RemoveAll(security => !rangedDatapoint.Any(range => range.WithinRange(GetValue(security))));
         }
 
-        public abstract double GetValue(DerivedSecurity security);
+        public abstract double? GetValue(DerivedSecurity security);
 
         public abstract IEnumerable<BaseDatapoint> GetBaseDatapoints();
 

@@ -19,9 +19,12 @@ namespace StockScreener.Model.Metrics
             this.range = range;
         }
 
-        public bool Valid(double value)
+        public bool Valid(double? value)
         {
-            return range.WithinRange(value);
+			if (value is null)
+				return false;
+
+            return range.WithinRange(value.Value);
         }
 
         public TimePeriod GetTimePeriod()

@@ -9,7 +9,7 @@ namespace StockScreener.Service.IntegrationTests
     public class SectorAndIndustryScreeningTests : StockScreenerServiceTestBase
 	{
         [Test]
-        public void ScreenStockBySectorTest()
+        public void ScreenBy_Sector()
         {
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
@@ -37,7 +37,7 @@ namespace StockScreener.Service.IntegrationTests
         }
 
         [Test]
-        public void ScreenStockByIndustryTest()
+        public void ScreenBy_Industry()
         {
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
@@ -69,7 +69,7 @@ namespace StockScreener.Service.IntegrationTests
         }
 
         [Test]
-        public void ScreenStockBy_SectorAndIndustryTest()
+        public void ScreenBy_SectorAndIndustry()
         {
 			var stockIndex = "Lee's Index";
 			var ticker1 = "LEE";
@@ -91,7 +91,6 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex);
 			AddSectorAndIndustryToScreeningRequest(new List<string>() { materialsSector }, new List<string>() { energyIndustry1 });
 
-
 			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(2, result.Count);
@@ -107,6 +106,74 @@ namespace StockScreener.Service.IntegrationTests
 			Assert.AreEqual(ticker3, security.Ticker);
 			Assert.AreEqual(materialsSector, security.Sector);
 			Assert.AreEqual(materialsIndustry, security.Industry);
+        }
+
+        [Test]
+        public void ScreenBy_Sector_MissingSectorInfo()
+        {
+			var stockIndex = "Lee's Index";
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var ticker3 = "EEL";
+
+			var energySector = "Energy";
+			var energyIndustry1 = "Oil";
+			var energyIndustry2 = "Solar";
+
+			var materialsSector = "Materials";
+			var materialsIndustry = "Plastics";
+
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex).AddTicker(ticker1).AddTicker(ticker2).AddTicker(ticker3));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker1).AddSector(energySector).AddIndustry(energyIndustry1));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddIndustry(energyIndustry2));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker3).AddSector(materialsSector).AddIndustry(materialsIndustry));
+
+			AddMarketToScreeningRequest(stockIndex);
+			AddSectorAndIndustryToScreeningRequest(new List<string>() { materialsSector }, new List<string>() { });
+
+			var result = sut.Screen(screeningRequest);
+
+			Assert.AreEqual(1, result.Count);
+
+			var security = result.First();
+
+			Assert.AreEqual(ticker3, security.Ticker);
+			Assert.AreEqual(materialsSector, security.Sector);
+        }
+
+        [Test]
+        public void ScreenBy_Industry_MissingIndustryInfo()
+        {
+			var stockIndex = "Lee's Index";
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var ticker3 = "EEL";
+			var ticker4 = "SEE";
+
+			var energySector = "Energy";
+			var energyIndustry1 = "Oil";
+			var energyIndustry2 = "Solar";
+
+			var materialsSector = "Materials";
+			var materialsIndustry = "Plastics";
+
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex).AddTicker(ticker1).AddTicker(ticker2).AddTicker(ticker3).AddTicker(ticker4));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker1).AddSector(energySector).AddIndustry(energyIndustry1));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker2).AddSector(energySector).AddIndustry(energyIndustry2));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker3).AddSector(materialsSector).AddIndustry(materialsIndustry));
+			InsertData(CompanyInfoCreator.GetCompanyInfo(ticker4).AddSector(energySector));
+
+			AddMarketToScreeningRequest(stockIndex);
+			AddSectorAndIndustryToScreeningRequest(new List<string>(), new List<string>() { energyIndustry2 });
+
+			var result = sut.Screen(screeningRequest);
+
+			Assert.AreEqual(1, result.Count);
+
+			var security = result.First();
+
+			Assert.AreEqual(ticker2, security.Ticker);
+			Assert.AreEqual(energyIndustry2, security.Industry);
         }
     }
 }
