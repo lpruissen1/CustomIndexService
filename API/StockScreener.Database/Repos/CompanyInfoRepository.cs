@@ -16,7 +16,7 @@ namespace StockScreener.Database.Repos
         public CompanyInfo Get(string ticker, IEnumerable<BaseDatapoint> dataPoints)
         {
             var projection = Builders<CompanyInfo>.Projection.Include(x => x.Ticker).Include(x => x.Sector).Include(x => x.Industry);
-            return dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection)?.First() ?? new CompanyInfo { Ticker = ticker };
+            return dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection).FirstOrDefault() ?? new CompanyInfo { Ticker = ticker };
 		}
 
 		public void Update(CompanyInfo info)
