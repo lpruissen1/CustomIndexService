@@ -19,7 +19,7 @@ namespace StockScreener.Database.Repos
             return dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection).FirstOrDefault() ?? new CompanyInfo { Ticker = ticker };
 		}
 
-		public void Update(CompanyInfo info)
+		public override void Update(CompanyInfo info)
 		{
 			var filter = Builders<CompanyInfo>.Filter.Eq(e => e.Ticker, info.Ticker);
 
