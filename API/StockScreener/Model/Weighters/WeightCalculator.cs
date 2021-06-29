@@ -7,13 +7,14 @@ namespace StockScreener.Model.Weighters
 {
 	public abstract class WeightCalculator
 	{
-		protected Dictionary<string, decimal> ManualWeights { get; init; }
-		public WeightCalculator (Dictionary<string, decimal> manualWeights)
+		protected List<WeightingEntry> ManualWeights { get; init; }
+
+		public WeightCalculator (List<WeightingEntry> manualWeights)
 		{
 			ManualWeights = manualWeights;
 		}
 
-		public abstract Dictionary<string, decimal> Weight(SecuritiesList<DerivedSecurity> tickers);
+		public abstract List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> tickers);
 
 		public abstract IEnumerable<BaseDatapoint> GetBaseDatapoint();
 		public abstract IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapointConstructionData();

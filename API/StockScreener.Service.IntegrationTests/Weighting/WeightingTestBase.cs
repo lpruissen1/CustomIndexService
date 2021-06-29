@@ -1,5 +1,6 @@
 ﻿using Core;
 using NUnit.Framework;
+using StockScreener.Core;
 using StockScreener.Core.Request;
 using System.Collections.Generic;
 
@@ -21,9 +22,9 @@ namespace StockScreener.Service.IntegrationTests.Weighting
 			weightingRequest.Tickers.Add(ticker);
 		}
 
-		public void AddManualTicker(string ticker, decimal weight)
+		public void AddManualTicker(string ticker, double weight)
 		{
-			weightingRequest.ManualWeights.Add(ticker, weight);
+			weightingRequest.ManualWeights.Add(new WeightingEntry(ticker, weight));
 		}
 	}
 }

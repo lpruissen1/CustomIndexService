@@ -6,6 +6,6 @@ namespace StockScreener.Core.Request
 	{
 		public WeightingOption Option { get; set; }
 		public List<string> Tickers { get; set; } = new List<string>();
-		public Dictionary<string, decimal> ManualWeights { get; set; } = new Dictionary<string, decimal>();
+		public List<WeightingEntry> ManualWeights { get; set; } = new List<WeightingEntry>();
 	}
 }

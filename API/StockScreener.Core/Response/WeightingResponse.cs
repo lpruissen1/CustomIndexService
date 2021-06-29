@@ -4,6 +4,6 @@ namespace StockScreener.Core.Response
 {
 	public class WeightingResponse
 	{
-		public Dictionary<string, decimal> Tickers { get; set; } 
+		public List<WeightingEntry> Tickers { get; set; } 
 	}
 }

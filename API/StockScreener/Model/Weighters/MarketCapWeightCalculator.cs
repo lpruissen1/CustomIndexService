@@ -9,27 +9,39 @@ namespace StockScreener.Model.Weighters
 {
 	public class MarketCapWeightCalculator : WeightCalculator
 	{
-		public MarketCapWeightCalculator(Dictionary<string, decimal> manualWeights) : base(manualWeights) { }
+		public MarketCapWeightCalculator(List<WeightingEntry> manualWeights) : base(manualWeights) { }
 
-		public override Dictionary<string, decimal> Weight(SecuritiesList<DerivedSecurity> tickers)
+		public override List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> securities)
 		{
-			tickers.RemoveAll(x => ManualWeights.Any(manualTicker => manualTicker.Key == x.Ticker));
+			securities.RemoveAll(security => ManualWeights.Any(manualTicker => manualTicker.Ticker == security.Ticker));
 
-			var weights = ManualWeights;
-			var remainingPercentage = 100m - weights.Sum(x => x.Value);
+			var weights = new List<WeightingEntry>();
+			var remainingPercentage = (100 - ManualWeights.Sum(x => x.Weight));
 
-			decimal totalMarketCap = (decimal)tickers.Sum(x => x.MarketCap);
+			var totalMarketCap = securities.Sum(x => x.MarketCap);
 
-			foreach (var ticker in tickers)
+			foreach (var security in securities)
 			{
-				var individualWeight = Math.Round((decimal)ticker.MarketCap / totalMarketCap * remainingPercentage, 5);
-				weights.Add(ticker.Ticker, individualWeight);
+				double individualWeight;
+
+				// filter out the bad options before?
+				if (security.MarketCap is not null) {
+					individualWeight = Math.Round((double)(security.MarketCap / totalMarketCap) * remainingPercentage, 5);
+				}
+				else
+				{
+					individualWeight = 0;
+				}
+
+				weights.Add(new WeightingEntry(security.Ticker, individualWeight));
 			}
 
-			var currentWeight = weights.Sum(x => x.Value);
+			var currentWeight = weights.Sum(x => x.Weight);
 
-			if (currentWeight != 100m)
-				weights[weights.First().Key] += 100m - currentWeight;
+			if (currentWeight != remainingPercentage)
+				weights[0].Weight += remainingPercentage - currentWeight;
+
+			weights.AddRange(ManualWeights);
 
 			return weights;
 		}

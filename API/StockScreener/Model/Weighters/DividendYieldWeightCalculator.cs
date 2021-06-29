@@ -8,10 +8,10 @@ namespace StockScreener.Model.Weighters
 {
 	public class DividendYieldWeightCalculator : WeightCalculator
 	{
-		public DividendYieldWeightCalculator(Dictionary<string, decimal> manualWeights) : base(manualWeights) { }
-		public override Dictionary<string, decimal> Weight(SecuritiesList<DerivedSecurity> tickers)
+		public DividendYieldWeightCalculator(List<WeightingEntry> manualWeights) : base(manualWeights) { }
+		public override List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> tickers)
 		{
-			return new Dictionary<string, decimal>();
+			return new List<WeightingEntry>();
 		}
 
 		public override IEnumerable<BaseDatapoint> GetBaseDatapoint()

@@ -9,24 +9,27 @@ namespace StockScreener.Model.Weighters
 {
 	public class EqualWeightCalculator : WeightCalculator
 	{
-		public EqualWeightCalculator(Dictionary<string, decimal> manualWeights) : base(manualWeights) { }
-		public override Dictionary<string, decimal> Weight(SecuritiesList<DerivedSecurity> tickers)
+		public EqualWeightCalculator(List<WeightingEntry> manualWeights) : base(manualWeights) { }
+		public override List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> tickers)
 		{
-			tickers.RemoveAll(x => ManualWeights.Any(manualTicker => manualTicker.Key == x.Ticker));
+			tickers.RemoveAll(x => ManualWeights.Any(manualTicker => manualTicker.Ticker == x.Ticker));
 
-			var weights = ManualWeights;
-			var remainingPercentage = 100m - weights.Sum(x => x.Value);
+			var weights = new List<WeightingEntry>();
+
+			var remainingPercentage = 100 - ManualWeights.Sum(x => x.Weight);
 			var individualPercentage = Math.Round(remainingPercentage / tickers.Count, 5);
 
 			foreach (var ticker in tickers)
 			{
-				weights.Add(ticker.Ticker, individualPercentage);
+				weights.Add(new WeightingEntry(ticker.Ticker, individualPercentage));
 			}
 
-			var currentWeight = weights.Sum(x => x.Value);
+			var currentWeight = weights.Sum(x => x.Weight);
 
-			if (currentWeight != 100m)
-				weights[weights.First().Key] += 100m - currentWeight;
+			if (currentWeight != remainingPercentage)
+				weights[0].Weight += remainingPercentage - currentWeight;
+
+			weights.AddRange(ManualWeights);
 
 			return weights;
 		}

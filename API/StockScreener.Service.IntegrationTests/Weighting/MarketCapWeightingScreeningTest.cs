@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using StockScreener.Core;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
-using System.Collections.Generic;
 
 namespace StockScreener.Service.IntegrationTests.Weighting
 {
@@ -19,135 +18,152 @@ namespace StockScreener.Service.IntegrationTests.Weighting
 		[Test]
 		public void Weighting_MarketCapWeight_NoManualSelection()
 		{
-			var tickers = new List<string> {
-				"LEE",
-				"PEE"
-			};
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
 
-			AddTicker(tickers[0]);
-			AddTicker(tickers[1]);
+			AddTicker(ticker1);
+			AddTicker(ticker2);
 
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[0]).AddMarketCap(1_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[1]).AddMarketCap(9_000_000d));
-
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(1_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(9_000_000d));
+																 
 			var result = sut.Weighting(weightingRequest);
 
 			Assert.AreEqual(result.Tickers.Count, 2);
 
-			decimal value;
+			Assert.AreEqual(ticker1, result.Tickers[0].Ticker);
+			Assert.AreEqual(10m, result.Tickers[0].Weight);
 
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[0], out value));
-			Assert.AreEqual(10m, value);
-
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[1], out value));
-			Assert.AreEqual(90m, value);
+			Assert.AreEqual(ticker2, result.Tickers[1].Ticker);
+			Assert.AreEqual(90m, result.Tickers[1].Weight);
 		}
 
 		[Test]
 		public void Weighting_MarketCapWeight_NoManualSelection_Autocorrects()
 		{
-			var tickers = new List<string> {
-				"LEE",
-				"PEE",
-				"SEE"
-			};
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var ticker3 = "SEE";
 
-			AddTicker(tickers[0]);
-			AddTicker(tickers[1]);
-			AddTicker(tickers[2]);
+			AddTicker(ticker1);
+			AddTicker(ticker2);
+			AddTicker(ticker3);
 
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[0]).AddMarketCap(3_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[1]).AddMarketCap(3_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[2]).AddMarketCap(3_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(3_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(3_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker3).AddMarketCap(3_000_000d));
 
 			var result = sut.Weighting(weightingRequest);
 
 			Assert.AreEqual(result.Tickers.Count, 3);
 
-			decimal value;
+			Assert.AreEqual(ticker1, result.Tickers[0].Ticker);
+			Assert.AreEqual(33.33334, result.Tickers[0].Weight);
 
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[0], out value));
-			Assert.AreEqual(33.33334, value);
+			Assert.AreEqual(ticker2, result.Tickers[1].Ticker);
+			Assert.AreEqual(33.33333, result.Tickers[1].Weight);
 
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[1], out value));
-			Assert.AreEqual(33.33333, value);
-
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[2], out value));
-			Assert.AreEqual(33.33333, value);
+			Assert.AreEqual(ticker3, result.Tickers[2].Ticker);
+			Assert.AreEqual(33.33333, result.Tickers[2].Weight);
 		}
 
 		[Test]
 		public void Weighting_MarketCapWeight_ManualSelection()
 		{
-			var tickers = new List<string> {
-				"LEE",
-				"PEE"
-			};
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
 
 			var manualTicker = "ALEX";
-			var manualWeight = 70m;
+			var manualWeight = 70d;
 
-			AddTicker(tickers[0]);
-			AddTicker(tickers[1]);
+			AddTicker(ticker1);
+			AddTicker(ticker2);
 			AddManualTicker(manualTicker, manualWeight);
 
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[0]).AddMarketCap(1_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[1]).AddMarketCap(9_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(1_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(9_000_000d));
 
 			var result = sut.Weighting(weightingRequest);
 
 			Assert.AreEqual(result.Tickers.Count, 3);
 
-			decimal value;
+			Assert.AreEqual(ticker1, result.Tickers[0].Ticker);
+			Assert.AreEqual(30m * (1m / 10m), result.Tickers[0].Weight);
 
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[0], out value));
-			Assert.AreEqual(30m * (1m/10m), value);
+			Assert.AreEqual(ticker2, result.Tickers[1].Ticker);
+			Assert.AreEqual(30m * (9m / 10m), result.Tickers[1].Weight);
 
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[1], out value));
-			Assert.AreEqual(30m * (9m/10m), value);
-
-			Assert.IsTrue(result.Tickers.TryGetValue(manualTicker, out value));
-			Assert.AreEqual(manualWeight, value);
+			Assert.AreEqual(manualTicker, result.Tickers[2].Ticker);
+			Assert.AreEqual(manualWeight, result.Tickers[2].Weight);
 		}
 
 		[Test]
 		public void Weighting_EqualWeight_MultipleTickers_ManualSelection_FilterOutManuallySelectedTickers()
 		{
-			var tickers = new List<string> {
-				"LEE",
-				"PEE",
-				"SEE",
-				"ALEX"
-			};
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var ticker3 = "SEE";
 
 			var manualTicker = "ALEX";
-			var manualWeight = 70m;
+			var manualWeight = 70d;
 
-			tickers.ForEach(x => AddTicker(x));
-
+			AddTicker(ticker1);
+			AddTicker(ticker2);
+			AddTicker(ticker3);
 			AddManualTicker(manualTicker, manualWeight);
 
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[0]).AddMarketCap(3_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[1]).AddMarketCap(3_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(tickers[2]).AddMarketCap(3_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(3_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(3_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker3).AddMarketCap(3_000_000d));
 
 			var result = sut.Weighting(weightingRequest);
 
 			Assert.AreEqual(result.Tickers.Count, 4);
 
-			decimal value;
+			Assert.AreEqual(ticker1, result.Tickers[0].Ticker);
+			Assert.AreEqual(10m, result.Tickers[0].Weight);
 
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[0], out value));
-			Assert.AreEqual(10m, value);
+			Assert.AreEqual(ticker2, result.Tickers[1].Ticker);
+			Assert.AreEqual(10m, result.Tickers[1].Weight);
 
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[1], out value));
-			Assert.AreEqual(10m, value);
+			Assert.AreEqual(ticker3, result.Tickers[2].Ticker);
+			Assert.AreEqual(10m, result.Tickers[2].Weight);
 
-			Assert.IsTrue(result.Tickers.TryGetValue(tickers[2], out value));
-			Assert.AreEqual(10m, value);
+			Assert.AreEqual(manualTicker, result.Tickers[3].Ticker);
+			Assert.AreEqual(manualWeight, result.Tickers[3].Weight);
+		}
 
-			Assert.IsTrue(result.Tickers.TryGetValue(manualTicker, out value));
-			Assert.AreEqual(value, manualWeight);
+		[Test]
+		public void Weighting_EqualWeight_MultipleTickers_NoManualSelection_MissingData()
+		{
+			var ticker1 = "LEE";
+			var ticker2 = "PEE";
+			var ticker3 = "SEE";
+
+			var manualTicker = "ALEX";
+			var manualWeight = 70d;
+
+			AddTicker(ticker1);
+			AddTicker(ticker2);
+			AddTicker(ticker3);
+			AddTicker(manualTicker);
+			AddManualTicker(manualTicker, manualWeight);
+
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(3_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(3_000_000d));
+
+			var result = sut.Weighting(weightingRequest);
+
+			Assert.AreEqual(result.Tickers.Count, 4);
+
+			Assert.AreEqual(ticker1, result.Tickers[0].Ticker);
+			Assert.AreEqual(15m, result.Tickers[0].Weight);
+
+			Assert.AreEqual(ticker2, result.Tickers[1].Ticker);
+			Assert.AreEqual(15m, result.Tickers[1].Weight);
+
+			Assert.AreEqual(manualTicker, result.Tickers[3].Ticker);
+			Assert.AreEqual(manualWeight, result.Tickers[3].Weight);
 		}
 	}
 }
