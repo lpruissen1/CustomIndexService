@@ -34,12 +34,12 @@ namespace StockScreener.Service.IntegrationTests
 		}
 
 		public void AddStockIndex(string indexName, IEnumerable<string> stockIndex)
-        {
+		{
 			context.GetCollection<StockIndex>("StockIndex").InsertOne(new StockIndex { Name = indexName, Tickers = stockIndex.ToList() });
-        }
+		}
 
 		public void InsertData<TEntry>(TEntry dBEntry)
-        {
+		{
 			context.GetCollection<TEntry>(typeof(TEntry).Name).InsertOne(dBEntry);
 		}
 	}

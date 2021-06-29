@@ -147,6 +147,12 @@ namespace StockScreener.Calculators
 
 		private void DeriveCoefficientOfVariation(DerivedSecurity derivedSecurity, TimePeriod timePeriod, BaseSecurity security)
 		{
+			if (!security.DailyPrice.Any())
+			{
+				derivedSecurity.CoefficientOfVariation.Add(timePeriod, null);
+				return;
+			}
+
 			var (_, past) = GetEndpointDataForTimeRange(security.DailyPrice, timePeriod, thirtySixHourErrorFactor);
 
 			if (past is not null)

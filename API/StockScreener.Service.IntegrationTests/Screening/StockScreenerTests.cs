@@ -2,7 +2,7 @@ using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
 using System.Linq;
 
-namespace StockScreener.Service.IntegrationTests
+namespace StockScreener.Service.IntegrationTests.Screening
 {
     [TestFixture]
     public class StockScreenerTests : ScreeningTestBase

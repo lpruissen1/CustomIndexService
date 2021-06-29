@@ -67,7 +67,7 @@ namespace StockScreener.Service.IntegrationTests
 			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.EPSGrowthAnnualized });
 		}
 
-		public void AddAnnualizedTrailingPerformanceoScreeningRequest(double upper, double lower, TimePeriod timePeriod)
+		public void AddAnnualizedTrailingPerformanceToScreeningRequest(double upper, double lower, TimePeriod timePeriod)
 		{
 			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.AnnualizedTraillingPerformance });
 		}

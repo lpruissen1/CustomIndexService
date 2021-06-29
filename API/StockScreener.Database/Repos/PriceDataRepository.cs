@@ -9,7 +9,6 @@ using System.Linq;
 
 namespace StockScreener.Database.Repos
 {
-
     public class PriceDataRepository : BaseRepository<PriceData>, IPriceDataRepository
 	{
 		protected IMongoCollection<HourPriceData> hourIntervalCollection;

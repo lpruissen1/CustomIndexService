@@ -42,6 +42,7 @@ namespace StockScreener.Service.IntegrationTests
 
 			Assert.AreEqual(ticker1, result[0].Ticker);
 		}
+
 		[Test]
 		public void ScreenBy_CoefficientOfVariation_MissingPriceData()
 		{

@@ -1,11 +1,9 @@
-﻿using StockScreener.Calculators;
-using StockScreener.Core;
+using StockScreener.Calculators;
 using StockScreener.Core.Request;
 using StockScreener.Core.Response;
 using StockScreener.Interfaces;
 using StockScreener.Mapper;
 using StockScreener.Model.BaseSecurity;
-using System.Linq;
 
 namespace StockScreener
 {
