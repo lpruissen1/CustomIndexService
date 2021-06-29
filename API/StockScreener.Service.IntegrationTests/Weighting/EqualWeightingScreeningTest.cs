@@ -94,5 +94,41 @@ namespace StockScreener.Service.IntegrationTests.Weighting
 			Assert.IsTrue(result.Tickers.TryGetValue(manualTicker, out value));
 			Assert.AreEqual(value, manualWeight);
 		}
+
+		[Test]
+		public void Weighting_EqualWeight_MultipleTickers_ManualSelection_FilterOutManuallySelectedTickers()
+		{
+			var tickers = new List<string> {
+				"LEE",
+				"PEE",
+				"SEE",
+				"ALEX"
+			};
+
+			var manualTicker = "ALEX";
+			var manualWeight = 70m;
+
+			tickers.ForEach(x => AddTicker(x));
+
+			AddManualTicker(manualTicker, manualWeight);
+
+			var result = sut.Weighting(weightingRequest);
+
+			Assert.AreEqual(result.Tickers.Count, 4);
+
+			decimal value;
+
+			Assert.IsTrue(result.Tickers.TryGetValue(tickers[0], out value));
+			Assert.AreEqual(10m, value);
+
+			Assert.IsTrue(result.Tickers.TryGetValue(tickers[1], out value));
+			Assert.AreEqual(10m, value);
+
+			Assert.IsTrue(result.Tickers.TryGetValue(tickers[2], out value));
+			Assert.AreEqual(10m, value);
+
+			Assert.IsTrue(result.Tickers.TryGetValue(manualTicker, out value));
+			Assert.AreEqual(value, manualWeight);
+		}
 	}
 }

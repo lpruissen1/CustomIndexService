@@ -12,6 +12,8 @@ namespace StockScreener.Model.Weighters
 		public EqualWeightCalculator(Dictionary<string, decimal> manualWeights) : base(manualWeights) { }
 		public override Dictionary<string, decimal> Weight(SecuritiesList<DerivedSecurity> tickers)
 		{
+			tickers.RemoveAll(x => ManualWeights.Any(manualTicker => manualTicker.Key == x.Ticker));
+
 			var weights = ManualWeights;
 			var remainingPercentage = 100m - weights.Sum(x => x.Value);
 			var individualPercentage = Math.Round(remainingPercentage / tickers.Count, 5);
