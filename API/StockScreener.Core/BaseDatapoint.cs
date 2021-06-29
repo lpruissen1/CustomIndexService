@@ -2,7 +2,7 @@
 
 namespace StockScreener.Core
 {
-    [Flags]
+	[Flags]
     public enum BaseDatapoint
     {
         Sector = 1,

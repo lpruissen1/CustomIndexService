@@ -5,10 +5,10 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class FreeCashFlowScreeningTests : StockScreenerServiceTestBase
+	public class DebtToEquityRatioScreeningTests : ScreeningTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_FreeCashFlow()
+		public void ScreenByStockIndex_DebtToEquityRatio()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -16,11 +16,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddFreeCashFlow(1_000_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddFreeCashFlow(1_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddDebtToEquityRatio(0.75d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddDebtToEquityRatio(2.5d));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			//AddFreeCashFlowToCustomIndex(10_000_000_000, 10_000_000);
+			//AddDebtToEquityRatioToCustomIndex(1, 0);
 
 			var result = sut.Screen(screeningRequest);
 

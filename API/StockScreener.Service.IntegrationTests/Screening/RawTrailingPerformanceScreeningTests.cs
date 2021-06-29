@@ -5,10 +5,10 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class CurrentRatioScreeningTests : StockScreenerServiceTestBase
+	public class RawTrailingPerformanceScreeningTests : ScreeningTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_CurrentRatio()
+		public void ScreenByStockIndex_RawTrailingPerformance_Quarterly()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -16,11 +16,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddCurrentRatio(3.1d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddCurrentRatio(0.75d));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1617411630));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			//AddCurrentRatioToCustomIndex(4, 1);
+			//AddRawTrailingPerformanceToCustomIndex(25, 0, 1);
 
 			var result = sut.Screen(screeningRequest);
 

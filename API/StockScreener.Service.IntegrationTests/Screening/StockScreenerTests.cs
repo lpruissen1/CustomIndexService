@@ -5,7 +5,7 @@ using System.Linq;
 namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
-    public class StockScreenerTests : StockScreenerServiceTestBase
+    public class StockScreenerTests : ScreeningTestBase
 	{
         [Test]
         public void ScreenByStockIndex_SingleIndexTest()

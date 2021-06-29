@@ -1,13 +1,14 @@
-﻿using NUnit.Framework;
+﻿using Core;
+using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-	public class MarketCapScreeningTests : StockScreenerServiceTestBase
+	public class AnnualizedTrailingPerformanceScreeningTests : ScreeningTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_MarketCap()
+		public void ScreenByStockIndex_TrailingPerformance_Quarterly()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -15,11 +16,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(1_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(10_000d));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1617411630));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			AddMarketCapToScreeningRequest(2_000_000d, 200_000d);
+			AddAnnualizedTrailingPerformanceoScreeningRequest(100, 0, TimePeriod.Quarter);
 
 			var result = sut.Screen(screeningRequest);
 
@@ -27,8 +28,9 @@ namespace StockScreener.Service.IntegrationTests
 
 			Assert.AreEqual(ticker1, result[0].Ticker);
 		}
+
 		[Test]
-		public void ScreenBy_MarketCap_MissingMarketCap()
+		public void ScreenByStockIndex_TrailingPerformance_MissingPriceData()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -37,11 +39,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker3 = "SEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2).AddTicker(ticker3));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(1_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(10_000d));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1617411630));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			AddMarketCapToScreeningRequest(2_000_000d, 200_000d);
+			AddAnnualizedTrailingPerformanceoScreeningRequest(100, 0, TimePeriod.Quarter);
 
 			var result = sut.Screen(screeningRequest);
 

@@ -16,7 +16,7 @@ namespace StockScreener.Model.Metrics
 
         public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.PayoutRatio };
+            yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.PayoutRatio };
         }
 
         public override double? GetValue(DerivedSecurity security)

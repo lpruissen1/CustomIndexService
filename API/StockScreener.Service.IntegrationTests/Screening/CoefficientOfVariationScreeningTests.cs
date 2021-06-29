@@ -5,7 +5,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-	public class CoefficientOfVariationScreeningTests : StockScreenerServiceTestBase
+	public class CoefficientOfVariationScreeningTests : ScreeningTestBase
 	{
 		[Test]
 		public void ScreenBy_CoefficientOfVariation_Quarterly()

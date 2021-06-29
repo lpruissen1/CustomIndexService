@@ -5,10 +5,10 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class PayoutRatioScreeningTests : StockScreenerServiceTestBase
+	public class CurrentRatioScreeningTests : ScreeningTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_PayoutRatio()
+		public void ScreenByStockIndex_CurrentRatio()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -16,11 +16,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddPayoutRatio(0.1d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddPayoutRatio(0.2d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddCurrentRatio(3.1d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddCurrentRatio(0.75d));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			//AddPayoutRatioToCustomIndex(0.15, 0);
+			//AddCurrentRatioToCustomIndex(4, 1);
 
 			var result = sut.Screen(screeningRequest);
 

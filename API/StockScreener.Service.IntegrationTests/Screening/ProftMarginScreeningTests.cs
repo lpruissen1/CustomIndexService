@@ -5,7 +5,7 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class ProfitMarginScreeningTests : StockScreenerServiceTestBase
+	public class ProfitMarginScreeningTests : ScreeningTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_ProfitMargin()

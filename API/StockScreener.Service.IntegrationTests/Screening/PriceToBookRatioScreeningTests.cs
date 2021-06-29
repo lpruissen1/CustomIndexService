@@ -3,12 +3,12 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 
 namespace StockScreener.Service.IntegrationTests
 {
-    [TestFixture]
+	[TestFixture]
 	[Explicit("Not Implemented")]
-	public class RawDividendGrowthScreeningTests : StockScreenerServiceTestBase
+	public class PriceToBookRatioScreeningTests : ScreeningTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_DividendGrowthRaw()
+		public void ScreenByStockIndex_PriceToBook()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -18,19 +18,15 @@ namespace StockScreener.Service.IntegrationTests
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
 
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
-				.AddDividendsPerShare(0.10, 1561867200)
-				.AddDividendsPerShare(0.20d, 1569816000)
-				.AddDividendsPerShare(0.20d, 1577768400)
-				.AddDividendsPerShare(0.25, 1585627200));
+				.AddBookValuePerShare(14.3d));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(61.42));
 
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
-				.AddDividendsPerShare(0.03d, 1561867200)
-				.AddDividendsPerShare(0.03d, 1569816000)
-				.AddDividendsPerShare(0.03d, 1577768400)
-				.AddDividendsPerShare(0.03d, 1585627200));
+				.AddBookValuePerShare(1.01d));
+			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(39.21));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			//AddRawDividendGrowthToCustomIndex(30, 20, 2);
+			//AddPriceToBookRatioToCustomIndex(10, 0);
 
 			var result = sut.Screen(screeningRequest);
 

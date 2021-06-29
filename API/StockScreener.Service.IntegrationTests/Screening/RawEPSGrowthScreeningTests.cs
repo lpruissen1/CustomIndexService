@@ -5,7 +5,7 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class RawEPSGrowthScreeningTests : StockScreenerServiceTestBase
+	public class RawEPSGrowthScreeningTests : ScreeningTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_RawEPSGrowth_Biannual()

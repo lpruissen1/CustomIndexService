@@ -5,7 +5,7 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class AnnualizedDividendGrowthScreeningTests : StockScreenerServiceTestBase
+	public class AnnualizedDividendGrowthScreeningTests : ScreeningTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_DividendGrowthAnnualized_Quarterly()

@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-    public class PriceToSalesRatioTTMTests : StockScreenerServiceTestBase
+    public class PriceToSalesRatioTTMTests : ScreeningTestBase
 	{
 		[Test]
 		public void Screen_PriceToSalesTTM()

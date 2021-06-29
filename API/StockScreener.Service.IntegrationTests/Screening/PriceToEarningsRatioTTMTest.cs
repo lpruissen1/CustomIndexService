@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-    public class PriceToEarningsRatioTTMTest : StockScreenerServiceTestBase
+    public class PriceToEarningsRatioTTMTest : ScreeningTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_PriceToEarningsTTM()

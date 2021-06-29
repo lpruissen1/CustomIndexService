@@ -55,10 +55,10 @@ namespace StockScreener.Calculators
 
 				foreach(var derivedDatapoint in derivedDatapoints)
 				{
-					if(timedRangeFunctionMapper.TryGetValue(derivedDatapoint.datapoint, out var timedRangefunction))
+					if(timedRangeFunctionMapper.TryGetValue(derivedDatapoint.Datapoint, out var timedRangefunction))
 						timedRangefunction.Invoke(derivedSecurity, derivedDatapoint.Time, security);
 
-					if (ruleFunctionMapper.TryGetValue(derivedDatapoint.datapoint, out var basicRuleFunction))
+					if (ruleFunctionMapper.TryGetValue(derivedDatapoint.Datapoint, out var basicRuleFunction))
 						basicRuleFunction.Invoke(derivedSecurity, security);
 					
 				}

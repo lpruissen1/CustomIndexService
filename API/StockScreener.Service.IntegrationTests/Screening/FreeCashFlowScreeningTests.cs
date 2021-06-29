@@ -5,10 +5,10 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class RawTrailingPerformanceScreeningTests : StockScreenerServiceTestBase
+	public class FreeCashFlowScreeningTests : ScreeningTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_RawTrailingPerformance_Quarterly()
+		public void ScreenByStockIndex_FreeCashFlow()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -16,11 +16,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1617411630));
-			InsertData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddFreeCashFlow(1_000_000_000d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddFreeCashFlow(1_000_000d));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			//AddRawTrailingPerformanceToCustomIndex(25, 0, 1);
+			//AddFreeCashFlowToCustomIndex(10_000_000_000, 10_000_000);
 
 			var result = sut.Screen(screeningRequest);
 

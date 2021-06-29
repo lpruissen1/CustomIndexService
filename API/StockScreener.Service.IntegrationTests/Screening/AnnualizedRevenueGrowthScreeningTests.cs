@@ -5,7 +5,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-	public class AnnualizedRevenueGrowthScreeningTests : StockScreenerServiceTestBase
+	public class AnnualizedRevenueGrowthScreeningTests : ScreeningTestBase
 	{
 
 		[Test]

@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-    public class DividendYieldScreeningTests : StockScreenerServiceTestBase
+    public class DividendYieldScreeningTests : ScreeningTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_DividendYield()

@@ -5,10 +5,11 @@ namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
 	[Explicit("Not Implemented")]
-	public class MultipleMetricsScreeningTests : StockScreenerServiceTestBase
+	public class RawRevenueGrowthScreeningTests : ScreeningTestBase
 	{
+
 		[Test]
-		public void ScreenByStockIndex_TwoMetrics_ReturnOne()
+		public void ScreenByStockIndex_RawRevenueGrowth_Biannual()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -16,14 +17,21 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
+
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
-				.AddGrossMargin(0.4)
-				.AddWorkingCapital(10_000_000d));
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(1_500_000d, 1585627200));
+
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
-				.AddGrossMargin(0.5)
-				.AddWorkingCapital(1_000_000d));
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(-400_000d, 1585627200));
 
 			AddMarketToScreeningRequest(stockIndex1);
+			//AddRawRevenueGrowthToCustomIndex(101, 99, 2);
 
 			var result = sut.Screen(screeningRequest);
 
@@ -33,7 +41,7 @@ namespace StockScreener.Service.IntegrationTests
 		}
 
 		[Test]
-		public void ScreenByStockIndex_TwoMetrics_ReturnOneFlipped()
+		public void ScreenByStockIndex_RawRevenueGrowth_Quarterly()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -41,47 +49,27 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
+
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
-				.AddGrossMargin(0.4)
-				.AddWorkingCapital(10_000_000d));
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(1_500_000d, 1585627200));
+
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
-				.AddGrossMargin(0.5)
-				.AddWorkingCapital(1_000_000d));
+				.AddRevenue(500_000d, 1561867200)
+				.AddRevenue(750_000d, 1569816000)
+				.AddRevenue(1_000_000d, 1577768400)
+				.AddRevenue(400_000d, 1585627200));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			
+			//AddRawRevenueGrowthToCustomIndex(51, 49, 1);
 
 			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
 
 			Assert.AreEqual(ticker1, result[0].Ticker);
-		}
-
-		[Test]
-		public void ScreenByStockIndex_TwoMetrics_ReturnZero()
-		{
-			var stockIndex1 = "Lee's Index";
-
-			var ticker1 = "LEE";
-			var ticker2 = "PEE";
-
-			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1)
-				.AddGrossMargin(0.4)
-				.AddWorkingCapital(10_000_000d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2)
-				.AddGrossMargin(0.5)
-				.AddWorkingCapital(1_000_000d));
-
-			AddMarketToScreeningRequest(stockIndex1);
-			//AddGrossMarginToCustomIndex(0.38, 0.35);
-			//AddWorkingCapitalToCustomIndex(9_000_000, 5_000_000);
-
-
-			var result = sut.Screen(screeningRequest);
-
-			Assert.AreEqual(0, result.Count);
 		}
 	}
 }

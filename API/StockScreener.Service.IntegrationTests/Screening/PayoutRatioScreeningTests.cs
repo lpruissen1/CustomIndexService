@@ -5,10 +5,10 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class GrossMarginsScreeningTest : StockScreenerServiceTestBase
+	public class PayoutRatioScreeningTests : ScreeningTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_GrossMargin()
+		public void ScreenByStockIndex_PayoutRatio()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -16,11 +16,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddGrossMargin(0.4d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddGrossMargin(0.05d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddPayoutRatio(0.1d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddPayoutRatio(0.2d));
 
 			AddMarketToScreeningRequest(stockIndex1);
-           // AddGrossMarginToCustomIndex(0.5, 0.1);
+			//AddPayoutRatioToCustomIndex(0.15, 0);
 
 			var result = sut.Screen(screeningRequest);
 

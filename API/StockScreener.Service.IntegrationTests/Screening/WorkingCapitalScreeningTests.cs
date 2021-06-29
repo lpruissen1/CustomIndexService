@@ -5,7 +5,7 @@ namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
 	[Explicit("Not Implemented")]
-	public class WorkingCapitalScreeningTests : StockScreenerServiceTestBase
+	public class WorkingCapitalScreeningTests : ScreeningTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_WorkingCapital()

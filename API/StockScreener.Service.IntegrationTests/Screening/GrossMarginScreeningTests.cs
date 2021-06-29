@@ -5,10 +5,10 @@ namespace StockScreener.Service.IntegrationTests
 {
     [TestFixture]
 	[Explicit("Not Implemented")]
-	public class DebtToEquityRatioScreeningTests : StockScreenerServiceTestBase
+	public class GrossMarginsScreeningTest : ScreeningTestBase
 	{
 		[Test]
-		public void ScreenByStockIndex_DebtToEquityRatio()
+		public void ScreenByStockIndex_GrossMargin()
 		{
 			var stockIndex1 = "Lee's Index";
 
@@ -16,11 +16,11 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 
 			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddDebtToEquityRatio(0.75d));
-			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddDebtToEquityRatio(2.5d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddGrossMargin(0.4d));
+			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddGrossMargin(0.05d));
 
 			AddMarketToScreeningRequest(stockIndex1);
-			//AddDebtToEquityRatioToCustomIndex(1, 0);
+           // AddGrossMarginToCustomIndex(0.5, 0.1);
 
 			var result = sut.Screen(screeningRequest);
 

@@ -4,7 +4,7 @@ using StockScreener.Service.IntegrationTests.StockDataHelpers;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-	public class InclusionExclusionScreeningTests : StockScreenerServiceTestBase
+	public class InclusionExclusionScreeningTests : ScreeningTestBase
 	{
 		[Test]
 		public void ScreenByStockIndex_Inclusion()

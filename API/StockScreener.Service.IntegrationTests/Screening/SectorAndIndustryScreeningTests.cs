@@ -6,7 +6,7 @@ using System.Linq;
 namespace StockScreener.Service.IntegrationTests
 {
 	[TestFixture]
-    public class SectorAndIndustryScreeningTests : StockScreenerServiceTestBase
+    public class SectorAndIndustryScreeningTests : ScreeningTestBase
 	{
         [Test]
         public void ScreenBy_Sector()
