@@ -25,7 +25,8 @@ namespace StockScreener.Model.Weighters
 				double individualWeight;
 
 				// filter out the bad options before?
-				if (security.MarketCap is not null) {
+				if (security.MarketCap is not null)
+				{
 					individualWeight = Math.Round((double)(security.MarketCap / totalMarketCap) * remainingPercentage, 5);
 				}
 				else
