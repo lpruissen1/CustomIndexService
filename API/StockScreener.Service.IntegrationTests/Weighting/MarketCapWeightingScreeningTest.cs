@@ -26,7 +26,7 @@ namespace StockScreener.Service.IntegrationTests.Weighting
 
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(1_000_000d));
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker2).AddMarketCap(9_000_000d));
-																 
+
 			var result = sut.Weighting(weightingRequest);
 
 			Assert.AreEqual(result.Tickers.Count, 2);
@@ -110,6 +110,7 @@ namespace StockScreener.Service.IntegrationTests.Weighting
 			AddTicker(ticker1);
 			AddTicker(ticker2);
 			AddTicker(ticker3);
+			AddTicker(manualTicker);
 			AddManualTicker(manualTicker, manualWeight);
 
 			InsertData(StockFinancialsCreator.GetStockFinancials(ticker1).AddMarketCap(3_000_000d));
@@ -161,6 +162,9 @@ namespace StockScreener.Service.IntegrationTests.Weighting
 
 			Assert.AreEqual(ticker2, result.Tickers[1].Ticker);
 			Assert.AreEqual(15m, result.Tickers[1].Weight);
+
+			Assert.AreEqual(ticker3, result.Tickers[2].Ticker);
+			Assert.AreEqual(0, result.Tickers[2].Weight);
 
 			Assert.AreEqual(manualTicker, result.Tickers[3].Ticker);
 			Assert.AreEqual(manualWeight, result.Tickers[3].Weight);
