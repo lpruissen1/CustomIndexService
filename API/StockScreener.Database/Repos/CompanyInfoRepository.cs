@@ -11,11 +11,12 @@ namespace StockScreener.Database.Repos
 {
     public class CompanyInfoRepository : BaseRepository<CompanyInfo>, ICompanyInfoRepository
     {
+		private CompanyInfoProjectionBuilder CompanyInfoProjectionBuilder = new CompanyInfoProjectionBuilder();
         public CompanyInfoRepository(IMongoDBContext context) : base(context) { }
 
         public CompanyInfo Get(string ticker, IEnumerable<BaseDatapoint> dataPoints)
         {
-            var projection = Builders<CompanyInfo>.Projection.Include(x => x.Ticker).Include(x => x.Sector).Include(x => x.Industry);
+			var projection = CompanyInfoProjectionBuilder.BuildProjection(dataPoints);
             return dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection).FirstOrDefault() ?? new CompanyInfo { Ticker = ticker };
 		}
 
