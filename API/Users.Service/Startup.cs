@@ -1,3 +1,4 @@
+using Core.Logging;
 using Database.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Users.Core;
@@ -33,6 +35,9 @@ namespace Users.Service
 			services.Configure<JwtConfiguration>(Configuration.GetSection(nameof(JwtConfiguration)));
 			services.AddSingleton<IJwtConfiguration>(sp => sp.GetRequiredService<IOptions<JwtConfiguration>>().Value);
 
+			services.Configure<MyLoggerOptions>(Configuration.GetSection(nameof(MyLoggerOptions)));
+			services.AddSingleton<IMyLoggerOptions>(sp => sp.GetRequiredService<IOptions<MyLoggerOptions>>().Value);
+
 			services.AddControllers();
 
 			services.AddScoped<IMongoDBContext, MongoUserDbContext>();
@@ -41,6 +46,7 @@ namespace Users.Service
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IPasswordHasher, PasswordHasher>();
+			services.AddScoped<ILogger, MyLogger>();
 
 			services.AddControllers();
             services.AddSwaggerGen(c =>

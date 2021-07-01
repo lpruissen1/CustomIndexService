@@ -26,7 +26,7 @@ namespace Core.Logging
 
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
 		{
-			if (!IsEnabled(logLevel))
+			if (!IsEnabled(logLevel) && eventId.Id != 1)
 				return;
 
 			if (!Directory.Exists(options.FolderPath))

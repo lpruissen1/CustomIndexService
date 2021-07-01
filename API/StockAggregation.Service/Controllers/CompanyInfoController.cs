@@ -20,7 +20,7 @@ namespace StockAggregation.Service.Controllers
         [HttpPost]
         public void UpdateCompanyInfo(string market)
         {
-			logger.LogInformation("Updating Company Info");
+			logger.LogInformation(new EventId(1), "Updating Company Info");
             stockAggregationService.UpdateCompanyInfoForMarket(market);
         }
     }

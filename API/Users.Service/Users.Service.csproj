@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Users.Core\Users.Core.csproj" />
     <ProjectReference Include="..\Users.Database\Users.Database.csproj" />
     <ProjectReference Include="..\Users\Users.csproj" />
