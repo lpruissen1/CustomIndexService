@@ -227,9 +227,10 @@ namespace StockScreener.Calculators
         private (TEntry present, TEntry past) GetEndpointDataForTimeRange<TEntry>(List<TEntry> timeEntries, TimePeriod range, double errorFactor = 0) where TEntry : TimeEntry
         {
             var mostRecent = timeEntries.Last();
+            var mostRecentTime = mostRecent.Timestamp / 1000;
             var timeRangeInUnix = GetUnixFromTimePeriod(range);
 
-            var past = timeEntries.FirstOrDefault(x => x.Timestamp > (mostRecent.Timestamp - timeRangeInUnix - errorFactor) && x.Timestamp < (mostRecent.Timestamp - timeRangeInUnix + errorFactor));
+            var past = timeEntries.FirstOrDefault(x => x.Timestamp > (mostRecentTime - timeRangeInUnix - errorFactor) && x.Timestamp < (mostRecentTime - timeRangeInUnix + errorFactor));
 
             return (mostRecent, past);
 		}

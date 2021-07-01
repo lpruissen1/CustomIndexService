@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StockAggregation.Core;
 
 namespace StockAggregation.Service.Controllers
@@ -8,15 +9,18 @@ namespace StockAggregation.Service.Controllers
     public class CompanyInfoController : ControllerBase
     {
         private readonly IStockAggregationService stockAggregationService;
+		private readonly ILogger logger;
 
-        public CompanyInfoController(IStockAggregationService stockAggregationService)
+		public CompanyInfoController(IStockAggregationService stockAggregationService, ILogger logger)
         {
             this.stockAggregationService = stockAggregationService;
-        }
+			this.logger = logger;
+		}
 
         [HttpPost]
         public void UpdateCompanyInfo(string market)
         {
+			logger.LogInformation("Updating Company Info");
             stockAggregationService.UpdateCompanyInfoForMarket(market);
         }
     }
