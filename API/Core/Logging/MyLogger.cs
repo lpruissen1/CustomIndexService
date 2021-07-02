@@ -35,25 +35,13 @@ namespace Core.Logging
 			}
 
 			var fullFilePath = options.FolderPath + options.FilePath;
-			var logRecord = string.Format($"[{DateTimeOffset.UtcNow:yyyy-MM-dd HH:mm:ss+00:00}] : {formatter(state, exception)}");
+			var logRecord = $"[{DateTimeOffset.UtcNow:yyyy-MM-dd HH:mm:ss+00:00}] : {formatter(state, exception)}";
 
 			using (var streamWriter = new StreamWriter(fullFilePath, true))
 			{
 				streamWriter.WriteLine(logRecord);
 			}
 		}
-	}
-	public class MyLoggerOptions : IMyLoggerOptions
-	{
-		public string FilePath { get; set; }
-
-		public string FolderPath { get; set; }
-	}
-	public interface IMyLoggerOptions
-	{
-		string FilePath { get; set; }
-
-		string FolderPath { get; set; }
 	}
 
 }

@@ -1,9 +1,11 @@
+using Core.Logging;
 using Database.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using StockScreener.Database;
@@ -11,7 +13,6 @@ using StockScreener.Database.Config;
 using StockScreener.Database.Repos;
 using StockScreener.Interfaces;
 using StockScreener.SecurityGrabber;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace StockScreener.Service
@@ -31,15 +32,19 @@ namespace StockScreener.Service
             services.Configure<StockInformationDatabaseSettings>(Configuration.GetSection(nameof(StockInformationDatabaseSettings)));
             services.AddSingleton<IStockInformationDatabaseSettings>(sp => sp.GetRequiredService<IOptions<StockInformationDatabaseSettings>>().Value);
 
-            services.AddScoped<IMongoDBContext, MongoStockInformationDbContext>();
+			services.Configure<MyLoggerOptions>(Configuration.GetSection(nameof(MyLoggerOptions)));
+			services.AddSingleton<IMyLoggerOptions>(sp => sp.GetRequiredService<IOptions<MyLoggerOptions>>().Value);
+
+			services.AddScoped<IMongoDBContext, MongoStockInformationDbContext>();
             services.AddScoped<IStockFinancialsRepository, StockFinancialsRepository>();
             services.AddScoped<ICompanyInfoRepository, CompanyInfoRepository>();
             services.AddScoped<IStockIndexRepository, StockIndexRepository>();
             services.AddScoped<IPriceDataRepository>(_ =>new PriceDataRepository(new MongoDbContextFactory()));
             services.AddScoped<ISecuritiesGrabber, SecuritiesGrabber>();
             services.AddScoped<IStockScreenerService, StockScreenerService>();
-            
-            services.AddControllers().AddJsonOptions(o =>
+			services.AddScoped<ILogger, MyLogger>();
+
+			services.AddControllers().AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
