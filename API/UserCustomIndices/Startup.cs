@@ -1,3 +1,4 @@
+using Core.Logging;
 using Database;
 using Database.Core;
 using Database.Repositories;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
@@ -31,13 +33,17 @@ namespace UserCustomIndices
             services.Configure<CustomIndexDatabaseSettings>(Configuration.GetSection(nameof(CustomIndexDatabaseSettings)));
             services.AddSingleton<ICustomIndexDatabaseSettings>(sp => sp.GetRequiredService<IOptions<CustomIndexDatabaseSettings>>().Value);
 
-            services.AddControllers();
+			services.Configure<MyLoggerOptions>(Configuration.GetSection(nameof(MyLoggerOptions)));
+			services.AddSingleton<IMyLoggerOptions>(sp => sp.GetRequiredService<IOptions<MyLoggerOptions>>().Value);
+
+			services.AddControllers();
             services.AddScoped<IMongoDBContext, MongoCustomIndexDbContext>();
             services.AddScoped<IIndicesRepository, IndiciesRepository>();
             services.AddScoped<ICustomIndexService, CustomIndexService>();
             services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();
             services.AddScoped<IRequestMapper, RequestMapper>();
             services.AddScoped<IResponseMapper, ResponseMapper>();
+			services.AddScoped<ILogger, MyLogger>();
 
             services.AddControllers().AddJsonOptions(o =>
             {

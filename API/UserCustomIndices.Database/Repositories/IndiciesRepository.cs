@@ -20,14 +20,18 @@ namespace Database.Repositories
             return await dbCollection.FindAsync(i => i.UserId == userId.ToString()).Result.ToListAsync();
         }
 
-		public void UpdateIndex(string userId, CustomIndex updatedIndex)
+		public bool UpdateIndex(string userId, CustomIndex updatedIndex)
 		{
-			dbCollection.FindOneAndReplace(i => i.UserId == userId.ToString() && i.IndexId == updatedIndex.IndexId, updatedIndex);
+			var result = dbCollection.FindOneAndReplace(i => i.UserId == userId.ToString() && i.IndexId == updatedIndex.IndexId, updatedIndex);
+
+			return result is not null ? true : false;
 		}
 
-		public void DeleteIndex(string userId, string indexId)
+		public bool DeleteIndex(string userId, string indexId)
 		{
-			dbCollection.FindOneAndDelete(i => i.UserId == userId.ToString() && i.IndexId == indexId);
+			var result = dbCollection.FindOneAndDelete(i => i.UserId == userId.ToString() && i.IndexId == indexId);
+			
+			return result is not null ? true : false;
 		}
     }
 }
