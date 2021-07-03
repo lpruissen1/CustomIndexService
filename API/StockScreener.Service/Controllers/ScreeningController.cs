@@ -8,12 +8,12 @@ namespace StockScreener.Service.Controllers
     [Route("[controller]")]
     public class ScreeningController : ControllerBase
     {
+        private readonly IStockScreenerService screenerService;
+
         public ScreeningController(IStockScreenerService screenerService)
         {
             this.screenerService = screenerService;
         }
-
-        private IStockScreenerService screenerService;
 
         [HttpPost("FuckYourself")]
         [Consumes("application/json")]

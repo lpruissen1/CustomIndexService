@@ -29,8 +29,6 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex);
 			AddSectorAndIndustryToScreeningRequest(new List<string> { sector1 }, new List<string>());
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
-
 			var result = sut.Screen(screeningRequest);
 
 			Assert.AreEqual(1, result.Count);
