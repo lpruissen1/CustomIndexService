@@ -17,8 +17,22 @@ namespace Database.Repositories
 
         public async Task<IEnumerable<CustomIndex>> GetAllForUser(string userId)
         {
-            return await dbCollection.FindAsync(i => i.UserId == userId.ToString()).Result.ToListAsync();
+            return await dbCollection.FindAsync(i => i.UserId == userId.ToString() && i.Active == true).Result.ToListAsync();
         }
+
+		public bool UpdateIndex(string userId, CustomIndex updatedIndex)
+		{
+			var result = dbCollection.FindOneAndReplace(i => i.UserId == userId.ToString() && i.IndexId == updatedIndex.IndexId, updatedIndex);
+
+			return result is not null ? true : false;
+		}
+
+		public bool DeleteIndex(string userId, string indexId)
+		{
+			var result = dbCollection.FindOneAndDelete(i => i.UserId == userId.ToString() && i.IndexId == indexId);
+			
+			return result is not null ? true : false;
+		}
     }
 }
 

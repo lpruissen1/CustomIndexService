@@ -20,6 +20,12 @@ namespace StockScreener.Database.Repos
 			hourIntervalCollection = mongoContext.GetCollection<HourPriceData>(typeof(HourPriceData).Name);
 		}
 
+		public PriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext())
+		{
+			dayIntervalCollection = mongoContext.GetCollection<DayPriceData>(typeof(DayPriceData).Name);
+			hourIntervalCollection = mongoContext.GetCollection<HourPriceData>(typeof(HourPriceData).Name);
+		}
+
 		public void Create(HourPriceData obj)
 		{
 			hourIntervalCollection.InsertOne(obj);

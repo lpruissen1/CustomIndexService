@@ -1,6 +1,7 @@
 ﻿using ApiClient;
 using Core;
 using Database.Core;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using StockAggregation.Core;
 using StockScreener.Database;
@@ -16,29 +17,31 @@ namespace StockAggregation
 {
 	public class StockAggregationService : IStockAggregationService
     {
-        protected IPolygonClient polygonApiClient;
-        protected IStockFinancialsRepository stockFinancialsRepository;
-        protected IPriceDataRepository priceDataRepository;
-        protected ICompanyInfoRepository companyInfoRepository;
-        protected IStockIndexRepository stockIndexRepository;
+		private IPolygonClient polygonApiClient;
+		private readonly ILogger logger;
+		private IStockFinancialsRepository stockFinancialsRepository;
+		private IPriceDataRepository priceDataRepository;
+		private ICompanyInfoRepository companyInfoRepository;
+		private IStockIndexRepository stockIndexRepository;
 
         // IMongoIsInWeirdPlace
-        public StockAggregationService(IMongoDBContext stockDataContext, IMongoDBContext priceDataContext, IPolygonClient client)
+        public StockAggregationService(IMongoDBContext stockDataContext, IMongoDBContext priceDataContext, IPolygonClient client, ILogger logger)
         {
             polygonApiClient = client;
-            priceDataRepository = new PriceDataRepository(priceDataContext);
+			this.logger = logger;
+			priceDataRepository = new PriceDataRepository(priceDataContext);
             companyInfoRepository = new CompanyInfoRepository(stockDataContext);
             stockFinancialsRepository = new StockFinancialsRepository(stockDataContext);
             stockIndexRepository = new StockIndexRepository(stockDataContext);
         }
 
-        public StockAggregationService(IMongoDbContextFactory dbContextFactory, IApiSettingsFactory apiSettingsFactory) : this(dbContextFactory.GetStockContext(), dbContextFactory.GetPriceContext(), new PolygonClient(apiSettingsFactory.GetPolygonSettings())) { }
+        public StockAggregationService(IMongoDbContextFactory dbContextFactory, IApiSettingsFactory apiSettingsFactory) : this(dbContextFactory.GetStockContext(), dbContextFactory.GetPriceContext(), new PolygonClient(apiSettingsFactory.GetPolygonSettings()), null) { }
 
 		public static StockAggregationService New()
         {
             var contextFactory = new MongoDbContextFactory();
             var apiSettingsFactory = new ApiSettingsFactory();
-            return new StockAggregationService(contextFactory.GetStockContext(), contextFactory.GetPriceContext(), new PolygonClient(apiSettingsFactory.GetPolygonSettings()));
+            return new StockAggregationService(contextFactory.GetStockContext(), contextFactory.GetPriceContext(), new PolygonClient(apiSettingsFactory.GetPolygonSettings()), null);
         }
 
         public void UpdateCompanyInfoForMarket(string market)
@@ -142,7 +145,14 @@ namespace StockAggregation
 
 		private IEnumerable<string> GetTickersByIndex(string market)
 		{
-			return stockIndexRepository.GetIndex(market).Tickers;
+			var result = stockIndexRepository.GetIndex(market)?.Tickers;
+
+			if (result is not null)
+				return result;
+
+			logger.LogInformation(new EventId(1), $"Invalid market: {market}");
+
+			return Enumerable.Empty<string>();
 		}
     }
 }

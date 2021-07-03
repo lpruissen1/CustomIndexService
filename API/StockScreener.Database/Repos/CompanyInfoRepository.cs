@@ -3,7 +3,6 @@ using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Core;
 using StockScreener.Database.Model.CompanyInfo;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
