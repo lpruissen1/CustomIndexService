@@ -1,9 +1,11 @@
 using ApiClient;
+using Core.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using StockAggregation.Core;
@@ -27,9 +29,13 @@ namespace StockAggregation.Service
 			services.Configure<StockInformationDatabaseSettings>(Configuration.GetSection(nameof(StockInformationDatabaseSettings)));
 			services.AddSingleton<IStockInformationDatabaseSettings>(sp => sp.GetRequiredService<IOptions<StockInformationDatabaseSettings>>().Value);
 
+			services.Configure<MyLoggerOptions>(Configuration.GetSection(nameof(MyLoggerOptions)));
+			services.AddSingleton<IMyLoggerOptions>(sp => sp.GetRequiredService<IOptions<MyLoggerOptions>>().Value);
+
 			services.AddScoped<IStockAggregationService, StockAggregationService>();
 			services.AddScoped<IApiSettingsFactory, ApiSettingsFactory>();
 			services.AddScoped<IMongoDbContextFactory, MongoDbContextFactory>();
+			services.AddScoped<ILogger, MyLogger>();
 
 			services.AddControllers();
             services.AddSwaggerGen(c =>
