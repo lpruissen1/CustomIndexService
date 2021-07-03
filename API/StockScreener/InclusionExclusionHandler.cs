@@ -6,8 +6,8 @@ namespace StockScreener
 {
 	public class InclusionExclusionHandler : IInclusionExclusionHandler
 	{
-		private List<string> exclusions;
-		private List<string> inclusions;
+		private readonly List<string> exclusions;
+		private readonly List<string> inclusions;
 
 		public InclusionExclusionHandler(List<string> inclusions, List<string> exclusions)
 		{
@@ -18,10 +18,10 @@ namespace StockScreener
 		public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList) 
 		{
 			securitiesList.RemoveAll(security => exclusions.Any(ticker => ticker == security.Ticker));
-
 			foreach (var ticker in inclusions)
 			{
-				securitiesList.Add(new DerivedSecurity { Ticker = ticker });
+				if(!securitiesList.Any(security => security.Ticker == ticker))
+					securitiesList.Add(new DerivedSecurity { Ticker = ticker });
 			}
 		}
 	}
