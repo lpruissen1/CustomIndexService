@@ -39,7 +39,7 @@ namespace Database.Repositories
             return dbCollection.Find(Builders<TEntity>.Filter.Empty).ToEnumerable();
         }
 
-        public void Update(TEntity obj)
+        public virtual void Update(TEntity obj)
         {
 			dbCollection.FindOneAndReplace(x => x.Id == obj.Id, obj);
         }

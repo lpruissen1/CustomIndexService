@@ -65,7 +65,7 @@ namespace StockScreener.Mapper
 
         private IMetric MapDividendYield(RangedRule rule)
         {
-            return MapRangedRule<DividendYieldMetric>(rule );
+            return MapRangedRule<DividendYieldMetric>(rule);
         }
 
         private IMetric MapPriceToEarningsRatioTTM(RangedRule rule)

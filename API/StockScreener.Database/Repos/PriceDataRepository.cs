@@ -9,7 +9,6 @@ using System.Linq;
 
 namespace StockScreener.Database.Repos
 {
-
     public class PriceDataRepository : BaseRepository<PriceData>, IPriceDataRepository
 	{
 		protected IMongoCollection<HourPriceData> hourIntervalCollection;
@@ -56,8 +55,7 @@ namespace StockScreener.Database.Repos
 
 		public List<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData
 		{
-			var filter = Builders<TPriceEntry>.Filter.Eq(e => e.Ticker, ticker);
-			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(filter).FirstOrDefault();
+			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(x => x.Ticker == ticker).FirstOrDefault();
 
 			return prices?.Candle ?? new List<Candle>();
 		}
