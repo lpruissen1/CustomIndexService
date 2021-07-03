@@ -36,7 +36,7 @@ namespace StockScreener.Service.IntegrationTests
 			context.ClearAll();
 
 			screeningRequest = new ScreeningRequest();
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)));
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)), null);
 		}
 
 		public void AddStockIndex(string indexName, IEnumerable<string> stockIndex)
@@ -102,7 +102,7 @@ namespace StockScreener.Service.IntegrationTests
 
 		public void AddAnnualizedTrailingPerformanceoScreeningRequest(double upper, double lower, TimePeriod timePeriod)
         {
-			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.AnnualizedTraillingPerformance });
+			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.AnnualizedTrailingPerformance });
         }
 
 		public void AddCoefficientOfVariationToScreeningRequest(double upper, double lower, TimePeriod timePeriod)

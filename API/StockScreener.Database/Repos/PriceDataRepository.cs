@@ -21,6 +21,12 @@ namespace StockScreener.Database.Repos
 			hourIntervalCollection = mongoContext.GetCollection<HourPriceData>(typeof(HourPriceData).Name);
 		}
 
+		public PriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext())
+		{
+			dayIntervalCollection = mongoContext.GetCollection<DayPriceData>(typeof(DayPriceData).Name);
+			hourIntervalCollection = mongoContext.GetCollection<HourPriceData>(typeof(HourPriceData).Name);
+		}
+
 		public void Create(HourPriceData obj)
 		{
 			hourIntervalCollection.InsertOne(obj);
@@ -52,7 +58,8 @@ namespace StockScreener.Database.Repos
 		{
 			var filter = Builders<TPriceEntry>.Filter.Eq(e => e.Ticker, ticker);
 			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(filter).FirstOrDefault();
-			return prices.Candle;
+
+			return prices?.Candle ?? new List<Candle>();
 		}
 
 		private void UpdatePriceData<TPriceType>(TPriceType entry) where TPriceType : PriceData

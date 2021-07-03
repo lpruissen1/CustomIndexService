@@ -31,13 +31,17 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
 
         public void AddRevenue(StockFinancials stockFinancials)
         {
-            var present = stockFinancials.Revenues.Last();
-
             security.QuarterlyRevenue = stockFinancials.Revenues.Select(stock => new RevenueEntry() { Revenue = stock.revenues, Timestamp = stock.timestamp}).ToList();
         }
 
         public void AddMarketCap(StockFinancials stockFinancials)
         {
+			if (!stockFinancials.MarketCap.Any())
+			{
+				security.MarketCap = null;
+				return;
+			}
+
             security.MarketCap = stockFinancials.MarketCap.Last().marketCap;
         }
 
