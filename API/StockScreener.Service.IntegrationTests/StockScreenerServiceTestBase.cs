@@ -1,11 +1,13 @@
 ﻿using Database.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using StockScreener.Database;
 using StockScreener.Database.Config;
 using StockScreener.Database.Model.StockIndex;
 using StockScreener.Database.Repos;
 using StockScreener.SecurityGrabber;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,7 +33,7 @@ namespace StockScreener.Service.IntegrationTests
 		{
 			context.ClearAll();
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)), null);
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)), new FakeLogger());
 		}
 
 		public void AddStockIndex(string indexName, IEnumerable<string> stockIndex)
@@ -42,6 +44,24 @@ namespace StockScreener.Service.IntegrationTests
 		public void InsertData<TEntry>(TEntry dBEntry)
 		{
 			context.GetCollection<TEntry>(typeof(TEntry).Name).InsertOne(dBEntry);
+		}
+
+		public class FakeLogger : ILogger
+		{
+			public IDisposable BeginScope<TState>(TState state)
+			{
+				throw new NotImplementedException();
+			}
+
+			public bool IsEnabled(LogLevel logLevel)
+			{
+				throw new NotImplementedException();
+			}
+
+			public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+			{
+				
+			}
 		}
 	}
 }

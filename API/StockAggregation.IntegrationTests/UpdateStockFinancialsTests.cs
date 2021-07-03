@@ -144,7 +144,7 @@ namespace StockAggregation.IntegrationTests
 				}
 			});
 
-			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
+			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse), new FakeLogger());
 
 			sut.UpdateStockFinancialsForMarket(market);
 
@@ -373,7 +373,7 @@ namespace StockAggregation.IntegrationTests
 				}
 			});
 
-			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
+			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse), new FakeLogger());
 
 			sut.UpdateStockFinancialsForMarket(market);
 
@@ -626,7 +626,7 @@ namespace StockAggregation.IntegrationTests
 				}
 			});
 
-			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
+			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse), new FakeLogger());
 
 			sut.UpdateStockFinancialsForMarket(market);
 

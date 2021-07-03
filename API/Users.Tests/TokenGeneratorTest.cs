@@ -14,8 +14,9 @@ namespace Users.Tests
 		private ITokenGenerator sut;
 
 		[SetUp]
-		public void SetUp()
+		protected override void SetUp()
 		{
+			base.SetUp();
 			tokenGeneratorConfig = new JwtConfiguration() {Key = config["JwtConfiguration:Key"], Expiration = config["JwtConfiguration:Expiration"], Issuer = config["JwtConfiguration:Issuer"] };
 			sut = new TokenGenerator(tokenGeneratorConfig);
 		}
@@ -40,7 +41,7 @@ namespace Users.Tests
 		protected IConfigurationRoot config;
 
 		[SetUp]
-		protected void SetUp()
+		protected virtual void SetUp()
 		{
 			config = new ConfigurationBuilder().SetBasePath("C:\\sketch\\CustomIndexService\\API\\Users.Tests").AddJsonFile("appsettings.json").Build();
 		}

@@ -38,7 +38,7 @@ namespace StockScreener.Service.IntegrationTests
 			var ticker2 = "PEE";
 			var ticker3 = "TCKR";
 
-			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2).AddTicker(ticker2));
+			InsertData(StockIndexCreator.GetStockIndex(stockIndex1).AddTicker(ticker1).AddTicker(ticker2).AddTicker(ticker3));
 
 			AddMarketToScreeningRequest(stockIndex1);
 			AddIncludedTickerToScreeningRequest(ticker3);

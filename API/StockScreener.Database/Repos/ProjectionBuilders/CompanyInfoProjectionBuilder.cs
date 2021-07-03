@@ -12,7 +12,8 @@ namespace Database.Repositories
             datapointMapper = new Dictionary<BaseDatapoint, Action>()
             {
                 {BaseDatapoint.Industry, AddIndustry },
-                {BaseDatapoint.Sector, AddSector }
+                {BaseDatapoint.Sector, AddSector },
+                {BaseDatapoint.Ticker, AddTicker }
             };
         }
 
@@ -24,6 +25,11 @@ namespace Database.Repositories
         private void AddIndustry()
         {
             projection.Include(x => x.Industry);
+        }
+
+        private void AddTicker()
+        {
+            projection.Include(x => x.Ticker);
         }
     }
 }
