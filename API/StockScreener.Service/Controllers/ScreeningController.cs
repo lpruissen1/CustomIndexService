@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace StockScreener.Service.Controllers
 {
-    [ApiController]
+	[ApiController]
     [Route("[controller]")]
     public class ScreeningController : ControllerBase
     {

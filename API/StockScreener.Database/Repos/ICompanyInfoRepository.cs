@@ -8,5 +8,6 @@ namespace StockScreener.Database.Repos
     public interface ICompanyInfoRepository : IBaseRepository<CompanyInfo>
     {
         CompanyInfo Get(string tickers, IEnumerable<BaseDatapoint> dataPoints);
+        IEnumerable<string> GetAllTickers();
     }
 }

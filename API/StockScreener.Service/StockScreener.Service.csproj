@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StockInformation\StockInformation.csproj" />
     <ProjectReference Include="..\StockScreener\StockScreener.csproj" />
   </ItemGroup>
 

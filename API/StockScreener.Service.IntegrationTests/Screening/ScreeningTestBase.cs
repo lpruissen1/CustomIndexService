@@ -69,7 +69,7 @@ namespace StockScreener.Service.IntegrationTests
 
 		public void AddAnnualizedTrailingPerformanceToScreeningRequest(double upper, double lower, TimePeriod timePeriod)
 		{
-			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.AnnualizedTrailingPerformance });
+			screeningRequest.TimedRangeRule.Add(new TimedRangeRule { Upper = upper, Lower = lower, TimePeriod = timePeriod, RuleType = RuleType.TrailingPerformanceAnnualized });
 		}
 
 		public void AddCoefficientOfVariationToScreeningRequest(double upper, double lower, TimePeriod timePeriod)
