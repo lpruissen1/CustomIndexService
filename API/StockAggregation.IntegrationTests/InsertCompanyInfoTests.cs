@@ -27,7 +27,7 @@ namespace StockAggregation.IntegrationTests
 				Updated = lastUpdated
 			};
 
-			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse));
+			sut = new StockAggregationService(stockContext, priceContext, new FakePolygonClient(stubResponse), new FakeLogger());
 
 			sut.UpdateCompanyInfoForMarket(market);
 
