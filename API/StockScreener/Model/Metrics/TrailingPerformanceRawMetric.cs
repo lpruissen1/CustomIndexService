@@ -20,7 +20,7 @@ namespace StockScreener.Model.Metrics
         {
             foreach(var entry in rangedDatapoint.GroupBy(x => x.GetTimePeriod()).Select(x => x.FirstOrDefault()))
             {
-                yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.TrailingPerformanceRaw, Time = entry.GetTimePeriod() };
+                yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.TrailingPerformanceRaw, Time = entry.GetTimePeriod() };
             }
         }
 

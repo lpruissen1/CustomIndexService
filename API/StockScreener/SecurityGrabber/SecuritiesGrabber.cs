@@ -26,17 +26,29 @@ namespace StockScreener.SecurityGrabber
             this.priceDataRepository = priceDataRepository;
         }
 
-        public SecuritiesList<BaseSecurity> GetSecurities(SecuritiesSearchParams searchParams)
+        public SecuritiesList<BaseSecurity> GetSecuritiesByIndex(SecuritiesSearchParams searchParams)
         {
-            list = PullBaseSecurityList(searchParams.Indices);
+            list = PullBaseSecurityList(searchParams.Markets);
 
             AddCompanyInfo(searchParams.Datapoints);
             AddStockFinancials(searchParams.Datapoints);
             AddPrice(searchParams.Datapoints);
-            return list;
-        }
 
-        private void AddCompanyInfo(IEnumerable<BaseDatapoint> datapoints)
+            return list;
+		}
+
+		public SecuritiesList<BaseSecurity> GetSecuritiesByTicker(List<string> tickers, IEnumerable<BaseDatapoint> datapoints)
+		{
+			list = new SecuritiesList<BaseSecurity>(tickers.Select(ticker => new BaseSecurity { Ticker = ticker}));
+
+			AddCompanyInfo(datapoints);
+			AddStockFinancials(datapoints);
+			AddPrice(datapoints);
+
+			return list;
+		}
+
+		private void AddCompanyInfo(IEnumerable<BaseDatapoint> datapoints)
         {
 			var relevantDatapoints = datapoints.Where(x => BaseDatapoint.CompanyInfo.HasFlag(x));
 

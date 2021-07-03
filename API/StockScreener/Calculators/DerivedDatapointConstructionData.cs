@@ -5,7 +5,7 @@ namespace StockScreener.Calculators
 {
     public struct DerivedDatapointConstructionData
     {
-        public DerivedDatapoint datapoint;
+        public DerivedDatapoint Datapoint;
         public TimePeriod Time;
     }
 

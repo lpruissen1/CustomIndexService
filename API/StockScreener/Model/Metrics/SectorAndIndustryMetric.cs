@@ -29,8 +29,8 @@ namespace StockScreener.Model.Metrics
 
         public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.Sector};
-            yield return new DerivedDatapointConstructionData { datapoint = DerivedDatapoint.Industry};
+            yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.Sector};
+            yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.Industry};
         }
     }
 }

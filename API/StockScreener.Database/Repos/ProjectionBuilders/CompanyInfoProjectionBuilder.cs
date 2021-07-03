@@ -11,7 +11,7 @@ namespace Database.Repositories
         {
             datapointMapper = new Dictionary<BaseDatapoint, Action>()
             {
-                {BaseDatapoint.CompanyInfo, AddIndustry },
+                {BaseDatapoint.Industry, AddIndustry },
                 {BaseDatapoint.Sector, AddSector }
             };
         }

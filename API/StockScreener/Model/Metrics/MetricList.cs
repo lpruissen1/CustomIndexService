@@ -53,7 +53,7 @@ namespace StockScreener.Model.Metrics
 
         public SecuritiesSearchParams GetSearchParams()
         {
-			return new SecuritiesSearchParams { Indices = indices, Datapoints = GetBaseDatapoints() };
+			return new SecuritiesSearchParams { Markets = indices, Datapoints = GetBaseDatapoints() };
         }
     }
 }
