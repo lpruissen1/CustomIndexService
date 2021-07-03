@@ -17,7 +17,7 @@ namespace Database.Repositories
 
         public async Task<IEnumerable<CustomIndex>> GetAllForUser(string userId)
         {
-            return await dbCollection.FindAsync(i => i.UserId == userId.ToString()).Result.ToListAsync();
+            return await dbCollection.FindAsync(i => i.UserId == userId.ToString() && i.Active == true).Result.ToListAsync();
         }
 
 		public bool UpdateIndex(string userId, CustomIndex updatedIndex)

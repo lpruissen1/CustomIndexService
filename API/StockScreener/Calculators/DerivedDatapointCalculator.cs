@@ -57,7 +57,7 @@ namespace StockScreener.Calculators
 				{
 					if(timedRangeFunctionMapper.TryGetValue(derivedDatapoint.datapoint, out var timedRangefunction))
 						timedRangefunction.Invoke(derivedSecurity, derivedDatapoint.Time, security);
-
+            
 					if (ruleFunctionMapper.TryGetValue(derivedDatapoint.datapoint, out var basicRuleFunction))
 						basicRuleFunction.Invoke(derivedSecurity, security);
 					

@@ -10,6 +10,7 @@ namespace Database.Model.User.CustomIndices
         public string IndexId { get; init; }
         public List<string> Markets { get; init; } = new List<string>();
         public Sector Sector { get; set; }
+		public bool Active { get; set; }
         public List<TimedRangeRule> TimedRangeRule { get; init; } = new List<TimedRangeRule>();
         public List<RangedRule> RangedRule { get; init; } = new List<RangedRule>();
 
