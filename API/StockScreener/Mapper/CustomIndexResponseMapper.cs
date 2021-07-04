@@ -16,7 +16,7 @@ namespace StockScreener.Mapper
         {
             timedRangedRuleMetricMapper = new Dictionary<RuleType, Func<TimedRangeRule, IMetric>>
             {
-                {RuleType.TrailingPerformanceAnnualized, MapTrailingPerformanceAnnualized },
+                {RuleType.AnnualizedTrailingPerformance, MapTrailingPerformanceAnnualized },
                 {RuleType.EPSGrowthAnnualized, MapEPSGrowthAnnualized },
                 {RuleType.CoefficientOfVariation, MapCoefficientOfVariation },
                 {RuleType.RevenueGrowthAnnualized, MapRevenueGrowthAnnualized }
