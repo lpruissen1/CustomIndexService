@@ -35,7 +35,7 @@ namespace StockAggregation.Service
 			services.AddScoped<IStockAggregationService, StockAggregationService>();
 			services.AddScoped<IApiSettingsFactory, ApiSettingsFactory>();
 			services.AddScoped<IMongoDbContextFactory, MongoDbContextFactory>();
-			services.AddScoped<ILogger, MyLogger>();
+			services.AddSingleton<ILogger, MyLogger>();
 
 			services.AddControllers();
             services.AddSwaggerGen(c =>
