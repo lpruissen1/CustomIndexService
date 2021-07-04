@@ -7,7 +7,7 @@
 		CoefficientOfVariation,
 		RevenueGrowthAnnualized,
 		EPSGrowthAnnualized,
-		TrailingPerformanceAnnualized,
+		AnnualizedTrailingPerformance,
 		PriceToEarningsRatioTTM,
 		PriceToSalesRatioTTM,
 		MarketCap
