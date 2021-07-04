@@ -44,7 +44,7 @@ namespace StockScreener.Service
             services.AddScoped<ISecuritiesGrabber, SecuritiesGrabber>();
             services.AddScoped<IStockScreenerService, StockScreenerService>();
             services.AddScoped<IStockInformationService, StockInformationService>();
-			services.AddScoped<ILogger, MyLogger>();
+			services.AddSingleton<ILogger, MyLogger>();
 
 			services.AddControllers().AddJsonOptions(o =>
             {
