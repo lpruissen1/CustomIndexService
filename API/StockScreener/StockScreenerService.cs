@@ -62,7 +62,6 @@ namespace StockScreener
 			{
 				Tickers = result
 			};
-
 		}
 	}
 }
