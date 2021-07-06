@@ -5,7 +5,9 @@ using StockScreener.Core.Response;
 using StockScreener.Interfaces;
 using StockScreener.Mapper;
 using StockScreener.Model.BaseSecurity;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.Json;
 
 namespace StockScreener
@@ -21,7 +23,7 @@ namespace StockScreener
 			this.logger = logger;
 		}
 
-        public SecuritiesList<DerivedSecurity> Screen(ScreeningRequest request)
+        public ScreeningResponse Screen(ScreeningRequest request)
         {
 			var stopwatch = Stopwatch.StartNew();
             var mapper = new ScreeningRequestMapper();
@@ -41,7 +43,7 @@ namespace StockScreener
 			var json = JsonSerializer.Serialize(request);
 
 			logger.LogInformation(new EventId(1), $"Screening Request time in m/s: {stopwatch.ElapsedMilliseconds};  {json}");
-			return derivedSecurityList;
+			return new ScreeningResponse() { Tickers = derivedSecurityList.Select(x => new ScreeningEntry(x.Ticker)).ToList()};
 		}
 
 		public WeightingResponse Weighting(WeightingRequest request)
@@ -62,7 +64,6 @@ namespace StockScreener
 			{
 				Tickers = result
 			};
-
 		}
 	}
 }

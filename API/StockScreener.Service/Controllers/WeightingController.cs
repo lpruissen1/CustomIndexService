@@ -6,21 +6,20 @@ namespace StockScreener.Service.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class ScreeningController : ControllerBase
+	public class WeightingController : ControllerBase
 	{
 		private readonly IStockScreenerService screenerService;
 
-		public ScreeningController(IStockScreenerService screenerService)
+		public WeightingController(IStockScreenerService screenerService)
 		{
 			this.screenerService = screenerService;
 		}
 
-
-		[HttpPost("FuckYourself")]
+		[HttpPost]
 		[Consumes("application/json")]
-		public ScreeningResponse GetByCustomIndexResponse(ScreeningRequest screeningRequest)
+		public WeightingResponse Post(WeightingRequest weightingRequest)
 		{
-			return screenerService.Screen(screeningRequest);
+			return screenerService.Weighting(weightingRequest);
 		}
 	}
 }

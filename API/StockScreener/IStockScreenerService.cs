@@ -1,10 +1,12 @@
 ﻿using StockScreener.Core.Request;
-using StockScreener.Model.BaseSecurity;
+using StockScreener.Core.Response;
 
 namespace StockScreener
 {
-    public interface IStockScreenerService
+	public interface IStockScreenerService
     {
-        SecuritiesList<DerivedSecurity> Screen(ScreeningRequest request);
-    }
+        ScreeningResponse Screen(ScreeningRequest request);
+		WeightingResponse Weighting(WeightingRequest request);
+
+	}
 }
