@@ -46,7 +46,7 @@ namespace Users.Service
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IPasswordHasher, PasswordHasher>();
-			services.AddScoped<ILogger, MyLogger>();
+			services.AddSingleton<ILogger, MyLogger>();
 
 			services.AddControllers();
             services.AddSwaggerGen(c =>

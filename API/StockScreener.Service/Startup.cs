@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using StockInformation;
 using StockScreener.Database;
 using StockScreener.Database.Config;
 using StockScreener.Database.Repos;
@@ -42,7 +43,8 @@ namespace StockScreener.Service
             services.AddScoped<IPriceDataRepository>(_ =>new PriceDataRepository(new MongoDbContextFactory()));
             services.AddScoped<ISecuritiesGrabber, SecuritiesGrabber>();
             services.AddScoped<IStockScreenerService, StockScreenerService>();
-			services.AddScoped<ILogger, MyLogger>();
+            services.AddScoped<IStockInformationService, StockInformationService>();
+			services.AddSingleton<ILogger, MyLogger>();
 
 			services.AddControllers().AddJsonOptions(o =>
             {

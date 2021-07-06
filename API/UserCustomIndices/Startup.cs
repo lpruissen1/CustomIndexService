@@ -43,7 +43,7 @@ namespace UserCustomIndices
             services.AddScoped<ICustomIndexValidator, CustomIndexValidator>();
             services.AddScoped<IRequestMapper, RequestMapper>();
             services.AddScoped<IResponseMapper, ResponseMapper>();
-			services.AddScoped<ILogger, MyLogger>();
+			services.AddSingleton<ILogger, MyLogger>();
 
             services.AddControllers().AddJsonOptions(o =>
             {
