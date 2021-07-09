@@ -28,11 +28,12 @@ namespace StockScreener.SecurityGrabber
 
         public SecuritiesList<BaseSecurity> GetSecuritiesByIndex(SecuritiesSearchParams searchParams)
         {
-            list = PullBaseSecurityList(searchParams.Markets);
+			var tickers = PullSecurityByIndex(searchParams.Markets);
+            list = CreateBaseSecurityList(tickers);
 
-            AddCompanyInfo(searchParams.Datapoints);
-            AddStockFinancials(searchParams.Datapoints);
-            AddPrice(searchParams.Datapoints);
+			AddCompanyInfo(tickers, searchParams.Datapoints);
+            AddStockFinancials( searchParams.Datapoints);
+            AddPrice( searchParams.Datapoints);
 
             return list;
 		}
@@ -41,14 +42,14 @@ namespace StockScreener.SecurityGrabber
 		{
 			list = new SecuritiesList<BaseSecurity>(tickers.Select(ticker => new BaseSecurity { Ticker = ticker}));
 
-			AddCompanyInfo(datapoints);
+			AddCompanyInfo(tickers, datapoints);
 			AddStockFinancials(datapoints);
 			AddPrice(datapoints);
 
 			return list;
 		}
 
-		private void AddCompanyInfo(IEnumerable<BaseDatapoint> datapoints)
+		private void AddCompanyInfo(IEnumerable<string> tickers, IEnumerable<BaseDatapoint> datapoints)
         {
 			var relevantDatapoints = datapoints.Where(x => BaseDatapoint.CompanyInfo.HasFlag(x));
 
@@ -57,9 +58,11 @@ namespace StockScreener.SecurityGrabber
 
             var companyInfoMapper = new CompanyInfoMapper();
 
-            foreach (var security in list)
+			var companyInfos = companyInfoRespository.GetMany(tickers, relevantDatapoints);
+
+			foreach (var security in list)
             {
-                var companyInfo = companyInfoRespository.Get(security.Ticker, relevantDatapoints);
+				var companyInfo = companyInfos.First(x => x.Ticker == security.Ticker);
 
                 if (companyInfo is not null)
                     security.Map(companyInfoMapper.MapToSecurity(relevantDatapoints, companyInfo));
@@ -99,9 +102,14 @@ namespace StockScreener.SecurityGrabber
             }
         }
 
-        private SecuritiesList<BaseSecurity> PullBaseSecurityList(IEnumerable<string> indices)
+        private SecuritiesList<BaseSecurity> CreateBaseSecurityList(IEnumerable<string> tickers)
         {
-            return new SecuritiesList<BaseSecurity>(stockIndicesRespository.Get(indices).Select(x => new BaseSecurity() { Ticker = x }));
+            return new SecuritiesList<BaseSecurity>(tickers.Select(ticker => new BaseSecurity() { Ticker = ticker }));
+        }
+
+        private IEnumerable<string> PullSecurityByIndex(IEnumerable<string> indices)
+        {
+            return stockIndicesRespository.Get(indices);
         }
     }
 

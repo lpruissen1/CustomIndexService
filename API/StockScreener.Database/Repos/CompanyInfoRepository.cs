@@ -19,6 +19,13 @@ namespace StockScreener.Database.Repos
             return dbCollection.Find(x => ticker == x.Ticker).Project<CompanyInfo>(projection).FirstOrDefault() ?? new CompanyInfo { Ticker = ticker };
 		}
 
+        public IEnumerable<CompanyInfo> GetMany(IEnumerable<string> tickers, IEnumerable<BaseDatapoint> dataPoints)
+        {
+			var projection = CompanyInfoProjectionBuilder.BuildProjection(dataPoints);
+			var filter = Builders<CompanyInfo>.Filter.In(x => x.Ticker, tickers);
+            return dbCollection.Find(filter).Project<CompanyInfo>(projection).ToEnumerable();
+		}
+
         public IEnumerable<string> GetAllTickers()
         {
 			var projection = CompanyInfoProjectionBuilder.BuildProjection(Enumerable.Repeat(BaseDatapoint.Ticker, 1));
