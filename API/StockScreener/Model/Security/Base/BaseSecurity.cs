@@ -4,13 +4,13 @@ namespace StockScreener.Model.BaseSecurity
 {
     public class BaseSecurity : Security
     {
-        public List<EarningsEntry> QuarterlyEarnings;
-        public List<RevenueEntry> QuarterlyRevenue;
-        public List<PriceEntry> DailyPrice;
-        public List<SalesPerShareEntry> QuarterlySalesPerShare;
-        public List<DividendEntry> QuarterlyDividendsPerShare;
+        public List<EarningsEntry> QuarterlyEarnings = new List<EarningsEntry>();
+        public List<RevenueEntry> QuarterlyRevenue = new List<RevenueEntry>();
+		public List<PriceEntry> DailyPrice = new List<PriceEntry>();
+		public List<SalesPerShareEntry> QuarterlySalesPerShare = new List<SalesPerShareEntry>();
+		public List<DividendEntry> QuarterlyDividendsPerShare = new List<DividendEntry>();
 
-        public void Map(BaseSecurity security)
+		public void Map(BaseSecurity security)
         {
             Sector = security.Sector != null ? security.Sector : Sector;
             Industry = security.Industry != null ? security.Industry : Industry;

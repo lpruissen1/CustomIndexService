@@ -32,7 +32,7 @@ namespace StockScreener.SecurityGrabber
             list = CreateBaseSecurityList(tickers);
 
 			AddCompanyInfo(tickers, searchParams.Datapoints);
-            AddStockFinancials( searchParams.Datapoints);
+            AddStockFinancials(tickers, searchParams.Datapoints);
             AddPrice( searchParams.Datapoints);
 
             return list;
@@ -43,7 +43,7 @@ namespace StockScreener.SecurityGrabber
 			list = new SecuritiesList<BaseSecurity>(tickers.Select(ticker => new BaseSecurity { Ticker = ticker}));
 
 			AddCompanyInfo(tickers, datapoints);
-			AddStockFinancials(datapoints);
+			AddStockFinancials(tickers, datapoints);
 			AddPrice(datapoints);
 
 			return list;
@@ -85,20 +85,23 @@ namespace StockScreener.SecurityGrabber
             }
         }
 
-        private void AddStockFinancials(IEnumerable<BaseDatapoint> datapoints)
+        private void AddStockFinancials(IEnumerable<string> tickers, IEnumerable<BaseDatapoint> datapoints)
         {
-            if (!datapoints.Any())
+            var relevantDatapoints = datapoints.Where(x => BaseDatapoint.StockFinancials.HasFlag(x));
+
+            if (!relevantDatapoints.Any())
                 return;
 
-            var relevantDatapoints = datapoints.Where(x => BaseDatapoint.StockFinancials.HasFlag(x));
             var stockFinancialsMapper = new StockFinancialsMapper();
 
-            foreach (var security in list)
-            {
-                var stockFinancials = stockFinancialsRespository.Get(security.Ticker, relevantDatapoints);
+            var stockFinancials = stockFinancialsRespository.GetMany(tickers, relevantDatapoints);
+            
+			foreach (var security in list)
+			{
+				var stockFinancial = stockFinancials.FirstOrDefault(x => x.Ticker == security.Ticker);
 
-                if (stockFinancials is not null)
-                    security.Map(stockFinancialsMapper.MapToSecurity(relevantDatapoints, stockFinancials));
+				if (stockFinancial is not null)
+                    security.Map(stockFinancialsMapper.MapToSecurity(relevantDatapoints, stockFinancial));
             }
         }
 
