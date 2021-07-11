@@ -22,9 +22,14 @@ namespace StockScreener.Model.Metrics
             {
                 yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.TrailingPerformanceAnnualized, Time = entry.GetTimePeriod() };
             }
-        }
+		}
 
-        public override Dictionary<TimePeriod, double?> GetValue(DerivedSecurity security)
+		public override TimePeriod? GetPriceTimePeriod()
+		{
+			return rangedDatapoint.Max(x => x.GetTimePeriod());
+		}
+
+		public override Dictionary<TimePeriod, double?> GetValue(DerivedSecurity security)
         {
             return security.TrailingPerformanceAnnualized;
         }

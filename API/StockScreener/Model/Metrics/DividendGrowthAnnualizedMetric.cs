@@ -24,7 +24,12 @@ namespace StockScreener.Model.Metrics
             }
         }
 
-        public override Dictionary<TimePeriod, double?> GetValue(DerivedSecurity security)
+		public override TimePeriod? GetPriceTimePeriod()
+		{
+			return null;
+		}
+
+		public override Dictionary<TimePeriod, double?> GetValue(DerivedSecurity security)
         {
             return security.DividendGrowthAnnualized;
         }

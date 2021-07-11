@@ -1,4 +1,5 @@
-﻿using StockScreener.Calculators;
+﻿using Core;
+using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
@@ -25,5 +26,7 @@ namespace StockScreener.Model.Metrics
         public abstract IEnumerable<BaseDatapoint> GetBaseDatapoints();
 
         public abstract IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints();
-    }
+
+		public abstract TimePeriod? GetPriceTimePeriod();
+	}
 }

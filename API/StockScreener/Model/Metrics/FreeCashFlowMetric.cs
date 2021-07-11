@@ -1,4 +1,5 @@
-﻿using StockScreener.Calculators;
+﻿using Core;
+using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
@@ -20,7 +21,12 @@ namespace StockScreener.Model.Metrics
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.FreeCashFlow };
         }
 
-        public override double? GetValue(DerivedSecurity security)
+		public override TimePeriod? GetPriceTimePeriod()
+		{
+			return null;
+		}
+
+		public override double? GetValue(DerivedSecurity security)
         {
             return security.FreeCashFlow;
         }

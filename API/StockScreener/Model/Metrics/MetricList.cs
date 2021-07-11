@@ -1,8 +1,10 @@
-﻿using StockScreener.Calculators;
+﻿using Core;
+using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using StockScreener.SecurityGrabber;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
@@ -53,7 +55,12 @@ namespace StockScreener.Model.Metrics
 
         public SecuritiesSearchParams GetSearchParams()
         {
-			return new SecuritiesSearchParams { Markets = indices, Datapoints = GetBaseDatapoints() };
+			return new SecuritiesSearchParams { Markets = indices, Datapoints = GetBaseDatapoints(), PriceTimePeriod = GetPriceTimePeriod() };
         }
+
+		public TimePeriod? GetPriceTimePeriod()
+		{
+			return metrics.Select(x => x.GetPriceTimePeriod()).Max();
+		}
     }
 }

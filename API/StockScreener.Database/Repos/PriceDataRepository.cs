@@ -11,30 +11,9 @@ namespace StockScreener.Database.Repos
 {
     public class PriceDataRepository : BaseRepository<PriceData>, IPriceDataRepository
 	{
-		protected IMongoCollection<HourPriceData> hourIntervalCollection;
-		protected IMongoCollection<DayPriceData> dayIntervalCollection;
+		public PriceDataRepository(IMongoDBContext context) : base(context) { }
 
-		public PriceDataRepository(IMongoDBContext context) : base(context)
-		{
-			dayIntervalCollection = mongoContext.GetCollection<DayPriceData>(typeof(DayPriceData).Name);
-			hourIntervalCollection = mongoContext.GetCollection<HourPriceData>(typeof(HourPriceData).Name);
-		}
-
-		public PriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext())
-		{
-			dayIntervalCollection = mongoContext.GetCollection<DayPriceData>(typeof(DayPriceData).Name);
-			hourIntervalCollection = mongoContext.GetCollection<HourPriceData>(typeof(HourPriceData).Name);
-		}
-
-		public void Create(HourPriceData obj)
-		{
-			hourIntervalCollection.InsertOne(obj);
-		}
-
-		public void Create(DayPriceData obj)
-		{
-			dayIntervalCollection.InsertOne(obj);
-		}
+		public PriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext()) { }
 
 		public void Update(DayPriceData entry)
 		{
@@ -60,6 +39,15 @@ namespace StockScreener.Database.Repos
 			return prices?.Candle ?? new List<Candle>();
 		}
 
+        public IEnumerable<TPriceEntry> GetClosePriceOverTimePeriod<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timeSpan) where TPriceEntry : PriceData
+		{
+			var tickerFilter = Builders<TPriceEntry>.Filter.In(e => e.Ticker, tickers);
+			var timeStampFilter = Builders<TPriceEntry>.Filter.In(e => e.Ticker, tickers);
+			var combinedFilter = Builders<TPriceEntry>.Filter.And(tickerFilter, timeStampFilter);
+
+			return mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(combinedFilter).ToEnumerable();
+        }
+
 		private void UpdatePriceData<TPriceType>(TPriceType entry) where TPriceType : PriceData
 		{
 			var filter = Builders<TPriceType>.Filter.Eq(e => e.Ticker, entry.Ticker);
@@ -77,10 +65,5 @@ namespace StockScreener.Database.Repos
 		{
 			return Builders<TPriceType>.Update.PushEach<Candle>("Candle", candles);
 		}
-
-        public double GetPriceData<TPriceEntry>(string ticker, TimePeriod timeSpan) where TPriceEntry : PriceData
-        {
-            throw new NotImplementedException();
-        }
     }
 }

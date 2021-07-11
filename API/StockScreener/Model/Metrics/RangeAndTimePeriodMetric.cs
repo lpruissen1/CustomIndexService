@@ -26,5 +26,7 @@ namespace StockScreener.Model.Metrics
         public abstract IEnumerable<BaseDatapoint> GetBaseDatapoints();
 
         public abstract IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints();
-    }
+
+		public abstract TimePeriod? GetPriceTimePeriod();
+	}
 }

@@ -1,4 +1,5 @@
-﻿using StockScreener.Core;
+﻿using Core;
+using StockScreener.Core;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Repos;
 using StockScreener.Interfaces;
@@ -33,7 +34,9 @@ namespace StockScreener.SecurityGrabber
 
 			AddCompanyInfo(tickers, searchParams.Datapoints);
             AddStockFinancials(tickers, searchParams.Datapoints);
-            AddPrice( searchParams.Datapoints);
+
+			if (searchParams.PriceTimePeriod is not null)
+				AddPrice(tickers, searchParams.PriceTimePeriod.Value);
 
             return list;
 		}
@@ -44,7 +47,8 @@ namespace StockScreener.SecurityGrabber
 
 			AddCompanyInfo(tickers, datapoints);
 			AddStockFinancials(tickers, datapoints);
-			AddPrice(datapoints);
+			if(datapoints.Contains(BaseDatapoint.Price))
+				AddPrice(tickers, TimePeriod.Year);
 
 			return list;
 		}
@@ -69,10 +73,9 @@ namespace StockScreener.SecurityGrabber
             }
         }
 
-        private void AddPrice(IEnumerable<BaseDatapoint> datapoints)
+        private void AddPrice(IEnumerable<string> tickers, TimePeriod timePeriod)
         {
-            if (!datapoints.Any(x => x == BaseDatapoint.Price))
-                return;
+			var priceInfos = priceDataRepository.GetClosePriceOverTimePeriod<DayPriceData>(tickers, timePeriod);
 
             foreach (var security in list)
             {
