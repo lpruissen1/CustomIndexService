@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Extensions;
 using Database.Core;
 using Database.Repositories;
 using MongoDB.Driver;
@@ -9,11 +10,18 @@ using System.Linq;
 
 namespace StockScreener.Database.Repos
 {
-    public class PriceDataRepository : BaseRepository<PriceData>, IPriceDataRepository
+	public class PriceDataRepository : BaseRepository<PriceData>, IPriceDataRepository
 	{
-		public PriceDataRepository(IMongoDBContext context) : base(context) { }
+		IPriceDataProjectionBuilder projectionBuilder;
+		public PriceDataRepository(IMongoDBContext context) : base(context)
+		{
+			projectionBuilder = new PriceDataProjectionBuilder();
+		}
 
-		public PriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext()) { }
+		public PriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext()) 
+		{
+			projectionBuilder = new PriceDataProjectionBuilder();
+		}
 
 		public void Update(DayPriceData entry)
 		{
@@ -39,10 +47,12 @@ namespace StockScreener.Database.Repos
 			return prices?.Candle ?? new List<Candle>();
 		}
 
-        public IEnumerable<TPriceEntry> GetClosePriceOverTimePeriod<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timeSpan) where TPriceEntry : PriceData
+        public IEnumerable<TPriceEntry> GetClosePriceOverTimePeriod<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timePeriod) where TPriceEntry : PriceData
 		{
+			var now = ((double)DateTimeOffset.Now.ToUnixTimeSeconds());
+			var timeRange = (now - TimePeriodConverter.GetUnixFromTimePeriod(timePeriod));
 			var tickerFilter = Builders<TPriceEntry>.Filter.In(e => e.Ticker, tickers);
-			var timeStampFilter = Builders<TPriceEntry>.Filter.In(e => e.Ticker, tickers);
+			var timeStampFilter = Builders<TPriceEntry>.Filter.ElemMatch(priceInfo => priceInfo.Candle, candle => candle.timestamp >= timeRange);
 			var combinedFilter = Builders<TPriceEntry>.Filter.And(tickerFilter, timeStampFilter);
 
 			return mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(combinedFilter).ToEnumerable();

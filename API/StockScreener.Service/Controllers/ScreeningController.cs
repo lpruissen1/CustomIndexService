@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockScreener.Core.Request;
 using StockScreener.Core.Response;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace StockScreener.Service.Controllers

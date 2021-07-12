@@ -66,7 +66,7 @@ namespace StockScreener.SecurityGrabber
 
 			foreach (var security in list)
             {
-				var companyInfo = companyInfos.First(x => x.Ticker == security.Ticker);
+				var companyInfo = companyInfos.FirstOrDefault(x => x.Ticker == security.Ticker);
 
                 if (companyInfo is not null)
                     security.Map(companyInfoMapper.MapToSecurity(relevantDatapoints, companyInfo));

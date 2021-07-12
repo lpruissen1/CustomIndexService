@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Database.Repositories
 {
-    public class CompanyInfoProjectionBuilder : ProjectionBuilder<CompanyInfo>
+	public class CompanyInfoProjectionBuilder : ProjectionBuilder<CompanyInfo>
     {
         public CompanyInfoProjectionBuilder() : base()
         {
