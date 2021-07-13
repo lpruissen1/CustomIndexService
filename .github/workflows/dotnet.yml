@@ -18,6 +18,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: Where am I
+      run: echo ls
     - name: Restore dependencies
       run: dotnet restore
       working-directory: src/API
