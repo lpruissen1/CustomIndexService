@@ -19,6 +19,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Where am I
+      run: cd API
+    - name: Where am I 2
       run: ls
     - name: Restore dependencies
       run: dotnet restore
