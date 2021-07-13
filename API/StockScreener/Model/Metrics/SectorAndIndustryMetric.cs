@@ -1,4 +1,5 @@
-﻿using StockScreener.Calculators;
+﻿using Core;
+using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
@@ -31,6 +32,11 @@ namespace StockScreener.Model.Metrics
         {
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.Sector};
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.Industry};
-        }
-    }
+		}
+
+		public TimePeriod? GetPriceTimePeriod()
+		{
+			return null;
+		}
+	}
 }

@@ -1,4 +1,5 @@
-﻿using StockScreener.Calculators;
+﻿using Core;
+using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
@@ -19,11 +20,15 @@ namespace StockScreener.Model.Metrics
         {
             securitiesList.RemoveAll(security => !rangedDatapoint.Any(range => range.WithinRange(GetValue(security))));
         }
+		public virtual TimePeriod? GetPriceTimePeriod()
+		{
+			return null;
+		}
 
-        public abstract double? GetValue(DerivedSecurity security);
+		public abstract double? GetValue(DerivedSecurity security);
 
         public abstract IEnumerable<BaseDatapoint> GetBaseDatapoints();
 
         public abstract IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints();
-    }
+	}
 }

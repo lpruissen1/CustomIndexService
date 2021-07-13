@@ -2,11 +2,10 @@
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class FreeCashFlowMetric : RangedMetric
+	public class FreeCashFlowMetric : RangedMetric
     {
         public FreeCashFlowMetric(List<Range> ranges) : base(ranges) { }
 
@@ -20,7 +19,7 @@ namespace StockScreener.Model.Metrics
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.FreeCashFlow };
         }
 
-        public override double? GetValue(DerivedSecurity security)
+		public override double? GetValue(DerivedSecurity security)
         {
             return security.FreeCashFlow;
         }

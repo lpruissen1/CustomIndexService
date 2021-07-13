@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Extensions;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System;
@@ -7,9 +8,8 @@ using System.Linq;
 
 namespace StockScreener.Calculators
 {
-    public class DerivedDatapointCalculator : IDerivedDatapointCalculator
+	public class DerivedDatapointCalculator : IDerivedDatapointCalculator
     {
-        private readonly double yearUnixTime = 31_557_600;
         private readonly double weekErrorFactor = 604_800;
         private readonly double thirtySixHourErrorFactor = 129_600;
 
@@ -81,7 +81,7 @@ namespace StockScreener.Calculators
 
 			if (past is not null)
 			{
-				derivedSecurity.RevenueGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, GetUnixFromTimePeriod(timePeriod)));
+				derivedSecurity.RevenueGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Revenue, past.Revenue, TimePeriodConverter.GetSecondsFromTimePeriod(timePeriod)));
 				return;
 			}
 			
@@ -100,7 +100,7 @@ namespace StockScreener.Calculators
 
 			if (past is not null)
 			{
-				derivedSecurity.EPSGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Earnings, past.Earnings, GetUnixFromTimePeriod(timePeriod)));
+				derivedSecurity.EPSGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Earnings, past.Earnings, TimePeriodConverter.GetSecondsFromTimePeriod(timePeriod)));
 				return;
 			}
 
@@ -119,7 +119,7 @@ namespace StockScreener.Calculators
 
 			if (past is not null)
 			{
-				derivedSecurity.DividendGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends, GetUnixFromTimePeriod(timePeriod)));
+				derivedSecurity.DividendGrowthAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.QuarterlyDividends, past.QuarterlyDividends, TimePeriodConverter.GetSecondsFromTimePeriod(timePeriod)));
 				return;
 			}
 
@@ -138,7 +138,7 @@ namespace StockScreener.Calculators
 
 			if (past is not null)
 			{
-				derivedSecurity.TrailingPerformanceAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Price, past.Price, GetUnixFromTimePeriod(timePeriod)));
+				derivedSecurity.TrailingPerformanceAnnualized.Add(timePeriod, GrowthRateCalculator.CalculateAnnualizedGrowthRate(present.Price, past.Price, TimePeriodConverter.GetSecondsFromTimePeriod(timePeriod)));
 				return;
 			}
 
@@ -234,7 +234,7 @@ namespace StockScreener.Calculators
         {
             var mostRecent = timeEntries.Last();
             var mostRecentTime = mostRecent.Timestamp;
-            var timeRangeInUnix = GetUnixFromTimePeriod(range);
+            var timeRangeInUnix = TimePeriodConverter.GetSecondsFromTimePeriod(range);
 
             var past = timeEntries.FirstOrDefault(x => x.Timestamp > (mostRecentTime - timeRangeInUnix - errorFactor) && x.Timestamp < (mostRecentTime - timeRangeInUnix + errorFactor));
 
@@ -294,29 +294,10 @@ namespace StockScreener.Calculators
 		private IEnumerable<TEntry> GetAllEntriesForTimeSpan<TEntry>(List<TEntry> timeEntries, TimePeriod range) where TEntry : TimeEntry
         {
             var present = timeEntries.Last().Timestamp;
-            var timeRangeInUnix = GetUnixFromTimePeriod(range);
+            var timeRangeInUnix = TimePeriodConverter.GetSecondsFromTimePeriod(range);
 
-            return timeEntries.Where(x => x.Timestamp > (present - yearUnixTime - weekErrorFactor));
+            return timeEntries.Where(x => x.Timestamp > (present - timeRangeInUnix - weekErrorFactor));
 		}
-
-		private double GetUnixFromTimePeriod(TimePeriod timespan)
-        {
-            switch (timespan)
-            {
-                case TimePeriod.Quarter:
-                    return yearUnixTime / 4;
-                case TimePeriod.HalfYear:
-                    return yearUnixTime / 2;
-                case TimePeriod.Year:
-                    return yearUnixTime;
-                case TimePeriod.ThreeYear:
-                    return yearUnixTime * 3;
-                case TimePeriod.FiveYear:
-                    return yearUnixTime * 5;
-                default:
-                    return 0;
-            }
-        }
     }
 
 }

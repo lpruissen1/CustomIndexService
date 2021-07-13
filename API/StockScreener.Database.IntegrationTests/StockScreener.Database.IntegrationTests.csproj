@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+
+
+	<ItemGroup>
+		<PackageReference Include="Moq" Version="4.16.1" />
+		<PackageReference Include="NUnit" Version="3.13.1" />
+		<PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\StockScreener.Core\StockScreener.Core.csproj" />
+		<ProjectReference Include="..\StockScreener.Database\StockScreener.Database.csproj" />
+		<ProjectReference Include="..\StockScreener.Service.IntegrationTests\StockScreener.Service.IntegrationTests.csproj" />
+	</ItemGroup>
+
+</Project>

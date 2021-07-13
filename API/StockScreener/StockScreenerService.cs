@@ -23,7 +23,7 @@ namespace StockScreener
 			this.logger = logger;
 		}
 
-        public ScreeningResponse Screen(ScreeningRequest request)
+        public SecuritiesList<DerivedSecurity> Screen(ScreeningRequest request)
         {
 			var stopwatch = Stopwatch.StartNew();
             var mapper = new ScreeningRequestMapper();
@@ -43,7 +43,7 @@ namespace StockScreener
 			var json = JsonSerializer.Serialize(request);
 
 			logger.LogInformation(new EventId(1), $"Screening Request time in m/s: {stopwatch.ElapsedMilliseconds};  {json}");
-			return new ScreeningResponse() { Tickers = derivedSecurityList.Select(x => new ScreeningEntry(x.Ticker)).ToList()};
+			return derivedSecurityList;
 		}
 
 		public WeightingResponse Weighting(WeightingRequest request)

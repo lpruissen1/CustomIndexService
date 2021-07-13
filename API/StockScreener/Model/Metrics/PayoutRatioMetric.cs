@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
 {
-    public class PayoutRatioMetric : RangedMetric
+	public class PayoutRatioMetric : RangedMetric
     {
         public PayoutRatioMetric(List<Range> ranges) : base(ranges) { }
 
@@ -17,9 +17,9 @@ namespace StockScreener.Model.Metrics
         public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.PayoutRatio };
-        }
+		}
 
-        public override double? GetValue(DerivedSecurity security)
+		public override double? GetValue(DerivedSecurity security)
         {
             return security.PayoutRatio;
         }

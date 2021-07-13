@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
 {
-    public class PriceToBookRatioMetric : RangedMetric
+	public class PriceToBookRatioMetric : RangedMetric
     {
         public PriceToBookRatioMetric(List<Range> ranges) : base(ranges) { }
 
@@ -20,7 +20,7 @@ namespace StockScreener.Model.Metrics
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.PriceToBookValue };
         }
 
-        public override double? GetValue(DerivedSecurity security)
+		public override double? GetValue(DerivedSecurity security)
         {
             return security.PriceToBookValue;
         }

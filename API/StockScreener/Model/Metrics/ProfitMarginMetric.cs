@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
 {
-    public class ProfitMarginMetric : RangedMetric
+	public class ProfitMarginMetric : RangedMetric
     {
         public ProfitMarginMetric(List<Range> ranges) : base(ranges)
         {
@@ -19,9 +19,9 @@ namespace StockScreener.Model.Metrics
         public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.ProfitMargin };
-        }
+		}
 
-        public override double? GetValue(DerivedSecurity security)
+		public override double? GetValue(DerivedSecurity security)
         {
             return security.ProfitMargin;
         }

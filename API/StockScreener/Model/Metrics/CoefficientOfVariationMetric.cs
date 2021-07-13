@@ -24,7 +24,12 @@ namespace StockScreener.Model.Metrics
             }
         }
 
-        public override Dictionary<TimePeriod, double?> GetValue(DerivedSecurity security)
+		public override TimePeriod? GetPriceTimePeriod()
+		{
+			return rangedDatapoint.Max(x => x.GetTimePeriod());
+		}
+
+		public override Dictionary<TimePeriod, double?> GetValue(DerivedSecurity security)
         {
             return security.CoefficientOfVariation;
         }

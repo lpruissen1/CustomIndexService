@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
 {
-    public class GrossMarginMetric : RangedMetric
+	public class GrossMarginMetric : RangedMetric
     {
         public GrossMarginMetric(List<Range> ranges) : base(ranges) { }
 
@@ -19,7 +19,7 @@ namespace StockScreener.Model.Metrics
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.GrossMargin };
         }
 
-        public override double? GetValue(DerivedSecurity security)
+		public override double? GetValue(DerivedSecurity security)
         {
             return security.GrossMargin;
         }

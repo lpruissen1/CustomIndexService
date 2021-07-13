@@ -49,7 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Core", "Users.Core\Us
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Tests", "Users.Tests\Users.Tests.csproj", "{B7D04C76-625A-4FC3-B1BD-4BDC7C7DC98C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockInformation", "StockInformation\StockInformation.csproj", "{6CE4237A-41EF-44A4-B591-46B821BB2BA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockInformation", "StockInformation\StockInformation.csproj", "{6CE4237A-41EF-44A4-B591-46B821BB2BA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockScreener.Database.IntegrationTests", "StockScreener.Database.IntegrationTests\StockScreener.Database.IntegrationTests.csproj", "{3E840EB6-F202-4F04-A613-F7C94D747B45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +155,10 @@ Global
 		{6CE4237A-41EF-44A4-B591-46B821BB2BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CE4237A-41EF-44A4-B591-46B821BB2BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CE4237A-41EF-44A4-B591-46B821BB2BA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E840EB6-F202-4F04-A613-F7C94D747B45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E840EB6-F202-4F04-A613-F7C94D747B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E840EB6-F202-4F04-A613-F7C94D747B45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E840EB6-F202-4F04-A613-F7C94D747B45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
