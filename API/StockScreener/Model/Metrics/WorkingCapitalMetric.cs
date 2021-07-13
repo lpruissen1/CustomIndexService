@@ -23,7 +23,7 @@ namespace StockScreener.Model.Metrics
 
 		public override double? GetValue(DerivedSecurity security)
         {
-            return security.WorkingCapita
+			return security.WorkingCapital;
         }
     }
 }
