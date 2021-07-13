@@ -21,8 +21,8 @@ jobs:
     - name: Where am I
       run: ls
     - name: Restore dependencies
-      run: dotnet restore ./API
-      working-directory: src/API
+      run: dotnet restore
+      working-directory: ./API
     - name: Build
       run: dotnet build --no-restore
     - name: Test
