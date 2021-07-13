@@ -16,7 +16,9 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 5.0.x- 
+    - name: Set selected color
+      run: echo ls
     - name: Restore dependencies
       run: dotnet restore
       working-directory: src/API
