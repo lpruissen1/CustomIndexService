@@ -51,7 +51,7 @@ namespace StockScreener.Database.Repos
         public IEnumerable<TPriceEntry> GetClosePriceOverTimePeriod<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timePeriod) where TPriceEntry : PriceData
 		{
 			var now = ((double)DateTimeOffset.Now.ToUnixTimeSeconds());
-			var timeRange = (now - TimePeriodConverter.GetUnixFromTimePeriod(timePeriod));
+			var timeRange = (now - TimePeriodConverter.GetSecondsFromTimePeriod(timePeriod));
 			var tickerFilter = Builders<TPriceEntry>.Filter.In(e => e.Ticker, tickers);
 			var timeStampFilter = Builders<TPriceEntry>.Filter.ElemMatch(priceInfo => priceInfo.Candle, candle => candle.timestamp >= timeRange);
 			var combinedFilter = Builders<TPriceEntry>.Filter.And(tickerFilter, timeStampFilter);

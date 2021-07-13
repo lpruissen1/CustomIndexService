@@ -2,22 +2,22 @@
 {
 	public static class TimePeriodConverter
 	{
-		private static double yearUnixTime = 31_557_600;
+		private static double secondsInAYear = 31_557_600;
 
-		public static double GetUnixFromTimePeriod(TimePeriod timespan)
+		public static double GetSecondsFromTimePeriod(TimePeriod timespan)
 		{
 			switch (timespan)
 			{
 				case TimePeriod.Quarter:
-					return yearUnixTime / 4;
+					return secondsInAYear / 4;
 				case TimePeriod.HalfYear:
-					return yearUnixTime / 2;
+					return secondsInAYear / 2;
 				case TimePeriod.Year:
-					return yearUnixTime;
+					return secondsInAYear;
 				case TimePeriod.ThreeYear:
-					return yearUnixTime * 3;
+					return secondsInAYear * 3;
 				case TimePeriod.FiveYear:
-					return yearUnixTime * 5;
+					return secondsInAYear * 5;
 				default:
 					return 0;
 			}

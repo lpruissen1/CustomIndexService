@@ -14,7 +14,7 @@ namespace Database.Repositories
 		public ProjectionDefinition<TPriceData> BuildProjection<TPriceData>(TimePeriod timePeriod) where TPriceData : PriceData
 		{
 			var now = ((double)DateTimeOffset.Now.ToUnixTimeSeconds());
-			var timeRange = (now - TimePeriodConverter.GetUnixFromTimePeriod(timePeriod));
+			var timeRange = (now - TimePeriodConverter.GetSecondsFromTimePeriod(timePeriod));
 			var projection = Builders<TPriceData>.Projection;
 
 			projection.Include(x => x.Candle.Where(candle => candle.timestamp > timeRange));
