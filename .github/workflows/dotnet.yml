@@ -21,7 +21,7 @@ jobs:
     - name: Where am I
       run: ls
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./API
       working-directory: src/API
     - name: Build
       run: dotnet build --no-restore
