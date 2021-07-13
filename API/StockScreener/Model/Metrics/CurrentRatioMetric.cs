@@ -1,12 +1,11 @@
-﻿using Core;
-using StockScreener.Calculators;
+﻿using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
 {
-    public class CurrentRatioMetric : RangedMetric
+	public class CurrentRatioMetric : RangedMetric
     {
         public CurrentRatioMetric(List<Range> ranges) : base(ranges) { }
 

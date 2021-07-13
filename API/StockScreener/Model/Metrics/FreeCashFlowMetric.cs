@@ -1,13 +1,11 @@
-﻿using Core;
-using StockScreener.Calculators;
+﻿using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class FreeCashFlowMetric : RangedMetric
+	public class FreeCashFlowMetric : RangedMetric
     {
         public FreeCashFlowMetric(List<Range> ranges) : base(ranges) { }
 

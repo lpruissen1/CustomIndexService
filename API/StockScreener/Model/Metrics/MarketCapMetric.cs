@@ -1,13 +1,11 @@
-﻿using Core;
-using StockScreener.Calculators;
+﻿using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
-    public class MarketCapMetric : RangedMetric
+	public class MarketCapMetric : RangedMetric
     {
         public MarketCapMetric(List<Range> ranges) : base(ranges) { }
 

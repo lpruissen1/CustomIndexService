@@ -1,12 +1,11 @@
-﻿using Core;
-using StockScreener.Calculators;
+﻿using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
 {
-    public class GrossMarginMetric : RangedMetric
+	public class GrossMarginMetric : RangedMetric
     {
         public GrossMarginMetric(List<Range> ranges) : base(ranges) { }
 

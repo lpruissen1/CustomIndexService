@@ -1,12 +1,11 @@
-﻿using Core;
-using StockScreener.Calculators;
+﻿using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
 {
-    public class PriceToBookRatioMetric : RangedMetric
+	public class PriceToBookRatioMetric : RangedMetric
     {
         public PriceToBookRatioMetric(List<Range> ranges) : base(ranges) { }
 

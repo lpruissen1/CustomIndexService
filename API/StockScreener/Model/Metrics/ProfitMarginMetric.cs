@@ -1,12 +1,11 @@
-﻿using Core;
-using StockScreener.Calculators;
+﻿using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
 
 namespace StockScreener.Model.Metrics
 {
-    public class ProfitMarginMetric : RangedMetric
+	public class ProfitMarginMetric : RangedMetric
     {
         public ProfitMarginMetric(List<Range> ranges) : base(ranges)
         {
