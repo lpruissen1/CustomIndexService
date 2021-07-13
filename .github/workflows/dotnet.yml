@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Where am I
-      run: echo $(ls)
+      run: ls
     - name: Restore dependencies
       run: dotnet restore
       working-directory: src/API
