@@ -12,16 +12,9 @@ namespace StockScreener.Database.Repos
 {
 	public class PriceDataRepository : BaseRepository<PriceData>, IPriceDataRepository
 	{
-		IPriceDataProjectionBuilder projectionBuilder;
-		public PriceDataRepository(IMongoDBContext context) : base(context)
-		{
-			projectionBuilder = new PriceDataProjectionBuilder();
-		}
+		public PriceDataRepository(IMongoDBContext context) : base(context)	{ }
 
-		public PriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext()) 
-		{
-			projectionBuilder = new PriceDataProjectionBuilder();
-		}
+		public PriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext()) { }
 
 		public void Update(DayPriceData entry)
 		{
@@ -45,6 +38,14 @@ namespace StockScreener.Database.Repos
 			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(x => x.Ticker == ticker).FirstOrDefault();
 
 			return prices?.Candle ?? new List<Candle>();
+		}
+
+		public List<TPriceEntry> GetMany<TPriceEntry>(IEnumerable<string> tickers) where TPriceEntry : PriceData
+		{
+			var tickerFilter = Builders<TPriceEntry>.Filter.In(e => e.Ticker, tickers);
+			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(tickerFilter).ToList();
+
+			return prices ?? new List<TPriceEntry>();
 		}
 
         public IEnumerable<TPriceEntry> GetClosePriceOverTimePeriod<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timePeriod) where TPriceEntry : PriceData

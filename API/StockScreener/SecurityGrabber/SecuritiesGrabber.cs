@@ -75,15 +75,15 @@ namespace StockScreener.SecurityGrabber
 
         private void AddPrice(IEnumerable<string> tickers, TimePeriod timePeriod)
         {
-			var priceInfos = priceDataRepository.GetClosePriceOverTimePeriod<DayPriceData>(tickers, timePeriod);
+			var priceInfos = priceDataRepository.GetMany<DayPriceData>(tickers);
 
             foreach (var security in list)
             {
-                var priceInfo = priceDataRepository.GetPriceData<DayPriceData>(security.Ticker);
+                var priceInfo = priceInfos.FirstOrDefault(priceInfo => priceInfo.Ticker == security.Ticker);
 
                 if (priceInfo is not null)
                 {
-                    security.DailyPrice = new List<PriceEntry>(priceInfo.Select(x => new PriceEntry { Price = x.closePrice, Timestamp = x.timestamp }));
+                    security.DailyPrice = new List<PriceEntry>(priceInfo.Candle.Select(x => new PriceEntry { Price = x.closePrice, Timestamp = x.timestamp }));
                 }
             }
         }
