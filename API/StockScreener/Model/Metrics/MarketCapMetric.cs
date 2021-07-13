@@ -21,11 +21,6 @@ namespace StockScreener.Model.Metrics
             yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.MarketCap };
         }
 
-		public override TimePeriod? GetPriceTimePeriod()
-		{
-			return null;
-		}
-
 		public override double? GetValue(DerivedSecurity security)
         {
             return security.MarketCap;

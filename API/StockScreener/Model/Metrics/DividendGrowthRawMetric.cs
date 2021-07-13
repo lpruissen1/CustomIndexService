@@ -24,11 +24,6 @@ namespace StockScreener.Model.Metrics
             }
 		}
 
-		public override TimePeriod? GetPriceTimePeriod()
-		{
-			return null;
-		}
-
 		public override Dictionary<TimePeriod, double?> GetValue(DerivedSecurity security)
         {
             return security.DividendGrowthRaw;
