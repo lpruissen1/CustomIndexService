@@ -1,6 +1,5 @@
-﻿
+﻿using ApiClient.Models;
 using Core;
-using ApiClient.Models;
 
 namespace ApiClient
 {

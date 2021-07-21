@@ -11,7 +11,18 @@ namespace StockScreener.Database.Repos
     {
         public StockIndexRepository(IMongoDBContext context) : base(context) { }
 
-        public IEnumerable<string> Get(IEnumerable<string> indices)
+		public void CreateEntryForExchange(string name, List<string> tickers)
+		{
+			var item = new StockIndex()
+			{
+				Name = name,
+				Tickers = tickers
+			};
+
+			dbCollection.InsertOne(item);
+		}
+
+		public IEnumerable<string> Get(IEnumerable<string> indices)
         {
             if ( indices is null )
                 return null;

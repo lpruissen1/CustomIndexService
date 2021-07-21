@@ -17,7 +17,7 @@ namespace Database.Repositories
 			var timeRange = (now - TimePeriodConverter.GetSecondsFromTimePeriod(timePeriod));
 			var projection = Builders<TPriceData>.Projection;
 
-			projection.Include(x => x.Candle.Where(candle => candle.timestamp > timeRange));
+			projection.Include(x => x.Candle.Select(y => y.timestamp >= timeRange));
 			projection.Include(x => x.Ticker);
 			projection.Include(x => x.Version);
 

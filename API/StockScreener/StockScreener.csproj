@@ -9,6 +9,7 @@
   </ItemGroup>
 	
 	<ItemGroup>
+		<ProjectReference Include="..\ApiClient\ApiClient.csproj" />
 		<ProjectReference Include="..\UserCustomIndices.Database\UserCustomIndices.Database.csproj" />
 		<ProjectReference Include="..\StockScreener.Core\StockScreener.Core.csproj" />
 		<ProjectReference Include="..\UserCustomIndices.Core\UserCustomIndices.Core.csproj" />

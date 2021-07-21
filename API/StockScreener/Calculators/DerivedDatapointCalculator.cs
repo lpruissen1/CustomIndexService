@@ -235,6 +235,7 @@ namespace StockScreener.Calculators
             var mostRecent = timeEntries.Last();
             var mostRecentTime = mostRecent.Timestamp;
             var timeRangeInUnix = TimePeriodConverter.GetSecondsFromTimePeriod(range);
+            //errorFactor *= 1000;
 
             var past = timeEntries.FirstOrDefault(x => x.Timestamp > (mostRecentTime - timeRangeInUnix - errorFactor) && x.Timestamp < (mostRecentTime - timeRangeInUnix + errorFactor));
 

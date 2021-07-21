@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace StockAggregation.IntegrationTests
 {
-	public abstract class AggregationServiceTestBase
+	public class AggregationServiceTestBase
 	{
 		protected IMongoDBContext stockContext;
 		protected IMongoDBContext priceContext;

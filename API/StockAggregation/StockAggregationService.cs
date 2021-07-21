@@ -35,15 +35,6 @@ namespace StockAggregation
             stockIndexRepository = new StockIndexRepository(stockDataContext);
         }
 
-        public StockAggregationService(IMongoDbContextFactory dbContextFactory, IApiSettingsFactory apiSettingsFactory) : this(dbContextFactory.GetStockContext(), dbContextFactory.GetPriceContext(), new PolygonClient(apiSettingsFactory.GetPolygonSettings()), null) { }
-
-		public static StockAggregationService New()
-        {
-            var contextFactory = new MongoDbContextFactory();
-            var apiSettingsFactory = new ApiSettingsFactory();
-            return new StockAggregationService(contextFactory.GetStockContext(), contextFactory.GetPriceContext(), new PolygonClient(apiSettingsFactory.GetPolygonSettings()), null);
-        }
-
         public void UpdateCompanyInfoForMarket(string market)
         {
 			foreach(var ticker in GetTickersByIndex(market)) {

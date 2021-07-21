@@ -26,10 +26,10 @@ namespace StockScreener.Database.IntegrationTests
 			var ticker1 = "LEE";
 			var ticker2 = "PEE";
 
-			InserPriceData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1609480831));
+			InserPriceData(PriceDataCreator.GetDailyPriceData(ticker1).AddClosePrice(143.69, 1609480830).AddClosePrice(149.20, 1617411630));
 			InserPriceData(PriceDataCreator.GetDailyPriceData(ticker2).AddClosePrice(27.92, 1609480830).AddClosePrice(21.45, 1617411630));
 
-			var result = sut.GetClosePriceOverTimePeriod<DayPriceData>(new List<string> { ticker1, ticker2}, TimePeriod.HalfYear).ToList();
+			var result = sut.GetMany<DayPriceData>(new List<string> { ticker1, ticker2}, TimePeriod.HalfYear).ToList();
 
 			Assert.AreEqual(2, result.Count);
 

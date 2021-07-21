@@ -4,7 +4,7 @@ namespace ApiClient
 {
 	public class ApiSettingsFactory : IApiSettingsFactory
 	{
-		private IConfigurationRoot config;
+		private readonly IConfigurationRoot config;
 
 		public ApiSettingsFactory()
 		{
@@ -14,6 +14,11 @@ namespace ApiClient
 		public ApiSettings GetPolygonSettings()
 		{
 			return new ApiSettings() { Key = config["ApiSettings:PolygonKey"], Backup = config["ApiSettings:BackupPolygonKey"] };
+		}
+
+		public ApiSettings GetEodSettings()
+		{
+			return new ApiSettings() { Key = config["ApiSettings:EodKey"] };
 		}
 	}
 }

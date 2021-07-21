@@ -76,5 +76,23 @@ namespace StockScreener.Database.Repos
 		{
 			return Builders<TPriceType>.Update.PushEach<Candle>("Candle", candles);
 		}
-    }
+
+		public List<TPriceEntry> GetMany<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timePeriod) where TPriceEntry : PriceData
+		{
+			var now = ((double)DateTimeOffset.Now.ToUnixTimeSeconds());
+			var timeRange = (now - TimePeriodConverter.GetSecondsFromTimePeriod(timePeriod));
+
+			var tickerFilter = Builders<TPriceEntry>.Filter.In(e => e.Ticker, tickers);
+			var ckerFilter = Builders<Candle>.Filter.Gte(e => e.timestamp, timeRange);
+			var cerFilter = Builders<TPriceEntry>.Filter.ElemMatch(e => e.Candle, ckerFilter);
+			var combineFilter = Builders<TPriceEntry>.Filter.And(tickerFilter, cerFilter);
+
+
+			var blah = new PriceDataProjectionBuilder().BuildProjection<TPriceEntry>(timePeriod);
+
+			var result = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(combineFilter).ToList();
+
+			return result;
+		}
+	}
 }

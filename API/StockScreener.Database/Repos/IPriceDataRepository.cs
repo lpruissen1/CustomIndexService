@@ -11,6 +11,7 @@ namespace StockScreener.Database.Repos
         void Update(DayPriceData obj);
         double GetMostRecentPriceEntry<TPriceEntry>(string ticker) where TPriceEntry : PriceData;
 		List<TPriceEntry> GetMany<TPriceEntry>(IEnumerable<string> tickers) where TPriceEntry : PriceData;
+		List<TPriceEntry> GetMany<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timePeriod) where TPriceEntry : PriceData;
 		IEnumerable<TPriceEntry> GetClosePriceOverTimePeriod<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timeSpan) where TPriceEntry : PriceData;
         List<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData;
     }

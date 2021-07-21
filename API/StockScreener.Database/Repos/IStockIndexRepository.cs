@@ -8,5 +8,6 @@ namespace StockScreener.Database.Repos
     {
         IEnumerable<string> Get(IEnumerable<string> indices);
         public StockIndex GetIndex(string name);
+        public void CreateEntryForExchange(string name, List<string> tickers);
     }
 }

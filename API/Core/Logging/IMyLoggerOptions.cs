@@ -2,9 +2,9 @@
 {
 	public interface IMyLoggerOptions
 	{
-		string FilePath { get; set; }
+		string filePath { get; set; }
 
-		string FolderPath { get; set; }
+		string file { get; set; }
 	}
 
 }
