@@ -1,6 +1,7 @@
 ﻿using ApiClient.Models.Eod;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -10,6 +11,7 @@ namespace ApiClient
 	{
 		List<EodExchangeEntry> GetExhangeInfo(string exchange);
 		List<EodCandle> GetEodPriceData(string ticker);
+		EodCompanyInfo GetEodCompanyInfo(string ticker);
 	}
 
 	public class EodClient : IEodClient
@@ -48,6 +50,14 @@ namespace ApiClient
 			return response;
 		}
 
+		public EodCompanyInfo GetEodCompanyInfo(string ticker)
+		{
+			var request = $"{route}/fundamentals/{ticker}?filter=General&{jsonFormatting}" + GetApiKeyRequestPhrase();
+			var response = MakeRequest<EodCompanyInfo>(request);
+
+			return response;
+		}
+
 		private TResponseType MakeRequest<TResponseType>(string request)
 		{
 			var response = client.GetAsync(request).Result;
@@ -67,18 +77,12 @@ namespace ApiClient
 			{
 				return JsonConvert.DeserializeObject<TResponseType>(response.Content.ReadAsStringAsync().Result);
 			}
-			catch
+			catch(Exception e)
 			{
-				logger.LogInformation(new EventId(1), $"Failed tp deserialize request");
-				return default;
+				logger.LogInformation(new EventId(1), $"Failed tp deserialize request: {e.Message}");
 			}
+			
+			return default;
 		}
-	}
-
-	public class EodRequestLog
-	{
-		public string Request { get; set; }
-		public string ResponseCode { get; set; }
-		public string Response { get; set; }
 	}
 }
