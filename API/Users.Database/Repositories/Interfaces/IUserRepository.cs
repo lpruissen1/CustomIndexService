@@ -8,5 +8,6 @@ namespace Users.Database.Repositories.Interfaces
 	{
 		User Get(Guid userId);
 		User GetByUsername(string userName);
+		User GetByUserId(string userId);
 	}
 }

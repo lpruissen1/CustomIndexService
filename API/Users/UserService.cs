@@ -62,6 +62,19 @@ namespace Users
 			return new BadRequestObjectResult(invalidCredentialsMessage);
 		}
 
+		public IActionResult GetInfo(string userId)
+		{
+			var info = userRepository.GetByUserId(userId);
+
+			return new OkObjectResult(new GetInfoResponse()
+			{
+				FirstName = info.FirstName,
+				LastName = info.LastName,
+				Username = info.UserName,
+				Email = info.EmailAddress
+			});
+		}
+
 		private string GetToken(string userId)
 		{
 			return tokenGenerator.GeneratorJsonWebToken(userId);

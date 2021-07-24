@@ -7,5 +7,6 @@ namespace Users.Core
 	{
 		public IActionResult CreateUser(CreateUserRequest request);
 		public IActionResult Login(LoginRequest request);
+		public IActionResult GetInfo(string userId);
 	}
 }

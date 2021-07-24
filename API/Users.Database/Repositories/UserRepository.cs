@@ -24,6 +24,13 @@ namespace Users.Database.Repositories
 
 			return dbCollection.Find(filter).FirstOrDefault();
 		}
+
+		public User GetByUserId(string userId)
+		{
+			FilterDefinition<User> filter = Builders<User>.Filter.Eq("UserId", userId);
+
+			return dbCollection.Find(filter).FirstOrDefault();
+		}
 	}
 }
 
