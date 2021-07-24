@@ -15,8 +15,8 @@ namespace Users.Service.Controllers
 			this.userService = userService;
 		}
 
-        [HttpGet("getInfo")]
-        public IActionResult GetInfo(string userId)
+        [HttpGet("Info")]
+        public IActionResult Info(string userId)
         {
 			return userService.GetInfo(userId);
         }

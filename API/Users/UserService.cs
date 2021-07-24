@@ -64,15 +64,20 @@ namespace Users
 
 		public IActionResult GetInfo(string userId)
 		{
-			var info = userRepository.GetByUserId(userId);
-
-			return new OkObjectResult(new GetInfoResponse()
+			if (userId is not null)
 			{
-				FirstName = info.FirstName,
-				LastName = info.LastName,
-				Username = info.UserName,
-				Email = info.EmailAddress
-			});
+				var info = userRepository.GetByUserId(userId);
+
+				return new OkObjectResult(new GetInfoResponse()
+				{
+					FirstName = info.FirstName,
+					LastName = info.LastName,
+					Username = info.UserName,
+					Email = info.EmailAddress
+				});
+			}
+
+			return new BadRequestResult();
 		}
 
 		private string GetToken(string userId)
