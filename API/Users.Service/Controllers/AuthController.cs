@@ -27,5 +27,11 @@ namespace Users.Service.Controllers
         {
 			return userService.Login(request);
         }
-    }
+
+		[HttpPost("upgrade")]
+		public IActionResult Upgrade(UpgradeUserRequest request)
+		{
+			return userService.UpgradeUser(request);
+		}
+	}
 }

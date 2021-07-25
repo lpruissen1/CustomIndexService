@@ -62,6 +62,21 @@ namespace Users
 			return new BadRequestObjectResult(invalidCredentialsMessage);
 		}
 
+		public IActionResult UpgradeUser(UpgradeUserRequest request)
+		{
+			var existingUser = userRepository.GetByUserId(request.UserId);
+
+			var upgradedUser = UserMapper.MapUpgradeUserRequest(request, existingUser);
+			var success = userRepository.UpgradeUser(upgradedUser);
+
+			if (success)
+			{
+				return new OkResult();
+			}
+
+			return new BadRequestResult();
+		}
+
 		public IActionResult GetInfo(string userId)
 		{
 			if (userId is not null)

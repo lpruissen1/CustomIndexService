@@ -1,5 +1,6 @@
 ﻿using Database.Core;
 using System;
+using Users.Core.Request;
 using Users.Database.Model;
 
 namespace Users.Database.Repositories.Interfaces
@@ -9,5 +10,6 @@ namespace Users.Database.Repositories.Interfaces
 		User Get(Guid userId);
 		User GetByUsername(string userName);
 		User GetByUserId(string userId);
+		bool UpgradeUser(User request);
 	}
 }

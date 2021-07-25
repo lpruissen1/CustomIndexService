@@ -1,16 +1,9 @@
-﻿using Database.Core;
-using Users.Core;
-
-namespace Users.Database.Model
+﻿
+namespace Users.Core.Request
 {
-	public class User : DbEntity
+	public class UpgradeUserRequest
 	{
 		public string UserId { get; set; }
-		public string AccountType { get; set; }
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
-		public string UserName { get; set; }
-		public string EmailAddress { get; set; }
 		public string PhoneNumber { get; set; }
 		public string StreetAddress { get; set; }
 		public string City { get; set; }

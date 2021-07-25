@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Database.Core\Database.Core.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Users.Core\Users.Core.csproj" />
+	</ItemGroup>
+
 </Project>

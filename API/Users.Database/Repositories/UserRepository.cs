@@ -31,6 +31,13 @@ namespace Users.Database.Repositories
 
 			return dbCollection.Find(filter).FirstOrDefault();
 		}
+
+		public bool UpgradeUser(User user)
+		{
+			var result = dbCollection.FindOneAndReplace(i => i.UserId == user.UserId, user);
+
+			return result is not null ? true : false;
+		}
 	}
 }
 
