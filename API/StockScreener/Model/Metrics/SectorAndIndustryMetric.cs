@@ -30,8 +30,7 @@ namespace StockScreener.Model.Metrics
 
         public IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.Sector};
-            yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.Industry};
+            yield return new DerivedDatapointConstructionData { Rule = RuleType.SectorIndustry };
 		}
 
 		public TimePeriod? GetPriceTimePeriod()

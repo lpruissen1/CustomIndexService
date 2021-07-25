@@ -13,7 +13,8 @@ namespace Database.Repositories
             {
                 {BaseDatapoint.Industry, AddIndustry },
                 {BaseDatapoint.Sector, AddSector },
-                {BaseDatapoint.Ticker, AddTicker }
+                {BaseDatapoint.Ticker, AddTicker },
+                {BaseDatapoint.Name, AddName }
             };
         }
 
@@ -30,6 +31,11 @@ namespace Database.Repositories
         private void AddTicker()
         {
             projection.Include(x => x.Ticker);
+        }
+
+        private void AddName()
+        {
+            projection.Include(x => x.Name);
         }
     }
 }

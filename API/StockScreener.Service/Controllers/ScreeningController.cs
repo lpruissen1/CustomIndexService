@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockScreener.Core.Request;
 using StockScreener.Core.Response;
+using StockScreener.Mapper;
 using System.Linq;
 
 namespace StockScreener.Service.Controllers
@@ -21,7 +22,9 @@ namespace StockScreener.Service.Controllers
 		[Consumes("application/json")]
 		public ScreeningResponse GetByCustomIndexResponse(ScreeningRequest screeningRequest)
 		{
-			return new ScreeningResponse { Tickers = screenerService.Screen(screeningRequest).Select(x => new ScreeningEntry(x.Ticker)).ToList() };
+			var mapper = new ScreeningResponseMapper();
+
+			return screenerService.Screen(screeningRequest);
 		}
 	}
 }

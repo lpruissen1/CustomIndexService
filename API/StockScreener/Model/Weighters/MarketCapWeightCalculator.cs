@@ -1,4 +1,5 @@
-﻿using StockScreener.Calculators;
+﻿using Core;
+using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System;
@@ -54,7 +55,7 @@ namespace StockScreener.Model.Weighters
 
 		public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapointConstructionData()
 		{
-			yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.MarketCap };
+			yield return new DerivedDatapointConstructionData { Rule = RuleType.MarketCap };
 		}
 	}
 }
