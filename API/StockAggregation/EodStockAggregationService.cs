@@ -1,4 +1,5 @@
 ﻿using ApiClient;
+using Core;
 using Database.Core;
 using Microsoft.Extensions.Logging;
 using StockAggregation.Core;
@@ -9,12 +10,14 @@ using System.Linq;
 
 namespace StockAggregation
 {
-	public class EodStockAggregationService : IStockAggregationService
+	public class EodStockAggregationService : IStockAggregationService, IStockAggregationLoaderService
 	{
 		private readonly PriceDataRepository priceDataRepository;
 		private readonly CompanyInfoRepository companyInfoRepository;
 		private readonly StockFinancialsRepository stockFinancialsRepository;
+		private readonly OutstandingSharesRepository outstandingSharesRepository;
 		private readonly StockIndexRepository stockIndexRepository;
+		private readonly EarningsRepository earningsRepository;
 		private readonly IEodClient eodClient;
 		private readonly ILogger logger;
 
@@ -25,6 +28,8 @@ namespace StockAggregation
 			companyInfoRepository = new CompanyInfoRepository(stockDataContext);
 			stockFinancialsRepository = new StockFinancialsRepository(stockDataContext);
 			stockIndexRepository = new StockIndexRepository(stockDataContext);
+			earningsRepository = new EarningsRepository(stockDataContext);
+			outstandingSharesRepository = new OutstandingSharesRepository(stockDataContext);
 			this.logger = logger;
 		}
 
@@ -35,7 +40,7 @@ namespace StockAggregation
 			stockIndexRepository.CreateEntryForExchange(exchange, result.Select(x => x.Code).ToList());
 		}
 
-		public void LoadPriceByExchange(string exchange)
+		public void LoadDailyPriceDataForExchange(string exchange)
 		{
 			var tickers = stockIndexRepository.GetIndex(exchange).Tickers;
 
@@ -48,9 +53,65 @@ namespace StockAggregation
 			}
 		}
 
-		public void UpdateCompanyInfoForMarket(string market)
+		public void LoadCompanyInfoForExchange(string exchange)
+		{
+			var tickers = stockIndexRepository.GetIndex(exchange).Tickers;
+
+			foreach(var ticker in tickers)
+			{
+				var result = eodClient.GetEodCompanyInfo(ticker);
+
+				if(result is not null)
+					companyInfoRepository.Update(EodMappers.MapCompanyInfo(result));
+			}
+		}
+
+		public void LoadEarningsForExchange(string exchange)
+		{
+			var tickers = stockIndexRepository.GetIndex(exchange).Tickers;
+
+			foreach (var ticker in tickers)
+			{
+				var result = eodClient.GetEodEarnings(ticker);
+				var now = DateTime.Now.ToUnix();
+
+				// want to filter out those earnings who have not been reported
+				result.History.RemoveAll((key, value) => value.reportDate.ToUnix() > now); 
+
+				if (result is not null)
+					earningsRepository.Update(EodMappers.MapEarnings(result));
+			}
+		}
+
+		public void LoadOutstandingSharesForExchange(string exchange)
+		{
+			var tickers = stockIndexRepository.GetIndex(exchange).Tickers;
+
+			foreach (var ticker in tickers)
+			{
+				var result = eodClient.GetOutstandingShares(ticker);
+
+				if (result is not null)
+					outstandingSharesRepository.Update(EodMappers.MapOutstandingShares(result));
+			}
+		}
+
+		public void LoadStockFinancialsForExchange(string exchange)
 		{
 			throw new NotImplementedException();
+		}
+
+		public void UpdateCompanyInfoForMarket(string market)
+		{
+			var tickers = stockIndexRepository.GetIndex(market).Tickers;
+
+			foreach (var ticker in tickers)
+			{
+				var result = eodClient.GetEodCompanyInfo(ticker);
+
+				if (result is not null)
+					companyInfoRepository.Update(EodMappers.MapCompanyInfo(result));
+			}
 		}
 
 		public void UpdateDailyPriceDataForMarket(string market)
@@ -64,6 +125,11 @@ namespace StockAggregation
 		}
 
 		public void UpdateStockFinancialsForMarket(string market)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void LoadHourlyPriceDataForExchange(string exchange)
 		{
 			throw new NotImplementedException();
 		}

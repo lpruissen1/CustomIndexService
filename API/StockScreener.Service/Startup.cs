@@ -12,6 +12,7 @@ using StockInformation;
 using StockScreener.Database;
 using StockScreener.Database.Config;
 using StockScreener.Database.Repos;
+using StockScreener.Database.Repos.Interfaces;
 using StockScreener.Interfaces;
 using StockScreener.SecurityGrabber;
 using System.Text.Json.Serialization;

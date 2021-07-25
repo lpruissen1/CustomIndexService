@@ -1,4 +1,5 @@
 ﻿using ApiClient.Models.Eod;
+using ApiClient.Models.Eod.Earnings;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -12,6 +13,9 @@ namespace ApiClient
 		List<EodExchangeEntry> GetExhangeInfo(string exchange);
 		List<EodCandle> GetEodPriceData(string ticker);
 		EodCompanyInfo GetEodCompanyInfo(string ticker);
+		EodEarnings GetEodEarnings(string ticker);
+		EodOutstandingShares GetOutstandingShares(string ticker);
+
 	}
 
 	public class EodClient : IEodClient
@@ -58,6 +62,24 @@ namespace ApiClient
 			return response;
 		}
 
+		public EodEarnings GetEodEarnings(string ticker)
+		{
+			var request = $"{route}/fundamentals/{ticker}?filter=Earnings&{jsonFormatting}" + GetApiKeyRequestPhrase();
+			var response = MakeRequest<EodEarnings>(request);
+
+			response.Ticker = ticker;
+			return response;
+		}
+
+		public EodOutstandingShares GetOutstandingShares(string ticker)
+		{
+			var request = $"{route}/fundamentals/{ticker}?filter=outstandingShares&{jsonFormatting}" + GetApiKeyRequestPhrase();
+			var response = MakeRequest<EodOutstandingShares>(request);
+
+			response.Ticker = ticker;
+			return response;
+		}
+
 		private TResponseType MakeRequest<TResponseType>(string request)
 		{
 			var response = client.GetAsync(request).Result;
@@ -75,7 +97,8 @@ namespace ApiClient
 		{
 			try
 			{
-				return JsonConvert.DeserializeObject<TResponseType>(response.Content.ReadAsStringAsync().Result);
+				var blah = response.Content.ReadAsStringAsync().Result;
+				return JsonConvert.DeserializeObject<TResponseType>(blah);
 			}
 			catch(Exception e)
 			{

@@ -1,7 +1,7 @@
 ﻿using Core;
 using StockScreener.Core;
 using StockScreener.Database.Model.Price;
-using StockScreener.Database.Repos;
+using StockScreener.Database.Repos.Interfaces;
 using StockScreener.Interfaces;
 using StockScreener.Model.BaseSecurity;
 using StockScreener.SecurityGrabber.BaseDataMapper;

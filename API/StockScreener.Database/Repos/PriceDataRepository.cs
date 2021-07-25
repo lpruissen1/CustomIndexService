@@ -4,6 +4,7 @@ using Database.Core;
 using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Database.Model.Price;
+using StockScreener.Database.Repos.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

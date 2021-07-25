@@ -1,6 +1,6 @@
 ﻿namespace StockAggregation.Core
 {
-    public interface IStockAggregationService
+	public interface IStockAggregationService
     {
         void UpdateCompanyInfoForMarket(string market);
 

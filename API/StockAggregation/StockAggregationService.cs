@@ -9,6 +9,7 @@ using StockScreener.Database.Model.CompanyInfo;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;
 using StockScreener.Database.Repos;
+using StockScreener.Database.Repos.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

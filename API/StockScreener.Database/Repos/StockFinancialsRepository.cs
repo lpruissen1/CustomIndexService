@@ -3,12 +3,13 @@ using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Core;
 using StockScreener.Database.Model.StockFinancials;
+using StockScreener.Database.Repos.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StockScreener.Database.Repos
 {
-    public class StockFinancialsRepository : BaseRepository<StockFinancials>, IStockFinancialsRepository
+	public class StockFinancialsRepository : BaseRepository<StockFinancials>, IStockFinancialsRepository
     {
         private StockFinancialsProjectionBuilder projectionBuilder = new StockFinancialsProjectionBuilder();
         public StockFinancialsRepository(IMongoDBContext context) : base(context) { }

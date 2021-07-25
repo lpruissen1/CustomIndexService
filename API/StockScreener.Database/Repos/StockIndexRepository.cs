@@ -2,12 +2,13 @@
 using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Database.Model.StockIndex;
+using StockScreener.Database.Repos.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StockScreener.Database.Repos
 {
-    public class StockIndexRepository : BaseRepository<StockIndex>, IStockIndexRepository
+	public class StockIndexRepository : BaseRepository<StockIndex>, IStockIndexRepository
     {
         public StockIndexRepository(IMongoDBContext context) : base(context) { }
 

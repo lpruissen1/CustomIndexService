@@ -3,12 +3,13 @@ using Database.Repositories;
 using MongoDB.Driver;
 using StockScreener.Core;
 using StockScreener.Database.Model.CompanyInfo;
+using StockScreener.Database.Repos.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StockScreener.Database.Repos
 {
-    public class CompanyInfoRepository : BaseRepository<CompanyInfo>, ICompanyInfoRepository
+	public class CompanyInfoRepository : BaseRepository<CompanyInfo>, ICompanyInfoRepository
     {
 		private CompanyInfoProjectionBuilder CompanyInfoProjectionBuilder = new CompanyInfoProjectionBuilder();
         public CompanyInfoRepository(IMongoDBContext context) : base(context) { }

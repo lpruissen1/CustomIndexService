@@ -1,4 +1,4 @@
-﻿using StockScreener.Database.Repos;
+﻿using StockScreener.Database.Repos.Interfaces;
 using System;
 using System.Collections.Generic;
 
