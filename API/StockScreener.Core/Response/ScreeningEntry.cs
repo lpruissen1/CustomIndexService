@@ -15,7 +15,7 @@ namespace StockScreener.Core.Response
 		public string Sector { get; set; }
 		public double MarketCap { get; set; }
 		public double CurrentPrice { get; set; }
-		public List<ScreeningParamValue> ScreeningParameterValues {get; set;} = new List<ScreeningParamValue>()
+		public List<ScreeningParamValue> ScreeningParameterValues { get; set; } = new List<ScreeningParamValue>();
 	}
 
 	public class ScreeningParamValue
