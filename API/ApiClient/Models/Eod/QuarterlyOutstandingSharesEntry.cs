@@ -1,9 +1,8 @@
-﻿using StockScreener.Database.Model;
-using System;
+﻿using System;
 
 namespace ApiClient.Models.Eod
 {
-	public class QuarterlyOutstandingSharesEntry : Entry
+	public class QuarterlyOutstandingSharesEntry
 	{
 		public DateTime dateFormatted { get; set; }
 		public double shares { get; set; }

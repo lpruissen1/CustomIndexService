@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ApiClient.Models.Eod.Earnings
+namespace ApiClient.Models.Eod
 {
 	public class QuarterlyEarningsEntry
 	{

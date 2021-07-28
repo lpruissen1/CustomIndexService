@@ -8,3 +8,4 @@ namespace ApiClient.Models.Eod
 		public Dictionary<string, QuarterlyOutstandingSharesEntry> quarterly { get; set; }
 	}
 }
+

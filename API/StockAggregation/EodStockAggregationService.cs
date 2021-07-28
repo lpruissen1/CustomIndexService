@@ -46,7 +46,7 @@ namespace StockAggregation
 
 			foreach(var ticker in tickers)
 			{
-				var result = eodClient.GetEodPriceData(ticker);
+				var result = eodClient.GetPriceData(ticker);
 
 				if(result is not null)
 					priceDataRepository.Update(EodMappers.MapToPriceData<DayPriceData>(ticker, result));
@@ -59,7 +59,7 @@ namespace StockAggregation
 
 			foreach(var ticker in tickers)
 			{
-				var result = eodClient.GetEodCompanyInfo(ticker);
+				var result = eodClient.GetCompanyInfo(ticker);
 
 				if(result is not null)
 					companyInfoRepository.Update(EodMappers.MapCompanyInfo(result));
@@ -72,7 +72,7 @@ namespace StockAggregation
 
 			foreach (var ticker in tickers)
 			{
-				var result = eodClient.GetEodEarnings(ticker);
+				var result = eodClient.GetEarnings(ticker);
 				var now = DateTime.Now.ToUnix();
 
 				// want to filter out those earnings who have not been reported
@@ -107,7 +107,7 @@ namespace StockAggregation
 
 			foreach (var ticker in tickers)
 			{
-				var result = eodClient.GetEodCompanyInfo(ticker);
+				var result = eodClient.GetCompanyInfo(ticker);
 
 				if (result is not null)
 					companyInfoRepository.Update(EodMappers.MapCompanyInfo(result));

@@ -1,5 +1,4 @@
 ﻿using ApiClient.Models.Eod;
-using ApiClient.Models.Eod.Earnings;
 using Core;
 using StockScreener.Database.Model;
 using StockScreener.Database.Model.CompanyInfo;

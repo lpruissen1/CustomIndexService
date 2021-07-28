@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ApiClient.Models.Eod.Earnings
+namespace ApiClient.Models.Eod
 {
 	public class EodEarnings : StockDbEntity
 	{
