@@ -6,9 +6,9 @@ using StockScreener.Database.Repos.Interfaces;
 
 namespace StockScreener.Database.Repos
 {
-	public class OutstandingSharesRepository : BaseRepository<OutstandingSharesHistory>, IOutstandingSharesRepository
+	public class OutstandingSharesHistoryRepository : BaseRepository<OutstandingSharesHistory>, IOutstandingSharesHistoryRepository
     {
-        public OutstandingSharesRepository(IMongoDBContext context) : base(context) { }
+        public OutstandingSharesHistoryRepository(IMongoDBContext context) : base(context) { }
 
 		public override void Update(OutstandingSharesHistory info)
 		{

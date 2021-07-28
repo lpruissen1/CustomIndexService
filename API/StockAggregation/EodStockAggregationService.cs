@@ -15,7 +15,7 @@ namespace StockAggregation
 		private readonly PriceDataRepository priceDataRepository;
 		private readonly CompanyInfoRepository companyInfoRepository;
 		private readonly StockFinancialsRepository stockFinancialsRepository;
-		private readonly OutstandingSharesRepository outstandingSharesRepository;
+		private readonly OutstandingSharesHistoryRepository outstandingSharesRepository;
 		private readonly StockIndexRepository stockIndexRepository;
 		private readonly EarningsRepository earningsRepository;
 		private readonly IEodClient eodClient;
@@ -29,7 +29,7 @@ namespace StockAggregation
 			stockFinancialsRepository = new StockFinancialsRepository(stockDataContext);
 			stockIndexRepository = new StockIndexRepository(stockDataContext);
 			earningsRepository = new EarningsRepository(stockDataContext);
-			outstandingSharesRepository = new OutstandingSharesRepository(stockDataContext);
+			outstandingSharesRepository = new OutstandingSharesHistoryRepository(stockDataContext);
 			this.logger = logger;
 		}
 
