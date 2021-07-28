@@ -61,7 +61,7 @@ namespace StockScreener.SecurityGrabber
 
             var companyInfoMapper = new CompanyInfoMapper();
 
-			var companyInfos = companyInfoRespository.GetMany(tickers, relevantDatapoints);
+			var companyInfos = companyInfoRespository.GetMany(tickers, relevantDatapoints).ToList();
 
 			foreach (var security in list)
             {
@@ -74,7 +74,7 @@ namespace StockScreener.SecurityGrabber
 
         private void AddPrice(IEnumerable<string> tickers, TimePeriod? timePeriod)
         {
-			var priceInfos = priceDataRepository.GetMany<DayPriceData>(tickers);
+			var priceInfos = priceDataRepository.GetMany<DayPriceData>(tickers).ToList();
 
             foreach (var security in list)
             {
@@ -95,7 +95,7 @@ namespace StockScreener.SecurityGrabber
 
             var stockFinancialsMapper = new StockFinancialsMapper();
 
-            var stockFinancials = stockFinancialsRespository.GetMany(tickers, relevantDatapoints);
+            var stockFinancials = stockFinancialsRespository.GetMany(tickers, relevantDatapoints).ToList();
             
 			foreach (var security in list)
 			{
