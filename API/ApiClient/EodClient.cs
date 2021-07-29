@@ -27,18 +27,18 @@ namespace ApiClient
 			return "api_token=" + apiSettings.Key;
 		}
 
-		public List<EodExchangeEntry> GetExhangeInfo(string exchange)
-		{
-			var request = $"{route}exchange-symbol-list/{exchange}?{jsonFormatting}" + GetApiKeyRequestPhrase();
-			var response = MakeRequest<List<EodExchangeEntry>>(request);
-
-			return response;
-		}
-
 		public List<EodCandle> GetPriceData(string ticker)
 		{
 			var request = $"{route}eod/{ticker}?from=2006-01-01&to=2021-07-19&{jsonFormatting}" + GetApiKeyRequestPhrase();
 			var response = MakeRequest<List<EodCandle>>(request);
+
+			return response;
+		}
+
+		public EodIndex GetIndexInfo(string exchange)
+		{
+			var request = $"{route}fundamentals/{exchange}?{jsonFormatting}" + GetApiKeyRequestPhrase();
+			var response = MakeRequest<EodIndex>(request);
 
 			return response;
 		}

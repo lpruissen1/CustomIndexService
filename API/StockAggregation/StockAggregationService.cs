@@ -4,7 +4,6 @@ using Database.Core;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using StockAggregation.Core;
-using StockScreener.Database;
 using StockScreener.Database.Model.CompanyInfo;
 using StockScreener.Database.Model.Price;
 using StockScreener.Database.Model.StockFinancials;

@@ -16,6 +16,9 @@ namespace StockAggregation
 		private readonly CompanyInfoRepository companyInfoRepository;
 		private readonly StockFinancialsRepository stockFinancialsRepository;
 		private readonly OutstandingSharesHistoryRepository outstandingSharesRepository;
+		private readonly CashFlowHistoryRepository cashFlowHistoryRepository;
+		private readonly IncomeStatementHistoryRepository incomeStatementHistoryRepository;
+		private readonly BalanceSheetHistoryRepository balanceSheetHistoryRepository;
 		private readonly StockIndexRepository stockIndexRepository;
 		private readonly EarningsRepository earningsRepository;
 		private readonly IEodClient eodClient;
@@ -30,19 +33,22 @@ namespace StockAggregation
 			stockIndexRepository = new StockIndexRepository(stockDataContext);
 			earningsRepository = new EarningsRepository(stockDataContext);
 			outstandingSharesRepository = new OutstandingSharesHistoryRepository(stockDataContext);
+			cashFlowHistoryRepository = new CashFlowHistoryRepository(stockDataContext);
+			balanceSheetHistoryRepository = new BalanceSheetHistoryRepository(stockDataContext);
+			incomeStatementHistoryRepository = new IncomeStatementHistoryRepository(stockDataContext);
 			this.logger = logger;
 		}
 
-		public void LoadTickersByExchange(string exchange)
+		public void LoadTickersByIndex(string index)
 		{
-			var result = eodClient.GetExhangeInfo(exchange).Where(x => x.Type == "Common Stock");
+			var result = eodClient.GetIndexInfo(index);
 
-			stockIndexRepository.CreateEntryForExchange(exchange, result.Select(x => x.Code).ToList());
+			stockIndexRepository.CreateEntryForIndex(index, result.Components.Select(x => x.Value.Code).ToList());
 		}
 
-		public void LoadDailyPriceDataForExchange(string exchange)
+		public void LoadDailyPriceDataForExchange(string index)
 		{
-			var tickers = stockIndexRepository.GetIndex(exchange).Tickers;
+			var tickers = stockIndexRepository.GetIndex(index).Tickers;
 
 			foreach(var ticker in tickers)
 			{
@@ -53,9 +59,9 @@ namespace StockAggregation
 			}
 		}
 
-		public void LoadCompanyInfoForExchange(string exchange)
+		public void LoadCompanyInfoForExchange(string index)
 		{
-			var tickers = stockIndexRepository.GetIndex(exchange).Tickers;
+			var tickers = stockIndexRepository.GetIndex(index).Tickers;
 
 			foreach(var ticker in tickers)
 			{
@@ -66,9 +72,9 @@ namespace StockAggregation
 			}
 		}
 
-		public void LoadEarningsForExchange(string exchange)
+		public void LoadEarningsForExchange(string index)
 		{
-			var tickers = stockIndexRepository.GetIndex(exchange).Tickers;
+			var tickers = stockIndexRepository.GetIndex(index).Tickers;
 
 			foreach (var ticker in tickers)
 			{
@@ -83,9 +89,9 @@ namespace StockAggregation
 			}
 		}
 
-		public void LoadOutstandingSharesForExchange(string exchange)
+		public void LoadOutstandingSharesForExchange(string index)
 		{
-			var tickers = stockIndexRepository.GetIndex(exchange).Tickers;
+			var tickers = stockIndexRepository.GetIndex(index).Tickers;
 
 			foreach (var ticker in tickers)
 			{
@@ -96,9 +102,49 @@ namespace StockAggregation
 			}
 		}
 
-		public void LoadStockFinancialsForExchange(string exchange)
+		public void LoadBalanceSheetForExchange(string index)
 		{
-			throw new NotImplementedException();
+			var tickers = stockIndexRepository.GetIndex(index).Tickers;
+
+			foreach (var ticker in tickers)
+			{
+				var result = eodClient.GetBalanceSheet(ticker);
+
+				result.quarterly.RemoveAll((key, value) => value.filing_date is null);
+
+				if (result is not null)
+					balanceSheetHistoryRepository.Update(EodMappers.MapBalanceSheet(result));
+			}
+		}
+
+		public void LoadIncomeStatementForExchange(string index)
+		{
+			var tickers = stockIndexRepository.GetIndex(index).Tickers;
+
+			foreach (var ticker in tickers)
+			{
+				var result = eodClient.GetIncomeStatement(ticker);
+
+				result.quarterly.RemoveAll((key, value) => value.filing_date is null);
+
+				if (result is not null)
+					incomeStatementHistoryRepository.Update(EodMappers.MapIncomeStatement(result));
+			}
+		}
+
+		public void LoadCashFlowForExchange(string index)
+		{
+			var tickers = stockIndexRepository.GetIndex(index).Tickers;
+
+			foreach (var ticker in tickers)
+			{
+				var result = eodClient.GetCashFlow(ticker);
+
+				result.quarterly.RemoveAll((key, value) => value.filing_date is null);
+
+				if (result is not null)
+					cashFlowHistoryRepository.Update(EodMappers.MapCashFlow(result));
+			}
 		}
 
 		public void UpdateCompanyInfoForMarket(string market)
@@ -129,7 +175,7 @@ namespace StockAggregation
 			throw new NotImplementedException();
 		}
 
-		public void LoadHourlyPriceDataForExchange(string exchange)
+		public void LoadHourlyPriceDataForExchange(string index)
 		{
 			throw new NotImplementedException();
 		}

@@ -31,7 +31,7 @@ namespace StockAggregation
 			return priceData;
 		}
 
-		public static CompanyInfo MapCompanyInfo(EodCompanyInfo response)
+		public static CompanyInfo MapCompanyInfo(EodCompanyInfo response, string index)
 		{
 			return new CompanyInfo
 			{
@@ -41,6 +41,7 @@ namespace StockAggregation
 				Industry= response.Industry,
 				Cusip = response.Cusip,
 				isDelisted = response.isDelisted,
+				Indices = new[] { index },
 				LastUpdated = response.UpdatedAt.ToUnix()
 			};
 		}
@@ -68,6 +69,52 @@ namespace StockAggregation
 				{
 					timestamp = entry.Value.dateFormatted.ToUnix(),
 					OutstandingShares = entry.Value.shares
+				}).ToList()
+			};
+		}
+
+		public static CashFlowHistory MapCashFlow(EodCashFlow response)
+		{
+			return new CashFlowHistory
+			{
+				Ticker = response.Ticker,
+				Entries = response.quarterly.Select(entry => new CashFlowEntry
+				{
+					timestamp = entry.Key.ToUnix(),
+					DividendsPaid = entry.Value.dividendsPaid,
+					FreeCashFlow = entry.Value.freeCashFlow
+				}).ToList()
+			};
+		}
+
+		public static IncomeStatementHistory MapIncomeStatement(EodIncomeStatement response)
+		{
+			return new IncomeStatementHistory
+			{
+				Ticker = response.Ticker,
+				Entries = response.quarterly.Select(entry => new IncomeStatementEntry
+				{
+					timestamp = entry.Key.ToUnix(),
+					Ebitda = entry.Value.ebitda,
+					NetIncome = entry.Value.netIncome,
+					RotalRevenue = entry.Value.totalRevenue
+				}).ToList()
+			};
+		}
+
+		public static BalanceSheetHistory MapBalanceSheet(EodBalanceSheet response)
+		{
+			return new BalanceSheetHistory
+			{
+				Ticker = response.Ticker,
+				Entries = response.quarterly.Select(entry => new BalanceSheetEntry
+				{
+					timestamp = entry.Key.ToUnix(),
+					TotalAssets = entry.Value.totalAssets,
+					TotalLiababilites = entry.Value.totalLiab,
+					CommonStockTotalEquity = entry.Value.commonStockTotalEquity,
+					Cash = entry.Value.cash,
+					NetWorkingCapital = entry.Value.netWorkingCapital,
 				}).ToList()
 			};
 		}

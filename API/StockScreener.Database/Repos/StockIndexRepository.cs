@@ -12,7 +12,7 @@ namespace StockScreener.Database.Repos
     {
         public StockIndexRepository(IMongoDBContext context) : base(context) { }
 
-		public void CreateEntryForExchange(string name, List<string> tickers)
+		public void CreateEntryForIndex(string name, List<string> tickers)
 		{
 			var item = new StockIndex()
 			{

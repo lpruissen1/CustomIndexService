@@ -15,10 +15,11 @@ namespace StockAggregation
 
 
 			var client = new EodClient(new ApiSettings() { Key = "60ecf3337feaa7.96969903" }, new MyLogger(new MyLoggerOptions() { filePath = "C:\\Log\\EodApiClient\\", file = "log.log" }));
-			var blah = client.GetCashFlow("AAPL");
+			var blah = client.GetIndexInfo("GSPC.INDX");
 			var sut = new EodStockAggregationService(new MongoStockInformationDbContext(stockDBSettings), new MongoStockInformationDbContext(priceDBSettings), client, new MyLogger(new MyLoggerOptions() { filePath = "C:\\Log\\EodAgg\\", file = "log.log" }));
 
-			sut.LoadOutstandingSharesForExchange("Sp500");
+			sut.LoadIncomeStatementForExchange("Sp500");
+			sut.LoadCashFlowForExchange("Sp500");
 		}
 	}
 }
