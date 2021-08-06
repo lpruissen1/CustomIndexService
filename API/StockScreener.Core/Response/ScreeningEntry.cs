@@ -22,6 +22,6 @@ namespace StockScreener.Core.Response
 	{
 		public RuleType RuleType { get; set; }
 		public TimePeriod? TimePeriod { get; set; }
-		public double value;
+		public double Value { get; set; }
 	}
 }

@@ -54,6 +54,7 @@ namespace StockScreener.Calculators
 				derivedSecurity.Name = security.Name;
 				derivedSecurity.Sector = security.Sector;
 				derivedSecurity.Industry = security.Industry;
+				derivedSecurity.MarketCap = security.MarketCap;
 				derivedSecurity.CurrentPrice = security.DailyPrice.LastOrDefault()?.Price ?? 0;
 
 				foreach (var derivedDatapoint in derivedDatapoints)

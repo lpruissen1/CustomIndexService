@@ -48,7 +48,7 @@ namespace StockScreener.Mapper
 				{
 					TimePeriod = rule.Time,
 					RuleType = rule.Rule,
-					value = ruleMapper[rule.Rule].Invoke(security, rule.Time)
+					Value = ruleMapper[rule.Rule].Invoke(security, rule.Time)
 				});
 			}
 			return entry;
