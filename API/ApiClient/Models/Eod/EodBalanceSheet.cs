@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ApiClient.Models.Eod
 {
-	public class EodBalanceSheet : StockDbEntity
+	public class EodBalanceSheet
 	{
 		public Dictionary<DateTime, QuarterlyBalanceSheetEntry> quarterly { get; set; }
 	}

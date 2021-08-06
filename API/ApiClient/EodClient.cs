@@ -43,54 +43,10 @@ namespace ApiClient
 			return response;
 		}
 
-		public EodCompanyInfo GetCompanyInfo(string ticker)
+		public EodFundementals GetFundementals(string ticker)
 		{
-			var request = $"{route}/fundamentals/{ticker}?filter=General&{jsonFormatting}" + GetApiKeyRequestPhrase();
-			var response = MakeRequest<EodCompanyInfo>(request);
-
-			return response;
-		}
-
-		public EodEarnings GetEarnings(string ticker)
-		{
-			var request = $"{route}/fundamentals/{ticker}?filter=Earnings&{jsonFormatting}" + GetApiKeyRequestPhrase();
-			var response = MakeRequest<EodEarnings>(request);
-
-			response.Ticker = ticker;
-			return response;
-		}
-
-		public EodOutstandingShares GetOutstandingShares(string ticker)
-		{
-			var request = $"{route}/fundamentals/{ticker}?filter=outstandingShares&{jsonFormatting}" + GetApiKeyRequestPhrase();
-			var response = MakeRequest<EodOutstandingShares>(request);
-
-			response.Ticker = ticker;
-			return response;
-		}
-
-		public EodBalanceSheet GetBalanceSheet(string ticker)
-		{
-			var request = $"{route}/fundamentals/{ticker}?filter=Financials::Balance_Sheet&{jsonFormatting}" + GetApiKeyRequestPhrase();
-			var response = MakeRequest<EodBalanceSheet>(request);
-
-			response.Ticker = ticker;
-			return response;
-		}
-
-		public EodCashFlow GetCashFlow(string ticker)
-		{
-			var request = $"{route}/fundamentals/{ticker}?filter=Financials::Cash_Flow&{jsonFormatting}" + GetApiKeyRequestPhrase();
-			var response = MakeRequest<EodCashFlow>(request);
-
-			response.Ticker = ticker;
-			return response;
-		}
-
-		public EodIncomeStatement GetIncomeStatement(string ticker)
-		{
-			var request = $"{route}/fundamentals/{ticker}?filter=Financials::Income_Statement&{jsonFormatting}" + GetApiKeyRequestPhrase();
-			var response = MakeRequest<EodIncomeStatement>(request);
+			var request = $"{route}/fundamentals/{ticker}?{jsonFormatting}" + GetApiKeyRequestPhrase();
+			var response = MakeRequest<EodFundementals>(request);
 
 			response.Ticker = ticker;
 			return response;
@@ -106,7 +62,7 @@ namespace ApiClient
 				return default;
 			}
 
-			return DeserializeResponse<TResponseType>(response);
+			return DeserializeResponse<TResponseType>(response) ?? default;
 		}
 
 		private TResponseType DeserializeResponse<TResponseType>(HttpResponseMessage response)

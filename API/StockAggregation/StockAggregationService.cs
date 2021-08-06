@@ -20,7 +20,7 @@ namespace StockAggregation
 		private IPolygonClient polygonApiClient;
 		private readonly ILogger logger;
 		private IStockFinancialsRepository stockFinancialsRepository;
-		private IPriceDataRepository priceDataRepository;
+		//private IMonthPriceDataRepository priceDataRepository;
 		private ICompanyInfoRepository companyInfoRepository;
 		private IStockIndexRepository stockIndexRepository;
 
@@ -29,7 +29,7 @@ namespace StockAggregation
         {
             polygonApiClient = client;
 			this.logger = logger;
-			priceDataRepository = new PriceDataRepository(priceDataContext);
+			//priceDataRepository = new MonthPriceDataRepository(priceDataContext);
             companyInfoRepository = new CompanyInfoRepository(stockDataContext);
             stockFinancialsRepository = new StockFinancialsRepository(stockDataContext);
             stockIndexRepository = new StockIndexRepository(stockDataContext);
@@ -104,14 +104,14 @@ namespace StockAggregation
 
         private void UpdateDailyPriceDataForTicker(string ticker)
         {
-            var mostRecentTimestamp = priceDataRepository.GetMostRecentPriceEntry<DayPriceData>(ticker);
+            //var mostRecentTimestamp = priceDataRepository.GetMostRecentPriceEntry<DayPriceData>(ticker);
 
-            var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Day, mostRecentTimestamp, DateTime.UtcNow.ToUnix());
+            //var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Day, mostRecentTimestamp, DateTime.UtcNow.ToUnix());
 
-            if (response.Results is null)
+           // if (response.Results is null)
                 return;
 
-            priceDataRepository.Update(PolygonMappers.MapToPriceData<DayPriceData>(response));
+            //priceDataRepository.Update(PolygonMappers.MapToPriceData<DayPriceData>(response));
         }
 
         public void UpdateHourlyPriceDataForMarket(string market)
@@ -124,14 +124,14 @@ namespace StockAggregation
 
         private void UpdateHourlyPriceDataForTicker(string ticker)
         {
-			var mostRecentTimestamp = priceDataRepository.GetMostRecentPriceEntry<HourPriceData>(ticker);
+			//var mostRecentTimestamp = priceDataRepository.GetMostRecentPriceEntry<HourPriceData>(ticker);
 
-			var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Hour, mostRecentTimestamp, DateTime.UtcNow.ToUnix());
+			//var response = polygonApiClient.GetPriceData(ticker, 1, TimePeriod.Hour, mostRecentTimestamp, DateTime.UtcNow.ToUnix());
 
-            if (response.Results is null)
+           // if (response.Results is null)
                 return;
 
-            priceDataRepository.Update(PolygonMappers.MapToPriceData<HourPriceData>(response, priceDataRepository.GetMostRecentPriceEntry<HourPriceData>(ticker)));
+            //priceDataRepository.Update(PolygonMappers.MapToPriceData<HourPriceData>(response, priceDataRepository.GetMostRecentPriceEntry<HourPriceData>(ticker)));
         }
 
 		private IEnumerable<string> GetTickersByIndex(string market)

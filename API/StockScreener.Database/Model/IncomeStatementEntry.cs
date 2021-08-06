@@ -4,6 +4,7 @@
 	{
 		public double? Ebitda { get; set; }
 		public double? NetIncome { get; set; }
-		public double? RotalRevenue { get; set; }
+		public double? TotalRevenue { get; set; }
+		public double? SalesPerShare { get; set; }
 	}
 }

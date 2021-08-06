@@ -33,6 +33,7 @@ namespace StockScreener.Database.Repos
             return dbCollection.Find((_ => true)).Project<CompanyInfo>(projection).ToEnumerable().Select(x => x.Ticker);
 		}
 
+		// this needs to pull and update because of the index, not overwrite
 		public override void Update(CompanyInfo info)
 		{
 			var filter = Builders<CompanyInfo>.Filter.Eq(e => e.Ticker, info.Ticker);

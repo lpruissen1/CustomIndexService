@@ -18,8 +18,7 @@ namespace StockAggregation
 			var blah = client.GetIndexInfo("GSPC.INDX");
 			var sut = new EodStockAggregationService(new MongoStockInformationDbContext(stockDBSettings), new MongoStockInformationDbContext(priceDBSettings), client, new MyLogger(new MyLoggerOptions() { filePath = "C:\\Log\\EodAgg\\", file = "log.log" }));
 
-			sut.LoadIncomeStatementForExchange("Sp500");
-			sut.LoadCashFlowForExchange("Sp500");
+			sut.LoadStockData("Sp500");
 		}
 	}
 }

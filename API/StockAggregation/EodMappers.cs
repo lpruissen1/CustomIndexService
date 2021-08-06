@@ -31,11 +31,41 @@ namespace StockAggregation
 			return priceData;
 		}
 
+		public static List<MonthPriceData> MapMonthPriceData(string ticker, List<EodCandle> response)
+		{
+			if (!response.Any())
+				return null;
+
+			var list = new List<MonthPriceData>();
+
+			var monthEntry = new MonthPriceData { Ticker = ticker, Month = new DateTime(response[0].date.Year, response[0].date.Month, 1) };
+			list.Add(monthEntry);
+
+			foreach (var datapoint in response)
+			{
+				if (!monthEntry.Month.SameQuarter(datapoint.date))
+				{
+					monthEntry = new MonthPriceData { Ticker = ticker, Month = new DateTime(datapoint.date.Year, datapoint.date.Month, 1) };
+					list.Add(monthEntry);
+				}
+
+				monthEntry.Days.Add(new Candle
+				{
+					timestamp = datapoint.date.ToUnix(),
+					openPrice = datapoint.open,
+					closePrice = datapoint.close,
+					highPrice = datapoint.high,
+					lowPrice = datapoint.low
+				});
+			}
+
+			return list;
+		}
+
 		public static CompanyInfo MapCompanyInfo(EodCompanyInfo response, string index)
 		{
 			return new CompanyInfo
 			{
-				Ticker = response.Ticker,
 				Name = response.Name,
 				Description = response.Description,
 				Industry= response.Industry,
@@ -46,11 +76,11 @@ namespace StockAggregation
 			};
 		}
 
-		public static EarningsHistory MapEarnings(EodEarnings response)
+		public static EarningsHistory MapEarnings(string ticker, EodEarnings response)
 		{
 			return new EarningsHistory
 			{
-				Ticker = response.Ticker,
+				Ticker = ticker,
 				Entries = response.History.Select(pair => new EarningsEntry
 				{
 					timestamp = pair.Key.ToUnix(),
@@ -64,7 +94,6 @@ namespace StockAggregation
 		{
 			return new OutstandingSharesHistory
 			{
-				Ticker = response.Ticker,
 				Entries = response.quarterly.Select(entry => new OutstandingSharesEntry
 				{
 					timestamp = entry.Value.dateFormatted.ToUnix(),
@@ -77,7 +106,6 @@ namespace StockAggregation
 		{
 			return new CashFlowHistory
 			{
-				Ticker = response.Ticker,
 				Entries = response.quarterly.Select(entry => new CashFlowEntry
 				{
 					timestamp = entry.Key.ToUnix(),
@@ -91,13 +119,12 @@ namespace StockAggregation
 		{
 			return new IncomeStatementHistory
 			{
-				Ticker = response.Ticker,
 				Entries = response.quarterly.Select(entry => new IncomeStatementEntry
 				{
 					timestamp = entry.Key.ToUnix(),
 					Ebitda = entry.Value.ebitda,
 					NetIncome = entry.Value.netIncome,
-					RotalRevenue = entry.Value.totalRevenue
+					TotalRevenue = entry.Value.totalRevenue
 				}).ToList()
 			};
 		}
@@ -106,12 +133,11 @@ namespace StockAggregation
 		{
 			return new BalanceSheetHistory
 			{
-				Ticker = response.Ticker,
 				Entries = response.quarterly.Select(entry => new BalanceSheetEntry
 				{
 					timestamp = entry.Key.ToUnix(),
 					TotalAssets = entry.Value.totalAssets,
-					TotalLiababilites = entry.Value.totalLiab,
+					TotalLiabilites = entry.Value.totalLiab,
 					CommonStockTotalEquity = entry.Value.commonStockTotalEquity,
 					Cash = entry.Value.cash,
 					NetWorkingCapital = entry.Value.netWorkingCapital,

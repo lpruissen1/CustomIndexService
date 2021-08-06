@@ -4,7 +4,6 @@ namespace ApiClient.Models.Eod
 {
 	public class EodCompanyInfo
 	{
-		public string Ticker { get; set; }
 		public string Name { get; set; }
 		public string Cusip { get; set; }
 		public string Description { get; set; }
