@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Users.Core;
-using Users.Core.Request;
 
 namespace Users.Service.Controllers
 {

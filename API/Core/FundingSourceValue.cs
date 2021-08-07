@@ -1,6 +1,6 @@
 ﻿namespace Users.Core
 {
-	public enum FundingSource
+	public enum FundingSourceValue
 	{
 		employment_income,
 		investments,

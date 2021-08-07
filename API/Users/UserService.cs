@@ -29,7 +29,7 @@ namespace Users
 			this.logger = logger;
 		}
 
-		public IActionResult CreateUser(CreateUserRequest request)
+		public IActionResult CreateBasicUser(CreateUserRequest request)
 		{
 			var user = userRepository.Create(UserMapper.MapCreateUserRequest(request));
 			var hashedPassword = passwordHasher.Hash(request.Password);

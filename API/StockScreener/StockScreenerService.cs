@@ -5,9 +5,7 @@ using StockScreener.Core.Response;
 using StockScreener.Interfaces;
 using StockScreener.Mapper;
 using StockScreener.Model.BaseSecurity;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text.Json;
 
 namespace StockScreener

@@ -34,11 +34,7 @@ namespace Users
 				State = request.State,
 				PostalCode = request.PostalCode,
 				DateOfBirth = request.DateOfBirth,
-				CountryOfTaxResidency = request.CountryOfTaxResidency,
-				FundingSource = request.FundingSource,
-				IsControlledPerson = request.IsControlledPerson,
-				IsAffiliatedExchangeOrFinra = request.IsAffiliatedExchangeOrFinra,
-				ImmediateFamilyExposed = request.ImmediateFamilyExposed
+				CountryOfTaxResidency = request.CountryOfTaxResidency
 			};
 	}
 

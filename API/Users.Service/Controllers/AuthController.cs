@@ -19,7 +19,14 @@ namespace Users.Service.Controllers
 
         public IActionResult Create(CreateUserRequest request)
         {
-			return userService.CreateUser(request);
+			return userService.CreateBasicUser(request);
+        }
+
+        [HttpPost("createTrading")]
+
+        public IActionResult CreateTradingUsers(CreateUserRequest request)
+        {
+			return userService.CreateBasicUser(request);
         }
 
         [HttpPost("login")]

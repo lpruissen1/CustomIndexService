@@ -1,4 +1,6 @@
 ﻿using Database.Core;
+using System;
+using System.Collections.Generic;
 using Users.Core;
 
 namespace Users.Database.Model
@@ -18,10 +20,31 @@ namespace Users.Database.Model
 		public string PostalCode { get; set; }
 		public string DateOfBirth { get; set; }
 		public string CountryOfTaxResidency { get; set; }
-		public FundingSource FundingSource { get; set; }
+	}
+
+	public class UserDisclosures : DbEntity
+	{
+		public string UserId { get; set; }
+		public FundingSourceValue FundingSource { get; set; }
 		public bool IsControlledPerson { get; set; }
 		public bool IsAffiliatedExchangeOrFinra { get; set; }
 		public bool IsPoliticallyExposed { get; set; }
 		public bool ImmediateFamilyExposed { get; set; }
+	}
+
+	public class UserAccounts : DbEntity
+	{
+		public string UserId { get; set; }
+		public List<Account> Accounts { get; set; }
+	}
+
+	public class Account
+	{
+		public string AccountId { get; set; }
+		public string AccountName { get; set; }
+		public string Institution { get; set; }
+		public DateTime DateRegistered { get; set; }
+		public DateTime DateCreated { get; set; }
+
 	}
 }
