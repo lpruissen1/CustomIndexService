@@ -13,6 +13,7 @@ namespace StockScreener.Core.Response
 		public string Ticker { get; set; }
 		public string Name { get; set; }
 		public string Sector { get; set; }
+		public string Industry { get; set; }
 		public double MarketCap { get; set; }
 		public double CurrentPrice { get; set; }
 		public List<ScreeningParamValue> ScreeningParameterValues { get; set; } = new List<ScreeningParamValue>();

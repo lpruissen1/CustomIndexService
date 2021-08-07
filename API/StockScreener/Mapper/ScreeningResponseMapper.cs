@@ -30,7 +30,7 @@ namespace StockScreener.Mapper
         {
 			return new ScreeningResponse
 			{
-				Tickers = result.Select(result => MapFilteredFields(result, screeningRules)).ToList()
+				Securities = result.Select(result => MapFilteredFields(result, screeningRules)).ToList()
 			};
         }
 
@@ -39,11 +39,12 @@ namespace StockScreener.Mapper
 			ScreeningEntry entry = new ScreeningEntry(security.Ticker);
 
 			entry.Sector = security.Sector;
+			entry.Sector = security.Industry ?? "";
 			entry.Name = security.Name;
 			entry.MarketCap = security?.MarketCap ?? 0;
 			entry.CurrentPrice = security?.CurrentPrice ?? 0;
 
-			foreach(var rule in filterParams.Where(x => x.Rule != RuleType.SectorIndustry)) {
+			foreach(var rule in filterParams.Where(x => x.Rule != RuleType.SectorIndustry && x.Rule != RuleType.MarketCap)) {
 				entry.ScreeningParameterValues.Add(new ScreeningParamValue
 				{
 					TimePeriod = rule.Time,

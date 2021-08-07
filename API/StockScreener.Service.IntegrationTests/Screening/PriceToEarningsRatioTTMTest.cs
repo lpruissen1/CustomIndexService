@@ -33,7 +33,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex1);
 			AddPriceToEarningsRatioToScreeningRequest(25, 0);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 

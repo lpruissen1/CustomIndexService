@@ -21,7 +21,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex1);
 			AddMarketCapToScreeningRequest(2_000_000d, 200_000d);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 

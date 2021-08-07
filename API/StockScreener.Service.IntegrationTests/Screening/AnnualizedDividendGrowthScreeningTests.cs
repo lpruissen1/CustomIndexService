@@ -28,7 +28,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToScreeningRequest(50, 20, 1);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -56,7 +56,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToScreeningRequest(75, 50, 2);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -84,7 +84,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToCustomIndex(40, 25, 4);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -112,7 +112,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToCustomIndex(20, 10, 12);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -140,7 +140,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			//AddAnnualizedDividendGrowthToCustomIndex(11, 10, 20);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -174,7 +174,7 @@ namespace StockScreener.Service.IntegrationTests
 			//AddAnnualizedDividendGrowthToCustomIndex(40, 25, 4);
 			//AddAnnualizedDividendGrowthToCustomIndex(300, 150, 4);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(2, result.Count);
 
@@ -213,7 +213,7 @@ namespace StockScreener.Service.IntegrationTests
 			//AddAnnualizedDividendGrowthToCustomIndex(45, 30, 4);
 			//AddAnnualizedDividendGrowthToCustomIndex(20, 16, 12);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 

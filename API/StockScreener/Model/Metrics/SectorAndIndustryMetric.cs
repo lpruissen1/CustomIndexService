@@ -3,6 +3,7 @@ using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StockScreener.Model.Metrics
 {
@@ -19,7 +20,7 @@ namespace StockScreener.Model.Metrics
 
         public void Apply(ref SecuritiesList<DerivedSecurity> securitiesList)
         {
-            securitiesList.RemoveAll(s => !industries.Contains(s.Industry) && !sectors.Contains(s.Sector));
+            securitiesList.RemoveAll(s => RemoveCheckIndustry(s.Industry) && CheckSector(s.Sector));
         }
 
         public IEnumerable<BaseDatapoint> GetBaseDatapoints()
@@ -36,6 +37,23 @@ namespace StockScreener.Model.Metrics
 		public TimePeriod? GetPriceTimePeriod()
 		{
 			return null;
+		}
+
+		private bool RemoveCheckIndustry(string industry)
+		{
+			if (!industries.Any())
+				return true;
+
+			return !industries.Contains(industry);
+		}
+
+		private bool CheckSector(string sector)
+		{
+			if (!sectors.Any())
+				return true;
+
+			return !sectors.Contains(sector);
+
 		}
 	}
 }
