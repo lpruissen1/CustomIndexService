@@ -39,7 +39,7 @@ namespace StockScreener.Mapper
 			ScreeningEntry entry = new ScreeningEntry(security.Ticker);
 
 			entry.Sector = security.Sector;
-			entry.Sector = security.Industry ?? "";
+			entry.Industry = security.Industry ?? "";
 			entry.Name = security.Name;
 			entry.MarketCap = security?.MarketCap ?? 0;
 			entry.CurrentPrice = security?.CurrentPrice ?? 0;
