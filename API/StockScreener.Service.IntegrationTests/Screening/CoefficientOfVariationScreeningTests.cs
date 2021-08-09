@@ -36,7 +36,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex1);
 			AddCoefficientOfVariationToScreeningRequest(4.3, 0, TimePeriod.Quarter);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -73,7 +73,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex1);
 			AddCoefficientOfVariationToScreeningRequest(4.3, 0, TimePeriod.Quarter);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 

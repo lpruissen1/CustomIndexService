@@ -33,19 +33,19 @@ namespace StockScreener.Database.Repos
 			return prices?.Candle.Max(x => x.timestamp) ?? 0;
 		}
 
-		public List<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData
+		public IEnumerable<Candle> GetPriceData<TPriceEntry>(string ticker) where TPriceEntry : PriceData
 		{
 			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(x => x.Ticker == ticker).FirstOrDefault();
 
 			return prices?.Candle ?? new List<Candle>();
 		}
 
-		public List<TPriceEntry> GetMany<TPriceEntry>(IEnumerable<string> tickers) where TPriceEntry : PriceData
+		public IEnumerable<TPriceEntry> GetMany<TPriceEntry>(IEnumerable<string> tickers) where TPriceEntry : PriceData
 		{
 			var tickerFilter = Builders<TPriceEntry>.Filter.In(e => e.Ticker, tickers);
-			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(tickerFilter).ToList();
+			var prices = mongoContext.GetCollection<TPriceEntry>(typeof(TPriceEntry).Name).Find(tickerFilter).ToEnumerable();
 
-			return prices ?? new List<TPriceEntry>();
+			return prices ?? Enumerable.Empty<TPriceEntry>();
 		}
 
         public IEnumerable<TPriceEntry> GetClosePriceOverTimePeriod<TPriceEntry>(IEnumerable<string> tickers, TimePeriod timePeriod) where TPriceEntry : PriceData

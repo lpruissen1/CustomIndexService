@@ -35,8 +35,7 @@ namespace StockScreener.SecurityGrabber
 			AddCompanyInfo(tickers, searchParams.Datapoints);
             AddStockFinancials(tickers, searchParams.Datapoints);
 
-			if (searchParams.PriceTimePeriod is not null)
-				AddPrice(tickers, searchParams.PriceTimePeriod.Value);
+			AddPrice(tickers, searchParams.PriceTimePeriod);
 
             return list;
 		}
@@ -55,14 +54,14 @@ namespace StockScreener.SecurityGrabber
 
 		private void AddCompanyInfo(IEnumerable<string> tickers, IEnumerable<BaseDatapoint> datapoints)
         {
-			var relevantDatapoints = datapoints.Where(x => BaseDatapoint.CompanyInfo.HasFlag(x));
+			var relevantDatapoints = datapoints.Where(x => BaseDatapoint.CompanyInfo.HasFlag(x)).ToList();
 
-			if (!relevantDatapoints.Any())
-                return;
+			relevantDatapoints.Add(BaseDatapoint.Name);
+			relevantDatapoints.Add(BaseDatapoint.Sector);
 
             var companyInfoMapper = new CompanyInfoMapper();
 
-			var companyInfos = companyInfoRespository.GetMany(tickers, relevantDatapoints);
+			var companyInfos = companyInfoRespository.GetMany(tickers, relevantDatapoints).ToList();
 
 			foreach (var security in list)
             {
@@ -73,9 +72,9 @@ namespace StockScreener.SecurityGrabber
             }
         }
 
-        private void AddPrice(IEnumerable<string> tickers, TimePeriod timePeriod)
+        private void AddPrice(IEnumerable<string> tickers, TimePeriod? timePeriod)
         {
-			var priceInfos = priceDataRepository.GetMany<DayPriceData>(tickers);
+			var priceInfos = priceDataRepository.GetMany<DayPriceData>(tickers).ToList();
 
             foreach (var security in list)
             {
@@ -90,14 +89,13 @@ namespace StockScreener.SecurityGrabber
 
         private void AddStockFinancials(IEnumerable<string> tickers, IEnumerable<BaseDatapoint> datapoints)
         {
-            var relevantDatapoints = datapoints.Where(x => BaseDatapoint.StockFinancials.HasFlag(x));
+            var relevantDatapoints = datapoints.Where(x => BaseDatapoint.StockFinancials.HasFlag(x)).ToList();
 
-            if (!relevantDatapoints.Any())
-                return;
+			relevantDatapoints.Add(BaseDatapoint.MarketCap);
 
             var stockFinancialsMapper = new StockFinancialsMapper();
 
-            var stockFinancials = stockFinancialsRespository.GetMany(tickers, relevantDatapoints);
+            var stockFinancials = stockFinancialsRespository.GetMany(tickers, relevantDatapoints).ToList();
             
 			foreach (var security in list)
 			{

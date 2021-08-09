@@ -32,7 +32,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex1);
 			//AddRawDividendGrowthToCustomIndex(30, 20, 2);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 

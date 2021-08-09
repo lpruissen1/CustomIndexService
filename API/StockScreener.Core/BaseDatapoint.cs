@@ -22,8 +22,10 @@ namespace StockScreener.Core
         QuarterlySalesPerShare = 1 << 13,
         BookValuePerShare = 1 << 14,
         DividendsPerShare = 1 << 15,
+        Name = 1 << 16,
 
-        CompanyInfo  = Sector | Industry,
-        StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio | ProfitMargin | GrossMargin | WorkingCapital | DebtToEquityRatio | FreeCashFlow | CurrentRatio | QuarterlySalesPerShare | BookValuePerShare | DividendsPerShare
+        CompanyInfo  = Sector | Industry | Name,
+
+		StockFinancials  = MarketCap | Revenue | QuarterlyEarningsPerShare | PayoutRatio | ProfitMargin | GrossMargin | WorkingCapital | DebtToEquityRatio | FreeCashFlow | CurrentRatio | QuarterlySalesPerShare | BookValuePerShare | DividendsPerShare
     }
 }
