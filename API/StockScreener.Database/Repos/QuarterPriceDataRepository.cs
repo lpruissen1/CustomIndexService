@@ -17,7 +17,7 @@ namespace StockScreener.Database.Repos
 
 		public QuarterPriceDataRepository(IMongoDbContextFactory contextFactory) : base(contextFactory.GetPriceContext()) { }
 
-		public void LoadPriceData(List<QuarterPriceData> priceData)
+		public void LoadPriceData(IEnumerable<QuarterPriceData> priceData)
 		{
 			dbCollection.BulkWriteAsync(priceData.Select(x => new InsertOneModel<QuarterPriceData>(x)), new BulkWriteOptions { IsOrdered = true});
 		}

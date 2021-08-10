@@ -7,7 +7,7 @@ namespace StockScreener.Database.Repos.Interfaces
 {
 	public interface IQuarterhPriceDataRepository : IBaseRepository<QuarterPriceData>
 	{
-		void LoadPriceData(List<QuarterPriceData> priceData);
+		void LoadPriceData(IEnumerable<QuarterPriceData> priceData);
 		void UpdatePriceData(QuarterPriceData priceData);
 		Dictionary<string, IEnumerable<QuarterPriceData>> GetPriceData(IEnumerable<string> tickers, TimePeriod timePeriod);
 	}

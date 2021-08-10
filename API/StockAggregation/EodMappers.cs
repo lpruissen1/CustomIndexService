@@ -31,7 +31,7 @@ namespace StockAggregation
 			return priceData;
 		}
 
-		public static List<QuarterPriceData> MapQuarterPriceData(string ticker, List<EodCandle> response)
+		public static IEnumerable<QuarterPriceData> MapQuarterPriceData(string ticker, List<EodCandle> response)
 		{
 			var list = new List<QuarterPriceData>();
 
@@ -76,18 +76,36 @@ namespace StockAggregation
 			};
 		}
 
-		public static EarningsHistory MapEarnings(string ticker, EodEarnings response)
+		public static IEnumerable<YearEarningsData> MapEarnings(string ticker, EodEarnings response, EodIncomeStatement incomeStatement)
 		{
-			return new EarningsHistory
+			var list = new List<YearEarningsData>();
+
+			if (response is null)
+				return list;
+
+			response.History.RemoveAll((key, value) => value.epsActual is null);
+
+			var yearEntry = new YearEarningsData { Ticker = ticker, Year = new DateTime(response.History.First().Key.Year, 1, 1) };
+			list.Add(yearEntry);
+
+			foreach (var datapoint in response.History)
 			{
-				Ticker = ticker,
-				Entries = response.History.Select(pair => new EarningsEntry
+				if (yearEntry.Year.Year != datapoint.Key.Year)
 				{
-					timestamp = pair.Key.ToUnix(),
-					ReportDate = pair.Value.reportDate.ToUnix(),
-					EaringsPerShare = pair.Value?.epsActual ?? 0
-				}).ToList()
-			};
+					yearEntry = new YearEarningsData { Ticker = ticker, Year = new DateTime(datapoint.Key.Year, 1, 1) };
+					list.Add(yearEntry);
+				}
+
+				yearEntry.Quarters.Add(new EarningsEntry
+				{
+					timestamp = datapoint.Key.ToUnix(),
+					ReportDate = datapoint.Value.reportDate,
+					EaringsPerShare = datapoint.Value.epsActual.GetValueOrDefault(),
+					EBITA = incomeStatement.quarterly.GetValueOrDefault(datapoint.Key)?.ebitda.GetValueOrDefault() ?? 0
+				});
+			}
+
+			return list;
 		}
 
 		public static OutstandingSharesHistory MapOutstandingShares(EodOutstandingShares response)

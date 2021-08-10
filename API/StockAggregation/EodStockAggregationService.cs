@@ -21,7 +21,7 @@ namespace StockAggregation
 		private readonly IncomeStatementHistoryRepository incomeStatementHistoryRepository;
 		private readonly BalanceSheetHistoryRepository balanceSheetHistoryRepository;
 		private readonly StockIndexRepository stockIndexRepository;
-		private readonly EarningsRepository earningsRepository;
+		private readonly YearEarningsDataRepository earningsRepository;
 		private readonly IEodClient eodClient;
 		private readonly ILogger logger;
 
@@ -32,7 +32,7 @@ namespace StockAggregation
 			companyInfoRepository = new CompanyInfoRepository(stockDataContext);
 			stockFinancialsRepository = new StockFinancialsRepository(stockDataContext);
 			stockIndexRepository = new StockIndexRepository(stockDataContext);
-			earningsRepository = new EarningsRepository(stockDataContext);
+			earningsRepository = new YearEarningsDataRepository(stockDataContext);
 			outstandingSharesRepository = new OutstandingSharesHistoryRepository(stockDataContext);
 			cashFlowHistoryRepository = new CashFlowHistoryRepository(stockDataContext);
 			balanceSheetHistoryRepository = new BalanceSheetHistoryRepository(stockDataContext);
@@ -44,24 +44,25 @@ namespace StockAggregation
 		{
 			var tickers = stockIndexRepository.GetIndex(index).Tickers;
 			var count = 0;
+
 			foreach (var ticker in tickers)
 			{
+				var eodFundementals = eodClient.GetFundementals(ticker);
 				var priceData = EodMappers.MapQuarterPriceData(ticker, eodClient.GetPriceData(ticker));
-
+				
 				monthPriceDataRepository.LoadPriceData(priceData);
-				//var eodFundementals = eodClient.GetFundementals(ticker);
+				WriteEarnings(eodFundementals);
 				Console.WriteLine($"{ticker} - {count++}");
+				var blah = 2;
 
 			}
 		}
 
-		//private void WriteEarnings(EodFundementals eodFundementals)
-		//{
-
-		//	var dbEarnings = EodMappers.MapEarnings(ticker, eodFundementals.Earnings);
-
-
-		//} 
+		private void WriteEarnings(EodFundementals eodFundementals)
+		{
+			var dbEarnings = EodMappers.MapEarnings(eodFundementals.Ticker, eodFundementals.Earnings, eodFundementals.Financials.Income_Statement);
+			earningsRepository.Load(dbEarnings);
+		} 
 
 		public void LoadTickersByIndex(string index)
 		{

@@ -2,7 +2,7 @@
 {
 	public interface IStockAggregationLoaderService
     {
-		void LoadStockFundementalData(string index);
-        void LoadDailyPriceDataForIndex(string index);
-    }
+		void LoadStockData(string index);
+
+	}
 }
