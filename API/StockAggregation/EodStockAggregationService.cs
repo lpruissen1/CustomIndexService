@@ -52,11 +52,17 @@ namespace StockAggregation
 				
 				monthPriceDataRepository.LoadPriceData(priceData);
 				WriteEarnings(eodFundementals);
+				WriteCompanyInfo(eodFundementals, index);
 				Console.WriteLine($"{ticker} - {count++}");
 				var blah = 2;
-
 			}
 		}
+
+		private void WriteCompanyInfo(EodFundementals eodFundementals, string index)
+		{
+			var companyInfo = EodMappers.MapCompanyInfo(eodFundementals, index);
+			companyInfoRepository.Create(companyInfo);
+		} 
 
 		private void WriteEarnings(EodFundementals eodFundementals)
 		{

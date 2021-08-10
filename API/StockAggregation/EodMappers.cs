@@ -62,17 +62,19 @@ namespace StockAggregation
 			return list;
 		}
 
-		public static CompanyInfo MapCompanyInfo(EodCompanyInfo response, string index)
+		public static CompanyInfo MapCompanyInfo(EodFundementals response, string index)
 		{
 			return new CompanyInfo
 			{
-				Name = response.Name,
-				Description = response.Description,
-				Industry= response.Industry,
-				Cusip = response.Cusip,
-				isDelisted = response.isDelisted,
+				Ticker = response.Ticker,
+				Name = response.General.Name,
+				Description = response.General.Description,
+				Industry= response.General.Industry,
+				Sector= response.General.Sector,
+				Cusip = response.General.Cusip,
+				isDelisted = response.General.isDelisted,
 				Indices = new[] { index },
-				LastUpdated = response.UpdatedAt.ToUnix()
+				LastUpdated = response.General.UpdatedAt.ToUnix()
 			};
 		}
 
