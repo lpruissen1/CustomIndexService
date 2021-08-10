@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace StockScreener.Database.Model
 {
-	public class MonthPriceData : StockDbEntity
+	public class QuarterPriceData : StockDbEntity
 	{
 		public DateTime Month { get; set; }
 		public List<Candle> Days { get; set; } = new List<Candle>();

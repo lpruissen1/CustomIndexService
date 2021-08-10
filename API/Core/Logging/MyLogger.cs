@@ -28,12 +28,12 @@ namespace Core.Logging
 			if (!IsEnabled(logLevel) && eventId.Id != 1)
 				return;
 
-			if (!Directory.Exists(options.file))
+			if (!Directory.Exists(options.FilePath))
 			{
-				Directory.CreateDirectory(options.file);
+				Directory.CreateDirectory(options.FilePath);
 			}
 
-			var fullFilePath = options.filePath + options.file;
+			var fullFilePath = options.FolderPath + options.FilePath;
 			var logRecord = $"[{DateTimeOffset.UtcNow:yyyy-MM-dd HH:mm:ss+00:00}] : {formatter(state, exception)}";
 
 			//using (var streamWriter = new StreamWriter(fullFilePath, true))

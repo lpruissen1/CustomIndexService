@@ -15,11 +15,11 @@ namespace StockScreener.SecurityGrabber
         private readonly ICompanyInfoRepository companyInfoRespository;
         private readonly IStockFinancialsRepository stockFinancialsRespository;
         private readonly IStockIndexRepository stockIndicesRespository;
-        private readonly IMonthPriceDataRepository priceDataRepository;
+        private readonly IQuarterhPriceDataRepository priceDataRepository;
 
         private SecuritiesList<BaseSecurity> list;
 
-        public SecuritiesGrabber(IStockFinancialsRepository stockFinancialsRespository, ICompanyInfoRepository companyInfoRespository, IStockIndexRepository stockIndicesRespository, IMonthPriceDataRepository priceDataRepository)
+        public SecuritiesGrabber(IStockFinancialsRepository stockFinancialsRespository, ICompanyInfoRepository companyInfoRespository, IStockIndexRepository stockIndicesRespository, IQuarterhPriceDataRepository priceDataRepository)
         {
             this.companyInfoRespository = companyInfoRespository;
             this.stockFinancialsRespository = stockFinancialsRespository;
@@ -87,7 +87,7 @@ namespace StockScreener.SecurityGrabber
             }
         }
 
-		private IEnumerable<PriceEntry> MapMonthlyEntry(IEnumerable<MonthPriceData> monthPriceData)
+		private IEnumerable<PriceEntry> MapMonthlyEntry(IEnumerable<QuarterPriceData> monthPriceData)
 		{
 			foreach(var month in monthPriceData)
 			{

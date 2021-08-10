@@ -29,7 +29,8 @@ namespace ApiClient
 
 		public List<EodCandle> GetPriceData(string ticker)
 		{
-			var request = $"{route}eod/{ticker}?from=2006-01-01&to=2021-07-19&{jsonFormatting}" + GetApiKeyRequestPhrase();
+			var now = DateTime.Now.ToString();
+			var request = $"{route}eod/{ticker}?{jsonFormatting}" + GetApiKeyRequestPhrase();
 			var response = MakeRequest<List<EodCandle>>(request);
 
 			return response;

@@ -60,6 +60,9 @@ namespace StockScreener.Model.Metrics
 
 		public TimePeriod GetPriceTimePeriod()
 		{
+			if (!metrics.Any())
+				return TimePeriod.Day;
+
 			return metrics.Select(x => x.GetPriceTimePeriod()).Max();
 		}
 	}

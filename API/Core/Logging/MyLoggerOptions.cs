@@ -2,9 +2,9 @@
 {
 	public class MyLoggerOptions : IMyLoggerOptions
 	{
-		public string filePath { get; set; }
+		public string FolderPath { get; set; }
 
-		public string file { get; set; }
+		public string FilePath { get; set; }
 	}
 
 }

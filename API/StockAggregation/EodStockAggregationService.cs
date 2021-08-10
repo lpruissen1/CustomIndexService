@@ -13,7 +13,7 @@ namespace StockAggregation
 {
 	public class EodStockAggregationService : IStockAggregationService, IStockAggregationLoaderService
 	{
-		private readonly MonthPriceDataRepository monthPriceDataRepository;
+		private readonly QuarterPriceDataRepository monthPriceDataRepository;
 		private readonly CompanyInfoRepository companyInfoRepository;
 		private readonly StockFinancialsRepository stockFinancialsRepository;
 		private readonly OutstandingSharesHistoryRepository outstandingSharesRepository;
@@ -28,7 +28,7 @@ namespace StockAggregation
 		public EodStockAggregationService(IMongoDBContext stockDataContext, IMongoDBContext priceDataContext, IEodClient client, ILogger logger)
 		{
 			eodClient = client;
-			monthPriceDataRepository = new MonthPriceDataRepository(priceDataContext);
+			monthPriceDataRepository = new QuarterPriceDataRepository(priceDataContext);
 			companyInfoRepository = new CompanyInfoRepository(stockDataContext);
 			stockFinancialsRepository = new StockFinancialsRepository(stockDataContext);
 			stockIndexRepository = new StockIndexRepository(stockDataContext);
@@ -43,14 +43,14 @@ namespace StockAggregation
 		public void LoadStockData(string index)
 		{
 			var tickers = stockIndexRepository.GetIndex(index).Tickers;
-
+			var count = 0;
 			foreach (var ticker in tickers)
 			{
-				var priceData = EodMappers.MapMonthPriceData(ticker, eodClient.GetPriceData(ticker));
+				var priceData = EodMappers.MapQuarterPriceData(ticker, eodClient.GetPriceData(ticker));
 
 				monthPriceDataRepository.LoadPriceData(priceData);
-				var eodFundementals = eodClient.GetFundementals(ticker);
-
+				//var eodFundementals = eodClient.GetFundementals(ticker);
+				Console.WriteLine($"{ticker} - {count++}");
 
 			}
 		}

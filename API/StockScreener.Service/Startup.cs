@@ -41,8 +41,8 @@ namespace StockScreener.Service
             services.AddScoped<IStockFinancialsRepository, StockFinancialsRepository>();
             services.AddScoped<ICompanyInfoRepository, CompanyInfoRepository>();
             services.AddScoped<IStockIndexRepository, StockIndexRepository>();
-            services.AddScoped<IMonthPriceDataRepository, MonthPriceDataRepository>();
-            services.AddScoped<ISecuritiesGrabber, SecuritiesGrabber>();
+			services.AddScoped<IQuarterhPriceDataRepository>(_ => new QuarterPriceDataRepository(new MongoDbContextFactory()));
+			services.AddScoped<ISecuritiesGrabber, SecuritiesGrabber>();
             services.AddScoped<IStockScreenerService, StockScreenerService>();
             services.AddScoped<IStockInformationService, StockInformationService>();
 			services.AddSingleton<ILogger, MyLogger>();
@@ -73,7 +73,6 @@ namespace StockScreener.Service
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseCors(options =>
             {
                 options.WithOrigins("https://localhost:6001")

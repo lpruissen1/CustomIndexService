@@ -31,21 +31,21 @@ namespace StockAggregation
 			return priceData;
 		}
 
-		public static List<MonthPriceData> MapMonthPriceData(string ticker, List<EodCandle> response)
+		public static List<QuarterPriceData> MapQuarterPriceData(string ticker, List<EodCandle> response)
 		{
-			if (!response.Any())
-				return null;
+			var list = new List<QuarterPriceData>();
 
-			var list = new List<MonthPriceData>();
+			if (response is null)
+				return list;
 
-			var monthEntry = new MonthPriceData { Ticker = ticker, Month = new DateTime(response[0].date.Year, response[0].date.Month, 1) };
+			var monthEntry = new QuarterPriceData { Ticker = ticker, Month = new DateTime(response[0].date.Year, response[0].date.Month, 1) };
 			list.Add(monthEntry);
 
 			foreach (var datapoint in response)
 			{
 				if (!monthEntry.Month.SameQuarter(datapoint.date))
 				{
-					monthEntry = new MonthPriceData { Ticker = ticker, Month = new DateTime(datapoint.date.Year, datapoint.date.Month, 1) };
+					monthEntry = new QuarterPriceData { Ticker = ticker, Month = new DateTime(datapoint.date.Year, datapoint.date.Month, 1) };
 					list.Add(monthEntry);
 				}
 
