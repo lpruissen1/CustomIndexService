@@ -9,6 +9,6 @@ namespace StockScreener.Database.Repos.Interfaces
 	{
 		void LoadPriceData(List<MonthPriceData> priceData);
 		void UpdatePriceData(MonthPriceData priceData);
-		IEnumerable<MonthPriceData> GetPirceData(TimePeriod timePeriod);
+		Dictionary<string, IEnumerable<MonthPriceData>> GetPriceData(IEnumerable<string> tickers, TimePeriod timePeriod);
 	}
 }

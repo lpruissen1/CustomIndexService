@@ -58,9 +58,9 @@ namespace StockScreener.Model.Metrics
 			return new SecuritiesSearchParams { Markets = indices, Datapoints = GetBaseDatapoints(), PriceTimePeriod = GetPriceTimePeriod() };
         }
 
-		public TimePeriod? GetPriceTimePeriod()
+		public TimePeriod GetPriceTimePeriod()
 		{
 			return metrics.Select(x => x.GetPriceTimePeriod()).Max();
 		}
-    }
+	}
 }

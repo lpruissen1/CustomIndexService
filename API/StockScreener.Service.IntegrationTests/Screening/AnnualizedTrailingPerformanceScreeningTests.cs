@@ -22,7 +22,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex1);
 			AddAnnualizedTrailingPerformanceToScreeningRequest(100, 0, TimePeriod.Quarter);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 			Assert.AreEqual(ticker1, result[0].Ticker);

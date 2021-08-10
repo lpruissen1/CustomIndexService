@@ -41,7 +41,7 @@ namespace StockScreener.Service
             services.AddScoped<IStockFinancialsRepository, StockFinancialsRepository>();
             services.AddScoped<ICompanyInfoRepository, CompanyInfoRepository>();
             services.AddScoped<IStockIndexRepository, StockIndexRepository>();
-            services.AddScoped<IPriceDataRepository>(_ =>new PriceDataRepository(new MongoDbContextFactory()));
+            services.AddScoped<IMonthPriceDataRepository, MonthPriceDataRepository>();
             services.AddScoped<ISecuritiesGrabber, SecuritiesGrabber>();
             services.AddScoped<IStockScreenerService, StockScreenerService>();
             services.AddScoped<IStockInformationService, StockInformationService>();

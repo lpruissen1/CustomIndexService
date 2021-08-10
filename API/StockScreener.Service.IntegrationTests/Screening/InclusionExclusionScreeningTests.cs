@@ -20,7 +20,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			AddIncludedTickerToScreeningRequest(ticker3);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(3, result.Count);
 
@@ -43,7 +43,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			AddIncludedTickerToScreeningRequest(ticker3);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(3, result.Count);
 
@@ -65,7 +65,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			AddExcludedTickerToScreeningRequest(ticker2);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 

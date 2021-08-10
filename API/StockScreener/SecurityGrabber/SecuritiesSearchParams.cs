@@ -8,6 +8,6 @@ namespace StockScreener.SecurityGrabber
     {
         public IEnumerable<string> Markets { get; set; }
         public IEnumerable<BaseDatapoint> Datapoints {get; set; } 
-        public TimePeriod? PriceTimePeriod {get; set; } 
+        public TimePeriod PriceTimePeriod {get; set; } 
     }
 }

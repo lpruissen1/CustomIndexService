@@ -1,7 +1,4 @@
-﻿using Database.Repositories;
-using NUnit.Framework;
-using StockScreener.Database.Repos;
-using StockScreener.SecurityGrabber;
+﻿using NUnit.Framework;
 using StockScreener.Service.IntegrationTests.StockDataHelpers;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,14 +26,12 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex);
 			AddSectorAndIndustryToScreeningRequest(new List<string> { sector1 }, new List<string>());
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
-			var security = result.First();
-
-			Assert.AreEqual(ticker1, security.Ticker);
-			Assert.AreEqual(sector1, security.Sector);
+			Assert.AreEqual(ticker1, result[0].Ticker);
+			Assert.AreEqual(sector1, result[0].Sector);
         }
 
         [Test]
@@ -60,7 +55,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex);
 			AddSectorAndIndustryToScreeningRequest(new List<string>(), new List<string> { energyIndustry1 });
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -94,7 +89,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex);
 			AddSectorAndIndustryToScreeningRequest(new List<string>() { materialsSector }, new List<string> { energyIndustry1 });
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(2, result.Count);
 

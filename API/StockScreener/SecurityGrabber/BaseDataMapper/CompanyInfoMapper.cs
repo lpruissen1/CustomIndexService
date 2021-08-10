@@ -12,7 +12,8 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
             datapointMapperDictionary = new Dictionary<BaseDatapoint, Action<CompanyInfo>>()
             {
                 {BaseDatapoint.Sector, AddSector },
-                {BaseDatapoint.Industry, AddIndustry }
+                {BaseDatapoint.Industry, AddIndustry },
+                {BaseDatapoint.Name, AddName},
             };
         }
 
@@ -24,6 +25,11 @@ namespace StockScreener.SecurityGrabber.BaseDataMapper
         private void AddIndustry(CompanyInfo companyInfo)
         {
             security.Industry = companyInfo.Industry;
+        }
+
+        private void AddName(CompanyInfo companyInfo)
+        {
+            security.Name = companyInfo.Name;
         }
     }
 

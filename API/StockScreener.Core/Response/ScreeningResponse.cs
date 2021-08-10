@@ -4,6 +4,6 @@ namespace StockScreener.Core.Response
 {
 	public class ScreeningResponse
 	{
-		public List<ScreeningEntry> Tickers { get; set; } 
+		public List<ScreeningEntry> Securities { get; set; } 
 	}
 }

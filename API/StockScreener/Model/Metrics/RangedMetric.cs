@@ -20,9 +20,9 @@ namespace StockScreener.Model.Metrics
         {
             securitiesList.RemoveAll(security => !rangedDatapoint.Any(range => range.WithinRange(GetValue(security))));
         }
-		public virtual TimePeriod? GetPriceTimePeriod()
+		public virtual TimePeriod GetPriceTimePeriod()
 		{
-			return null;
+			return TimePeriod.Day;
 		}
 
 		public abstract double? GetValue(DerivedSecurity security);

@@ -26,9 +26,21 @@ namespace StockScreener.Database.Repos
 			throw new NotImplementedException();
 		}
 
-		public IEnumerable<MonthPriceData> GetPirceData(TimePeriod timePeriod)
+		public Dictionary<string, IEnumerable<MonthPriceData>> GetPriceData(IEnumerable<string> tickers, TimePeriod timePeriod)
 		{
-			throw new NotImplementedException();
+			var result = new Dictionary<string, IEnumerable<MonthPriceData>>();
+			var filter = Builders<MonthPriceData>.Filter.In(e => e.Ticker, tickers);
+			var timeFilter = Builders<MonthPriceData>.Filter.Where(e => e.Month >= DateTime.Now.FromTimePeriod(timePeriod));
+
+			var combinedFilter = Builders<MonthPriceData>.Filter.And(filter, timeFilter);
+			var data = dbCollection.Find(combinedFilter).ToList();
+			
+			foreach(var ticker in tickers) 
+			{
+				result.Add(ticker, data.Where(x => x.Ticker == ticker));
+			}
+
+			return result;
 		}
 	}
 }

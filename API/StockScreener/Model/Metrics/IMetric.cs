@@ -13,7 +13,7 @@ namespace StockScreener.Model.Metrics
         // change to return a a struct for metrics that specify a timerange 
         IEnumerable<BaseDatapoint> GetBaseDatapoints();
         IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints();
-		TimePeriod? GetPriceTimePeriod();
+		TimePeriod GetPriceTimePeriod();
 	}
 }
 

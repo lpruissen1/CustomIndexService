@@ -13,6 +13,7 @@ namespace StockScreener.Model.BaseSecurity
 		public void Map(BaseSecurity security)
         {
             Sector = security.Sector != null ? security.Sector : Sector;
+            Name = security.Name != null ? security.Name : Name;
             Industry = security.Industry != null ? security.Industry : Industry;
             MarketCap = security.MarketCap != 0 ? security.MarketCap : MarketCap;
             QuarterlyEarnings = security.QuarterlyEarnings != null ? security.QuarterlyEarnings : QuarterlyEarnings;

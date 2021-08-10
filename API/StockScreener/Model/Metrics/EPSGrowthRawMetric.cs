@@ -18,9 +18,10 @@ namespace StockScreener.Model.Metrics
 
         public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
+			// wring
             foreach(var entry in rangedDatapoint.GroupBy(x => x.GetTimePeriod()).Select(x => x.FirstOrDefault()))
             {
-                yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.EPSGrowthRaw, Time = entry.GetTimePeriod() };
+                yield return new DerivedDatapointConstructionData { Rule = RuleType.DividendYield, Time = entry.GetTimePeriod() };
             }
         }
 

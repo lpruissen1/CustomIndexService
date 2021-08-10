@@ -33,7 +33,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex1);
 			AddAnnualizedRevenueGrowthToScreeningRequest(301, 299, TimePeriod.HalfYear);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -66,7 +66,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddAnnualizedRevenueGrowthToScreeningRequest(407, 404, TimePeriod.Quarter);
 
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -99,8 +99,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			AddMarketToScreeningRequest(stockIndex1);
 			AddAnnualizedRevenueGrowthToScreeningRequest(407, 404, TimePeriod.Quarter);
 
-
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 

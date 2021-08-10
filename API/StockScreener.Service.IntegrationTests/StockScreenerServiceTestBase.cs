@@ -33,7 +33,7 @@ namespace StockScreener.Service.IntegrationTests
 		{
 			context.ClearAll();
 
-			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new PriceDataRepository(context)), new FakeLogger());
+			sut = new StockScreenerService(new SecuritiesGrabber(new StockFinancialsRepository(context), new CompanyInfoRepository(context), new StockIndexRepository(context), new MonthPriceDataRepository(context)), new FakeLogger());
 		}
 
 		public void AddStockIndex(string indexName, IEnumerable<string> stockIndex)
