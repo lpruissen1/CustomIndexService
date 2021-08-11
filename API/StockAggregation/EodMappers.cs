@@ -110,6 +110,33 @@ namespace StockAggregation
 			return list;
 		}
 
+		public static IEnumerable<YearCashFlowData> MapCashFlow(string ticker, EodFundementals eodFundementals)
+		{
+			var list = new List<YearCashFlowData>();
+
+			var yearEntry = new YearCashFlowData { Ticker = ticker, Year = new DateTime(eodFundementals.Financials.Cash_Flow.quarterly.First().Key.Year, 1, 1) };
+			list.Add(yearEntry);
+
+			foreach (var datapoint in eodFundementals.Financials.Cash_Flow.quarterly)
+			{
+				if (yearEntry.Year.Year != datapoint.Key.Year)
+				{
+					yearEntry = new YearCashFlowData { Ticker = ticker, Year = new DateTime(datapoint.Key.Year, 1, 1) };
+					list.Add(yearEntry);
+				}
+
+				yearEntry.Quarters.Add(new CashFlowEntry
+				{
+					timestamp = datapoint.Key.ToUnix(),
+					FreeCashFlow = datapoint.Value.freeCashFlow,
+					DividendsPerShare = datapoint.Value.dividendsPaid.GetValueOrDefault() * -1d / eodFundementals.outstandingShares.quarterly.First(x => x.Value.dateFormatted == datapoint.Key).Value?.shares ?? 0d,
+					PayoutRatio = datapoint.Value.dividendsPaid / eodFundementals.Financials.Income_Statement.quarterly.First(x => x.Key == datapoint.Key).Value.netIncome ?? 0
+				});
+			}
+
+			return list;
+		}
+
 		public static OutstandingSharesHistory MapOutstandingShares(EodOutstandingShares response)
 		{
 			return new OutstandingSharesHistory
@@ -118,33 +145,6 @@ namespace StockAggregation
 				{
 					timestamp = entry.Value.dateFormatted.ToUnix(),
 					OutstandingShares = entry.Value.shares
-				}).ToList()
-			};
-		}
-
-		public static CashFlowHistory MapCashFlow(EodCashFlow response)
-		{
-			return new CashFlowHistory
-			{
-				Entries = response.quarterly.Select(entry => new CashFlowEntry
-				{
-					timestamp = entry.Key.ToUnix(),
-					DividendsPaid = entry.Value.dividendsPaid,
-					FreeCashFlow = entry.Value.freeCashFlow
-				}).ToList()
-			};
-		}
-
-		public static IncomeStatementHistory MapIncomeStatement(EodIncomeStatement response)
-		{
-			return new IncomeStatementHistory
-			{
-				Entries = response.quarterly.Select(entry => new IncomeStatementEntry
-				{
-					timestamp = entry.Key.ToUnix(),
-					Ebitda = entry.Value.ebitda,
-					NetIncome = entry.Value.netIncome,
-					TotalRevenue = entry.Value.totalRevenue
 				}).ToList()
 			};
 		}

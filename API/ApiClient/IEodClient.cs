@@ -7,6 +7,7 @@ namespace ApiClient
 	{
 		EodIndex GetIndexInfo(string exchange);
 		List<EodCandle> GetPriceData(string ticker);
+		List<EodDividend> GetDividendData(string ticker);
 		EodFundementals GetFundementals(string ticker);
 	}
 }

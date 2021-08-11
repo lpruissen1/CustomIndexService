@@ -53,6 +53,14 @@ namespace ApiClient
 			return response;
 		}
 
+		public List<EodDividend> GetDividendData(string ticker)
+		{
+			var request = $"{route}/div/{ticker}?{jsonFormatting}" + GetApiKeyRequestPhrase();
+			var response = MakeRequest<List<EodDividend>>(request);
+
+			return response;
+		}
+
 		private TResponseType MakeRequest<TResponseType>(string request)
 		{
 			var response = client.GetAsync(request).Result;
