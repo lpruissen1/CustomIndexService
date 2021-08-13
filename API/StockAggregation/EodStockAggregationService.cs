@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using StockAggregation.Core;
 using StockScreener.Database.Repos;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StockAggregation
@@ -16,7 +17,7 @@ namespace StockAggregation
 		private readonly StockFinancialsRepository stockFinancialsRepository;
 		private readonly OutstandingSharesHistoryRepository outstandingSharesRepository;
 		private readonly YearCashFlowDataRepository cashFlowHistoryRepository;
-		//private readonly IncomeStatementHistoryRepository incomeStatementHistoryRepository;
+		private readonly YearDividendDataRepository yearDividendDataRepository;
 		private readonly BalanceSheetHistoryRepository balanceSheetHistoryRepository;
 		private readonly StockIndexRepository stockIndexRepository;
 		private readonly YearEarningsDataRepository earningsRepository;
@@ -34,7 +35,7 @@ namespace StockAggregation
 			outstandingSharesRepository = new OutstandingSharesHistoryRepository(stockDataContext);
 			cashFlowHistoryRepository = new YearCashFlowDataRepository(stockDataContext);
 			balanceSheetHistoryRepository = new BalanceSheetHistoryRepository(stockDataContext);
-			//incomeStatementHistoryRepository = new IncomeStatementHistoryRepository(stockDataContext);
+			yearDividendDataRepository = new YearDividendDataRepository(stockDataContext);
 			this.logger = logger;
 		}
 
@@ -46,13 +47,13 @@ namespace StockAggregation
 			foreach (var ticker in tickers)
 			{
 				var eodFundementals = eodClient.GetFundementals(ticker);
-				var EodDividendData = eodClient.GetDividendData(ticker);
+				var eodDividendData = eodClient.GetDividendData(ticker);
 				var priceData = EodMappers.MapQuarterPriceData(ticker, eodClient.GetPriceData(ticker));
 				
 				monthPriceDataRepository.LoadPriceData(priceData);
 				WriteEarnings(eodFundementals);
 				WriteCompanyInfo(eodFundementals, index);
-				WriteCashFlow(eodFundementals);
+				WriteDividendData(eodFundementals, eodDividendData);
 				Console.WriteLine($"{ticker} - {count++}");
 				var blah = 2;
 			}
@@ -64,10 +65,10 @@ namespace StockAggregation
 			companyInfoRepository.Create(companyInfo);
 		} 
 
-		private void WriteCashFlow(EodFundementals eodFundementals)
+		private void WriteDividendData(EodFundementals eodFundementals, List<EodDividend> eodDividends)
 		{
-			var cashFlow = EodMappers.MapCashFlow(eodFundementals.Ticker, eodFundementals);
-			cashFlowHistoryRepository.Load(cashFlow);
+			var dividendData = EodMappers.MapDividendData(eodFundementals.Ticker, eodFundementals.Earnings, eodDividends);
+			yearDividendDataRepository.Load(dividendData);
 		} 
 
 		private void WriteEarnings(EodFundementals eodFundementals)

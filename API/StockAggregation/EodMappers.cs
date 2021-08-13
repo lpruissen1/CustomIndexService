@@ -110,27 +110,27 @@ namespace StockAggregation
 			return list;
 		}
 
-		public static IEnumerable<YearCashFlowData> MapCashFlow(string ticker, EodFundementals eodFundementals)
+		public static IEnumerable<YearDividendData> MapDividendData(string ticker, EodEarnings earnings, List<EodDividend> eodDividends)
 		{
-			var list = new List<YearCashFlowData>();
+			var list = new List<YearDividendData>();
 
-			var yearEntry = new YearCashFlowData { Ticker = ticker, Year = new DateTime(eodFundementals.Financials.Cash_Flow.quarterly.First().Key.Year, 1, 1) };
+			var yearEntry = new YearDividendData { Ticker = ticker, Year = new DateTime(eodDividends.First().date.Year, 1, 1) };
 			list.Add(yearEntry);
 
-			foreach (var datapoint in eodFundementals.Financials.Cash_Flow.quarterly)
+			foreach (var datapoint in eodDividends)
 			{
-				if (yearEntry.Year.Year != datapoint.Key.Year)
+				if (yearEntry.Year.Year != datapoint.date.Year)
 				{
-					yearEntry = new YearCashFlowData { Ticker = ticker, Year = new DateTime(datapoint.Key.Year, 1, 1) };
+					yearEntry = new YearDividendData { Ticker = ticker, Year = new DateTime(datapoint.date.Year, 1, 1) };
 					list.Add(yearEntry);
 				}
+				var epsExists = earnings.History.Any(x => x.Key.SameQuarter(datapoint.date));
 
-				yearEntry.Quarters.Add(new CashFlowEntry
+				yearEntry.Quarters.Add(new DividendEntry
 				{
-					timestamp = datapoint.Key.ToUnix(),
-					FreeCashFlow = datapoint.Value.freeCashFlow,
-					DividendsPerShare = datapoint.Value.dividendsPaid.GetValueOrDefault() * -1d / eodFundementals.outstandingShares.quarterly.First(x => x.Value.dateFormatted == datapoint.Key).Value?.shares ?? 0d,
-					PayoutRatio = datapoint.Value.dividendsPaid / eodFundementals.Financials.Income_Statement.quarterly.First(x => x.Key == datapoint.Key).Value.netIncome ?? 0
+					timestamp = datapoint.date.ToUnix(),
+					DividendsPerShare = datapoint.value,
+					PayoutRatio = epsExists ? datapoint.value / earnings.History.FirstOrDefault(x => x.Key.SameQuarter(datapoint.date)).Value.epsActual : null
 				});
 			}
 

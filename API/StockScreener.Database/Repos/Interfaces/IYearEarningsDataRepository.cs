@@ -8,4 +8,9 @@ namespace StockScreener.Database.Repos.Interfaces
 	{
 		void Load(IEnumerable<YearEarningsData> info);
 	}
+
+	public interface IYearDividendDataRepository : IBaseRepository<YearDividendData>
+	{
+		void Load(IEnumerable<YearDividendData> info);
+	}
 }

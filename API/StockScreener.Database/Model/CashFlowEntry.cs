@@ -15,4 +15,15 @@ namespace StockScreener.Database.Model
 		public double? DividendsPerShare { get; set; }
 		public double? PayoutRatio { get; set; }
 	}
+
+	public class YearDividendData : StockDbEntity
+	{
+		public DateTime Year { get; set; }
+		public List<DividendEntry> Quarters { get; set; } = new List<DividendEntry>();
+	}
+	public class DividendEntry : Entry
+	{
+		public double? DividendsPerShare { get; set; }
+		public double? PayoutRatio { get; set; }
+	}
 }
