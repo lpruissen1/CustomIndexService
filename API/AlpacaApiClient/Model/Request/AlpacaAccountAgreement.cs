@@ -1,4 +1,4 @@
-﻿namespace AlpacaApiClient.Model
+﻿namespace AlpacaApiClient.Model.Request
 {
 	public class AlpacaAccountAgreement
 	{

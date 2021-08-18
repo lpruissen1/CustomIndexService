@@ -8,6 +8,5 @@ namespace Users.Core
 		public IActionResult CreateBasicUser(CreateUserRequest request);
 		public IActionResult Login(LoginRequest request);
 		public IActionResult GetInfo(string userId);
-		public IActionResult UpgradeUser(UpgradeUserRequest request);
 	}
 }

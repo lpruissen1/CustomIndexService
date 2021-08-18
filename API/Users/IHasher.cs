@@ -1,6 +1,6 @@
 ﻿namespace Users
 {
-	public interface IPasswordHasher
+	public interface IHasher
 	{
 		string Hash(string password);
 		bool Check(string password, string hash);

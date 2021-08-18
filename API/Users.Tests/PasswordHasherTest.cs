@@ -8,7 +8,7 @@ namespace Users.Tests
         [Test]
         public void Hash_ReturnsHasedPassword()
         {
-			var sut = new PasswordHasher();
+			var sut = new BCryptHasher();
 
 			var password = "P@ssword69!";
 			var hash = sut.Hash(password);
@@ -19,7 +19,7 @@ namespace Users.Tests
         [Test]
         public void Check_WithCorrectPasswords_ReturnsTrue()
         {
-			var sut = new PasswordHasher();
+			var sut = new BCryptHasher();
 
 			var password = "P@ssword69!";
 			var hash = sut.Hash(password);
@@ -30,7 +30,7 @@ namespace Users.Tests
         [Test]
         public void Check_WithIncorrectPasswords_ReturnsFalse()
         {
-			var sut = new PasswordHasher();
+			var sut = new BCryptHasher();
 
 			var password = "P@ssword69!";
 			var hash = sut.Hash(password);

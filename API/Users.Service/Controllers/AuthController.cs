@@ -16,15 +16,7 @@ namespace Users.Service.Controllers
 		}
 
         [HttpPost("create")]
-
         public IActionResult Create(CreateUserRequest request)
-        {
-			return userService.CreateBasicUser(request);
-        }
-
-        [HttpPost("createTrading")]
-
-        public IActionResult CreateTradingUsers(CreateUserRequest request)
         {
 			return userService.CreateBasicUser(request);
         }
@@ -34,11 +26,5 @@ namespace Users.Service.Controllers
         {
 			return userService.Login(request);
         }
-
-		[HttpPost("upgrade")]
-		public IActionResult Upgrade(UpgradeUserRequest request)
-		{
-			return userService.UpgradeUser(request);
-		}
 	}
 }

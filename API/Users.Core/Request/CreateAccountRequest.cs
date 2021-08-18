@@ -2,10 +2,14 @@
 
 namespace Users.Core.Request
 {
-	public class UpgradeUserRequest
+	public class CreateAccountRequest
 	{
 		public string UserId { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string TaxIdNumber { get; set; }
 		public string PhoneNumber { get; set; }
+		public string EmailAddress { get; set; }
 		public string StreetAddress { get; set; }
 		public string City { get; set; }
 		public string State { get; set; }
@@ -17,5 +21,11 @@ namespace Users.Core.Request
 		public bool IsAffiliatedExchangeOrFinra { get; set; }
 		public bool IsPoliticallyExposed { get; set; }
 		public bool ImmediateFamilyExposed { get; set; }
+		public string PhotoIdFront { get; set; }
+		public string PhotoIdBack { get; set; }
+		public string IpAddress { get; set; }
+		public string CustomerAgreementSignedAt { get; set; }
+		public string MarginAgreementSignedAt { get; set; }
+		public string AccountAgreementSignedAt { get; set; }
 	}
 }

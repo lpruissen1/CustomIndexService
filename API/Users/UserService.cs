@@ -14,13 +14,13 @@ namespace Users
 	{
 		private readonly IUserRepository userRepository;
 		private readonly IPasswordListRepository passwordListRepository;
-		private readonly IPasswordHasher passwordHasher;
+		private readonly IHasher passwordHasher;
 		private readonly ITokenGenerator tokenGenerator;
 		private readonly ILogger logger;
 
 		private const string invalidCredentialsMessage = "Invalid Credentials";
 
-		public UserService(IUserRepository userRepository, IPasswordListRepository passwordListRepository, IPasswordHasher passwordHasher, ITokenGenerator tokenGenerator, ILogger logger)
+		public UserService(IUserRepository userRepository, IPasswordListRepository passwordListRepository, IHasher passwordHasher, ITokenGenerator tokenGenerator, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.passwordListRepository = passwordListRepository;
@@ -60,21 +60,6 @@ namespace Users
 			}
 
 			return new BadRequestObjectResult(invalidCredentialsMessage);
-		}
-
-		public IActionResult UpgradeUser(UpgradeUserRequest request)
-		{
-			var existingUser = userRepository.GetByUserId(request.UserId);
-
-			var upgradedUser = UserMapper.MapUpgradeUserRequest(request, existingUser);
-			var success = userRepository.UpgradeUser(upgradedUser);
-
-			if (success)
-			{
-				return new OkResult();
-			}
-
-			return new BadRequestResult();
 		}
 
 		public IActionResult GetInfo(string userId)
