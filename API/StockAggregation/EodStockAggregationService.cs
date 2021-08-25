@@ -3,6 +3,7 @@ using ApiClient.Models.Eod;
 using Database.Core;
 using Microsoft.Extensions.Logging;
 using StockAggregation.Core;
+using StockScreener.Database.Model;
 using StockScreener.Database.Repos;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace StockAggregation
 		private readonly CompanyInfoRepository companyInfoRepository;
 		private readonly StockFinancialsRepository stockFinancialsRepository;
 		private readonly OutstandingSharesHistoryRepository outstandingSharesRepository;
-		private readonly YearCashFlowDataRepository cashFlowHistoryRepository;
+		private readonly YearCashFlowDataRepository cashFlowRepository;
 		private readonly YearDividendDataRepository yearDividendDataRepository;
 		private readonly BalanceSheetHistoryRepository balanceSheetHistoryRepository;
 		private readonly StockIndexRepository stockIndexRepository;
@@ -33,7 +34,7 @@ namespace StockAggregation
 			stockIndexRepository = new StockIndexRepository(stockDataContext);
 			earningsRepository = new YearEarningsDataRepository(stockDataContext);
 			outstandingSharesRepository = new OutstandingSharesHistoryRepository(stockDataContext);
-			cashFlowHistoryRepository = new YearCashFlowDataRepository(stockDataContext);
+			cashFlowRepository = new YearCashFlowDataRepository(stockDataContext);
 			balanceSheetHistoryRepository = new BalanceSheetHistoryRepository(stockDataContext);
 			yearDividendDataRepository = new YearDividendDataRepository(stockDataContext);
 			this.logger = logger;
@@ -44,13 +45,16 @@ namespace StockAggregation
 			var tickers = stockIndexRepository.GetIndex(index).Tickers;
 			var count = 0;
 
+			// check to see if it has been loaded already?
+			// company info?
+
 			foreach (var ticker in tickers)
 			{
 				var eodFundementals = eodClient.GetFundementals(ticker);
 				var eodDividendData = eodClient.GetDividendData(ticker);
 				var priceData = EodMappers.MapQuarterPriceData(ticker, eodClient.GetPriceData(ticker));
 				
-				monthPriceDataRepository.LoadPriceData(priceData);
+				WritePriceData(priceData);
 				WriteEarnings(eodFundementals);
 				WriteCompanyInfo(eodFundementals, index);
 				WriteDividendData(eodFundementals, eodDividendData);
@@ -58,24 +62,6 @@ namespace StockAggregation
 				var blah = 2;
 			}
 		}
-
-		private void WriteCompanyInfo(EodFundementals eodFundementals, string index)
-		{
-			var companyInfo = EodMappers.MapCompanyInfo(eodFundementals, index);
-			companyInfoRepository.Create(companyInfo);
-		} 
-
-		private void WriteDividendData(EodFundementals eodFundementals, List<EodDividend> eodDividends)
-		{
-			var dividendData = EodMappers.MapDividendData(eodFundementals.Ticker, eodFundementals.Earnings, eodDividends);
-			yearDividendDataRepository.Load(dividendData);
-		} 
-
-		private void WriteEarnings(EodFundementals eodFundementals)
-		{
-			var dbEarnings = EodMappers.MapEarnings(eodFundementals.Ticker, eodFundementals.Earnings, eodFundementals.Financials.Income_Statement);
-			earningsRepository.Load(dbEarnings);
-		} 
 
 		public void LoadTickersByIndex(string index)
 		{
@@ -114,14 +100,38 @@ namespace StockAggregation
 			throw new NotImplementedException();
 		}
 
-		public void LoadDailyPriceDataForIndex(string index)
+		public void LoadStockFundementalData(string index)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void LoadStockFundementalData(string index)
+		private void WritePriceData(IEnumerable<QuarterPriceData> priceData)
 		{
-			throw new NotImplementedException();
+			monthPriceDataRepository.LoadPriceData(priceData);
+		}
+
+		private void WriteCashFlow(EodFundementals eodFundementals, string index)
+		{
+			var cashFlowData = EodMappers.MapQuarterCashFlowData(eodFundementals);
+			cashFlowRepository.Create(cashFlowData);
+		}
+
+		private void WriteCompanyInfo(EodFundementals eodFundementals, string index)
+		{
+			var companyInfo = EodMappers.MapCompanyInfo(eodFundementals, index);
+			companyInfoRepository.Create(companyInfo);
+		}
+
+		private void WriteDividendData(EodFundementals eodFundementals, List<EodDividend> eodDividends)
+		{
+			var dividendData = EodMappers.MapDividendData(eodFundementals.Ticker, eodFundementals.Earnings, eodDividends);
+			yearDividendDataRepository.Load(dividendData);
+		}
+
+		private void WriteEarnings(EodFundementals eodFundementals)
+		{
+			var dbEarnings = EodMappers.MapEarnings(eodFundementals.Ticker, eodFundementals.Earnings, eodFundementals.Financials.Income_Statement);
+			earningsRepository.Load(dbEarnings);
 		}
 	}
 }

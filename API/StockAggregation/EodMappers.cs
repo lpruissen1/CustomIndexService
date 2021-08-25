@@ -11,24 +11,33 @@ namespace StockAggregation
 {
 	internal static class EodMappers 
 	{
-		public static TPriceData MapToPriceData<TPriceData>(string ticker, List<EodCandle> response) where TPriceData : PriceData
+		public static IEnumerable<YearCashFlowData> MapQuarterCashFlowData(EodFundementals response)
 		{
-			var priceData = Activator.CreateInstance<TPriceData>();
-			priceData.Ticker = ticker;
+			var list = new List<YearCashFlowData>();
 
-			foreach (var datapoint in response)
+			if (response.Financials.Cash_Flow.quarterly is null)
+				return list;
+
+			var yearEntry = new YearCashFlowData { Ticker = response.Ticker, Year = new DateTime(response.Financials.Cash_Flow.quarterly.First().Key.Year, 1, 1) };
+			list.Add(yearEntry);
+
+			foreach (var datapoint in response.Financials.Cash_Flow.quarterly)
 			{
-				priceData.Candle.Add(new Candle
+				if (!(yearEntry.Year.Year == datapoint.Key.Year))
 				{
-					timestamp = datapoint.date.ToUnix(),
-					openPrice = datapoint.open,
-					closePrice = datapoint.close,
-					highPrice = datapoint.high,
-					lowPrice = datapoint.low
+					yearEntry = new YearCashFlowData { Ticker = response.Ticker, Year = new DateTime(datapoint.Key.Year, 1, 1) };
+					list.Add(yearEntry);
+				}
+
+				yearEntry.Quarters.Add(new CashFlowEntry
+				{
+					timestamp = datapoint.Key.ToUnix(),
+					FreeCashFlow = datapoint.Value.freeCashFlow,
+					Revenue = response.Financials.Income_Statement.quarterly.GetValueOrDefault(datapoint.Key)?.totalRevenue.GetValueOrDefault() ?? 0,
 				});
 			}
 
-			return priceData;
+			return list;
 		}
 
 		public static IEnumerable<QuarterPriceData> MapQuarterPriceData(string ticker, List<EodCandle> response)
