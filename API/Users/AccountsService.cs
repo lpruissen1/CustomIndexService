@@ -25,6 +25,15 @@ namespace Users
 		private IUserDocumentsRepository userDocumentsRepository { get; }
 		private AlpacaClient alpacaClient { get; }
 
+		public IActionResult CreateAchRelationship(CreateAchRelationshipRequest request)
+		{
+			var alpacaRequest = AlpacaAccountRequestMapper.MapCreateAchRelationshipRequest(request);
+			var alpacaCreateAccountResponse = alpacaClient.CreateAchRelationsip(alpacaRequest, request.AlpacaAccountId);
+
+
+			return alpacaCreateAccountResponse ? new OkResult() : new BadRequestResult();
+		}
+
 		public IActionResult CreateTradingAccount(CreateAccountRequest request)
 		{
 			var alpacaRequest = AlpacaAccountRequestMapper.MapCreateAccountRequest(request);

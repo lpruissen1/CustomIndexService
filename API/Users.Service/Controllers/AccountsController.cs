@@ -16,10 +16,15 @@ namespace Users.Service.Controllers
 		}
 
         [HttpPost("create")]
-
         public IActionResult Create(CreateAccountRequest request)
         {
 			return accountservice.CreateTradingAccount(request);
+        }
+
+        [HttpPost("createAchRelationship")]
+        public IActionResult CreateAchRelationship(CreateAchRelationshipRequest request)
+        {
+			return accountservice.CreateAchRelationship(request);
         }
 	}
 }

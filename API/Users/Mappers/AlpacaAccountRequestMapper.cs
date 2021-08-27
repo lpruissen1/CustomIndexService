@@ -19,6 +19,18 @@ namespace Users.Mappers
 
 			return request;
 		}
+		public static AlpacaAchRelationshipRequest MapCreateAchRelationshipRequest(CreateAchRelationshipRequest createAccountRequest)
+		{
+			var request = new AlpacaAchRelationshipRequest();
+
+			request.account_owner_name = createAccountRequest.BankAccountOwnerName;
+			request.bank_account_number = createAccountRequest.BankAccountNumber;
+			request.bank_account_type = createAccountRequest.AccountType.ToString();
+			request.bank_routing_number = createAccountRequest.BankAccountRoutingNumber;
+			request.nickname = createAccountRequest.BankAccountNickname;
+
+			return request;
+		}
 
 		private static AlpacaAccountContact MapAccountContactInfo(CreateAccountRequest createAccountRequest)
 		{

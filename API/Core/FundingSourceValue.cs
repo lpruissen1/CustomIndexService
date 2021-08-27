@@ -9,4 +9,10 @@
 		savings,
 		family
 	}
+
+	public enum AccountTypeValue
+	{
+		CHECKING,
+		SAVINGS
+	}
 }
