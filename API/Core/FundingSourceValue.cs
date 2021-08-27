@@ -15,4 +15,10 @@
 		CHECKING,
 		SAVINGS
 	}
+
+	public enum TransferDirectionValue
+	{
+		INCOMING,
+		OUTGOING
+	}
 }

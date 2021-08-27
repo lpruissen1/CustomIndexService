@@ -34,6 +34,23 @@ namespace Users
 			return alpacaCreateAccountResponse ? new OkResult() : new BadRequestResult();
 		}
 
+		public IActionResult GetAchRelationships(string accountId)
+		{
+			var getAchResponse = alpacaClient.GetAchRelationships(accountId);
+
+
+			return getAchResponse ? new OkResult() : new BadRequestResult();
+		}
+
+		public IActionResult TransferFunds(FundAccountRequest request)
+		{
+			var alpacaRequest = AlpacaAccountRequestMapper.MapTransferRequest(request);
+			var alpacaTransferResponse = alpacaClient.TransferFunds(alpacaRequest, request.AlpacaAccountId);
+
+
+			return alpacaTransferResponse ? new OkResult() : new BadRequestResult();
+		}
+
 		public IActionResult CreateTradingAccount(CreateAccountRequest request)
 		{
 			var alpacaRequest = AlpacaAccountRequestMapper.MapCreateAccountRequest(request);

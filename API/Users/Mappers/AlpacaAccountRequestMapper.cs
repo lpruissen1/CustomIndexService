@@ -32,6 +32,18 @@ namespace Users.Mappers
 			return request;
 		}
 
+		public static AlpacaTransferRequest MapTransferRequest(FundAccountRequest fundAccountRequest)
+		{
+			var request = new AlpacaTransferRequest();
+
+			request.transfer_type = fundAccountRequest.TransferType;
+			request.relationship_id = fundAccountRequest.RelationshipId;
+			request.amount = fundAccountRequest.Amount;
+			request.direction = fundAccountRequest.Direction.ToString();
+
+			return request;
+		}
+
 		private static AlpacaAccountContact MapAccountContactInfo(CreateAccountRequest createAccountRequest)
 		{
 			return new AlpacaAccountContact()

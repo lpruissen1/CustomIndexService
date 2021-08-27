@@ -26,5 +26,17 @@ namespace Users.Service.Controllers
         {
 			return accountservice.CreateAchRelationship(request);
         }
+
+		[HttpPost("transferFunds")]
+		public IActionResult TransferFunds(FundAccountRequest request)
+		{
+			return accountservice.TransferFunds(request);
+		}
+
+		[HttpGet("getAchRelationships")]
+		public IActionResult GetAchRelationships(string accountId) 
+		{
+			return accountservice.GetAchRelationships(accountId);
+		}
 	}
 }

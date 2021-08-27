@@ -106,6 +106,30 @@ namespace AlpacaApiClient
 			return response.StatusCode == System.Net.HttpStatusCode.OK;
 		}
 
+		public bool GetAchRelationships(string accountId) {
+
+			var request = new HttpRequestMessage(HttpMethod.Get, $"{route}/v1/accounts/{accountId}/ach_relationships");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+
+			var response = client.SendAsync(request).Result;
+
+			return response.StatusCode == System.Net.HttpStatusCode.OK;
+		}
+
+		public bool TransferFunds(AlpacaTransferRequest alpacaRequest, string accountId)
+		{
+			string json = System.Text.Json.JsonSerializer.Serialize(alpacaRequest);
+			var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+			var request = new HttpRequestMessage(HttpMethod.Post, $"{route}/v1/accounts/{accountId}/transfers");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+			request.Content = httpContent;
+
+			var response = client.SendAsync(request).Result;
+
+			return response.StatusCode == System.Net.HttpStatusCode.OK;
+		}
+
 		private string GetAuthHeader()
 		{
 			return Convert.ToBase64String(Encoding.UTF8.GetBytes(key + ":" + secret));
