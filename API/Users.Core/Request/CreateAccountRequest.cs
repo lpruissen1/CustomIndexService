@@ -1,6 +1,4 @@
-﻿using Core;
-
-namespace Users.Core.Request
+﻿namespace Users.Core.Request
 {
 	public class CreateAccountRequest
 	{
@@ -24,8 +22,6 @@ namespace Users.Core.Request
 		public string PhotoIdFront { get; set; }
 		public string PhotoIdBack { get; set; }
 		public string IpAddress { get; set; }
-		public string CustomerAgreementSignedAt { get; set; }
-		public string MarginAgreementSignedAt { get; set; }
-		public string AccountAgreementSignedAt { get; set; }
+		public double CustomerAndAccountAgreementSignedAt { get; set; }
 	}
 }

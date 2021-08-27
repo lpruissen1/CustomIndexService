@@ -29,6 +29,7 @@ namespace Users
 		{
 			var alpacaRequest = AlpacaAccountRequestMapper.MapCreateAccountRequest(request);
 			var alpacaCreateAccountResponse = alpacaClient.CreateAccount(alpacaRequest);
+
 			var user = userRepository.GetByUserId(request.UserId);
 
 			userRepository.Update(CreateAccountRequestDbMapper.MapToUser(user, request));

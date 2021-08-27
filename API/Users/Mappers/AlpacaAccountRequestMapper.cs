@@ -1,5 +1,6 @@
 ﻿using AlpacaApiClient.Model;
 using AlpacaApiClient.Model.Request;
+using Core;
 using Users.Core.Request;
 
 namespace Users.Mappers
@@ -58,12 +59,25 @@ namespace Users.Mappers
 
 		private static AlpacaAccountDocument[] MapAccountDocuments(CreateAccountRequest createAccountRequest)
 		{
-			return new[] { new AlpacaAccountDocument()
-			{
-				document_type = DocumentTypeValue.identity_verification,
-				content = createAccountRequest.PhotoIdFront,
-				mime_type = "image/jpeg"
-			} };
+			var frontIdResponse = EncodedPictureParser.Parse(createAccountRequest.PhotoIdFront);
+			var backIdResponse = EncodedPictureParser.Parse(createAccountRequest.PhotoIdBack);
+
+			return new[] { 
+				new AlpacaAccountDocument()
+				{
+					document_type = DocumentTypeValue.identity_verification,
+					document_sub_type = "idFront",
+					content = frontIdResponse.Content, 
+					mime_type = frontIdResponse.MimeType
+				},
+				new AlpacaAccountDocument()
+				{
+					document_type = DocumentTypeValue.identity_verification,
+					document_sub_type = "idBack",
+					content = backIdResponse.Content,
+					mime_type = backIdResponse.MimeType
+				}
+			};
 		}
 
 		private static AlpacaAccountAgreement[] MapAccountAggrements(CreateAccountRequest createAccountRequest)
@@ -73,21 +87,21 @@ namespace Users.Mappers
 			agreements[0] = new AlpacaAccountAgreement()
 			{
 				agreement = AggrementTypeValue.account_agreement,
-				signed_at = createAccountRequest.AccountAgreementSignedAt,
+				signed_at = DateTimeExtensions.UnixTimeStampToDateTime(createAccountRequest.CustomerAndAccountAgreementSignedAt / 1000).ToString("yyyy-MM-ddTHH:mm:ss.fffffffK"),
 				ip_address = createAccountRequest.IpAddress
 
 			};
 			agreements[1] = new AlpacaAccountAgreement()
 			{
-				agreement = AggrementTypeValue.margin_agreement,
-				signed_at = createAccountRequest.MarginAgreementSignedAt,
+				agreement = AggrementTypeValue.customer_agreement,
+				signed_at = DateTimeExtensions.UnixTimeStampToDateTime(createAccountRequest.CustomerAndAccountAgreementSignedAt / 1000).ToString("yyyy-MM-ddTHH:mm:ss.fffffffK"),
 				ip_address = createAccountRequest.IpAddress
 
 			};
 			agreements[2] = new AlpacaAccountAgreement()
 			{
-				agreement = AggrementTypeValue.customer_agreement,
-				signed_at = createAccountRequest.CustomerAgreementSignedAt,
+				agreement = AggrementTypeValue.margin_agreement,
+				signed_at = DateTimeExtensions.UnixTimeStampToDateTime(createAccountRequest.CustomerAndAccountAgreementSignedAt / 1000).ToString("yyyy-MM-ddTHH:mm:ss.fffffffK"),
 				ip_address = createAccountRequest.IpAddress
 
 			};

@@ -44,6 +44,14 @@ namespace AlpacaApiClient
 				var blah = response.Content.ReadAsStringAsync().Result;
 				return JsonConvert.DeserializeObject<AlpacaCreateAccountResponse>(blah);
 			}
+			else
+			{
+				// log rejection reason
+				var buffer = new byte[100000];
+				response.Content.ReadAsStream().Read(buffer, 0, buffer.Length);
+				var th = Encoding.UTF8.GetString(buffer);
+				return default;
+			}
 
 			return default;
 		}
@@ -94,6 +102,7 @@ namespace AlpacaApiClient
 			return JsonConvert.DeserializeObject<TResponseType>(response.Content.ReadAsStringAsync().Result);
 		}
 	}
+
 	public struct AlpacaApiSettings
 	{
 		public string Key { get; set; }
