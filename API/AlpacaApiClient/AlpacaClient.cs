@@ -2,6 +2,7 @@
 using AlpacaApiClient.Model.Response;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -44,16 +45,13 @@ namespace AlpacaApiClient
 				var blah = response.Content.ReadAsStringAsync().Result;
 				return JsonConvert.DeserializeObject<AlpacaCreateAccountResponse>(blah);
 			}
-			else
-			{
-				// log rejection reason
-				var buffer = new byte[100000];
-				response.Content.ReadAsStream().Read(buffer, 0, buffer.Length);
-				var th = Encoding.UTF8.GetString(buffer);
-				return default;
-			}
-
+			
+			// log rejection reason
+			var buffer = new byte[100000];
+			response.Content.ReadAsStream().Read(buffer, 0, buffer.Length);
+			var th = Encoding.UTF8.GetString(buffer);
 			return default;
+			
 		}
 
 		public AccountStatusResponse[] GetAccountStatus()
@@ -92,7 +90,7 @@ namespace AlpacaApiClient
 			return default;
 		}
 
-		public bool CreateAchRelationsip(AlpacaAchRelationshipRequest alpacaRequest, string accountId) 
+		public AlpacaAchRelationshipResponse CreateAchRelationsip(AlpacaAchRelationshipRequest alpacaRequest, string accountId) 
 		{
 			string json = System.Text.Json.JsonSerializer.Serialize(alpacaRequest);
 			var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -103,20 +101,32 @@ namespace AlpacaApiClient
 
 			var response = client.SendAsync(request).Result;
 
-			return response.StatusCode == System.Net.HttpStatusCode.OK;
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+			{
+				var blah = response.Content.ReadAsStringAsync().Result;
+				return JsonConvert.DeserializeObject<AlpacaAchRelationshipResponse>(blah);
+			}
+
+			return default;
 		}
 
-		public bool GetAchRelationships(string accountId) {
+		public List<AlpacaAchRelationshipResponse> GetAchRelationships(string accountId) {
 
 			var request = new HttpRequestMessage(HttpMethod.Get, $"{route}/v1/accounts/{accountId}/ach_relationships");
 			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
 
 			var response = client.SendAsync(request).Result;
 
-			return response.StatusCode == System.Net.HttpStatusCode.OK;
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+			{
+				var blah = response.Content.ReadAsStringAsync().Result;
+				return JsonConvert.DeserializeObject<List<AlpacaAchRelationshipResponse>>(blah);
+			}
+
+			return default;
 		}
 
-		public bool TransferFunds(AlpacaTransferRequest alpacaRequest, string accountId)
+		public AlpacaTransferRequestResponse TransferFunds(AlpacaTransferRequest alpacaRequest, string accountId)
 		{
 			string json = System.Text.Json.JsonSerializer.Serialize(alpacaRequest);
 			var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -127,7 +137,13 @@ namespace AlpacaApiClient
 
 			var response = client.SendAsync(request).Result;
 
-			return response.StatusCode == System.Net.HttpStatusCode.OK;
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+			{
+				var blah = response.Content.ReadAsStringAsync().Result;
+				return JsonConvert.DeserializeObject<AlpacaTransferRequestResponse>(blah);
+			}
+
+			return default;
 		}
 
 		private string GetAuthHeader()

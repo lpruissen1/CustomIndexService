@@ -2,7 +2,6 @@
 using Database.Repositories;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
 using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
 
@@ -45,7 +44,7 @@ namespace Users.Database.Repositories
 	{
 		public UserDocumentsRepository(IMongoDBContext context) : base(context) { }
 
-		public UserDocuments GetByUserId(string userId)
+		public UserDocuments GetByUserId(Guid userId)
 		{
 			FilterDefinition<UserDocuments> filter = Builders<UserDocuments>.Filter.Eq("UserId", userId);
 
@@ -57,7 +56,7 @@ namespace Users.Database.Repositories
 	{
 		public UserAccountsRepository(IMongoDBContext context) : base(context) { }
 
-		public UserAccounts GetByUserId(string userId)
+		public UserAccounts GetByUserId(Guid userId)
 		{
 			FilterDefinition<UserAccounts> filter = Builders<UserAccounts>.Filter.Eq("UserId", userId);
 
@@ -74,7 +73,7 @@ namespace Users.Database.Repositories
 			throw new NotImplementedException();
 		}
 
-		public UserDisclosures GetByUserId(string userId)
+		public UserDisclosures GetByUserId(Guid userId)
 		{
 			FilterDefinition<UserDisclosures> filter = Builders<UserDisclosures>.Filter.Eq("UserId", userId);
 

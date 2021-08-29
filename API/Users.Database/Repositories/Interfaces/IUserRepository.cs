@@ -14,14 +14,14 @@ namespace Users.Database.Repositories.Interfaces
 
 	public interface IUserDisclosuresRepository : IBaseRepository<UserDisclosures>
 	{
-		UserDisclosures GetByUserId(string userId);
+		UserDisclosures GetByUserId(Guid userId);
 	}
 	public interface IUserAccountsRepository : IBaseRepository<UserAccounts>
 	{
-		UserAccounts GetByUserId(string userId);
+		UserAccounts GetByUserId(Guid userId);
 	}
 	public interface IUserDocumentsRepository : IBaseRepository<UserDocuments>
 	{
-		UserDocuments GetByUserId(string userId);
+		UserDocuments GetByUserId(Guid userId);
 	}
 }

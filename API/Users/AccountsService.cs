@@ -1,8 +1,10 @@
 ﻿using AlpacaApiClient;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using Users.Core;
 using Users.Core.Request;
+using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
 using Users.Mappers;
 
@@ -25,21 +27,34 @@ namespace Users
 		private IUserDocumentsRepository userDocumentsRepository { get; }
 		private AlpacaClient alpacaClient { get; }
 
-		public IActionResult CreateAchRelationship(CreateAchRelationshipRequest request)
+		public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request)
 		{
 			var alpacaRequest = AlpacaAccountRequestMapper.MapCreateAchRelationshipRequest(request);
 			var alpacaCreateAccountResponse = alpacaClient.CreateAchRelationsip(alpacaRequest, request.AlpacaAccountId);
 
+			if(alpacaCreateAccountResponse is not null)
+			{
+				var user = userAccountsRepository.GetByUserId(userId);
+				var account = user.Accounts.First(account => account.AccountId.ToString() == request.AlpacaAccountId);
 
-			return alpacaCreateAccountResponse ? new OkResult() : new BadRequestResult();
+				account.AchRelationship = new AchRelationship { Id = alpacaCreateAccountResponse.id, Status = alpacaCreateAccountResponse.status };
+
+				userAccountsRepository.Update(user);
+
+				return new OkResult();
+			}
+
+			return new BadRequestResult();
 		}
 
 		public IActionResult GetAchRelationships(string accountId)
 		{
+			// get our internal info, not from alpaca
 			var getAchResponse = alpacaClient.GetAchRelationships(accountId);
 
-
-			return getAchResponse ? new OkResult() : new BadRequestResult();
+			
+			return null;
+			//return getAchResponse ? new OkResult() : new BadRequestResult();
 		}
 
 		public IActionResult TransferFunds(FundAccountRequest request)
@@ -47,8 +62,7 @@ namespace Users
 			var alpacaRequest = AlpacaAccountRequestMapper.MapTransferRequest(request);
 			var alpacaTransferResponse = alpacaClient.TransferFunds(alpacaRequest, request.AlpacaAccountId);
 
-
-			return alpacaTransferResponse ? new OkResult() : new BadRequestResult();
+			return alpacaTransferResponse is not null ? new OkResult() : new BadRequestResult();
 		}
 
 		public IActionResult CreateTradingAccount(CreateAccountRequest request)
@@ -56,14 +70,19 @@ namespace Users
 			var alpacaRequest = AlpacaAccountRequestMapper.MapCreateAccountRequest(request);
 			var alpacaCreateAccountResponse = alpacaClient.CreateAccount(alpacaRequest);
 
-			var user = userRepository.GetByUserId(request.UserId);
+			if (alpacaCreateAccountResponse is not null)
+			{
+				var user = userRepository.GetByUserId(request.UserId);
 
-			userRepository.Update(CreateAccountRequestDbMapper.MapToUser(user, request));
-			userAccountsRepository.Create(CreateAccountRequestDbMapper.MapUserAccounts(request, alpacaCreateAccountResponse));
-			userDiclosuresRepository.Create(CreateAccountRequestDbMapper.MapUserDisclosures(request));
-			userDocumentsRepository.Create(CreateAccountRequestDbMapper.MapUserDocuments(request));
+				userRepository.Update(CreateAccountRequestDbMapper.MapToUser(user, request));
+				userAccountsRepository.Create(CreateAccountRequestDbMapper.MapUserAccounts(request, alpacaCreateAccountResponse));
+				userDiclosuresRepository.Create(CreateAccountRequestDbMapper.MapUserDisclosures(request));
+				userDocumentsRepository.Create(CreateAccountRequestDbMapper.MapUserDocuments(request));
 
-			return new OkResult();
+				return new OkResult();
+			}
+
+			return new BadRequestResult();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections.Generic;
 
 namespace Users.Database.Model
 {
@@ -13,5 +14,6 @@ namespace Users.Database.Model
 		public DateTime DateRegistered { get; set; }
 		public DateTime DateCreated { get; set; }
 		public bool Active { get; set; }
+		public AchRelationship AchRelationship { get; set; }
 	}
 }

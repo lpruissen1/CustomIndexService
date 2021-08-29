@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using Users.Core;
 using Users.Core.Request;
 
@@ -21,10 +22,10 @@ namespace Users.Service.Controllers
 			return accountservice.CreateTradingAccount(request);
         }
 
-        [HttpPost("createAchRelationship")]
-        public IActionResult CreateAchRelationship(CreateAchRelationshipRequest request)
+        [HttpPost("create-ach-relationship/{userId}")]
+        public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request)
         {
-			return accountservice.CreateAchRelationship(request);
+			return accountservice.CreateAchRelationship(userId, request);
         }
 
 		[HttpPost("transferFunds")]
