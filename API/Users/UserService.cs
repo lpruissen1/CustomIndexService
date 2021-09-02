@@ -14,13 +14,13 @@ namespace Users
 	{
 		private readonly IUserRepository userRepository;
 		private readonly IPasswordListRepository passwordListRepository;
-		private readonly IPasswordHasher passwordHasher;
+		private readonly IHasher passwordHasher;
 		private readonly ITokenGenerator tokenGenerator;
 		private readonly ILogger logger;
 
 		private const string invalidCredentialsMessage = "Invalid Credentials";
 
-		public UserService(IUserRepository userRepository, IPasswordListRepository passwordListRepository, IPasswordHasher passwordHasher, ITokenGenerator tokenGenerator, ILogger logger)
+		public UserService(IUserRepository userRepository, IPasswordListRepository passwordListRepository, IHasher passwordHasher, ITokenGenerator tokenGenerator, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.passwordListRepository = passwordListRepository;
@@ -29,7 +29,7 @@ namespace Users
 			this.logger = logger;
 		}
 
-		public IActionResult CreateUser(CreateUserRequest request)
+		public IActionResult CreateBasicUser(CreateUserRequest request)
 		{
 			var user = userRepository.Create(UserMapper.MapCreateUserRequest(request));
 			var hashedPassword = passwordHasher.Hash(request.Password);
@@ -60,6 +60,24 @@ namespace Users
 			}
 
 			return new BadRequestObjectResult(invalidCredentialsMessage);
+		}
+
+		public IActionResult GetInfo(string userId)
+		{
+			if (userId is not null)
+			{
+				var info = userRepository.GetByUserId(userId);
+
+				return new OkObjectResult(new GetInfoResponse()
+				{
+					FirstName = info.FirstName,
+					LastName = info.LastName,
+					Username = info.UserName,
+					Email = info.EmailAddress
+				});
+			}
+
+			return new BadRequestResult();
 		}
 
 		private string GetToken(string userId)

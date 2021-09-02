@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 using Users.Core;
 using Users.Database;
 using Users.Database.Config;
@@ -43,12 +44,20 @@ namespace Users.Service
 			services.AddScoped<IMongoDBContext, MongoUserDbContext>();
 			services.AddScoped<IPasswordListRepository, PasswordListRepository>();
 			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<IUserAccountsRepository, UserAccountsRepository>();
+			services.AddScoped<IUserDisclosuresRepository, UserDisclosuresRepository>();
+			services.AddScoped<IUserDocumentsRepository, UserDocumentsRepository>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IAccountsService, AccountsService>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
-			services.AddScoped<IPasswordHasher, PasswordHasher>();
+			services.AddScoped<IHasher, BCryptHasher>();
 			services.AddSingleton<ILogger, MyLogger>();
 
-			services.AddControllers();
+			services.AddControllers().AddJsonOptions(o =>
+			{
+				o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+			});
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Users.Service", Version = "v1" });

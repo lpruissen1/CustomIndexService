@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Users.Core;
-using Users.Core.Request;
 
 namespace Users.Service.Controllers
 {
@@ -15,17 +14,10 @@ namespace Users.Service.Controllers
 			this.userService = userService;
 		}
 
-        [HttpPost("create")]
-
-        public IActionResult Create(CreateUserRequest request)
+        [HttpGet("Info")]
+        public IActionResult Info(string userId)
         {
-			return userService.CreateUser(request);
-        }
-
-        [HttpPost("login")]
-        public IActionResult Login(LoginRequest request)
-        {
-			return userService.Login(request);
+			return userService.GetInfo(userId);
         }
     }
 }

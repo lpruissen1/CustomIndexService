@@ -10,6 +10,7 @@ namespace Users
 		{
 			return new User {
 				UserId = Guid.NewGuid().ToString(),
+				AccountType = "Basic",
 				UserName = request.UserName, 
 				EmailAddress = request.Email, 
 				FirstName = request.FirstName, 
