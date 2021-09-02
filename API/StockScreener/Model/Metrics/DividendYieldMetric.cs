@@ -18,7 +18,7 @@ namespace StockScreener.Model.Metrics
 
         public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapoints()
         {
-            yield return new DerivedDatapointConstructionData { Datapoint = DerivedDatapoint.DividendYield };
+            yield return new DerivedDatapointConstructionData { Rule = RuleType.DividendYield };
 		}
 
 		public override TimePeriod? GetPriceTimePeriod()

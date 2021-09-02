@@ -1,4 +1,5 @@
-﻿using StockScreener.Calculators;
+﻿using Core;
+using StockScreener.Calculators;
 using StockScreener.Core;
 using StockScreener.Model.BaseSecurity;
 using System;
@@ -56,7 +57,7 @@ namespace StockScreener.Model.Weighters
 
 		public override IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapointConstructionData()
 		{
-			return Enumerable.Repeat(new DerivedDatapointConstructionData() { Datapoint = DerivedDatapoint.DividendYield }, 1);
+			return Enumerable.Repeat(new DerivedDatapointConstructionData() { Rule = RuleType.DividendYield }, 1);
 		}
 	}
 }
