@@ -25,7 +25,7 @@ namespace StockScreener.Service.IntegrationTests
 
 			AddMarketToScreeningRequest(stockIndex1);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -51,7 +51,7 @@ namespace StockScreener.Service.IntegrationTests
 			AddMarketToScreeningRequest(stockIndex1);
 			
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
@@ -79,7 +79,7 @@ namespace StockScreener.Service.IntegrationTests
 			//AddWorkingCapitalToCustomIndex(9_000_000, 5_000_000);
 
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(0, result.Count);
 		}

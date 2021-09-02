@@ -29,7 +29,7 @@ namespace StockScreener.Service.IntegrationTests.Screening
 			//AddMarketToCustomIndex(stockIndex1);
 			//AddAnnualizedEPSGrowthToCustomIndex(130, 10, 2);
 
-			var result = sut.Screen(screeningRequest);
+			var result = sut.Screen(screeningRequest).Securities;
 
 			Assert.AreEqual(1, result.Count);
 
