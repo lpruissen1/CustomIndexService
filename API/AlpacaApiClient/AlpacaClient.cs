@@ -51,7 +51,6 @@ namespace AlpacaApiClient
 			response.Content.ReadAsStream().Read(buffer, 0, buffer.Length);
 			var th = Encoding.UTF8.GetString(buffer);
 			return default;
-			
 		}
 
 		public AccountStatusResponse[] GetAccountStatus()

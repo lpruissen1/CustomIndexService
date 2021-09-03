@@ -14,6 +14,7 @@ namespace UserCustomIndices.Mappers
             {
 				UserId = response.UserId,
 				IndexId = response.IndexId,
+				Name = response.Name,
 				Active = true,
                 Markets = response.Markets,
                 Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
@@ -28,6 +29,7 @@ namespace UserCustomIndices.Mappers
             {
 				UserId = response.UserId,
 				IndexId = response.IndexId,
+				Name = response.Name,
 				Active = true,
                 Markets = response.Markets,
                 Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },

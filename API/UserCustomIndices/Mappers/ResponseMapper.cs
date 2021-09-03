@@ -14,6 +14,7 @@ namespace UserCustomIndices.Mappers
 			{
 				UserId = index.UserId,
 				IndexId = index.IndexId,
+				Name = index.Name,
 				Markets = index.Markets,
 				Sectors = index.Sector.Sectors,
 				Industries = index.Sector.Industries,
