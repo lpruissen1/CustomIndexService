@@ -1,4 +1,6 @@
-﻿namespace Users.Core.Request
+﻿using Core;
+
+namespace Users.Core.Request
 {
 	public class CreateAccountRequest
 	{

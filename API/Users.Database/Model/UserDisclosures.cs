@@ -1,14 +1,15 @@
-﻿using Database.Core;
+﻿using Core;
+using Database.Core;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Users.Core;
+using System;
 
 namespace Users.Database.Model
 {
 	public class UserDisclosures : DbEntity
 	{
-		public string UserId { get; set; }
 		[BsonRepresentation(BsonType.String)]
+		public Guid UserId { get; set; }
 		public FundingSourceValue FundingSource { get; set; }
 		public bool IsControlledPerson { get; set; }
 		public bool IsAffiliatedExchangeOrFinra { get; set; }

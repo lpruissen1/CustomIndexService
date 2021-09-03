@@ -27,7 +27,7 @@ namespace Users.Mappers
 
 		public static UserAccounts MapUserAccounts(CreateAccountRequest createAccountRequest, AlpacaCreateAccountResponse alpacaResponse)
 		{
-			var userAccounts = new UserAccounts() { UserId = createAccountRequest.UserId };
+			var userAccounts = new UserAccounts() { UserId = new Guid(createAccountRequest.UserId) };
 
 			userAccounts.Accounts.Add(new Account()
 			{
@@ -45,7 +45,7 @@ namespace Users.Mappers
 		{
 			var userAccounts = new UserDisclosures() 
 			{ 
-				UserId = createAccountRequest.UserId,
+				UserId = new Guid(createAccountRequest.UserId),
 				FundingSource = createAccountRequest.FundingSource,
 				IsControlledPerson = createAccountRequest.IsControlledPerson,
 				IsAffiliatedExchangeOrFinra = createAccountRequest.IsAffiliatedExchangeOrFinra,

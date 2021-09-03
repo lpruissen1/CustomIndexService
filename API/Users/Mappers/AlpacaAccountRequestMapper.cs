@@ -19,6 +19,30 @@ namespace Users.Mappers
 
 			return request;
 		}
+		public static AlpacaAchRelationshipRequest MapCreateAchRelationshipRequest(CreateAchRelationshipRequest createAccountRequest)
+		{
+			var request = new AlpacaAchRelationshipRequest();
+
+			request.account_owner_name = createAccountRequest.BankAccountOwnerName;
+			request.bank_account_number = createAccountRequest.BankAccountNumber;
+			request.bank_account_type = createAccountRequest.AccountType.ToString();
+			request.bank_routing_number = createAccountRequest.BankAccountRoutingNumber;
+			request.nickname = createAccountRequest.BankAccountNickname;
+
+			return request;
+		}
+
+		public static AlpacaTransferRequest MapTransferRequest(FundAccountRequest fundAccountRequest)
+		{
+			var request = new AlpacaTransferRequest();
+
+			request.transfer_type = fundAccountRequest.TransferType;
+			request.relationship_id = fundAccountRequest.RelationshipId;
+			request.amount = fundAccountRequest.Amount;
+			request.direction = fundAccountRequest.Direction;
+
+			return request;
+		}
 
 		private static AlpacaAccountContact MapAccountContactInfo(CreateAccountRequest createAccountRequest)
 		{

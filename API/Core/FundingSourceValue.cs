@@ -1,4 +1,4 @@
-﻿namespace Users.Core
+﻿namespace Core
 {
 	public enum FundingSourceValue
 	{
@@ -8,5 +8,11 @@
 		business_income,
 		savings,
 		family
+	}
+
+	public enum AccountTypeValue
+	{
+		CHECKING,
+		SAVINGS
 	}
 }

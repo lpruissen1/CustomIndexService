@@ -1,11 +1,11 @@
 ﻿using AlpacaApiClient.Model;
 using AlpacaApiClient.Model.Request;
+using Core;
 using System;
-using Users.Core;
 
 namespace AlpacaApiClient
 {
-    class Program
+	class Program
     {
         static void Main(string[] args)
         {
@@ -68,12 +68,17 @@ namespace AlpacaApiClient
 				}
 			};
 
+			var createRelationship = new AlpacaAchRelationshipRequest()
+			{
+				account_owner_name = "Jeff Bezos",
+				nickname = "My Billion dollar bank account",
+				bank_account_number = "32131231abc",
+				bank_routing_number = "121000358",
+				bank_account_type = "CHECKING"
+			};
+
 			var alpacaClient = new AlpacaClient(new AlpacaApiSettings { Key = "CKXM3IU2N9VWGMI470HF", Secret = "ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H" });
 
-			var client = alpacaClient.CreateAccount(request);
-			var response = alpacaClient.GetAccountStatus();
-			var response1 = alpacaClient.GetAccountStatus();
-			var assets = alpacaClient.GetAsset();
         }
     }
 }

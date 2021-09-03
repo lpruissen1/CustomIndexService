@@ -1,4 +1,4 @@
-﻿using Users.Core;
+﻿using Core;
 
 namespace AlpacaApiClient.Model.Request
 {
