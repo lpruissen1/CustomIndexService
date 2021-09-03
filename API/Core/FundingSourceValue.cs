@@ -1,4 +1,4 @@
-﻿namespace Users.Core
+﻿namespace Core
 {
 	public enum FundingSourceValue
 	{

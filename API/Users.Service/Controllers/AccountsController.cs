@@ -34,10 +34,10 @@ namespace Users.Service.Controllers
 			return accountservice.TransferFunds(request);
 		}
 
-		[HttpGet("getAchRelationships")]
-		public IActionResult GetAchRelationships(string accountId) 
+		[HttpGet("get-ach-relationship/{userId}")]
+		public IActionResult GetAchRelationship(Guid userId) 
 		{
-			return accountservice.GetAchRelationships(accountId);
+			return accountservice.GetAchRelationships(userId);
 		}
 	}
 }

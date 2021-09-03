@@ -9,6 +9,7 @@ namespace Users.Database.Model
 	{
 		[BsonRepresentation(BsonType.String)]
 		public Guid Id { get; set; }
+		public string Nickname{ get; set; }
 		public AchStatusValue Status { get; set; }
 	}
 }

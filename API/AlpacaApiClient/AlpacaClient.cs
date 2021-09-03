@@ -90,7 +90,7 @@ namespace AlpacaApiClient
 			return default;
 		}
 
-		public AlpacaAchRelationshipResponse CreateAchRelationsip(AlpacaAchRelationshipRequest alpacaRequest, string accountId) 
+		public AlpacaAchRelationshipResponse CreateAchRelationsip(AlpacaAchRelationshipRequest alpacaRequest, Guid accountId) 
 		{
 			string json = System.Text.Json.JsonSerializer.Serialize(alpacaRequest);
 			var httpContent = new StringContent(json, Encoding.UTF8, "application/json");

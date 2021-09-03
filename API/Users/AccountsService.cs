@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Users.Core;
 using Users.Core.Request;
+using Users.Core.Response;
 using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
 using Users.Mappers;
@@ -29,32 +30,29 @@ namespace Users
 
 		public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request)
 		{
+			var alpacaAccount = userAccountsRepository.GetByUserId(userId);
 			var alpacaRequest = AlpacaAccountRequestMapper.MapCreateAchRelationshipRequest(request);
-			var alpacaCreateAccountResponse = alpacaClient.CreateAchRelationsip(alpacaRequest, request.AlpacaAccountId);
+
+			var alpacaCreateAccountResponse = alpacaClient.CreateAchRelationsip(alpacaRequest, alpacaAccount.Accounts.First().AccountId);
 
 			if(alpacaCreateAccountResponse is not null)
 			{
-				var user = userAccountsRepository.GetByUserId(userId);
-				var account = user.Accounts.First(account => account.AccountId.ToString() == request.AlpacaAccountId);
 
-				account.AchRelationship = new AchRelationship { Id = alpacaCreateAccountResponse.id, Status = alpacaCreateAccountResponse.status };
+				alpacaAccount.Accounts.First().AchRelationship = new AchRelationship { Id = alpacaCreateAccountResponse.id, Nickname = alpacaCreateAccountResponse.nickname, Status = alpacaCreateAccountResponse.status };
 
-				userAccountsRepository.Update(user);
+				userAccountsRepository.Update(alpacaAccount);
 
-				return new OkResult();
+				return new OkObjectResult(new CreateAchRelationshipResponse() { Status = alpacaCreateAccountResponse.status.ToString(), Nickname = alpacaCreateAccountResponse.nickname });
 			}
 
 			return new BadRequestResult();
 		}
 
-		public IActionResult GetAchRelationships(string accountId)
+		public IActionResult GetAchRelationships(Guid userId)
 		{
-			// get our internal info, not from alpaca
-			var getAchResponse = alpacaClient.GetAchRelationships(accountId);
+			var achRelationship = userAccountsRepository.GetByUserId(userId).Accounts.FirstOrDefault()?.AchRelationship ?? null;
 
-			
-			return null;
-			//return getAchResponse ? new OkResult() : new BadRequestResult();
+			return achRelationship is not null ? new OkObjectResult(new GetAchRelationshipResponse { Nickname = achRelationship.Nickname, Status = achRelationship.Status.ToString()}) : new OkObjectResult(new GetAchRelationshipResponse());
 		}
 
 		public IActionResult TransferFunds(FundAccountRequest request)

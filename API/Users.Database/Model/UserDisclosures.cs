@@ -1,8 +1,8 @@
-﻿using Database.Core;
+﻿using Core;
+using Database.Core;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
-using Users.Core;
 
 namespace Users.Database.Model
 {

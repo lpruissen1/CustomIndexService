@@ -1,6 +1,5 @@
 ﻿using Core;
 using System;
-using Users.Core;
 
 namespace AlpacaApiClient.Model.Response
 {

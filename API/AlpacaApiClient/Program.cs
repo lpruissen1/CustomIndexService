@@ -1,11 +1,11 @@
 ﻿using AlpacaApiClient.Model;
 using AlpacaApiClient.Model.Request;
+using Core;
 using System;
-using Users.Core;
 
 namespace AlpacaApiClient
 {
-    class Program
+	class Program
     {
         static void Main(string[] args)
         {
