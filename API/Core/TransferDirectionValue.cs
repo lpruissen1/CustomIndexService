@@ -1,4 +1,4 @@
-﻿namespace AlpacaApiClient.Model
+﻿namespace Core
 {
 	public enum TransferDirectionValue
 	{

@@ -39,7 +39,7 @@ namespace Users.Mappers
 			request.transfer_type = fundAccountRequest.TransferType;
 			request.relationship_id = fundAccountRequest.RelationshipId;
 			request.amount = fundAccountRequest.Amount;
-			request.direction = fundAccountRequest.Direction.ToString();
+			request.direction = fundAccountRequest.Direction;
 
 			return request;
 		}

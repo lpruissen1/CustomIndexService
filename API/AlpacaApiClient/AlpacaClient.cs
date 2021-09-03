@@ -110,7 +110,7 @@ namespace AlpacaApiClient
 			return default;
 		}
 
-		public List<AlpacaAchRelationshipResponse> GetAchRelationships(string accountId) {
+		public List<AlpacaAchRelationshipResponse> GetAchRelationships(Guid accountId) {
 
 			var request = new HttpRequestMessage(HttpMethod.Get, $"{route}/v1/accounts/{accountId}/ach_relationships");
 			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
@@ -126,9 +126,12 @@ namespace AlpacaApiClient
 			return default;
 		}
 
-		public AlpacaTransferRequestResponse TransferFunds(AlpacaTransferRequest alpacaRequest, string accountId)
+		public AlpacaTransferRequestResponse TransferFunds(AlpacaTransferRequest alpacaRequest, Guid accountId)
 		{
-			string json = System.Text.Json.JsonSerializer.Serialize(alpacaRequest);
+			var options = new JsonSerializerOptions();
+			options.Converters.Add(new JsonStringEnumConverter());
+
+			string json = System.Text.Json.JsonSerializer.Serialize(alpacaRequest, options);
 			var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
 			var request = new HttpRequestMessage(HttpMethod.Post, $"{route}/v1/accounts/{accountId}/transfers");
@@ -143,6 +146,9 @@ namespace AlpacaApiClient
 				return JsonConvert.DeserializeObject<AlpacaTransferRequestResponse>(blah);
 			}
 
+			var buffer = new byte[100000];
+			response.Content.ReadAsStream().Read(buffer, 0, buffer.Length);
+			var th = Encoding.UTF8.GetString(buffer);
 			return default;
 		}
 

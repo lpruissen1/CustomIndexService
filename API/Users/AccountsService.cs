@@ -52,15 +52,25 @@ namespace Users
 		{
 			var achRelationship = userAccountsRepository.GetByUserId(userId).Accounts.FirstOrDefault()?.AchRelationship ?? null;
 
-			return achRelationship is not null ? new OkObjectResult(new GetAchRelationshipResponse { Nickname = achRelationship.Nickname, Status = achRelationship.Status.ToString()}) : new OkObjectResult(new GetAchRelationshipResponse());
+			return achRelationship is not null ? new OkObjectResult(new GetAchRelationshipResponse { Nickname = achRelationship.Nickname, RelationshipId = achRelationship.Id, Status = achRelationship.Status.ToString()}) : new OkObjectResult(new GetAchRelationshipResponse());
 		}
 
-		public IActionResult TransferFunds(FundAccountRequest request)
+		public IActionResult TransferFunds(FundAccountRequest request, Guid userId)
 		{
-			var alpacaRequest = AlpacaAccountRequestMapper.MapTransferRequest(request);
-			var alpacaTransferResponse = alpacaClient.TransferFunds(alpacaRequest, request.AlpacaAccountId);
+			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First();
 
-			return alpacaTransferResponse is not null ? new OkResult() : new BadRequestResult();
+			if (alpacaAccount.AchRelationship.Id != request.RelationshipId)
+				return new BadRequestResult();
+
+			var alpacaRequest = AlpacaAccountRequestMapper.MapTransferRequest(request);
+			var alpacaTransferResponse = alpacaClient.TransferFunds(alpacaRequest, alpacaAccount.AccountId);
+
+			return alpacaTransferResponse is not null ? new OkObjectResult(new FundingResponse() { success = true }) : new OkObjectResult(new FundingResponse() { success = false });
+		}
+
+		public class FundingResponse
+		{
+			public bool success { get; set; }
 		}
 
 		public IActionResult CreateTradingAccount(CreateAccountRequest request)

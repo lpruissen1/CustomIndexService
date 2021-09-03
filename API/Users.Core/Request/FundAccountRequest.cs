@@ -1,11 +1,12 @@
 ﻿using Core;
+using System;
 
 namespace Users.Core.Request
 {
 	public class FundAccountRequest
 	{
-		public string TransferType { get; set; }
-		public string RelationshipId { get; set; }
+		public TransferTypeValue TransferType { get; set; }
+		public Guid RelationshipId { get; set; }
 		public string Amount { get; set; }
 		public TransferDirectionValue Direction { get; set; }
 	}

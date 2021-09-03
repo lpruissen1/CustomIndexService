@@ -28,10 +28,10 @@ namespace Users.Service.Controllers
 			return accountservice.CreateAchRelationship(userId, request);
         }
 
-		[HttpPost("transferFunds")]
-		public IActionResult TransferFunds(FundAccountRequest request)
+		[HttpPost("transfer-funds/{userId}")]
+		public IActionResult TransferFunds(Guid userId, FundAccountRequest request)
 		{
-			return accountservice.TransferFunds(request);
+			return accountservice.TransferFunds(request, userId);
 		}
 
 		[HttpGet("get-ach-relationship/{userId}")]
