@@ -8,7 +8,9 @@ namespace Users.Core
 	{
 		public IActionResult CreateTradingAccount(CreateAccountRequest request);
 		public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request);
-		public IActionResult TransferFunds(FundAccountRequest request, Guid userId);
+		public IActionResult TransferFunds(Guid userId, FundAccountRequest request);
 		public IActionResult GetAchRelationships(Guid userId);
+		public IActionResult ExecuteBulkTrade(Guid userId, BulkPurchaseRequest request);
+
 	}
 }

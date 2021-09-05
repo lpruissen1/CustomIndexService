@@ -151,6 +151,32 @@ namespace AlpacaApiClient
 			return default;
 		}
 
+		public AlpacaOrderResponse ExecuteOrder(AlpacaMarketOrderRequest alpacaRequest, Guid accountId)
+		{
+			var options = new JsonSerializerOptions();
+			options.Converters.Add(new JsonStringEnumConverter());
+
+			string json = System.Text.Json.JsonSerializer.Serialize(alpacaRequest, options);
+			var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+			var request = new HttpRequestMessage(HttpMethod.Post, $"{route}/v1/trading/accounts/{accountId}/orders");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+			request.Content = httpContent;
+
+			var response = client.SendAsync(request).Result;
+
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+			{
+				var blah = response.Content.ReadAsStringAsync().Result;
+				return JsonConvert.DeserializeObject<AlpacaOrderResponse>(blah);
+			}
+
+			var buffer = new byte[100000];
+			response.Content.ReadAsStream().Read(buffer, 0, buffer.Length);
+			var th = Encoding.UTF8.GetString(buffer);
+			return default;
+		}
+
 		private string GetAuthHeader()
 		{
 			return Convert.ToBase64String(Encoding.UTF8.GetBytes(key + ":" + secret));

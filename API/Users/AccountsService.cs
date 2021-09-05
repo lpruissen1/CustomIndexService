@@ -55,7 +55,7 @@ namespace Users
 			return achRelationship is not null ? new OkObjectResult(new GetAchRelationshipResponse { Nickname = achRelationship.Nickname, RelationshipId = achRelationship.Id, Status = achRelationship.Status.ToString()}) : new OkObjectResult(new GetAchRelationshipResponse());
 		}
 
-		public IActionResult TransferFunds(FundAccountRequest request, Guid userId)
+		public IActionResult TransferFunds(Guid userId, FundAccountRequest request)
 		{
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First();
 
@@ -91,6 +91,20 @@ namespace Users
 			}
 
 			return new BadRequestResult();
+		}
+
+		public IActionResult ExecuteBulkTrade(Guid userId, BulkPurchaseRequest request)
+		{
+			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkPurchaseOrder(request);
+			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First().AccountId;
+
+			foreach (var alpacaRequest in alpacaRequests)
+			{
+				var alpacaCreateAccountResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
+				var blah = alpacaCreateAccountResponse;
+			}
+
+			return new OkResult();
 		}
 	}
 }
