@@ -4,6 +4,7 @@ using StockScreener.Core.Request;
 using StockScreener.Core.Response;
 using StockScreener.Interfaces;
 using StockScreener.Mapper;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
@@ -82,7 +83,7 @@ namespace StockScreener
 				Tickers = weightingResult.Tickers.Select(x => new PurchaseOrderEntry()
 				{
 					Ticker = x.Ticker,
-					Amount = (decimal)x.Weight * request.Amount
+					Amount = Math.Round((decimal)(x.Weight / 100) * request.Amount, 2)
 				}).ToList()
 			};
 
