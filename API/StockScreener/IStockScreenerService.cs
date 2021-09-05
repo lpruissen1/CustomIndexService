@@ -7,6 +7,6 @@ namespace StockScreener
     {
 		ScreeningResponse Screen(ScreeningRequest request);
 		WeightingResponse Weighting(WeightingRequest request);
-
+		PurchaseOrderResponse GetPurchaseOrder(PurchaseOrderRequest request);
 	}
 }

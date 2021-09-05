@@ -5,6 +5,7 @@ using StockScreener.Core.Response;
 using StockScreener.Interfaces;
 using StockScreener.Mapper;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.Json;
 
 namespace StockScreener
@@ -66,6 +67,26 @@ namespace StockScreener
 			{
 				Tickers = result
 			};
+		}
+
+		public PurchaseOrderResponse GetPurchaseOrder(PurchaseOrderRequest request)
+		{
+			var screeningResult = Screen(request.ScreeningRequest);
+
+			request.WeightingRequest.Tickers = screeningResult.Securities.Select(x => x.Ticker).ToList();
+
+			var weightingResult = Weighting(request.WeightingRequest);
+
+			var purchaseOrder = new PurchaseOrderResponse()
+			{
+				Tickers = weightingResult.Tickers.Select(x => new PurchaseOrderEntry()
+				{
+					Ticker = x.Ticker,
+					Amount = (decimal)x.Weight * request.Amount
+				}).ToList()
+			};
+
+			return purchaseOrder;
 		}
 	}
 }

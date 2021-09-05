@@ -1,6 +1,7 @@
 ﻿using Core;
 using Database.Model.User.CustomIndices;
 using System.Collections.Generic;
+using System.Linq;
 using UserCustomIndices.Model.Response;
 using DB = UserCustomIndices.Database.Model.User.CustomIndices;
 
@@ -19,7 +20,9 @@ namespace UserCustomIndices.Mappers
 				Sectors = index.Sector.Sectors,
 				Industries = index.Sector.Industries,
 				TimedRangeRule = MapTimedRangeRule(index.TimedRangeRule),
-				RangedRule = MapRangedRule(index.RangedRule)
+				RangedRule = MapRangedRule(index.RangedRule),
+				WeightingOption = index.WeightingOption,
+				ManualWeights = index.ManualWeights.Select(kvp => (kvp.Key, kvp.Value)).ToList()
 			};
 		}
 
