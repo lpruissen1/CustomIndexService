@@ -14,7 +14,15 @@ namespace StockScreener.Model.Weighters
 			ManualWeights = manualWeights;
 		}
 
-		public abstract List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> tickers);
+		public List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> tickers) 
+		{
+			if (tickers.Count == 0 && ManualWeights.Count == 0)
+				return new List<WeightingEntry>();
+
+			return Implementation(tickers);
+		}
+
+		public abstract List<WeightingEntry> Implementation(SecuritiesList<DerivedSecurity> tickers);
 
 		public abstract IEnumerable<BaseDatapoint> GetBaseDatapoint();
 		public abstract IEnumerable<DerivedDatapointConstructionData> GetDerivedDatapointConstructionData();
