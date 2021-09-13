@@ -10,4 +10,13 @@ namespace AlpacaApiClient.Model.Request
 		public string amount { get; set; }
 		public TransferDirectionValue direction { get; set; }
 	}
+
+	public class AlpacaMarketOrderRequest
+	{
+		public string symbol { get; set; }
+		public decimal notional { get; set; }
+		public string side { get; set; }
+		public OrderType type { get; set; }
+		public OrderExecutionTimeframeValue time_in_force { get; set; }
+	}
 }

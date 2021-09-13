@@ -11,7 +11,7 @@ namespace StockScreener.Model.Weighters
 	public class DividendYieldWeightCalculator : WeightCalculator
 	{
 		public DividendYieldWeightCalculator(List<WeightingEntry> manualWeights) : base(manualWeights) { }
-		public override List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> securities)
+		public override List<WeightingEntry> Implementation(SecuritiesList<DerivedSecurity> securities)
 		{
 			securities.RemoveAll(x => ManualWeights.Any(manualTicker => manualTicker.Ticker == x.Ticker));
 

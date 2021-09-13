@@ -12,7 +12,7 @@ namespace StockScreener.Model.Weighters
 	{
 		public MarketCapWeightCalculator(List<WeightingEntry> manualWeights) : base(manualWeights) { }
 
-		public override List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> securities)
+		public override List<WeightingEntry> Implementation(SecuritiesList<DerivedSecurity> securities)
 		{
 			securities.RemoveAll(security => ManualWeights.Any(manualTicker => manualTicker.Ticker == security.Ticker));
 

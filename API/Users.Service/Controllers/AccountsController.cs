@@ -31,13 +31,19 @@ namespace Users.Service.Controllers
 		[HttpPost("transfer-funds/{userId}")]
 		public IActionResult TransferFunds(Guid userId, FundAccountRequest request)
 		{
-			return accountservice.TransferFunds(request, userId);
+			return accountservice.TransferFunds(userId, request);
 		}
 
 		[HttpGet("get-ach-relationship/{userId}")]
 		public IActionResult GetAchRelationship(Guid userId) 
 		{
 			return accountservice.GetAchRelationships(userId);
+		}
+
+		[HttpPost("execute-bulk-market-order/{userId}")]
+		public IActionResult ExecuteBulkMarketOrder(Guid userId, BulkPurchaseRequest request) 
+		{
+			return accountservice.ExecuteBulkTrade(userId, request);
 		}
 	}
 }

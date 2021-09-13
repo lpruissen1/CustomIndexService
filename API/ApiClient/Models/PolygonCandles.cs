@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ApiClient.Models
+﻿namespace ApiClient.Models
 {
 	public class PolygonCandles
     {

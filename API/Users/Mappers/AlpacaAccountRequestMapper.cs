@@ -1,6 +1,7 @@
 ﻿using AlpacaApiClient.Model;
 using AlpacaApiClient.Model.Request;
 using Core;
+using System.Collections.Generic;
 using Users.Core.Request;
 
 namespace Users.Mappers
@@ -42,6 +43,21 @@ namespace Users.Mappers
 			request.direction = fundAccountRequest.Direction;
 
 			return request;
+		}
+
+		public static IEnumerable<AlpacaMarketOrderRequest> MapBulkPurchaseOrder(BulkPurchaseRequest bulkPurchaseRequest)
+		{
+			foreach(var order in bulkPurchaseRequest.Orders)
+			{
+				yield return new AlpacaMarketOrderRequest()
+				{
+					symbol = order.Ticker,
+					notional = order.Amount,
+					side = "buy",
+					type = OrderType.market,
+					time_in_force = OrderExecutionTimeframeValue.day
+				};
+			};
 		}
 
 		private static AlpacaAccountContact MapAccountContactInfo(CreateAccountRequest createAccountRequest)

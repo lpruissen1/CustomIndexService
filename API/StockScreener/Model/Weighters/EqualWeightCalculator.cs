@@ -10,7 +10,7 @@ namespace StockScreener.Model.Weighters
 	public class EqualWeightCalculator : WeightCalculator
 	{
 		public EqualWeightCalculator(List<WeightingEntry> manualWeights) : base(manualWeights) { }
-		public override List<WeightingEntry> Weight(SecuritiesList<DerivedSecurity> tickers)
+		public override List<WeightingEntry> Implementation(SecuritiesList<DerivedSecurity> tickers)
 		{
 			tickers.RemoveAll(x => ManualWeights.Any(manualTicker => manualTicker.Ticker == x.Ticker));
 

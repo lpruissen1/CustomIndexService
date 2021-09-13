@@ -72,47 +72,20 @@ namespace ApiClient
 
 		public PolygonStockFinancialsResponse GetStockFinancials(string ticker)
 		{
-			var request = $"{route}v2/reference/financials/{ticker}?type=Q&sort=reportPeriod";
-			var response = client.GetAsync(request + GetApiKeyRequestPhrase()).Result;
+			var request = $"{route}v2/reference/financials/{ticker}?type=Q&sort=reportPeriod&";
 
-			if (response.StatusCode == System.Net.HttpStatusCode.OK)
-			{
-				return JsonConvert.DeserializeObject<PolygonStockFinancialsResponse>(response.Content.ReadAsStringAsync().Result);
-			}
-			else if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-			{
-				response = client.GetAsync(request + GetBackupApiKeyRequestPhrase()).Result;
-
-				if (response.StatusCode == System.Net.HttpStatusCode.OK)
-				{
-					return JsonConvert.DeserializeObject<PolygonStockFinancialsResponse>(response.Content.ReadAsStringAsync().Result);
-				}
-
-				else if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-				{
-					Console.WriteLine("Sleeping For 60 Seconds...");
-					Thread.Sleep(60000);
-					response = client.GetAsync(request + GetApiKeyRequestPhrase()).Result;
-
-					if (response.StatusCode != System.Net.HttpStatusCode.OK)
-					{
-						throw new Exception($"Failed to get company info for {ticker}");
-					}
-				}
-			}
-
-			return JsonConvert.DeserializeObject<PolygonStockFinancialsResponse>(response.Content.ReadAsStringAsync().Result);
+			return MakeRequest<PolygonStockFinancialsResponse>(request);
 		}
+
 		private TResponseType MakeRequest<TResponseType>(string request)
 		{
-
 			var response = client.GetAsync(request + GetApiKeyRequestPhrase()).Result;
 
 			if ( response.StatusCode == System.Net.HttpStatusCode.OK )
 			{
 				return DeserializeResponse<TResponseType>(response);
 			}
-			else if ( response.StatusCode == System.Net.HttpStatusCode.TooManyRequests )
+			else
 			{
 				response = client.GetAsync(request + GetBackupApiKeyRequestPhrase()).Result;
 

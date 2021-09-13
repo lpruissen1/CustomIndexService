@@ -36,10 +36,10 @@ namespace Core.Logging
 			var fullFilePath = options.FolderPath + options.FilePath;
 			var logRecord = $"[{DateTimeOffset.UtcNow:yyyy-MM-dd HH:mm:ss+00:00}] : {formatter(state, exception)}";
 
-			//using (var streamWriter = new StreamWriter(fullFilePath, true))
-			//{
-			//	streamWriter.WriteLine(logRecord);
-			//}
+			using (var streamWriter = new StreamWriter(fullFilePath, true))
+			{
+				streamWriter.WriteLine(logRecord);
+			}
 		}
 	}
 

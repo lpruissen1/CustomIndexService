@@ -1,6 +1,7 @@
 ﻿using Core;
 using Database.Model.User.CustomIndices;
 using System.Collections.Generic;
+using System.Linq;
 using UserCustomIndices.Core.Model.Requests;
 using DB = UserCustomIndices.Database.Model.User.CustomIndices;
 
@@ -10,15 +11,18 @@ namespace UserCustomIndices.Mappers
     {
         public CustomIndex Map(CustomIndexRequest response)
         {
-            return new CustomIndex()
-            {
+			return new CustomIndex()
+			{
 				UserId = response.UserId,
 				IndexId = response.IndexId,
+				Name = response.Name,
 				Active = true,
-                Markets = response.Markets,
-                Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
-                RangedRule = MapRangedRules(response.RangedRule),
-                TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule)
+				Markets = response.Markets,
+				Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
+				RangedRule = MapRangedRules(response.RangedRule),
+				TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule),
+				WeightingOption = response.WeightingOption,
+				ManualWeights = response.ManualWeights.ToDictionary(x => x.Ticker, y => y.Weight)
             };
         }
 
@@ -28,12 +32,15 @@ namespace UserCustomIndices.Mappers
             {
 				UserId = response.UserId,
 				IndexId = response.IndexId,
+				Name = response.Name,
 				Active = true,
                 Markets = response.Markets,
                 Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
                 RangedRule = MapRangedRules(response.RangedRule),
-                TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule)
-            };
+                TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule),
+				WeightingOption = response.WeightingOption,
+				ManualWeights = response.ManualWeights.ToDictionary(x => x.Ticker, y => y.Weight)
+			};
         }
 
         private List<DB.RangedRule> MapRangedRules(List<RangedRule> responseRangedRule)

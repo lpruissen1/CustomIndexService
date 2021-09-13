@@ -1,5 +1,6 @@
 ﻿using AlpacaApiClient;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using Users.Core;
@@ -13,13 +14,13 @@ namespace Users
 {
 	public class AccountsService : IAccountsService
 	{
-		public AccountsService(IUserRepository userRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository)
+		public AccountsService(IUserRepository userRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.userAccountsRepository = userAccountsRepository;
 			this.userDiclosuresRepository = userDiclosuresRepository;
 			this.userDocumentsRepository = userDocumentsRepository;
-			this.alpacaClient = new AlpacaClient(new AlpacaApiSettings { Key = "CKXM3IU2N9VWGMI470HF", Secret = "ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H" });
+			this.alpacaClient = new AlpacaClient(new AlpacaApiSettings { Key = "CKXM3IU2N9VWGMI470HF", Secret = "ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H" }, logger);
 		}
 
 		private IUserRepository userRepository { get; }
@@ -55,7 +56,7 @@ namespace Users
 			return achRelationship is not null ? new OkObjectResult(new GetAchRelationshipResponse { Nickname = achRelationship.Nickname, RelationshipId = achRelationship.Id, Status = achRelationship.Status.ToString()}) : new OkObjectResult(new GetAchRelationshipResponse());
 		}
 
-		public IActionResult TransferFunds(FundAccountRequest request, Guid userId)
+		public IActionResult TransferFunds(Guid userId, FundAccountRequest request)
 		{
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First();
 
@@ -91,6 +92,20 @@ namespace Users
 			}
 
 			return new BadRequestResult();
+		}
+
+		public IActionResult ExecuteBulkTrade(Guid userId, BulkPurchaseRequest request)
+		{
+			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkPurchaseOrder(request);
+			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First().AccountId;
+
+			foreach (var alpacaRequest in alpacaRequests)
+			{
+				var alpacaCreateAccountResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
+				var blah = alpacaCreateAccountResponse;
+			}
+
+			return new OkResult();
 		}
 	}
 }
