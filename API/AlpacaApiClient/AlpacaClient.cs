@@ -1,12 +1,10 @@
 ﻿using AlpacaApiClient.Model.Request;
 using AlpacaApiClient.Model.Response;
-using Core.Logging;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -119,7 +117,7 @@ namespace AlpacaApiClient
 			var response = client.SendAsync(request).Result;
 
 			if (response.StatusCode == System.Net.HttpStatusCode.OK)
-				return DeserializeResponse<AlpacaAchRelationshipResponse>(response);
+				return DeserializeResponse<List<AlpacaAchRelationshipResponse>>(response);
 
 
 			logger.LogInformation(new EventId(1), $"Error getting ach relationship: {GetStringFromStream(response.Content.ReadAsStream())}");
