@@ -71,7 +71,6 @@ namespace UserCustomIndices.Services
 				return new OkResult();
 			}
 
-
 			logger.LogInformation(new EventId(1), $"Portfolio, {customIndexUpdated.IndexId} for user {userId} failed to update");
 			return new BadRequestResult();
 		}

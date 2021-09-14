@@ -47,7 +47,7 @@ namespace Users.Mappers
 
 		public static IEnumerable<AlpacaMarketOrderRequest> MapBulkPurchaseOrder(BulkPurchaseRequest bulkPurchaseRequest)
 		{
-			foreach(var order in bulkPurchaseRequest.Orders)
+			foreach (var order in bulkPurchaseRequest.Orders)
 			{
 				yield return new AlpacaMarketOrderRequest()
 				{
@@ -102,12 +102,12 @@ namespace Users.Mappers
 			var frontIdResponse = EncodedPictureParser.Parse(createAccountRequest.PhotoIdFront);
 			var backIdResponse = EncodedPictureParser.Parse(createAccountRequest.PhotoIdBack);
 
-			return new[] { 
+			return new[] {
 				new AlpacaAccountDocument()
 				{
 					document_type = DocumentTypeValue.identity_verification,
 					document_sub_type = "idFront",
-					content = frontIdResponse.Content, 
+					content = frontIdResponse.Content,
 					mime_type = frontIdResponse.MimeType
 				},
 				new AlpacaAccountDocument()
