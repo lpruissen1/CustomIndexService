@@ -113,6 +113,8 @@ namespace Users
 					orders.Add(AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaCreateAccountResponse, transationId));
 			}
 
+			userOrdersRepository.AddOrders(userId, orders);
+
 			return new OkResult();
 		}
 

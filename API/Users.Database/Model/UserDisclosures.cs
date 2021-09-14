@@ -10,6 +10,7 @@ namespace Users.Database.Model
 	{
 		[BsonRepresentation(BsonType.String)]
 		public Guid UserId { get; set; }
+		[BsonRepresentation(BsonType.String)]
 		public FundingSourceValue FundingSource { get; set; }
 		public bool IsControlledPerson { get; set; }
 		public bool IsAffiliatedExchangeOrFinra { get; set; }
