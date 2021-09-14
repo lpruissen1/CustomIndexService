@@ -115,5 +115,15 @@ namespace Users
 
 			return new OkResult();
 		}
+
+		public IActionResult GetAccounts(Guid userId)
+		{
+			var userOrders = userOrdersRepository.GetByUserId(userId);
+
+			if (userOrders is not null)
+				return new OkObjectResult(userOrders);
+
+			return new BadRequestResult();
+		}
 	}
 }

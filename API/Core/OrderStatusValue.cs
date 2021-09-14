@@ -19,10 +19,4 @@
 		suspended,
 		calculated
 	}
-
-	public enum OrderDirectionValue
-	{
-		buy,
-		sell
-	}
 }

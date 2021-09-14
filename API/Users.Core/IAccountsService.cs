@@ -11,6 +11,7 @@ namespace Users.Core
 		public IActionResult TransferFunds(Guid userId, FundAccountRequest request);
 		public IActionResult GetAchRelationships(Guid userId);
 		public IActionResult ExecuteBulkTrade(Guid userId, BulkPurchaseRequest request);
+		public IActionResult GetAccounts(Guid userId);
 
 	}
 }

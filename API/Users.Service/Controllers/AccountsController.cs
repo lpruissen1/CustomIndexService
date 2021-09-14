@@ -45,5 +45,11 @@ namespace Users.Service.Controllers
 		{
 			return accountservice.ExecuteBulkTrade(userId, request);
 		}
+
+		[HttpGet("execute-bulk-market-order/{userId}")]
+		public IActionResult GetOrders(Guid userId) 
+		{
+			return accountservice.GetAccounts(userId);
+		}
 	}
 }
