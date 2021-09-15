@@ -4,6 +4,8 @@ using Core;
 using UserCustomIndices.Database.Model.User.CustomIndices;
 using RangedRule = UserCustomIndices.Database.Model.User.CustomIndices.RangedRule;
 using TimedRangeRule = UserCustomIndices.Database.Model.User.CustomIndices.TimedRangeRule;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace Database.Model.User.CustomIndices
 {
@@ -17,7 +19,10 @@ namespace Database.Model.User.CustomIndices
 		public bool Active { get; set; }
         public List<TimedRangeRule> TimedRangeRule { get; init; } = new List<TimedRangeRule>();
         public List<RangedRule> RangedRule { get; init; } = new List<RangedRule>();
-        public Dictionary<string, decimal> ManualWeights { get; init; } = new Dictionary<string, decimal>();
-        public WeightingOption WeightingOption { get; init; }
+		public List<string> Inclusions { get; init; } = new List<string>();
+		public List<string> Exclusions { get; init; } = new List<string>();
+		public Dictionary<string, decimal> ManualWeights { get; init; } = new Dictionary<string, decimal>();
+		[BsonRepresentation(BsonType.String)]
+		public WeightingOption WeightingOption { get; init; }
     }
 }

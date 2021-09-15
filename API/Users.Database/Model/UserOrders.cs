@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Users.Database.Model
 {
-	public class UserDocuments : DbEntity
+	public class UserOrders : DbEntity
 	{
 		public string UserId { get; set; }
-		public List<Document> Documents { get; set; } = new List<Document>();
+		public List<Order> Orders { get; set; } = new List<Order>();
 	}
 }

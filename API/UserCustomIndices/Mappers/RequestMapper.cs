@@ -21,6 +21,8 @@ namespace UserCustomIndices.Mappers
 				Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
 				RangedRule = MapRangedRules(response.RangedRule),
 				TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule),
+				Inclusions = response.Inclusions,
+				Exclusions = response.Exclusions,
 				WeightingOption = response.WeightingOption,
 				ManualWeights = response.ManualWeights.ToDictionary(x => x.Ticker, y => y.Weight)
             };
@@ -38,6 +40,8 @@ namespace UserCustomIndices.Mappers
                 Sector = new DB.Sector { Sectors = response.Sectors, Industries = response.Industries },
                 RangedRule = MapRangedRules(response.RangedRule),
                 TimedRangeRule = MapTimedRangedRules(response.TimedRangeRule),
+                Inclusions = response.Inclusions,
+                Exclusions = response.Exclusions,
 				WeightingOption = response.WeightingOption,
 				ManualWeights = response.ManualWeights.ToDictionary(x => x.Ticker, y => y.Weight)
 			};

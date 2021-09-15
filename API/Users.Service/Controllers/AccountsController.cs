@@ -46,10 +46,10 @@ namespace Users.Service.Controllers
 			return accountservice.ExecuteBulkTrade(userId, request);
 		}
 
-		[HttpGet("execute-bulk-market-order/{userId}")]
+		[HttpGet("get-orders/{userId}")]
 		public IActionResult GetOrders(Guid userId) 
 		{
-			return accountservice.GetAccounts(userId);
+			return accountservice.GetOrders(userId);
 		}
 	}
 }

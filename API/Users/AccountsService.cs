@@ -118,9 +118,9 @@ namespace Users
 			return new OkResult();
 		}
 
-		public IActionResult GetAccounts(Guid userId)
+		public IActionResult GetOrders(Guid userId)
 		{
-			var userOrders = userOrdersRepository.GetByUserId(userId);
+			var userOrders = userOrdersRepository.GetByUserId(userId).Orders;
 
 			if (userOrders is not null)
 				return new OkObjectResult(userOrders);
