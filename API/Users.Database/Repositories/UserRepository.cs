@@ -39,46 +39,5 @@ namespace Users.Database.Repositories
 			return result is not null ? true : false;
 		}
 	}
-
-	public class UserDocumentsRepository : BaseRepository<UserDocuments>, IUserDocumentsRepository
-	{
-		public UserDocumentsRepository(IMongoDBContext context) : base(context) { }
-
-		public UserDocuments GetByUserId(Guid userId)
-		{
-			FilterDefinition<UserDocuments> filter = Builders<UserDocuments>.Filter.Eq("UserId", userId);
-
-			return dbCollection.Find(filter).FirstOrDefault();
-		}
-	}
-
-	public class UserAccountsRepository : BaseRepository<UserAccounts>, IUserAccountsRepository
-	{
-		public UserAccountsRepository(IMongoDBContext context) : base(context) { }
-
-		public UserAccounts GetByUserId(Guid userId)
-		{
-			FilterDefinition<UserAccounts> filter = Builders<UserAccounts>.Filter.Eq("UserId", userId);
-
-			return dbCollection.Find(filter).FirstOrDefault();
-		}
-	}
-
-	public class UserDisclosuresRepository : BaseRepository<UserDisclosures>, IUserDisclosuresRepository
-	{
-		public UserDisclosuresRepository(IMongoDBContext context) : base(context) { }
-
-		public UserAccounts Create(UserAccounts obj)
-		{
-			throw new NotImplementedException();
-		}
-
-		public UserDisclosures GetByUserId(Guid userId)
-		{
-			FilterDefinition<UserDisclosures> filter = Builders<UserDisclosures>.Filter.Eq("UserId", userId);
-
-			return dbCollection.Find(filter).FirstOrDefault();
-		}
-	}
 }
 

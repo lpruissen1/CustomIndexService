@@ -1,4 +1,4 @@
-﻿namespace AlpacaApiClient.Model
+﻿namespace Core
 {
 	public enum OrderStatusValue
 	{
@@ -11,6 +11,12 @@
 		expired,
 		replaced,
 		pending_cancel,
-		pending_replace
+		pending_replace,
+		pending_new,
+		accepted_for_bidding,
+		stopped,
+		rejected,
+		suspended,
+		calculated
 	}
 }

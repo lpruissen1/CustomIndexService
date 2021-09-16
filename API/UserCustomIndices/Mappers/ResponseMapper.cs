@@ -21,6 +21,8 @@ namespace UserCustomIndices.Mappers
 				Industries = index.Sector.Industries,
 				TimedRangeRule = MapTimedRangeRule(index.TimedRangeRule),
 				RangedRule = MapRangedRule(index.RangedRule),
+				Inclusions = index.Inclusions,
+				Exclusions = index.Exclusions,
 				WeightingOption = index.WeightingOption,
 				ManualWeights = index.ManualWeights.Select(kvp => (kvp.Key, kvp.Value)).ToList()
 			};

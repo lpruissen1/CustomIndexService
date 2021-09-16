@@ -164,7 +164,6 @@ namespace AlpacaApiClient
 
 			if (response.StatusCode == System.Net.HttpStatusCode.OK)
 				return DeserializeResponse<AlpacaOrderResponse>(response);
-			
 
 			logger.LogInformation(new EventId(1), $"Error executing order: {GetStringFromStream(response.Content.ReadAsStream())}");
 
