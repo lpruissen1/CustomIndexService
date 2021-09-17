@@ -11,7 +11,7 @@ namespace AlpacaApiClient.Model.Response
 		public TransferTypeValue type { get; set; }
 		public TransferStatusValue status { get; set; }
 		public string reason { get; set; }
-		public double amount { get; set; }
+		public decimal amount { get; set; }
 		public TransferDirectionValue direction { get; set; }
 		public DateTime created_at { get; set; }
 		public DateTime updated_at { get; set; }

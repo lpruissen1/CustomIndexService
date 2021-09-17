@@ -22,24 +22,6 @@ namespace Users.Service.Controllers
 			return accountservice.CreateTradingAccount(request);
         }
 
-        [HttpPost("create-ach-relationship/{userId}")]
-        public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request)
-        {
-			return accountservice.CreateAchRelationship(userId, request);
-        }
-
-		[HttpPost("transfer-funds/{userId}")]
-		public IActionResult TransferFunds(Guid userId, FundAccountRequest request)
-		{
-			return accountservice.TransferFunds(userId, request);
-		}
-
-		[HttpGet("get-ach-relationship/{userId}")]
-		public IActionResult GetAchRelationship(Guid userId) 
-		{
-			return accountservice.GetAchRelationships(userId);
-		}
-
 		[HttpPost("execute-bulk-market-order/{userId}")]
 		public IActionResult ExecuteBulkMarketOrder(Guid userId, BulkPurchaseRequest request) 
 		{
