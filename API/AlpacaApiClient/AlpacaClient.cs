@@ -148,7 +148,7 @@ namespace AlpacaApiClient
 			return default;
 		}
 
-		public AlpacaTransferRequestResponse CancelTransfer(Guid accountId, Guid transferId)
+		public bool CancelTransfer(Guid accountId, Guid transferId)
 		{
 			var request = new HttpRequestMessage(HttpMethod.Delete, $"{route}/v1/accounts/{accountId}/transfers/{transferId}");
 			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
@@ -156,11 +156,11 @@ namespace AlpacaApiClient
 			var response = client.SendAsync(request).Result;
 
 			if (response.StatusCode == System.Net.HttpStatusCode.OK)
-				return DeserializeResponse<AlpacaTransferRequestResponse>(response);
+				return true;
 
 			logger.LogInformation(new EventId(1), $"Error transfering funds: {GetStringFromStream(response.Content.ReadAsStream())}");
 
-			return default;
+			return false;
 		}
 
 		public AlpacaOrderResponse ExecuteOrder(AlpacaMarketOrderRequest alpacaRequest, Guid accountId)

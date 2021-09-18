@@ -1,6 +1,6 @@
 ﻿namespace Users
 {
-	public class FundingResponse
+	public class CreateFundingTransferResponse
 	{
 		public bool success { get; set; }
 	}

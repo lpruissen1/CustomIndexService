@@ -1,4 +1,5 @@
 ﻿using AlpacaApiClient;
+using Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,7 +11,7 @@ using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
 using Users.Mappers;
 
-namespace Users
+namespace Users.Funding
 {
 	public class FundingService : IFundingService
 	{
@@ -65,7 +66,7 @@ namespace Users
 			if (alpacaTransferResponse is not null)
 				userTransferRepository.AddTransfer(userId, AlpacaResponseMapper.MapAlpacaTransferResponse(alpacaTransferResponse));
 
-			return alpacaTransferResponse is not null ? new OkObjectResult(new FundingResponse() { success = true }) : new OkObjectResult(new FundingResponse() { success = false });
+			return alpacaTransferResponse is not null ? new OkObjectResult(new CreateFundingTransferResponse() { success = true }) : new OkObjectResult(new CreateFundingTransferResponse() { success = false });
 		}
 
 		public IActionResult CancelTransfer(Guid userId, Guid transferId)
@@ -77,10 +78,25 @@ namespace Users
 
 			var response = alpacaClient.CancelTransfer(userId, transferId);
 
-			if (alpacaTransferResponse is not null)
-				userTransferRepository.AddTransfer(userId, AlpacaResponseMapper.MapAlpacaTransferResponse(alpacaTransferResponse));
+			if (response)
+			{
+				transfer.Status = TransferStatusValue.CANCELLED;
+				userTransferRepository.UpdateTransfer(userId, transfer);
+				return new OkResult();
+			}
 
-			return alpacaTransferResponse is not null ? new OkObjectResult(new FundingResponse() { success = true }) : new OkObjectResult(new FundingResponse() { success = false });
+			return new BadRequestResult();
+		}
+
+		public IActionResult GetTransfers(Guid userId)
+		{
+			var transfers = userTransferRepository.GetByUserId(userId);
+
+			if (transfers is null)
+				return new BadRequestResult();
+
+			var responseTransfers = transfers.Transfers.Select(x => FundingMapper.MapTransfer(x)).ToList();
+			return new OkObjectResult(responseTransfers);
 		}
 	}
 }

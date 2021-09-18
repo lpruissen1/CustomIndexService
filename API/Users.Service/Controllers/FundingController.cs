@@ -33,5 +33,17 @@ namespace Users.Service.Controllers
 		{
 			return fundingService.GetAchRelationships(userId);
 		}
+
+		[HttpGet("get-ach-relationship/{userId}/{transferId}")]
+		public IActionResult CancelTransfer(Guid userId, Guid transferId) 
+		{
+			return fundingService.CancelTransfer(userId, transferId);
+		}
+
+		[HttpGet("get-all/{userId}")]
+		public IActionResult GetTransfers(Guid userId) 
+		{
+			return fundingService.GetTransfers(userId);
+		}
 	}
 }

@@ -9,5 +9,7 @@ namespace Users.Core
 		public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request);
 		public IActionResult TransferFunds(Guid userId, FundAccountRequest request);
 		public IActionResult GetAchRelationships(Guid userId);
+		public IActionResult CancelTransfer(Guid userId, Guid transferId);
+		public IActionResult GetTransfers(Guid userId);
 	}
 }
