@@ -17,10 +17,6 @@ namespace Users.Tests
 			sut = new PositionAdditionHandler(UserPositionsRepository);
 		}
 
-		// no positions
-		// position - same portfolio
-		// position - different portfolio
-
 		[Test]
 		public void CreateNewPosition_InsertsNewPosition()
 		{
