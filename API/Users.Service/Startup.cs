@@ -48,7 +48,9 @@ namespace Users.Service
 			services.AddScoped<IUserDisclosuresRepository, UserDisclosuresRepository>();
 			services.AddScoped<IUserDocumentsRepository, UserDocumentsRepository>();
 			services.AddScoped<IUserOrdersRepository, UserOrdersRepository>();
+			services.AddScoped<IUserPositionsRepository, UserPositionsRepository>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IPositionAdditionHandler, PositionAdditionHandler>();
 			services.AddScoped<IAccountsService, AccountsService>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IHasher, BCryptHasher>();

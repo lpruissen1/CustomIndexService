@@ -23,7 +23,7 @@ namespace Users.Database.Repositories
 		{
 			FilterDefinition<UserOrders> filter = Builders<UserOrders>.Filter.Eq("UserId", userId);
 
-			var update = Builders<UserOrders>.Update.PushEach<Order>("Orders", orders);
+			var update = Builders<UserOrders>.Update.PushEach("Orders", orders);
 
 			dbCollection.UpdateOneAsync(filter, update);
 		}

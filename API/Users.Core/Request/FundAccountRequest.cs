@@ -14,6 +14,7 @@ namespace Users.Core.Request
 
 	public class BulkPurchaseRequest
 	{
+		public Guid PortfolioId { get; set; }
 		public List<OrderEntry> Orders { get; set; } = new List<OrderEntry>();
 	}
 
