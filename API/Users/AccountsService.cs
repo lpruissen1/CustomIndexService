@@ -16,7 +16,6 @@ namespace Users
 {
 	public class AccountsService : IAccountsService
 	{
-
 		public AccountsService(IUserRepository userRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler, ILogger logger)
 		{
 			this.userRepository = userRepository;
@@ -102,7 +101,7 @@ namespace Users
 			return new BadRequestResult();
 		}
 
-		public IActionResult ExecuteBulkTrade(Guid userId, BulkPurchaseRequest request)
+		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request)
 		{
 			var transationId = Guid.NewGuid();
 			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkPurchaseOrder(request);
