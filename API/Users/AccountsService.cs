@@ -1,4 +1,5 @@
 ﻿using AlpacaApiClient;
+using Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,14 +16,14 @@ namespace Users
 {
 	public class AccountsService : IAccountsService
 	{
-
-		public AccountsService(IUserRepository userRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, ILogger logger)
+		public AccountsService(IUserRepository userRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.userAccountsRepository = userAccountsRepository;
 			this.userDiclosuresRepository = userDiclosuresRepository;
 			this.userDocumentsRepository = userDocumentsRepository;
 			this.userOrdersRepository = userOrdersRepository;
+			this.positionAdditionHandler = positionAdditionHandler;
 			this.alpacaClient = new AlpacaClient(new AlpacaApiSettings { Key = "CKXM3IU2N9VWGMI470HF", Secret = "ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H" }, logger);
 		}
 
@@ -31,6 +32,7 @@ namespace Users
 		private IUserDisclosuresRepository userDiclosuresRepository { get; }
 		private IUserDocumentsRepository userDocumentsRepository { get; }
 		private IUserOrdersRepository userOrdersRepository { get; }
+		private IPositionAdditionHandler positionAdditionHandler { get; }
 		private AlpacaClient alpacaClient { get; }
 
 		public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request)
@@ -40,7 +42,7 @@ namespace Users
 
 			var alpacaCreateAccountResponse = alpacaClient.CreateAchRelationsip(alpacaRequest, alpacaAccount.Accounts.First().AccountId);
 
-			if(alpacaCreateAccountResponse is not null)
+			if (alpacaCreateAccountResponse is not null)
 			{
 
 				alpacaAccount.Accounts.First().AchRelationship = new AchRelationship { Id = alpacaCreateAccountResponse.id, Nickname = alpacaCreateAccountResponse.nickname, Status = alpacaCreateAccountResponse.status };
@@ -57,7 +59,7 @@ namespace Users
 		{
 			var achRelationship = userAccountsRepository.GetByUserId(userId).Accounts.FirstOrDefault()?.AchRelationship ?? null;
 
-			return achRelationship is not null ? new OkObjectResult(new GetAchRelationshipResponse { Nickname = achRelationship.Nickname, RelationshipId = achRelationship.Id, Status = achRelationship.Status.ToString()}) : new OkObjectResult(new GetAchRelationshipResponse());
+			return achRelationship is not null ? new OkObjectResult(new GetAchRelationshipResponse { Nickname = achRelationship.Nickname, RelationshipId = achRelationship.Id, Status = achRelationship.Status.ToString() }) : new OkObjectResult(new GetAchRelationshipResponse());
 		}
 
 		public IActionResult TransferFunds(Guid userId, FundAccountRequest request)
@@ -91,7 +93,7 @@ namespace Users
 				userAccountsRepository.Create(CreateAccountRequestDbMapper.MapUserAccounts(request, alpacaCreateAccountResponse));
 				userDiclosuresRepository.Create(CreateAccountRequestDbMapper.MapUserDisclosures(request));
 				userDocumentsRepository.Create(CreateAccountRequestDbMapper.MapUserDocuments(request));
-				userOrdersRepository.Create(new UserOrders { UserId = request.UserId});
+				userOrdersRepository.Create(new UserOrders { UserId = request.UserId });
 
 				return new OkResult();
 			}
@@ -99,7 +101,7 @@ namespace Users
 			return new BadRequestResult();
 		}
 
-		public IActionResult ExecuteBulkTrade(Guid userId, BulkPurchaseRequest request)
+		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request)
 		{
 			var transationId = Guid.NewGuid();
 			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkPurchaseOrder(request);
@@ -108,9 +110,18 @@ namespace Users
 
 			foreach (var alpacaRequest in alpacaRequests)
 			{
-				var alpacaCreateAccountResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
-				if(alpacaCreateAccountResponse is not null)
-					orders.Add(AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaCreateAccountResponse, transationId));
+				var alpacaOrderResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
+
+				if (alpacaOrderResponse is not null)
+				{
+					if (alpacaOrderResponse.status == OrderStatusValue.filled)
+					{
+						var newPosition = new Position(alpacaOrderResponse.symbol, alpacaOrderResponse.filled_avg_price.Value, request.PortfolioId, alpacaOrderResponse.filled_qty);
+						positionAdditionHandler.AddPosition(userId, newPosition);
+					}
+
+					orders.Add(AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
+				}
 			}
 
 			userOrdersRepository.AddOrders(userId, orders);
