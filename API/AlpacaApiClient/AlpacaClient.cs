@@ -47,7 +47,6 @@ namespace AlpacaApiClient
 			if (response.StatusCode == System.Net.HttpStatusCode.OK)
 				return DeserializeResponse<AlpacaCreateAccountResponse>(response);
 
-
 			logger.LogInformation(new EventId(1), $"Error creating account: {GetStringFromStream(response.Content.ReadAsStream())}");
 
 			return default;
