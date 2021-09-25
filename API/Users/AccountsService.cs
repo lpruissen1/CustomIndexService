@@ -14,10 +14,11 @@ namespace Users
 {
 	public class AccountsService : IAccountsService
 	{
-		public AccountsService(IUserRepository userRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, ILogger logger)
+		public AccountsService(IUserRepository userRepository, IUserTransfersRepository userTransfersRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.userAccountsRepository = userAccountsRepository;
+			this.userTransfersRepository = userTransfersRepository;
 			this.userDiclosuresRepository = userDiclosuresRepository;
 			this.userDocumentsRepository = userDocumentsRepository;
 			this.userOrdersRepository = userOrdersRepository;
@@ -26,6 +27,7 @@ namespace Users
 
 		private IUserRepository userRepository { get; }
 		private IUserAccountsRepository userAccountsRepository { get; }
+		private IUserTransfersRepository userTransfersRepository { get; }
 		private IUserDisclosuresRepository userDiclosuresRepository { get; }
 		private IUserDocumentsRepository userDocumentsRepository { get; }
 		private IUserOrdersRepository userOrdersRepository { get; }
@@ -45,6 +47,7 @@ namespace Users
 				userDiclosuresRepository.Create(CreateAccountRequestDbMapper.MapUserDisclosures(request));
 				userDocumentsRepository.Create(CreateAccountRequestDbMapper.MapUserDocuments(request));
 				userOrdersRepository.Create(new UserOrders { UserId = request.UserId});
+				userTransfersRepository.Create(new UserTransfers { UserId = new Guid(request.UserId)});
 
 				return new OkResult();
 			}
