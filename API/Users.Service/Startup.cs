@@ -15,6 +15,7 @@ using Users.Database;
 using Users.Database.Config;
 using Users.Database.Repositories;
 using Users.Database.Repositories.Interfaces;
+using Users.Funding;
 
 namespace Users.Service
 {
@@ -48,7 +49,9 @@ namespace Users.Service
 			services.AddScoped<IUserDisclosuresRepository, UserDisclosuresRepository>();
 			services.AddScoped<IUserDocumentsRepository, UserDocumentsRepository>();
 			services.AddScoped<IUserOrdersRepository, UserOrdersRepository>();
+			services.AddScoped<IUserTransfersRepository, UserTransfersRepository>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IFundingService, FundingService>();
 			services.AddScoped<IAccountsService, AccountsService>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IHasher, BCryptHasher>();

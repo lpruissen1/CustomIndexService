@@ -40,7 +40,7 @@ namespace Users.Service.Controllers
 			return fundingService.CancelTransfer(userId, transferId);
 		}
 
-		[HttpGet("get-all/{userId}")]
+		[HttpGet("get-all-transfers/{userId}")]
 		public IActionResult GetTransfers(Guid userId) 
 		{
 			return fundingService.GetTransfers(userId);
