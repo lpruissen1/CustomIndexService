@@ -90,23 +90,23 @@ namespace ServerSentEventsClient
 				return;
 			}
 
-			while (true)
-			{
-				Console.WriteLine("Looping");
-				var listenResult = await WS.ReceiveAsync(buffer, CTS.Token);
+			//while (true)
+			//{
+			//	Console.WriteLine("Looping");
+			//	var listenResult = await WS.ReceiveAsync(buffer, CTS.Token);
 
-				if (newResult is not null)
-				{
-					var r = Encoding.UTF8.GetString(buffer);
-					Console.WriteLine(r.Substring(0, 1024));
-				}
-				else
-				{
-					Console.WriteLine("listening Failure");
-					return;
-				}
+			//	if (newResult is not null)
+			//	{
+			//		var r = Encoding.UTF8.GetString(buffer);
+			//		Console.WriteLine(r.Substring(0, 1024));
+			//	}
+			//	else
+			//	{
+			//		Console.WriteLine("listening Failure");
+			//		return;
+			//	}
 
-			}
+			//}
 
 			while (!stoppingToken.IsCancellationRequested)
             {
