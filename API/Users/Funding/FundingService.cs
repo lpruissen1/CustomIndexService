@@ -76,7 +76,7 @@ namespace Users.Funding
 			if (transfer is null)
 				return new BadRequestResult();
 
-			var response = alpacaClient.CancelTransfer(userId, transferId);
+			var response = alpacaClient.CancelTransfer(transfer.AccountId, transferId);
 
 			if (response)
 			{

@@ -6,7 +6,6 @@ namespace Users
 	public class TransfersResponse
 	{
 		public Guid AccountId { get; set; }
-
 		public Guid TransferId { get; set; }
 
 		public decimal Amount { get; set; }
