@@ -16,7 +16,7 @@ using Users.Database.Config;
 using Users.Database.Repositories;
 using Users.Database.Repositories.Interfaces;
 using Users.Funding;
-
+using Users.Positions;
 namespace Users.Service
 {
 	public class Startup
@@ -52,6 +52,10 @@ namespace Users.Service
 			services.AddScoped<IUserTransfersRepository, UserTransfersRepository>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IFundingService, FundingService>();
+			services.AddScoped<IUserPositionsRepository, UserPositionsRepository>();
+			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IPositionsService, PositionsService>();
+			services.AddScoped<IPositionAdditionHandler, PositionAdditionHandler>();
 			services.AddScoped<IAccountsService, AccountsService>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IHasher, BCryptHasher>();

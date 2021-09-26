@@ -6,11 +6,12 @@ namespace Users.Mappers
 {
 	public static class AlpacaResponseMapper
 	{
-		public static Order MapAlpacaOrderResponse(AlpacaOrderResponse response, Guid TransactionId)
+		public static Order MapAlpacaOrderResponse(AlpacaOrderResponse response, Guid TransactionId, Guid PortfolioId)
 		{
 			return new Order
 			{
 				OrderId = response.id,
+				PortfolioId = response.id,
 				TransactionId = TransactionId,
 				Ticker = response.symbol,
 				Status = response.status,

@@ -25,7 +25,7 @@ namespace Users.Service.Controllers
 		[HttpPost("execute-bulk-market-order/{userId}")]
 		public IActionResult ExecuteBulkMarketOrder(Guid userId, BulkPurchaseRequest request) 
 		{
-			return accountservice.ExecuteBulkTrade(userId, request);
+			return accountservice.ExecuteBulkPurchase(userId, request);
 		}
 
 		[HttpGet("get-orders/{userId}")]

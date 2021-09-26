@@ -183,6 +183,22 @@ namespace AlpacaApiClient
 			logger.LogInformation(new EventId(1), $"Error executing order: {GetStringFromStream(response.Content.ReadAsStream())}");
 
 			return default;
+
+		}
+
+		public AlpacaPositionResponse[] GetAllPositions(Guid accountId)
+		{
+			var request = new HttpRequestMessage(HttpMethod.Get, $"{route}/v1/trading/accounts/{accountId}/positions");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+
+			var response = client.SendAsync(request).Result;
+
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				return DeserializeResponse<AlpacaPositionResponse[]>(response);
+
+			logger.LogInformation(new EventId(1), $"Error executing order: {GetStringFromStream(response.Content.ReadAsStream())}");
+
+			return default;
 		}
 
 		private string GetAuthHeader()
