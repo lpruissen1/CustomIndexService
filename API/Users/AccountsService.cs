@@ -16,10 +16,11 @@ namespace Users
 {
 	public class AccountsService : IAccountsService
 	{
-		public AccountsService(IUserRepository userRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler, ILogger logger)
+		public AccountsService(IUserRepository userRepository, IUserTransfersRepository userTransfersRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.userAccountsRepository = userAccountsRepository;
+			this.userTransfersRepository = userTransfersRepository;
 			this.userDiclosuresRepository = userDiclosuresRepository;
 			this.userDocumentsRepository = userDocumentsRepository;
 			this.userOrdersRepository = userOrdersRepository;
@@ -29,12 +30,12 @@ namespace Users
 
 		private IUserRepository userRepository { get; }
 		private IUserAccountsRepository userAccountsRepository { get; }
+		private IUserTransfersRepository userTransfersRepository { get; }
 		private IUserDisclosuresRepository userDiclosuresRepository { get; }
 		private IUserDocumentsRepository userDocumentsRepository { get; }
 		private IUserOrdersRepository userOrdersRepository { get; }
 		private IPositionAdditionHandler positionAdditionHandler { get; }
 		private AlpacaClient alpacaClient { get; }
-
 		public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request)
 		{
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId);
@@ -93,7 +94,7 @@ namespace Users
 				userAccountsRepository.Create(CreateAccountRequestDbMapper.MapUserAccounts(request, alpacaCreateAccountResponse));
 				userDiclosuresRepository.Create(CreateAccountRequestDbMapper.MapUserDisclosures(request));
 				userDocumentsRepository.Create(CreateAccountRequestDbMapper.MapUserDocuments(request));
-				userOrdersRepository.Create(new UserOrders { UserId = request.UserId });
+				userTransfersRepository.Create(new UserTransfers { UserId = new Guid(request.UserId)});
 
 				return new OkResult();
 			}

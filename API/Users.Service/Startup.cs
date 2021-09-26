@@ -15,8 +15,8 @@ using Users.Database;
 using Users.Database.Config;
 using Users.Database.Repositories;
 using Users.Database.Repositories.Interfaces;
+using Users.Funding;
 using Users.Positions;
-
 namespace Users.Service
 {
 	public class Startup
@@ -49,6 +49,9 @@ namespace Users.Service
 			services.AddScoped<IUserDisclosuresRepository, UserDisclosuresRepository>();
 			services.AddScoped<IUserDocumentsRepository, UserDocumentsRepository>();
 			services.AddScoped<IUserOrdersRepository, UserOrdersRepository>();
+			services.AddScoped<IUserTransfersRepository, UserTransfersRepository>();
+			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IFundingService, FundingService>();
 			services.AddScoped<IUserPositionsRepository, UserPositionsRepository>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IPositionsService, PositionsService>();

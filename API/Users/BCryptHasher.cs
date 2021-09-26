@@ -9,7 +9,7 @@ namespace Users
 		public bool Check(string phrase, string hash)
 		{
 			if (phrase is null || phrase == "")
-				throw new Exception("Invalid password for verification");
+				throw new Exception("No match");
 
 			if (BC.Verify(phrase, hash))
 				return true;
@@ -20,7 +20,7 @@ namespace Users
 		public string Hash(string phrase)
 		{
 			if (phrase is null || phrase == "")
-				throw new Exception("Invalid password for hashing");
+				throw new Exception("Empty Hash Request");
 
 			var hash = BC.HashPassword(phrase, 12);
 

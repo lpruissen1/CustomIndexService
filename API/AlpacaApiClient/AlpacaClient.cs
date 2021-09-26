@@ -148,6 +148,21 @@ namespace AlpacaApiClient
 			return default;
 		}
 
+		public bool CancelTransfer(Guid accountId, Guid transferId)
+		{
+			var request = new HttpRequestMessage(HttpMethod.Delete, $"{route}/v1/accounts/{accountId}/transfers/{transferId}");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+
+			var response = client.SendAsync(request).Result;
+
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				return true;
+
+			logger.LogInformation(new EventId(1), $"Error transfering funds: {GetStringFromStream(response.Content.ReadAsStream())}");
+
+			return false;
+		}
+
 		public AlpacaOrderResponse ExecuteOrder(AlpacaMarketOrderRequest alpacaRequest, Guid accountId)
 		{
 			var options = new JsonSerializerOptions();
@@ -213,11 +228,5 @@ namespace AlpacaApiClient
 
 			return Encoding.UTF8.GetString(buffer);
 		}
-	}
-
-	public struct AlpacaApiSettings
-	{
-		public string Key { get; set; }
-		public string Secret { get; set; }
 	}
 }

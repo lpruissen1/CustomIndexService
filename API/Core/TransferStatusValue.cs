@@ -1,4 +1,4 @@
-﻿namespace AlpacaApiClient.Model
+﻿namespace Core
 {
 	public enum TransferStatusValue
 	{
@@ -6,6 +6,7 @@
 		PENDING,
 		REJECTED,
 		APPROVED,
-		COMPLETE
+		COMPLETE,
+		CANCELLED,
 	}
 }

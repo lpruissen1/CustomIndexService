@@ -4,13 +4,12 @@ using Users.Core.Request;
 
 namespace Users.Core
 {
-	public interface IAccountsService
+	public interface IFundingService
 	{
-		public IActionResult CreateTradingAccount(CreateAccountRequest request);
 		public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request);
 		public IActionResult TransferFunds(Guid userId, FundAccountRequest request);
 		public IActionResult GetAchRelationships(Guid userId);
-		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request);
-		public IActionResult GetOrders(Guid userId);
+		public IActionResult CancelTransfer(Guid userId, Guid transferId);
+		public IActionResult GetTransfers(Guid userId);
 	}
 }
