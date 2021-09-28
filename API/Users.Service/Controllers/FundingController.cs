@@ -25,7 +25,18 @@ namespace Users.Service.Controllers
 		[HttpPost("transfer-funds/{userId}")]
 		public IActionResult TransferFunds(Guid userId, FundAccountRequest request)
 		{
-			return fundingService.TransferFunds(userId, request);
+			var result = fundingService.TransferFunds(userId, request);
+
+			switch (result)
+			{
+				case FundingRequestStatusValue.Success:
+					return new OkResult();
+				case FundingRequestStatusValue.InsufficientFunds:
+					return new ForbidResult();
+				case FundingRequestStatusValue.BadRequest:
+				default:
+					return new BadRequestResult();
+			}
 		}
 
 		[HttpGet("get-ach-relationship/{userId}")]
