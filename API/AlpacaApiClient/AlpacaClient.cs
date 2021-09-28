@@ -142,7 +142,6 @@ namespace AlpacaApiClient
 			if (response.StatusCode == System.Net.HttpStatusCode.OK)
 				return DeserializeResponse<AlpacaTransferRequestResponse>(response);
 
-
 			logger.LogInformation(new EventId(1), $"Error transfering funds: {GetStringFromStream(response.Content.ReadAsStream())}");
 
 			return default;

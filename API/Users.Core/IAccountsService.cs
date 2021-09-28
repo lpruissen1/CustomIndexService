@@ -7,9 +7,6 @@ namespace Users.Core
 	public interface IAccountsService
 	{
 		public IActionResult CreateTradingAccount(CreateAccountRequest request);
-		public IActionResult CreateAchRelationship(Guid userId, CreateAchRelationshipRequest request);
-		public IActionResult TransferFunds(Guid userId, FundAccountRequest request);
-		public IActionResult GetAchRelationships(Guid userId);
 		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request);
 		public IActionResult GetOrders(Guid userId);
 	}
