@@ -32,7 +32,7 @@ namespace Users.Service.Controllers
 				case FundingRequestStatusValue.Success:
 					return new OkResult();
 				case FundingRequestStatusValue.InsufficientFunds:
-					return new ForbidResult();
+					return new StatusCodeResult(403);
 				case FundingRequestStatusValue.BadRequest:
 				default:
 					return new BadRequestResult();
