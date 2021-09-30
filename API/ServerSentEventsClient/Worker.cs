@@ -1,5 +1,8 @@
+using AlpacaApiClient.Model.Response.NewFolder;
+using Database.Core;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,8 +11,14 @@ using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Users;
+using Users.Database;
+using Users.Database.Config;
+using Users.Database.Repositories;
 
 namespace ServerSentEventsClient
 {
@@ -29,66 +38,67 @@ namespace ServerSentEventsClient
 		{
 			InitializeClient();
 
-			var source = "iex";
+			var positionAdditionHandler = new PositionAdditionHandler(new UserPositionsRepository(new MongoUserDbContext(new UserDatabaseSettings() { ConnectionString = "mongodb://localhost:27017", DatabaseName = "User" })));
+			//var source = "iex";
 			var orderUrl = $"{route}/v1/events/trades";
-			var url = new Uri($"wss://stream.data.sandbox.alpaca.markets/v2/{source}");
+			//var url = new Uri($"wss://stream.data.sandbox.alpaca.markets/v2/{source}");
 
-			var WS = new ClientWebSocket();
-			var CTS = new CancellationTokenSource();
-			await WS.ConnectAsync(url, CTS.Token);
+			//var WS = new ClientWebSocket();
+			//var CTS = new CancellationTokenSource();
+			//await WS.ConnectAsync(url, CTS.Token);
 
-			var buffer = new byte[1024];
+			//var buffer = new byte[1024];
 
-			var result = await WS.ReceiveAsync(buffer, CTS.Token);
+			//var result = await WS.ReceiveAsync(buffer, CTS.Token);
 
-			if (result is not null)
-			{
-				var r = Encoding.UTF8.GetString(buffer);
-				Console.WriteLine(r.Substring(0, 1024));
+			//if (result is not null)
+			//{
+			//	var r = Encoding.UTF8.GetString(buffer);
+			//	Console.WriteLine(r.Substring(0, 1024));
 
-			}
-			else
-			{
-				Console.WriteLine("Failure");
-				return;
-			}
-			var sting = "{\"action\": \"auth\", \"key\": \"CKXM3IU2N9VWGMI470HF\", \"secret\": \"ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H\"}";
-			var subscription = "{ \"action\":\"subscribe\",\"trades\":[\"AAPL\"],\"quotes\":[\"AMD\",\"CLDR\"],\"bars\":[\"AAPL\",\"VOO\"]}";
+			//}
+			//else
+			//{
+			//	Console.WriteLine("Failure");
+			//	return;
+			//}
+			//var sting = "{\"action\": \"auth\", \"key\": \"CKXM3IU2N9VWGMI470HF\", \"secret\": \"ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H\"}";
+			//var subscription = "{ \"action\":\"subscribe\",\"trades\":[\"AAPL\"],\"quotes\":[\"AMD\",\"CLDR\"],\"bars\":[\"AAPL\",\"VOO\"]}";
 
-			var uint8array = new UTF8Encoding().GetBytes(sting);
+			//var uint8array = new UTF8Encoding().GetBytes(sting);
 
-			await WS.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
+			//await WS.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
 
-			var newResult = await WS.ReceiveAsync(buffer, CTS.Token);
+			//var newResult = await WS.ReceiveAsync(buffer, CTS.Token);
 
-			if (newResult is not null)
-			{
-				var r = Encoding.UTF8.GetString(buffer);
-				Console.WriteLine(r.Substring(0, 1024));
+			//if (newResult is not null)
+			//{
+			//	var r = Encoding.UTF8.GetString(buffer);
+			//	Console.WriteLine(r.Substring(0, 1024));
 
-			}
-			else
-			{
-				Console.WriteLine("auth Failure");
-				return;
-			}
+			//}
+			//else
+			//{
+			//	Console.WriteLine("auth Failure");
+			//	return;
+			//}
 
-			var orderArray = new UTF8Encoding().GetBytes(subscription);
+			//var orderArray = new UTF8Encoding().GetBytes(subscription);
 
-			await WS.SendAsync(orderArray, WebSocketMessageType.Text, true, CTS.Token);
+			//await WS.SendAsync(orderArray, WebSocketMessageType.Text, true, CTS.Token);
 
-			var subResult = await WS.ReceiveAsync(buffer, CTS.Token);
+			//var subResult = await WS.ReceiveAsync(buffer, CTS.Token);
 
-			if (newResult is not null)
-			{
-				var r = Encoding.UTF8.GetString(buffer);
-				Console.WriteLine(r.Substring(0, 1024));
-			}
-			else
-			{
-				Console.WriteLine("sub Failure");
-				return;
-			}
+			//if (newResult is not null)
+			//{
+			//	var r = Encoding.UTF8.GetString(buffer);
+			//	Console.WriteLine(r.Substring(0, 1024));
+			//}
+			//else
+			//{
+			//	Console.WriteLine("sub Failure");
+			//	return;
+			//}
 
 			//while (true)
 			//{
@@ -116,11 +126,27 @@ namespace ServerSentEventsClient
 					while (!streamReader.EndOfStream)
 					{
 						var message = await streamReader.ReadLineAsync();
+						var result = DeserializeResponse<Event<TradeEvent>>(message);
 						Console.WriteLine($"Data from: {message}");
+
+						if(result is not null)
 					}
 				}
 			}
-        }
+		}
+
+		private TResponseType DeserializeResponse<TResponseType>(string response)
+		{
+			try
+			{
+				return JsonConvert.DeserializeObject<TResponseType>(response);
+			}
+			catch
+			{
+			}
+
+			return default;
+		}
 
 		private void InitializeClient()
 		{

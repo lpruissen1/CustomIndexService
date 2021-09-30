@@ -17,6 +17,13 @@ namespace Users.Database.Repositories
 
 			return dbCollection.Find(filter).FirstOrDefault();
 		}
+
+		public UserAccounts GetByAccountId(Guid accountId)
+		{
+			FilterDefinition<UserAccounts> filter = Builders<UserAccounts>.Filter.Eq("UserId", userId);
+
+			return dbCollection.Find(filter).FirstOrDefault();
+		}
 	}
 }
 
