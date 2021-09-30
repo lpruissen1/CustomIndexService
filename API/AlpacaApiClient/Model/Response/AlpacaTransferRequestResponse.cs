@@ -3,7 +3,7 @@ using System;
 
 namespace AlpacaApiClient.Model.Response
 {
-	public class AlpacaTransferRequestResponse
+	public class AlpacaTransferRequestResponse : HttpMessage
 	{
 		public Guid id { get; set; }
 		public Guid relationship_id { get; set; }
@@ -17,5 +17,11 @@ namespace AlpacaApiClient.Model.Response
 		public DateTime updated_at { get; set; }
 		public DateTime expires_at { get; set; }
 		public string additional_information { get; set; }
+	}
+
+	public class HttpMessage
+	{
+		public int Code { get; set; } = 200;
+		public string Message { get; set; }
 	}
 }

@@ -53,20 +53,27 @@ namespace Users.Funding
 			return achRelationship is not null ? new OkObjectResult(new GetAchRelationshipResponse { Nickname = achRelationship.Nickname, RelationshipId = achRelationship.Id, Status = achRelationship.Status.ToString()}) : new OkObjectResult(new GetAchRelationshipResponse());
 		}
 
-		public IActionResult TransferFunds(Guid userId, FundAccountRequest request)
+		public FundingRequestStatusValue TransferFunds(Guid userId, FundAccountRequest request)
 		{
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First();
 
 			if (alpacaAccount.AchRelationship.Id != request.RelationshipId)
-				return new BadRequestResult();
+				return FundingRequestStatusValue.BadRequest;
 
 			var alpacaRequest = AlpacaAccountRequestMapper.MapTransferRequest(request);
 			var alpacaTransferResponse = alpacaClient.TransferFunds(alpacaRequest, alpacaAccount.AccountId);
 
-			if (alpacaTransferResponse is not null)
+			if (alpacaTransferResponse.Code == 200)
+			{
 				userTransferRepository.AddTransfer(userId, AlpacaResponseMapper.MapAlpacaTransferResponse(alpacaTransferResponse));
+				return FundingRequestStatusValue.Success;
+			}
+			else if(alpacaTransferResponse.Code == 403)
+			{
+				return FundingRequestStatusValue.InsufficientFunds;
+			}
 
-			return alpacaTransferResponse is not null ? new OkObjectResult(new CreateFundingTransferResponse() { success = true }) : new OkObjectResult(new CreateFundingTransferResponse() { success = false });
+			return FundingRequestStatusValue.BadRequest;
 		}
 
 		public IActionResult CancelTransfer(Guid userId, Guid transferId)

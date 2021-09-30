@@ -142,10 +142,13 @@ namespace AlpacaApiClient
 			if (response.StatusCode == System.Net.HttpStatusCode.OK)
 				return DeserializeResponse<AlpacaTransferRequestResponse>(response);
 
-
 			logger.LogInformation(new EventId(1), $"Error transfering funds: {GetStringFromStream(response.Content.ReadAsStream())}");
 
-			return default;
+			// logic here to map to new fields
+			if(response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				return new AlpacaTransferRequestResponse() { Code = 403, Message = "Insufficient funds"};
+
+			return new AlpacaTransferRequestResponse() { Code = 69, Message = "Get Fucked" };
 		}
 
 		public bool CancelTransfer(Guid accountId, Guid transferId)
