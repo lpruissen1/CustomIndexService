@@ -24,5 +24,19 @@ namespace Users.Mappers
 				FilledAmount = null
 			};
 		}
+
+		public static Transfer MapAlpacaTransferResponse(AlpacaTransferRequestResponse response)
+		{
+			return new Transfer
+			{
+				AccountId = response.account_id,
+				TransferId = response.id,
+				Amount = response.amount,
+				Status = response.status,
+				TransferType = response.type,
+				Direction = response.direction,
+				Created = response.created_at
+			};
+		}
 	}
 }

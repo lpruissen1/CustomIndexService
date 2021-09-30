@@ -141,10 +141,28 @@ namespace AlpacaApiClient
 			if (response.StatusCode == System.Net.HttpStatusCode.OK)
 				return DeserializeResponse<AlpacaTransferRequestResponse>(response);
 
+			logger.LogInformation(new EventId(1), $"Error transfering funds: {GetStringFromStream(response.Content.ReadAsStream())}");
+
+			// logic here to map to new fields
+			if(response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				return new AlpacaTransferRequestResponse() { Code = 403, Message = "Insufficient funds"};
+
+			return new AlpacaTransferRequestResponse() { Code = 69, Message = "Get Fucked" };
+		}
+
+		public bool CancelTransfer(Guid accountId, Guid transferId)
+		{
+			var request = new HttpRequestMessage(HttpMethod.Delete, $"{route}/v1/accounts/{accountId}/transfers/{transferId}");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+
+			var response = client.SendAsync(request).Result;
+
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				return true;
 
 			logger.LogInformation(new EventId(1), $"Error transfering funds: {GetStringFromStream(response.Content.ReadAsStream())}");
 
-			return default;
+			return false;
 		}
 
 		public AlpacaOrderResponse ExecuteOrder(AlpacaMarketOrderRequest alpacaRequest, Guid accountId)
@@ -212,11 +230,5 @@ namespace AlpacaApiClient
 
 			return Encoding.UTF8.GetString(buffer);
 		}
-	}
-
-	public struct AlpacaApiSettings
-	{
-		public string Key { get; set; }
-		public string Secret { get; set; }
 	}
 }
