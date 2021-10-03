@@ -20,7 +20,7 @@ namespace Users.Database.Repositories
 
 		public UserAccounts GetByAccountId(Guid accountId)
 		{
-			FilterDefinition<UserAccounts> filter = Builders<UserAccounts>.Filter.Eq("UserId", userId);
+			FilterDefinition<UserAccounts> filter = Builders<UserAccounts>.Filter.ElemMatch(x => x.Accounts, Builders<Account>.Filter.Eq(x => x.AccountId, accountId));
 
 			return dbCollection.Find(filter).FirstOrDefault();
 		}

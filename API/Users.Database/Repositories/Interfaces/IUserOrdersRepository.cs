@@ -9,5 +9,6 @@ namespace Users.Database.Repositories.Interfaces
 	{
 		UserOrders GetByUserId(Guid userId);
 		void AddOrders(Guid userId, List<Order> orders);
+		void FillOrder(Guid userId, Guid orderId);
 	}
 }
