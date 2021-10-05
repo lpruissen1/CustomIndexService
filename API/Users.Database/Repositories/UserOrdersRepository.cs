@@ -1,4 +1,5 @@
-﻿using Database.Core;
+﻿using Core;
+using Database.Core;
 using Database.Repositories;
 using MongoDB.Driver;
 using System;
@@ -24,6 +25,15 @@ namespace Users.Database.Repositories
 			FilterDefinition<UserOrders> filter = Builders<UserOrders>.Filter.Eq("UserId", userId);
 
 			var update = Builders<UserOrders>.Update.PushEach("Orders", orders);
+
+			dbCollection.UpdateOneAsync(filter, update);
+		}
+
+		public void FillOrder(Guid userId, Guid orderId)
+		{
+			FilterDefinition<UserOrders> filter = Builders<UserOrders>.Filter.Eq("UserId", userId) & Builders<UserOrders>.Filter.ElemMatch(x => x.Orders, Builders<Order>.Filter.Eq(x => x.OrderId, orderId));
+
+			var update = Builders<UserOrders>.Update.Set("Orders.$.Status", OrderStatusValue.filled);
 
 			dbCollection.UpdateOneAsync(filter, update);
 		}

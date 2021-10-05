@@ -17,6 +17,7 @@ using Users.Database.Repositories;
 using Users.Database.Repositories.Interfaces;
 using Users.Funding;
 using Users.Positions;
+
 namespace Users.Service
 {
 	public class Startup
