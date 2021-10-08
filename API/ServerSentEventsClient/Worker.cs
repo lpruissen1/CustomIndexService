@@ -1,4 +1,4 @@
-using AlpacaApiClient.Model.Response.NewFolder;
+using AlpacaApiClient.Model.Response.Events;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -38,6 +38,7 @@ namespace ServerSentEventsClient
 		{
 			InitializeClient(); 
 			var orderUrl = $"{route}/v1/events/trades";
+			Console.WriteLine("Establishing connection");
 
 			while (!stoppingToken.IsCancellationRequested)
 			{
@@ -47,19 +48,22 @@ namespace ServerSentEventsClient
 					while (!streamReader.EndOfStream)
 					{
 						var message = await streamReader.ReadLineAsync();
-						message = CleanResponse(message);
-						var result = DeserializeResponse<TradeEvent>(message);
-						Console.WriteLine($"Data from: {message}");
 
-						if (result is not null)
+						Console.WriteLine($"Message: {message}");
+						message = $"{{{message}}}";
+						//var cleanedMessage = CleanResponse(message);
+						Console.WriteLine($"Cleaned message: {message}");
+						var result = DeserializeResponse<Event<TradeEvent>>(message);
+
+						if (result is not null && result.data is not null)
 						{
-							if (result.Event == TradeEventValue.fill)
+							if (result.data.Event == TradeEventValue.fill)
 							{
-								var relatedUser = userAccountsRepository.GetByAccountId(result.account_id).UserId;
-								var relatedOrder = userOrdersRepository.GetByUserId(result.account_id).Orders.First(x => x.OrderId == result.order.client_order_id);
+								var relatedUser = userAccountsRepository.GetByAccountId(result.data.account_id).UserId;
+								var relatedOrder = userOrdersRepository.GetByUserId(result.data.account_id).Orders.First(x => x.OrderId == result.data.order.client_order_id);
 								userOrdersRepository.FillOrder(relatedUser, relatedOrder.OrderId);
-								logger.LogInformation($"Filled order for accout, {result.account_id}, order for {result.order.symbol}");
-								var newPosition = new Position(result.order.symbol, result.order.filled_avg_price.Value, relatedOrder.PortfolioId, result.order.filled_qty);
+								logger.LogInformation($"Filled order for accout, {result.data.account_id}, order for {result.data.order.symbol}");
+								var newPosition = new Position(result.data.order.symbol, result.data.order.filled_avg_price.Value, relatedOrder.PortfolioId, result.data.order.filled_qty);
 
 								positionAdditionHandler.AddPosition(relatedUser, newPosition);
 							}
@@ -67,6 +71,7 @@ namespace ServerSentEventsClient
 					}
 				}
 			}
+			Console.WriteLine("Connection Closed");
 		}
 
 		private string CleanResponse(string response)
