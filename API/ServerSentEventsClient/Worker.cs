@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Users;
 using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
+using Users.Mappers;
 
 namespace ServerSentEventsClient
 {
@@ -59,12 +60,13 @@ namespace ServerSentEventsClient
 						{
 							if (result.data.Event == TradeEventValue.fill)
 							{
+								var filledOrder = AlpacaResponseMapper.MapAlpacaOrderResponse(result.data.order);
 								var relatedUser = userAccountsRepository.GetByAccountId(result.data.account_id).UserId;
 								var userOrders = userOrdersRepository.GetByUserId(relatedUser).Orders;
-								var relatedOrder = userOrders.FirstOrDefault(x => x.OrderId == result.data.order.client_order_id);
+								var relatedOrder = userOrders.FirstOrDefault(x => x.OrderId == filledOrder.OrderId);
 								if (relatedOrder is not null)
 								{
-									userOrdersRepository.FillOrder(relatedUser, relatedOrder.OrderId);
+									userOrdersRepository.FillOrder(relatedUser, relatedOrder.OrderId, filledOrder);
 									logger.LogInformation($"Filled order for accout, {result.data.account_id}, order for {result.data.order.symbol}");
 									var newPosition = new Position(result.data.order.symbol, result.data.order.filled_avg_price.Value, relatedOrder.PortfolioId, result.data.order.filled_qty);
 
@@ -80,11 +82,6 @@ namespace ServerSentEventsClient
 				}
 			}
 			Console.WriteLine("Connection Closed");
-		}
-
-		private string CleanResponse(string response)
-		{
-			return response.Remove(0, 6); 
 		}
 
 		private TResponseType DeserializeResponse<TResponseType>(string response)
