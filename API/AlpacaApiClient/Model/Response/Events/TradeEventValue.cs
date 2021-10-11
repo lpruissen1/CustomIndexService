@@ -1,4 +1,4 @@
-﻿namespace AlpacaApiClient.Model.Response.NewFolder
+﻿namespace AlpacaApiClient.Model.Response.Events
 {
 	public enum TradeEventValue
 	{

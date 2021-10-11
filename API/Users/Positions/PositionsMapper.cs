@@ -1,4 +1,5 @@
 ﻿using AlpacaApiClient.Model.Response;
+using System;
 using System.Linq;
 using Users.Core.Response.Positions;
 using Users.Database.Model;
@@ -16,8 +17,8 @@ namespace Users.Positions
 
 			foreach (var portfolio in portfolioIds)
 			{
-
 				var portfolioHoldings = new PortfolioPositions();
+				portfolioHoldings.PortfolioId = new Guid(portfolio);
 
 				foreach (var position in userPositions.Positions)
 				{

@@ -25,6 +25,23 @@ namespace Users.Mappers
 			};
 		}
 
+		public static Order MapAlpacaOrderResponse(AlpacaOrderResponse response)
+		{
+			return new Order
+			{
+				OrderId = response.id,
+				Ticker = response.symbol,
+				Status = response.status,
+				Type = response.type,
+				Side = response.side,
+				Time_in_force = response.time_in_force,
+				OrderedQuantity = response.qty,
+				OrderedAmount = response.notional,
+				FilledQuantity = null,
+				FilledAmount = null
+			};
+		}
+
 		public static Transfer MapAlpacaTransferResponse(AlpacaTransferRequestResponse response)
 		{
 			return new Transfer

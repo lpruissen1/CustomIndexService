@@ -15,7 +15,7 @@ namespace Users
 {
 	public class AccountsService : IAccountsService
 	{
-		public AccountsService(IUserRepository userRepository, IUserTransfersRepository userTransfersRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler, ILogger logger)
+		public AccountsService(IUserRepository userRepository, IUserPositionsRepository userPositionsRepository, IUserTransfersRepository userTransfersRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.userAccountsRepository = userAccountsRepository;
@@ -24,6 +24,7 @@ namespace Users
 			this.userDocumentsRepository = userDocumentsRepository;
 			this.userOrdersRepository = userOrdersRepository;
 			this.positionAdditionHandler = positionAdditionHandler;
+			this.userPositionsRepository = userPositionsRepository;
 			this.alpacaClient = new AlpacaClient(new AlpacaApiSettings { Key = "CKXM3IU2N9VWGMI470HF", Secret = "ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H" }, logger);
 		}
 
@@ -33,6 +34,7 @@ namespace Users
 		private IUserDisclosuresRepository userDiclosuresRepository { get; }
 		private IUserDocumentsRepository userDocumentsRepository { get; }
 		private IUserOrdersRepository userOrdersRepository { get; }
+		private IUserPositionsRepository userPositionsRepository { get; }
 		private IPositionAdditionHandler positionAdditionHandler { get; }
 		private AlpacaClient alpacaClient { get; }
 
@@ -50,7 +52,8 @@ namespace Users
 				userDiclosuresRepository.Create(CreateAccountRequestDbMapper.MapUserDisclosures(request));
 				userDocumentsRepository.Create(CreateAccountRequestDbMapper.MapUserDocuments(request));
 				userTransfersRepository.Create(new UserTransfers { UserId = new Guid(request.UserId)});
-
+				userPositionsRepository.Create(new UserPositions { UserId = new Guid(request.UserId)});
+				userOrdersRepository.Create(new UserOrders { UserId = request.UserId});
 				return new OkResult();
 			}
 
