@@ -53,6 +53,7 @@ namespace Users
 				userDocumentsRepository.Create(CreateAccountRequestDbMapper.MapUserDocuments(request));
 				userTransfersRepository.Create(new UserTransfers { UserId = new Guid(request.UserId)});
 				userPositionsRepository.Create(new UserPositions { UserId = new Guid(request.UserId)});
+				userOrdersRepository.Create(new UserOrders { UserId = request.UserId});
 				return new OkResult();
 			}
 

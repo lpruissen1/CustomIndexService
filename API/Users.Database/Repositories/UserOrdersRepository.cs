@@ -29,11 +29,14 @@ namespace Users.Database.Repositories
 			dbCollection.UpdateOneAsync(filter, update);
 		}
 
-		public void FillOrder(Guid userId, Guid orderId)
+		public void FillOrder(Guid userId, Guid orderId, Order order)
 		{
 			FilterDefinition<UserOrders> filter = Builders<UserOrders>.Filter.Eq("UserId", userId) & Builders<UserOrders>.Filter.ElemMatch(x => x.Orders, Builders<Order>.Filter.Eq(x => x.OrderId, orderId));
 
-			var update = Builders<UserOrders>.Update.Set("Orders.$.Status", OrderStatusValue.filled);
+			var update = Builders<UserOrders>.Update.Set("Orders.$.Status", OrderStatusValue.filled)
+				.Set("Orders.$.FilledAt", order.FilledAt)
+				.Set("Orders.$.FilledAmount", order.FilledAmount)
+				.Set("Orders.$.FilledQuantity", order.FilledQuantity);
 
 			dbCollection.UpdateOneAsync(filter, update);
 		}

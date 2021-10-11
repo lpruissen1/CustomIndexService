@@ -1,11 +1,12 @@
 ﻿using System;
 
-namespace AlpacaApiClient.Model.Response.NewFolder
+namespace AlpacaApiClient.Model.Response.Events
 {
 	public class Event<TEventType>
 	{
 		public TEventType data { get; set; }
 	}
+
 	public class TradeEvent
 	{
 		public Guid account_id { get; set; }

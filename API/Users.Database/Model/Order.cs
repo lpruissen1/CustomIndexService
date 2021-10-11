@@ -16,6 +16,12 @@ namespace Users.Database.Model
 		[BsonRepresentation(BsonType.String)]
 		public Guid? TransactionId { get; set; }
 
+		[BsonRepresentation(BsonType.DateTime)]
+		public DateTime CreatedAt { get; set; }
+
+		[BsonRepresentation(BsonType.DateTime)]
+		public DateTime FilledAt { get; set; }
+
 		public string Ticker { get; set; }
 
 		[BsonRepresentation(BsonType.String)]
