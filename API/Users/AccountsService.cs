@@ -72,15 +72,7 @@ namespace Users
 				var alpacaOrderResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
 
 				if (alpacaOrderResponse is not null)
-				{
-					if (alpacaOrderResponse.status == OrderStatusValue.filled)
-					{
-						var newPosition = new Position(alpacaOrderResponse.symbol, alpacaOrderResponse.filled_avg_price.Value, request.PortfolioId, alpacaOrderResponse.filled_qty);
-						positionAdditionHandler.AddPosition(userId, newPosition);
-					}
-
 					orders.Add(AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
-				}
 			}
 
 			userOrdersRepository.AddOrders(userId, orders);
