@@ -11,7 +11,7 @@ namespace Users.Mappers
 			return new Order
 			{
 				OrderId = response.id,
-				PortfolioId = response.id,
+				PortfolioId = PortfolioId,
 				TransactionId = TransactionId,
 				CreatedAt = response.created_at,
 				Ticker = response.symbol,
