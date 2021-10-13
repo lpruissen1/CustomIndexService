@@ -2,6 +2,7 @@
 using RealTimeData.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
@@ -10,7 +11,15 @@ using System.Threading.Tasks;
 
 namespace RealTimeData
 {
-	public class DataService
+	public interface IDataService
+	{
+		Task<bool> InitializeClient(string[] tickers);
+		bool Connected();
+		Task<MinuteBar[]> Listen();
+		Task<bool> Subscribe(string[] tickers);
+	}
+
+	public class DataService : IDataService
 	{
 		private ClientWebSocket socket;
 		private readonly Uri url = new Uri("wss://stream.data.sandbox.alpaca.markets/v2/iex");
@@ -21,10 +30,10 @@ namespace RealTimeData
 		{
 			socket = new ClientWebSocket();
 			CTS = new CancellationTokenSource();
-			buffer = new byte[1024];
+			buffer = new byte[2048];
 		}
 
-		public async Task<bool> InitializeClient(IEnumerable<string> tickers)
+		public async Task<bool> InitializeClient(string[] tickers)
 		{
 			var connectionResult = await Connect().ConfigureAwait(false);
 			if (!connectionResult)
@@ -37,37 +46,7 @@ namespace RealTimeData
 			return true;
 		}
 
-
-
-		public async Task<bool> Connect()
-		{
-			await socket.ConnectAsync(url, CTS.Token);
-			await socket.ReceiveAsync(buffer, CTS.Token);
-
-			var jsonResponse = DeserializeResponse<Communcation>(DecodeThisDick(buffer));
-
-			if (jsonResponse.T == "success")
-				return true;
-
-			return false;
-		}
-
-		public async Task<bool> Authenticate()
-		{
-			var authString = "{\"action\": \"auth\", \"key\": \"CKXM3IU2N9VWGMI470HF\", \"secret\": \"ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H\"}";
-			var uint8array = Encode(authString);
-
-			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
-			var newResult = await socket.ReceiveAsync(buffer, CTS.Token);
-			var jsonResponse = DeserializeResponse<Communcation>(DecodeThisDick(buffer));
-
-			if (jsonResponse.T == "success")
-				return true;
-
-			return false;
-		}
-
-		public async Task<bool> Subscribe(IEnumerable<string> tickers)
+		public async Task<bool> Subscribe(string[] tickers)
 		{
 			var stringedSticker = tickers.Select(x => $"\"{x}\" + ,");
 			var subscription = $"{{ \"action\":\"subscribe\",\"trades\":[{stringedSticker}],\"quotes\":[\"AMD\",\"CLDR\"],\"bars\":[\"AAPL\",\"VOO\"]}}";
@@ -75,9 +54,49 @@ namespace RealTimeData
 
 			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
 			var newResult = await socket.ReceiveAsync(buffer, CTS.Token);
-			var jsonResponse = DeserializeResponse<Communcation>(DecodeThisDick(buffer));
 
-			if (jsonResponse.T == "success")
+			var jsonResponse = DeserializeResponse<Communcation>(buffer);
+
+			return ConfirmResponse(jsonResponse);
+		}
+
+		public bool Connected()
+		{
+			return !(socket.State == WebSocketState.Open) && CTS.IsCancellationRequested;
+		}
+
+		public async Task<MinuteBar[]> Listen()
+		{
+			await socket.ReceiveAsync(buffer, CTS.Token);
+
+			return DeserializeResponse<MinuteBar[]>(buffer);
+		}
+
+		private async Task<bool> Connect()
+		{
+			await socket.ConnectAsync(url, CTS.Token);
+			await socket.ReceiveAsync(buffer, CTS.Token);
+
+			var jsonResponse = DeserializeResponse<Communcation>(buffer);
+
+			return ConfirmResponse(jsonResponse);
+		}
+
+		private async Task<bool> Authenticate()	{
+			var authString = "{\"action\": \"auth\", \"key\": \"CKXM3IU2N9VWGMI470HF\", \"secret\": \"ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H\"}";
+			var uint8array = Encode(authString);
+
+			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
+			await socket.ReceiveAsync(buffer, CTS.Token);
+
+			var jsonResponse = DeserializeResponse<Communcation>(buffer);
+
+			return ConfirmResponse(jsonResponse);
+		}
+
+		private bool ConfirmResponse(Communcation respone)
+		{
+			if (respone.T == "success")
 				return true;
 
 			return false;
@@ -88,120 +107,25 @@ namespace RealTimeData
 			return new UTF8Encoding().GetBytes(thingToEncode);
 		}
 
-		private string DecodeThisDick(byte[] dickToDecode)
-		{
-			return Encoding.UTF8.GetString(dickToDecode);
-		}
-
-		private TResponseType DeserializeResponse<TResponseType>(string response)
+		private TResponseType DeserializeResponse<TResponseType>(byte[] data)
 		{
 			try
 			{
-				return JsonConvert.DeserializeObject<TResponseType>(response);
+				using (StreamReader sr = new StreamReader(new MemoryStream(data)))
+				{
+					var stream = sr.ReadToEnd();
+					var trimmed = stream.TrimEnd('\0');
+					var good = trimmed.Substring(1, trimmed.Length - 2);
+					return JsonConvert.DeserializeObject<TResponseType>(good);
+				}
 			}
-			catch
+			catch(Exception e)
 			{
+				Console.WriteLine(e);
 				Console.WriteLine("Get fucked by de-cherrios");
 			}
 
 			return default;
 		}
-
-		//protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-		//{
-		//	InitializeClient();
-
-		//	var source = "iex";
-		//	var orderUrl = $"{route}/v1/events/trades";
-		//	var url = new Uri($"wss://stream.data.sandbox.alpaca.markets/v2/{source}");
-
-		//	var WS = new ClientWebSocket();
-		//	var CTS = new CancellationTokenSource();
-		//	await WS.ConnectAsync(url, CTS.Token);
-
-		//	var buffer = new byte[1024];
-
-		//	var result = await WS.ReceiveAsync(buffer, CTS.Token);
-
-		//	if (result is not null)
-		//	{
-		//		var r = Encoding.UTF8.GetString(buffer);
-		//		Console.WriteLine(r.Substring(0, 1024));
-
-		//	}
-		//	else
-		//	{
-		//		Console.WriteLine("Failure");
-		//		return;
-		//	}
-		//	var sting = "{\"action\": \"auth\", \"key\": \"CKXM3IU2N9VWGMI470HF\", \"secret\": \"ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H\"}";
-		//	var subscription = "{ \"action\":\"subscribe\",\"trades\":[\"AAPL\"],\"quotes\":[\"AMD\",\"CLDR\"],\"bars\":[\"AAPL\",\"VOO\"]}";
-
-		//	var uint8array = new UTF8Encoding().GetBytes(sting);
-
-		//	await WS.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
-
-		//	var newResult = await WS.ReceiveAsync(buffer, CTS.Token);
-
-		//	if (newResult is not null)
-		//	{
-		//		var r = Encoding.UTF8.GetString(buffer);
-		//		Console.WriteLine(r.Substring(0, 1024));
-
-		//	}
-		//	else
-		//	{
-		//		Console.WriteLine("auth Failure");
-		//		return;
-		//	}
-
-		//	var orderArray = new UTF8Encoding().GetBytes(subscription);
-
-		//	await WS.SendAsync(orderArray, WebSocketMessageType.Text, true, CTS.Token);
-
-		//	var subResult = await WS.ReceiveAsync(buffer, CTS.Token);
-
-		//	if (newResult is not null)
-		//	{
-		//		var r = Encoding.UTF8.GetString(buffer);
-		//		Console.WriteLine(r.Substring(0, 1024));
-		//	}
-		//	else
-		//	{
-		//		Console.WriteLine("sub Failure");
-		//		return;
-		//	}
-
-		//	while (true)
-		//	{
-		//		Console.WriteLine("Looping");
-		//		var listenResult = await WS.ReceiveAsync(buffer, CTS.Token);
-
-		//		if (newResult is not null)
-		//		{
-		//			var r = Encoding.UTF8.GetString(buffer);
-		//			Console.WriteLine(r.Substring(0, 1024));
-		//		}
-		//		else
-		//		{
-		//			Console.WriteLine("listening Failure");
-		//			return;
-		//		}
-
-		//	}
-
-		//	while (!stoppingToken.IsCancellationRequested)
-		//	{
-		//		Console.WriteLine("Establishing connection");
-		//		using (var streamReader = new StreamReader(await client.GetStreamAsync(orderUrl)))
-		//		{
-		//			while (!streamReader.EndOfStream)
-		//			{
-		//				var message = await streamReader.ReadLineAsync();
-		//				Console.WriteLine($"Data from: {message}");
-		//			}
-		//		}
-		//	}
-		//}
 	}
 }
