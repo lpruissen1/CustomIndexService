@@ -55,7 +55,7 @@ namespace RealTimeData
 			var newResult = await socket.ReceiveAsync(buffer, CTS.Token);
 
 			var jsonResponse = DeserializeResponse<Communcation[]>(buffer);
-
+			buffer = new byte[2048];
 			return ConfirmResponse(jsonResponse[0]);
 		}
 
@@ -75,7 +75,9 @@ namespace RealTimeData
 				Console.WriteLine(e);
 			}
 
-			return DeserializeResponse<MinuteBar[]>(buffer, false);
+			var response = DeserializeResponse<MinuteBar[]>(buffer, false);
+			buffer = new byte[2048];
+			return response;
 		}
 
 		private async Task<bool> Connect()
@@ -84,7 +86,7 @@ namespace RealTimeData
 			await socket.ReceiveAsync(buffer, CTS.Token);
 
 			var jsonResponse = DeserializeResponse<Communcation[]>(buffer);
-
+			buffer = new byte[2048];
 			return ConfirmResponse(jsonResponse[0]);
 		}
 
@@ -130,6 +132,7 @@ namespace RealTimeData
 					var stream = sr.ReadToEnd();
 					var trimmed = stream.TrimEnd('\0');
 					//var good = trimmed.Substring(1, trimmed.Length - 2);
+					Console.WriteLine("String to deserialize: " + trimmed);
 					return JsonConvert.DeserializeObject<TResponseType>(trimmed);
 				}
 			}

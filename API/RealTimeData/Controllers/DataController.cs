@@ -36,8 +36,11 @@ namespace RealTimeData.Controllers
 				try
 				{
 					var data = await dataService.Listen();
-					await response.WriteAsync(data.Select(x => $"{x.S} + {x.o}").ToString());
-					await response.Body.FlushAsync();
+					var prices = string.Join(",", data.Select(x => $"{x.S} + {x.o}"));
+					Console.WriteLine("prices");
+					Console.WriteLine(prices);
+					await response.WriteAsync(prices).ConfigureAwait(false);
+					await response.Body.FlushAsync().ConfigureAwait(false);
 				}
 				catch(Exception e)
 				{
