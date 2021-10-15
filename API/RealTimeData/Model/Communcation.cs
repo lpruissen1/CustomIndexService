@@ -17,5 +17,7 @@ namespace RealTimeData.Model
 		public decimal c { get; set; }
 		public decimal v { get; set; }
 		public DateTime t { get; set; }
+		public int n { get; set; }
+		public decimal vw { get; set; }
 	}
 }

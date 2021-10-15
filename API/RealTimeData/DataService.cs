@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RealTimeData.Model;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
@@ -13,7 +12,7 @@ namespace RealTimeData
 {
 	public interface IDataService
 	{
-		Task<bool> InitializeClient(string[] tickers);
+		Task<bool> InitializeClient();
 		bool Connected();
 		Task<MinuteBar[]> Listen();
 		Task<bool> Subscribe(string[] tickers);
@@ -33,7 +32,7 @@ namespace RealTimeData
 			buffer = new byte[2048];
 		}
 
-		public async Task<bool> InitializeClient(string[] tickers)
+		public async Task<bool> InitializeClient()
 		{
 			var connectionResult = await Connect().ConfigureAwait(false);
 			if (!connectionResult)
@@ -49,27 +48,34 @@ namespace RealTimeData
 		public async Task<bool> Subscribe(string[] tickers)
 		{
 			var stringedSticker = tickers.Select(x => $"\"{x}\" + ,");
-			var subscription = $"{{ \"action\":\"subscribe\",\"trades\":[{stringedSticker}],\"quotes\":[\"AMD\",\"CLDR\"],\"bars\":[\"AAPL\",\"VOO\"]}}";
+			var subscription = $"{{ \"action\":\"subscribe\",\"bars\":[\"AAPL\"]}}";
 			var uint8array = Encode(subscription);
 
 			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
 			var newResult = await socket.ReceiveAsync(buffer, CTS.Token);
 
-			var jsonResponse = DeserializeResponse<Communcation>(buffer);
+			var jsonResponse = DeserializeResponse<Communcation[]>(buffer);
 
-			return ConfirmResponse(jsonResponse);
+			return ConfirmResponse(jsonResponse[0]);
 		}
 
 		public bool Connected()
 		{
-			return !(socket.State == WebSocketState.Open) && CTS.IsCancellationRequested;
+			return (socket.State == WebSocketState.Open) && !CTS.IsCancellationRequested;
 		}
 
 		public async Task<MinuteBar[]> Listen()
 		{
-			await socket.ReceiveAsync(buffer, CTS.Token);
+			try
+			{
+				var result = await socket.ReceiveAsync(buffer, CTS.Token);
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine(e);
+			}
 
-			return DeserializeResponse<MinuteBar[]>(buffer);
+			return DeserializeResponse<MinuteBar[]>(buffer, false);
 		}
 
 		private async Task<bool> Connect()
@@ -77,9 +83,9 @@ namespace RealTimeData
 			await socket.ConnectAsync(url, CTS.Token);
 			await socket.ReceiveAsync(buffer, CTS.Token);
 
-			var jsonResponse = DeserializeResponse<Communcation>(buffer);
+			var jsonResponse = DeserializeResponse<Communcation[]>(buffer);
 
-			return ConfirmResponse(jsonResponse);
+			return ConfirmResponse(jsonResponse[0]);
 		}
 
 		private async Task<bool> Authenticate()	{
@@ -89,9 +95,9 @@ namespace RealTimeData
 			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
 			await socket.ReceiveAsync(buffer, CTS.Token);
 
-			var jsonResponse = DeserializeResponse<Communcation>(buffer);
+			var jsonResponse = DeserializeResponse<Communcation[]>(buffer);
 
-			return ConfirmResponse(jsonResponse);
+			return ConfirmAuthResponse(jsonResponse[0]);
 		}
 
 		private bool ConfirmResponse(Communcation respone)
@@ -102,12 +108,20 @@ namespace RealTimeData
 			return false;
 		}
 
+		private bool ConfirmAuthResponse(Communcation response)
+		{
+			if (response.T == "success" || response.msg == "auth timeout")
+				return true;
+
+			return false;
+		}
+
 		private byte[] Encode(string thingToEncode)
 		{
 			return new UTF8Encoding().GetBytes(thingToEncode);
 		}
 
-		private TResponseType DeserializeResponse<TResponseType>(byte[] data)
+		private TResponseType DeserializeResponse<TResponseType>(byte[] data, bool trim = true)
 		{
 			try
 			{
@@ -115,8 +129,8 @@ namespace RealTimeData
 				{
 					var stream = sr.ReadToEnd();
 					var trimmed = stream.TrimEnd('\0');
-					var good = trimmed.Substring(1, trimmed.Length - 2);
-					return JsonConvert.DeserializeObject<TResponseType>(good);
+					//var good = trimmed.Substring(1, trimmed.Length - 2);
+					return JsonConvert.DeserializeObject<TResponseType>(trimmed);
 				}
 			}
 			catch(Exception e)
