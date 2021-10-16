@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using Users.Core.Request;
+using Users.Core.Response;
 
 namespace Users.Core
 {
 	public interface IAccountsService
 	{
-		public IActionResult CreateTradingAccount(CreateAccountRequest request);
-		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request);
+		IActionResult CreateTradingAccount(CreateAccountRequest request);
+		IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request);
+		AccountHistoryResponse GetAccountHistory(Guid userId);
 	}
 }

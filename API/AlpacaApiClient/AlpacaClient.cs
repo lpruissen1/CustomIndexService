@@ -150,6 +150,25 @@ namespace AlpacaApiClient
 			return new AlpacaTransferRequestResponse() { Code = 69, Message = "Get Fucked" };
 		}
 
+		public AlpacaAccountHistoryResponse AccountHistory(Guid accountId)
+		{
+			var request = new HttpRequestMessage(HttpMethod.Get, $"{route}/v1/trading/accounts/{accountId}/account/portfolio/history?period=1A");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+
+			var response = client.SendAsync(request).Result;
+
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				return DeserializeResponse<AlpacaAccountHistoryResponse>(response);
+
+			logger.LogInformation(new EventId(1), $"Error Requesting account history: {GetStringFromStream(response.Content.ReadAsStream())}");
+
+			// logic here to map to new fields
+			if(response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				return new AlpacaAccountHistoryResponse() { Code = 403, Message = "Insufficient funds"};
+
+			return new AlpacaAccountHistoryResponse() { Code = 69, Message = "Get Fucked" };
+		}
+
 		public bool CancelTransfer(Guid accountId, Guid transferId)
 		{
 			var request = new HttpRequestMessage(HttpMethod.Delete, $"{route}/v1/accounts/{accountId}/transfers/{transferId}");

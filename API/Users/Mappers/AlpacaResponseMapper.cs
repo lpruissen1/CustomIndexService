@@ -1,5 +1,6 @@
 ﻿using AlpacaApiClient.Model.Response;
 using System;
+using Users.Core.Response;
 using Users.Database.Model;
 
 namespace Users.Mappers
@@ -57,6 +58,17 @@ namespace Users.Mappers
 				TransferType = response.type,
 				Direction = response.direction,
 				Created = response.created_at
+			};
+		}
+
+		public static AccountHistoryResponse MapAlpacaAccountHistoryResponse(AlpacaAccountHistoryResponse response)
+		{
+			return new AccountHistoryResponse
+			{
+				timestamp = response.timestamp,
+				equity = response.equity,
+				profit_loss = response.profit_loss,
+				profit_loss_pct = response.profit_loss_pct
 			};
 		}
 	}

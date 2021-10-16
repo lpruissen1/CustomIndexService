@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Users.Core;
 using Users.Core.Request;
+using Users.Core.Response;
 using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
 using Users.Mappers;
@@ -15,7 +16,7 @@ namespace Users
 {
 	public class AccountsService : IAccountsService
 	{
-		public AccountsService(IUserRepository userRepository, IUserPositionsRepository userPositionsRepository, IUserTransfersRepository userTransfersRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler, ILogger logger)
+		public AccountsService(IUserRepository userRepository, IUserPositionsRepository userPositionsRepository, IUserTransfersRepository userTransfersRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.userAccountsRepository = userAccountsRepository;
@@ -23,7 +24,6 @@ namespace Users
 			this.userDiclosuresRepository = userDiclosuresRepository;
 			this.userDocumentsRepository = userDocumentsRepository;
 			this.userOrdersRepository = userOrdersRepository;
-			this.positionAdditionHandler = positionAdditionHandler;
 			this.userPositionsRepository = userPositionsRepository;
 			this.alpacaClient = new AlpacaClient(new AlpacaApiSettings { Key = "CKXM3IU2N9VWGMI470HF", Secret = "ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H" }, logger);
 		}
@@ -35,7 +35,6 @@ namespace Users
 		private IUserDocumentsRepository userDocumentsRepository { get; }
 		private IUserOrdersRepository userOrdersRepository { get; }
 		private IUserPositionsRepository userPositionsRepository { get; }
-		private IPositionAdditionHandler positionAdditionHandler { get; }
 		private AlpacaClient alpacaClient { get; }
 
 		public IActionResult CreateTradingAccount(CreateAccountRequest request)
@@ -59,6 +58,17 @@ namespace Users
 			}
 
 			return new BadRequestResult();
+		}
+
+		public AccountHistoryResponse GetAccountHistory(Guid userId)
+		{
+			var accountId = userAccountsRepository.GetByUserId(userId).Accounts[0].AccountId;
+			var alpacaAccountHistoryResponse = alpacaClient.AccountHistory(accountId);
+
+			if (alpacaAccountHistoryResponse.Code == 200)
+				return AlpacaResponseMapper.MapAlpacaAccountHistoryResponse(alpacaAccountHistoryResponse);
+
+			return default;
 		}
 
 		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request)

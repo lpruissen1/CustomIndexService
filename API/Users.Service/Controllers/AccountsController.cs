@@ -22,6 +22,17 @@ namespace Users.Service.Controllers
 			return accountservice.CreateTradingAccount(request);
         }
 
+        [HttpGet("accountHistory/{userId}")]
+        public IActionResult AccountHistory(Guid userId)
+        {
+			var response = accountservice.GetAccountHistory(userId);
+
+			if (response is not null)
+				return new OkObjectResult(response);
+
+			return new BadRequestResult();
+        }
+
 		[HttpPost("execute-bulk-market-order/{userId}")]
 		public IActionResult ExecuteBulkMarketOrder(Guid userId, BulkPurchaseRequest request) 
 		{
