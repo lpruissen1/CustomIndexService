@@ -11,15 +11,17 @@ namespace Users.Mappers
 			return new Order
 			{
 				OrderId = response.id,
-				PortfolioId = response.id,
+				PortfolioId = PortfolioId,
 				TransactionId = TransactionId,
 				Ticker = response.symbol,
 				Status = response.status,
+				CreatedAt = response.created_at,
+				FilledAt = response.filled_at.GetValueOrDefault(),
 				Type = response.type,
 				Side = response.side,
 				Time_in_force = response.time_in_force,
-				OrderedQuantity = response.qty,
-				OrderedAmount = response.notional,
+				OrderedQuantity = response?.qty,
+				OrderedAmount = response?.notional,
 				FilledQuantity = null,
 				FilledAmount = null
 			};
@@ -32,13 +34,15 @@ namespace Users.Mappers
 				OrderId = response.id,
 				Ticker = response.symbol,
 				Status = response.status,
+				CreatedAt = response.created_at,
+				FilledAt = response.filled_at.Value,
 				Type = response.type,
 				Side = response.side,
 				Time_in_force = response.time_in_force,
 				OrderedQuantity = response.qty,
 				OrderedAmount = response.notional,
-				FilledQuantity = null,
-				FilledAmount = null
+				FilledQuantity = response.filled_qty,
+				FilledAmount = response.filled_avg_price * response.filled_qty
 			};
 		}
 

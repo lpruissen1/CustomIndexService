@@ -8,6 +8,5 @@ namespace Users.Core
 	{
 		public IActionResult CreateTradingAccount(CreateAccountRequest request);
 		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request);
-		public IActionResult GetOrders(Guid userId);
 	}
 }

@@ -51,9 +51,10 @@ namespace Users
 				userAccountsRepository.Create(CreateAccountRequestDbMapper.MapUserAccounts(request, alpacaCreateAccountResponse));
 				userDiclosuresRepository.Create(CreateAccountRequestDbMapper.MapUserDisclosures(request));
 				userDocumentsRepository.Create(CreateAccountRequestDbMapper.MapUserDocuments(request));
-				userTransfersRepository.Create(new UserTransfers { UserId = new Guid(request.UserId)});
-				userPositionsRepository.Create(new UserPositions { UserId = new Guid(request.UserId)});
-				userOrdersRepository.Create(new UserOrders { UserId = request.UserId});
+				userTransfersRepository.Create(new UserTransfers(new Guid(request.UserId)));
+				userPositionsRepository.Create(new UserPositions(new Guid(request.UserId)));
+				userOrdersRepository.Create(new UserOrders(new Guid(request.UserId)));
+
 				return new OkResult();
 			}
 
@@ -72,30 +73,12 @@ namespace Users
 				var alpacaOrderResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
 
 				if (alpacaOrderResponse is not null)
-				{
-					if (alpacaOrderResponse.status == OrderStatusValue.filled)
-					{
-						var newPosition = new Position(alpacaOrderResponse.symbol, alpacaOrderResponse.filled_avg_price.Value, request.PortfolioId, alpacaOrderResponse.filled_qty);
-						positionAdditionHandler.AddPosition(userId, newPosition);
-					}
-
 					orders.Add(AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
-				}
 			}
 
 			userOrdersRepository.AddOrders(userId, orders);
 
 			return new OkResult();
-		}
-
-		public IActionResult GetOrders(Guid userId)
-		{
-			var userOrders = userOrdersRepository.GetByUserId(userId).Orders;
-
-			if (userOrders is not null)
-				return new OkObjectResult(userOrders);
-
-			return new BadRequestResult();
 		}
 	}
 }

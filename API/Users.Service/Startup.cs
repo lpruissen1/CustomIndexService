@@ -16,6 +16,7 @@ using Users.Database.Config;
 using Users.Database.Repositories;
 using Users.Database.Repositories.Interfaces;
 using Users.Funding;
+using Users.Orders;
 using Users.Positions;
 
 namespace Users.Service
@@ -53,6 +54,7 @@ namespace Users.Service
 			services.AddScoped<IUserTransfersRepository, UserTransfersRepository>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IFundingService, FundingService>();
+			services.AddScoped<IOrderService, OrderSerivce>();
 			services.AddScoped<IUserPositionsRepository, UserPositionsRepository>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IPositionsService, PositionsService>();

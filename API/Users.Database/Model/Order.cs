@@ -20,7 +20,7 @@ namespace Users.Database.Model
 		public DateTime CreatedAt { get; set; }
 
 		[BsonRepresentation(BsonType.DateTime)]
-		public DateTime FilledAt { get; set; }
+		public DateTime? FilledAt { get; set; }
 
 		public string Ticker { get; set; }
 
