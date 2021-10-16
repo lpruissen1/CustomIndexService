@@ -160,7 +160,22 @@ namespace AlpacaApiClient
 			if (response.StatusCode == System.Net.HttpStatusCode.OK)
 				return true;
 
-			logger.LogInformation(new EventId(1), $"Error transfering funds: {GetStringFromStream(response.Content.ReadAsStream())}");
+			logger.LogInformation(new EventId(1), $"Error cancelling transfering funds: {GetStringFromStream(response.Content.ReadAsStream())}");
+
+			return false;
+		}
+
+		public bool CancelOrder(Guid accountId, Guid orderId)
+		{
+			var request = new HttpRequestMessage(HttpMethod.Delete, $"{route}/v1/trading/accounts/{accountId}/orders/{orderId}");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+
+			var response = client.SendAsync(request).Result;
+
+			if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.NoContent)
+				return true;
+
+			logger.LogInformation(new EventId(1), $"Error cancelling order: {GetStringFromStream(response.Content.ReadAsStream())}");
 
 			return false;
 		}

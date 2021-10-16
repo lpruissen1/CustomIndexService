@@ -25,7 +25,7 @@ namespace Users.Tests
 			var averagePrice = 103.39m;
 			var quantity = 10;
 			var newPosition = new Position(ticker, averagePrice, portfolioGuid, quantity);
-			UserPositionsRepository.Create(new UserPositions() { UserId = userId });
+			UserPositionsRepository.Create(new UserPositions(userId));
 
 			sut.AddPosition(userId, newPosition);
 
@@ -45,7 +45,7 @@ namespace Users.Tests
 			var quantity = 10;
 			var existingPosition = new Position(ticker, averagePrice, portfolioGuid, quantity);
 
-			UserPositionsRepository.Create(new UserPositions() { UserId = userId, Positions = new System.Collections.Generic.List<Position> { new Position(ticker, averagePrice, portfolioGuid, quantity) } });
+			UserPositionsRepository.Create(new UserPositions(userId) { Positions = new System.Collections.Generic.List<Position> { new Position(ticker, averagePrice, portfolioGuid, quantity) } });
 
 			var newPortfolioGuid = Guid.NewGuid();
 			var newAveragePrice = 100;
@@ -76,7 +76,7 @@ namespace Users.Tests
 			var quantity = 10;
 			var existingPosition = new Position(ticker, averagePrice, portfolioGuid, quantity);
 
-			UserPositionsRepository.Create(new UserPositions() { UserId = userId, Positions = new System.Collections.Generic.List<Position> { new Position(ticker, averagePrice, portfolioGuid, quantity) } });
+			UserPositionsRepository.Create(new UserPositions(userId) { Positions = new System.Collections.Generic.List<Position> { new Position(ticker, averagePrice, portfolioGuid, quantity) } });
 
 			var newAveragePrice = 60;
 			var newQuantity = 5;

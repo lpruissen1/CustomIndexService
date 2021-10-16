@@ -92,6 +92,7 @@ namespace ServerSentEventsClient
 			}
 			catch
 			{
+				return default;
 			}
 
 			return default;

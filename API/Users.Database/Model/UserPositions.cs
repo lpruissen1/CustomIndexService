@@ -8,8 +8,13 @@ namespace Users.Database.Model
 {
 	public class UserPositions : DbEntity
 	{
+		public UserPositions(Guid userId)
+		{
+			UserId = userId;
+		}
+
 		[BsonRepresentation(BsonType.String)]
-		public Guid UserId { get; set; }
+		public Guid UserId { get; init; }
 
 		public List<Position> Positions { get; set; } = new List<Position>();
 	}

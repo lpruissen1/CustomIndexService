@@ -4,6 +4,7 @@ using Database.Repositories;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Users.Database.Model;
 using Users.Database.Repositories.Interfaces;
 
@@ -37,6 +38,15 @@ namespace Users.Database.Repositories
 				.Set("Orders.$.FilledAt", order.FilledAt)
 				.Set("Orders.$.FilledAmount", order.FilledAmount)
 				.Set("Orders.$.FilledQuantity", order.FilledQuantity);
+
+			dbCollection.UpdateOneAsync(filter, update);
+		}
+
+		public void UpdateOrder(Guid userId, Order order)
+		{
+			FilterDefinition<UserOrders> filter = Builders<UserOrders>.Filter.Eq("UserId", userId) & Builders<UserOrders>.Filter.ElemMatch(x => x.Orders, Builders<Order>.Filter.Eq(x => x.OrderId, order.OrderId));
+
+			var update = Builders<UserOrders>.Update.Set("Orders.$.Status", order.Status);
 
 			dbCollection.UpdateOneAsync(filter, update);
 		}
