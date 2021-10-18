@@ -63,13 +63,14 @@ namespace Users.Mappers
 
 		public static AccountHistoryResponse MapAlpacaAccountHistoryResponse(AlpacaAccountHistoryResponse response)
 		{
-			return new AccountHistoryResponse
+			var accountHistoryResponse =  new AccountHistoryResponse();
+
+			for (int i = 0; i < response.timestamp.Length; i++)
 			{
-				timestamp = response.timestamp,
-				equity = response.equity,
-				profit_loss = response.profit_loss,
-				profit_loss_pct = response.profit_loss_pct
-			};
+				accountHistoryResponse.AccountHistory.Add(response.timestamp[i], response.equity[i]);
+			}
+
+			return accountHistoryResponse;
 		}
 	}
 }

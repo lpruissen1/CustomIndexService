@@ -8,9 +8,6 @@ namespace Users.Core.Response
 {
 	public class AccountHistoryResponse
 	{
-		public int[] timestamp { get; set; }
-		public decimal[] equity { get; set; }
-		public double[] profit_loss { get; set; }
-		public double[] profit_loss_pct { get; set; }
+		public Dictionary<int, decimal> AccountHistory { get; } = new Dictionary<int, decimal>();
 	}
 }
