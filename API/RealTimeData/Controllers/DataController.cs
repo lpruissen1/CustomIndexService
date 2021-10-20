@@ -50,5 +50,24 @@ namespace RealTimeData.Controllers
 
 			var done = 1;
 		}
+
+		[HttpGet("date")]
+		public async Task GetDate()
+		{
+			var response = Response;
+			response.Headers.Add("Content-Type", "text/event-stream");
+			response.Headers.Add("connection", "keep-alive");
+			response.Headers.Add("cach-control", "no-cache");
+
+			var x = 1;
+
+			while (true)
+			{
+				await response.WriteAsync($"data: Controller {x} at {DateTime.Now}\r\r");
+				x++;
+				await response.Body.FlushAsync();
+				await Task.Delay(5 * 1000);
+			}
+		}
 	}
 }
