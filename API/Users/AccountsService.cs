@@ -64,7 +64,7 @@ namespace Users
 		public AccountHistoryResponse GetAccountHistory(Guid userId, TimePeriod timePeriod)
 		{
 			var accountId = userAccountsRepository.GetByUserId(userId).Accounts[0].AccountId;
-			var alpacaAccountHistoryResponse = alpacaClient.AccountHistory(accountId);
+			var alpacaAccountHistoryResponse = alpacaClient.AccountHistory(accountId, timePeriod);
 			var accountTransfers = userTransfersRepository.GetByUserId(userId);
 
 			var relevantTransfers = GetTransfersForTimePeriod(accountTransfers, timePeriod);

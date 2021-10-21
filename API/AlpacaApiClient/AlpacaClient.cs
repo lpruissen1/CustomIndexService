@@ -1,5 +1,6 @@
 ﻿using AlpacaApiClient.Model.Request;
 using AlpacaApiClient.Model.Response;
+using Core;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -150,9 +151,10 @@ namespace AlpacaApiClient
 			return new AlpacaTransferRequestResponse() { Code = 69, Message = "Get Fucked" };
 		}
 
-		public AlpacaAccountHistoryResponse AccountHistory(Guid accountId)
+		public AlpacaAccountHistoryResponse AccountHistory(Guid accountId, TimePeriod timePeriod)
 		{
-			var request = new HttpRequestMessage(HttpMethod.Get, $"{route}/v1/trading/accounts/{accountId}/account/portfolio/history?period=1A");
+			var alpacaTimePeriod = GetAlpacaTimePeriod(timePeriod);
+			var request = new HttpRequestMessage(HttpMethod.Get, $"{route}/v1/trading/accounts/{accountId}/account/portfolio/history?period={alpacaTimePeriod}");
 			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
 
 			var response = client.SendAsync(request).Result;
@@ -167,6 +169,26 @@ namespace AlpacaApiClient
 				return new AlpacaAccountHistoryResponse() { Code = 403, Message = "Insufficient funds"};
 
 			return new AlpacaAccountHistoryResponse() { Code = 69, Message = "Get Fucked" };
+		}
+
+		private string GetAlpacaTimePeriod(TimePeriod timePeriod)
+		{
+			switch(timePeriod) {
+				case TimePeriod.FiveYear:
+					return "5A";
+				case TimePeriod.ThreeYear:
+					return "3A";
+				case TimePeriod.Year:
+					return "1A";
+				case TimePeriod.HalfYear:
+					return "6M";
+				case TimePeriod.Quarter:
+					return "3M";
+				case TimePeriod.Month:
+					return "1M";
+				default:
+					return "1A";
+			}
 		}
 
 		public bool CancelTransfer(Guid accountId, Guid transferId)
