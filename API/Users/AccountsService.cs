@@ -1,5 +1,6 @@
 ﻿using AlpacaApiClient;
 using Core;
+using Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -60,15 +61,35 @@ namespace Users
 			return new BadRequestResult();
 		}
 
-		public AccountHistoryResponse GetAccountHistory(Guid userId)
+		public AccountHistoryResponse GetAccountHistory(Guid userId, TimePeriod timePeriod)
 		{
 			var accountId = userAccountsRepository.GetByUserId(userId).Accounts[0].AccountId;
 			var alpacaAccountHistoryResponse = alpacaClient.AccountHistory(accountId);
+			var accountTransfers = userTransfersRepository.GetByUserId(userId);
+
+			var relevantTransfers = GetTransfersForTimePeriod(accountTransfers, timePeriod);
 
 			if (alpacaAccountHistoryResponse.Code == 200)
-				return AlpacaResponseMapper.MapAlpacaAccountHistoryResponse(alpacaAccountHistoryResponse);
+				return ResponseMapper.MapAlpacaAccountHistoryResponse(alpacaAccountHistoryResponse, relevantTransfers, accountTransfers.Transfers.Min(x => x.Created));
 
 			return default;
+		}
+
+		public List<Transfer> GetTransfersForTimePeriod(UserTransfers transfers, TimePeriod timePeriod)
+		{
+			if (timePeriod == TimePeriod.AllTime)
+				return transfers.Transfers;
+
+			var startDate = DateTime.UtcNow.AddMonths(-(timePeriod.GetMonthsFromTimePeriod()));
+			List<Transfer> relevantTransfers = new List<Transfer>();
+
+			foreach(var transfer in transfers.Transfers)
+			{
+				if (transfer.Status == TransferStatusValue.COMPLETE && transfer.Created >= startDate)
+					relevantTransfers.Add(transfer);
+			}
+
+			return relevantTransfers;
 		}
 
 		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request)

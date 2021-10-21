@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using Users.Core;
 using Users.Core.Request;
@@ -22,10 +23,10 @@ namespace Users.Service.Controllers
 			return accountservice.CreateTradingAccount(request);
         }
 
-        [HttpGet("accountHistory/{userId}")]
-        public IActionResult AccountHistory(Guid userId)
+        [HttpGet("accountHistory/{userId}/{timePeriod}")]
+        public IActionResult AccountHistory(Guid userId, TimePeriod timePeriod)
         {
-			var response = accountservice.GetAccountHistory(userId);
+			var response = accountservice.GetAccountHistory(userId, timePeriod);
 
 			if (response is not null)
 				return new OkObjectResult(response);

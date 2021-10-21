@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Users.Core.Response
 {
 	public class AccountHistoryResponse
 	{
 		public Dictionary<int, decimal> AccountHistory { get; } = new Dictionary<int, decimal>();
+		public Dictionary<int, decimal> NetContributions { get; } = new Dictionary<int, decimal>();
 	}
 }
