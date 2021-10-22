@@ -34,6 +34,9 @@ namespace RealTimeData
 
 		public async Task<bool> InitializeClient()
 		{
+			if (Connected())
+				return true;
+
 			var connectionResult = await Connect().ConfigureAwait(false);
 			if (!connectionResult)
 				return false;

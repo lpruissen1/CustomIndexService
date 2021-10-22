@@ -59,14 +59,20 @@ namespace RealTimeData.Controllers
 			response.Headers.Add("connection", "keep-alive");
 			response.Headers.Add("cach-control", "no-cache");
 
-			var x = 1;
+			var result = await dataService.InitializeClient();
 
-			while (true)
+			if (!result)
+				return;
+
+			await dataService.Subscribe(new string[] { "TSLA", "AAPL" });
+
+			while (dataService.Connected())
 			{
-				await response.WriteAsync($"data: Controller {x} at {DateTime.Now}\r\r");
-				x++;
-				await response.Body.FlushAsync();
-				await Task.Delay(5 * 1000);
+				var data = await dataService.Listen();
+				var prices = $"data: {string.Join(",", data.Select(x => $"{x.S} + {x.o}"))}";
+				Console.WriteLine(prices);
+				await response.WriteAsync($"{prices}\r\r").ConfigureAwait(false);
+				await response.Body.FlushAsync().ConfigureAwait(false);
 			}
 		}
 	}
