@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace RealTimeData.Controllers
 		}
 
 		[HttpGet]
-		public async Task Get()
+		public async Task Get([FromQuery]IEnumerable<string> tickers)
 		{
 			var response = Response;
 			response.Headers.Add("Content-Type", "text/event-stream");
@@ -30,50 +31,18 @@ namespace RealTimeData.Controllers
 			if (!result)
 				return;
 
-			await dataService.Subscribe(new string[] { "TSLA", "AAPL" });
-			while (dataService.Connected())
-			{
-				try
-				{
-					var data = await dataService.Listen();
-					var prices = string.Join(",", data.Select(x => $"{x.S} + {x.o}"));
-					Console.WriteLine("prices");
-					Console.WriteLine(prices);
-					await response.WriteAsync(prices).ConfigureAwait(false);
-					await response.Body.FlushAsync().ConfigureAwait(false);
-				}
-				catch(Exception e)
-				{
-					Console.WriteLine(e);
-				}
-			}
-
-			var done = 1;
-		}
-
-		[HttpGet("date")]
-		public async Task GetDate()
-		{
-			var response = Response;
-			response.Headers.Add("Content-Type", "text/event-stream");
-			response.Headers.Add("connection", "keep-alive");
-			response.Headers.Add("cach-control", "no-cache");
-
-			var result = await dataService.InitializeClient();
-
-			if (!result)
-				return;
-
-			await dataService.Subscribe(new string[] { "TSLA", "AAPL" });
+			await dataService.Subscribe(tickers);
 
 			while (dataService.Connected())
 			{
 				var data = await dataService.Listen();
-				var prices = $"data: {string.Join(",", data.Select(x => $"{x.S} + {x.o}"))}";
+				var prices = $"data: [{string.Join(",", data.Select(x => $"\"{x.S}\": \"{x.p}\""))}[";
 				Console.WriteLine(prices);
 				await response.WriteAsync($"{prices}\r\r").ConfigureAwait(false);
 				await response.Body.FlushAsync().ConfigureAwait(false);
 			}
+
+			dataService.Close();
 		}
 	}
 }

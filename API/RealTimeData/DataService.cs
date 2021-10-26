@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RealTimeData.Model;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
@@ -14,27 +15,33 @@ namespace RealTimeData
 	{
 		Task<bool> InitializeClient();
 		bool Connected();
-		Task<MinuteBar[]> Listen();
-		Task<bool> Subscribe(string[] tickers);
+		Task<Trade[]> Listen();
+		Task<bool> Subscribe(IEnumerable<string> tickers);
+		void Close();
 	}
 
 	public class DataService : IDataService
 	{
 		private ClientWebSocket socket;
+		private CancellationToken CTS;
 		private readonly Uri url = new Uri("wss://stream.data.sandbox.alpaca.markets/v2/iex");
-		private CancellationTokenSource CTS;
-		private byte[] buffer;
+		private byte[] buffer = new byte[2048];
 
 		public DataService()
 		{
-			socket = new ClientWebSocket();
-			CTS = new CancellationTokenSource();
-			buffer = new byte[2048];
+			if(socket is not null) 
+				socket = new ClientWebSocket();
 		}
 
 		public async Task<bool> InitializeClient()
 		{
-			if (Connected())
+
+			if (socket is null)
+			{
+				socket = new ClientWebSocket();
+				CTS = new CancellationToken();
+			}
+			else if (Connected())
 				return true;
 
 			var connectionResult = await Connect().ConfigureAwait(false);
@@ -48,14 +55,14 @@ namespace RealTimeData
 			return true;
 		}
 
-		public async Task<bool> Subscribe(string[] tickers)
+		public async Task<bool> Subscribe(IEnumerable<string> tickers)
 		{
-			var stringedSticker = tickers.Select(x => $"\"{x}\" + ,");
-			var subscription = $"{{ \"action\":\"subscribe\",\"bars\":[\"AAPL\"]}}";
+			var stringedSticker = string.Join(',', tickers.Select(x => $"\"{x}\""));
+			var subscription = $"{{ \"action\":\"subscribe\",\"trades\":[{stringedSticker}]}}";
 			var uint8array = Encode(subscription);
 
-			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
-			var newResult = await socket.ReceiveAsync(buffer, CTS.Token);
+			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS);
+			var newResult = await socket.ReceiveAsync(buffer, CTS);
 
 			var jsonResponse = DeserializeResponse<Communcation[]>(buffer);
 			buffer = new byte[2048];
@@ -64,29 +71,29 @@ namespace RealTimeData
 
 		public bool Connected()
 		{
-			return (socket.State == WebSocketState.Open) && !CTS.IsCancellationRequested;
+			return socket.State == WebSocketState.Open;
 		}
 
-		public async Task<MinuteBar[]> Listen()
+		public async Task<Trade[]> Listen()
 		{
 			try
 			{
-				var result = await socket.ReceiveAsync(buffer, CTS.Token);
+				var result = await socket.ReceiveAsync(buffer, CTS);
 			}
 			catch(Exception e)
 			{
 				Console.WriteLine(e);
 			}
 
-			var response = DeserializeResponse<MinuteBar[]>(buffer, false);
+			var response = DeserializeResponse<Trade[]>(buffer, false);
 			buffer = new byte[2048];
 			return response;
 		}
 
 		private async Task<bool> Connect()
 		{
-			await socket.ConnectAsync(url, CTS.Token);
-			await socket.ReceiveAsync(buffer, CTS.Token);
+			await socket.ConnectAsync(url, CTS);
+			await socket.ReceiveAsync(buffer, CTS);
 
 			var jsonResponse = DeserializeResponse<Communcation[]>(buffer);
 			buffer = new byte[2048];
@@ -97,8 +104,8 @@ namespace RealTimeData
 			var authString = "{\"action\": \"auth\", \"key\": \"CKXM3IU2N9VWGMI470HF\", \"secret\": \"ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H\"}";
 			var uint8array = Encode(authString);
 
-			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS.Token);
-			await socket.ReceiveAsync(buffer, CTS.Token);
+			await socket.SendAsync(uint8array, WebSocketMessageType.Text, true, CTS);
+			await socket.ReceiveAsync(buffer, CTS);
 
 			var jsonResponse = DeserializeResponse<Communcation[]>(buffer);
 
@@ -146,6 +153,11 @@ namespace RealTimeData
 			}
 
 			return default;
+		}
+
+		public void Close()
+		{
+			socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CTS);
 		}
 	}
 }

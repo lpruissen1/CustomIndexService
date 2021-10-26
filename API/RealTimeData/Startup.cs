@@ -20,7 +20,7 @@ namespace RealTimeData
         public void ConfigureServices(IServiceCollection services)
         {
 
-			services.AddScoped<IDataService, DataService>();
+			services.AddSingleton<IDataService, DataService>();
 
 			services.AddControllers();
             services.AddSwaggerGen(c =>
