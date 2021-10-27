@@ -37,7 +37,7 @@ namespace ServerSentEventsClient
 					services.AddSingleton<IUserPositionsRepository, UserPositionsRepository>();
 					services.AddSingleton<IUserAccountsRepository, UserAccountsRepository>();
 					services.AddSingleton<IUserOrdersRepository, UserOrdersRepository>();
-					services.AddSingleton<IPositionAdditionHandler, PositionAdditionHandler>();
+					services.AddSingleton<IPositionAdditionHandler, PositionUpdateHandler>();
 					services.AddSingleton<ILogger, MyLogger>();
 
 					services.AddHostedService<Worker>();

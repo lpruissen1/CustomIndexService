@@ -50,6 +50,15 @@ namespace Users.Database.Repositories
 
 			dbCollection.UpdateOneAsync(filter, update);
 		}
+
+		public void AddOrder(Guid userId, Order order)
+		{
+			FilterDefinition<UserOrders> filter = Builders<UserOrders>.Filter.Eq("UserId", userId);
+
+			var update = Builders<UserOrders>.Update.Push("Orders", order);
+
+			dbCollection.UpdateOneAsync(filter, update);
+		}
 	}
 }
 

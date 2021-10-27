@@ -27,7 +27,23 @@ namespace Users.Database.Repositories
 			return dbCollection.Find(filter).FirstOrDefault();
 		}
 
-		public void UpdatePosition(Guid userId, Position position)
+		public void RemovePosition(Guid userId, string ticker)
+		{
+			FilterDefinition<UserPositions> filter = Builders<UserPositions>.Filter.Eq("UserId", userId);
+
+			var update = Builders<UserPositions>.Update.PullFilter(x => x.Positions, Builders<Position>.Filter.Where(x => x.Ticker == ticker));
+
+			dbCollection.UpdateOne(filter, update);
+		}
+
+		public void Replace(Guid userId, UserPositions positions)
+		{
+			FilterDefinition<UserPositions> filter = Builders<UserPositions>.Filter.Eq("UserId", userId);
+
+			dbCollection.ReplaceOne(filter, positions);
+		}
+
+		public void UpdatePositionAveragePurchacePrice(Guid userId, Position position)
 		{
 			FilterDefinition<UserPositions> filter = Builders<UserPositions>.Filter.Eq("UserId", userId) & Builders<UserPositions>.Filter.ElemMatch(x => x.Positions, Builders<Position>.Filter.Eq(x => x.Ticker, position.Ticker));
 

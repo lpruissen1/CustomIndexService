@@ -4,15 +4,11 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Users;
-using Users.Database.Model;
-using Users.Database.Repositories.Interfaces;
-using Users.Mappers;
 
 namespace ServerSentEventsClient
 {
@@ -22,15 +18,11 @@ namespace ServerSentEventsClient
 		private string route = "https://broker-api.sandbox.alpaca.markets";
 
 		public ILogger logger { get; }
-		public IUserAccountsRepository userAccountsRepository { get; }
-		public IUserOrdersRepository userOrdersRepository { get; }
 		public IPositionAdditionHandler positionAdditionHandler { get; }
 
-		public Worker(ILogger logger, IUserAccountsRepository userAccountsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler)
+		public Worker(ILogger logger, IPositionAdditionHandler positionAdditionHandler)
 		{
 			this.logger = logger;
-			this.userAccountsRepository = userAccountsRepository;
-			this.userOrdersRepository = userOrdersRepository;
 			this.positionAdditionHandler = positionAdditionHandler;
 			client = new HttpClient();
 		}
@@ -52,7 +44,6 @@ namespace ServerSentEventsClient
 
 						Console.WriteLine($"Message: {message}");
 						message = $"{{{message}}}";
-						//var cleanedMessage = CleanResponse(message);
 						Console.WriteLine($"Cleaned message: {message}");
 						var result = DeserializeResponse<Event<TradeEvent>>(message);
 
@@ -60,22 +51,7 @@ namespace ServerSentEventsClient
 						{
 							if (result.data.Event == TradeEventValue.fill)
 							{
-								var filledOrder = AlpacaResponseMapper.MapAlpacaOrderResponse(result.data.order);
-								var relatedUser = userAccountsRepository.GetByAccountId(result.data.account_id).UserId;
-								var userOrders = userOrdersRepository.GetByUserId(relatedUser).Orders;
-								var relatedOrder = userOrders.FirstOrDefault(x => x.OrderId == filledOrder.OrderId);
-								if (relatedOrder is not null)
-								{
-									userOrdersRepository.FillOrder(relatedUser, relatedOrder.OrderId, filledOrder);
-									logger.LogInformation($"Filled order for accout, {result.data.account_id}, order for {result.data.order.symbol}");
-									var newPosition = new Position(result.data.order.symbol, result.data.order.filled_avg_price.Value, relatedOrder.PortfolioId, result.data.order.filled_qty);
-
-									positionAdditionHandler.AddPosition(relatedUser, newPosition);
-								}
-								else
-								{
-									logger.LogInformation(new EventId(1), "Failed to find order");
-								}
+								positionAdditionHandler.HandlePositionUpdate(result.data);
 							}
 						}
 					}
