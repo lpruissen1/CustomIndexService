@@ -61,20 +61,22 @@ namespace Users
 			return new BadRequestResult();
 		}
 
-		public IActionResult ExecuteBulkPurchase(Guid userId, BulkOrderRequest request)
+		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request)
 		{
 			var transationId = Guid.NewGuid();
 			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkPurchaseOrder(request);
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First().AccountId;
+			var orders = new List<Order>();
 
 			foreach (var alpacaRequest in alpacaRequests)
 			{
 				var alpacaOrderResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
 
-				if (alpacaOrderResponse is not null) 
-					userOrdersRepository.AddOrder(userId, AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
-					// add a condition to see if its filled. If so send that shit to the position update handler
+				if (alpacaOrderResponse is not null)
+					orders.Add(AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
 			}
+
+			userOrdersRepository.AddOrders(userId, orders);
 
 			return new OkResult();
 		}

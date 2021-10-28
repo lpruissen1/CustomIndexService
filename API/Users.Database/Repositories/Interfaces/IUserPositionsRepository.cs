@@ -8,8 +8,6 @@ namespace Users.Database.Repositories.Interfaces
 	{
 		UserPositions GetByUserId(Guid userId);
 		void CreatePosition(Guid userId, Position position);
-		void UpdatePositionAveragePurchacePrice(Guid userId, Position position);
-		void RemovePosition(Guid userId, string ticker);
-		void Replace(Guid userId, UserPositions positions);
+		void UpdatePosition(Guid userId, Position position);
 	}
 }

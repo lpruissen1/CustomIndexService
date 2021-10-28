@@ -58,7 +58,7 @@ namespace Users.Service
 			services.AddScoped<IUserPositionsRepository, UserPositionsRepository>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IPositionsService, PositionsService>();
-			services.AddScoped<IPositionAdditionHandler, PositionUpdateHandler>();
+			services.AddScoped<IPositionAdditionHandler, PositionAdditionHandler>();
 			services.AddScoped<IAccountsService, AccountsService>();
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IHasher, BCryptHasher>();

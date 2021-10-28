@@ -23,7 +23,7 @@ namespace Users.Service.Controllers
         }
 
 		[HttpPost("execute-bulk-market-order/{userId}")]
-		public IActionResult ExecuteBulkMarketOrder(Guid userId, BulkOrderRequest request) 
+		public IActionResult ExecuteBulkMarketOrder(Guid userId, BulkPurchaseRequest request) 
 		{
 			return accountservice.ExecuteBulkPurchase(userId, request);
 		}
