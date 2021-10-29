@@ -1,18 +1,15 @@
+using AlpacaApiClient.Model.Response;
 using AlpacaApiClient.Model.Response.Events;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ServerSentEventsClient.RabbitProducer;
 using System;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Users;
-using Users.Database.Model;
-using Users.Database.Repositories.Interfaces;
-using Users.Mappers;
 
 namespace ServerSentEventsClient
 {
@@ -21,17 +18,13 @@ namespace ServerSentEventsClient
 		private readonly HttpClient client;
 		private string route = "https://broker-api.sandbox.alpaca.markets";
 
-		public ILogger logger { get; }
-		public IUserAccountsRepository userAccountsRepository { get; }
-		public IUserOrdersRepository userOrdersRepository { get; }
-		public IPositionAdditionHandler positionAdditionHandler { get; }
+		private ILogger logger { get; }
+		private IRabbitManager rabbitManager { get; }
 
-		public Worker(ILogger logger, IUserAccountsRepository userAccountsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler)
+		public Worker(ILogger logger, IRabbitManager rabbitManager)
 		{
 			this.logger = logger;
-			this.userAccountsRepository = userAccountsRepository;
-			this.userOrdersRepository = userOrdersRepository;
-			this.positionAdditionHandler = positionAdditionHandler;
+			this.rabbitManager = rabbitManager;
 			client = new HttpClient();
 		}
 
@@ -52,30 +45,35 @@ namespace ServerSentEventsClient
 
 						Console.WriteLine($"Message: {message}");
 						message = $"{{{message}}}";
-						//var cleanedMessage = CleanResponse(message);
 						Console.WriteLine($"Cleaned message: {message}");
-						var result = DeserializeResponse<Event<TradeEvent>>(message);
+						var result = new Event<TradeEvent>()
+						{
+							data = new TradeEvent
+							{
+								Event = TradeEventValue.fill,
+								account_id = new Guid("37438406-f906-4f6c-82d5-fcaa38332729"),
+								order = new AlpacaOrderResponse
+								{
+									id = new Guid("c628dbe1-741e-4200-9871-a786d968caed"),
+									symbol = "LLL",
+									status = Core.OrderStatusValue.filled,
+									created_at = DateTime.Now.AddHours(-1),
+									filled_at = DateTime.Now,
+									type = Core.OrderType.market,
+									side = Core.OrderDirectionValue.buy,
+									time_in_force = Core.OrderExecutionTimeframeValue.day,
+									qty = 69,
+									filled_qty = 69,
+									filled_avg_price = 100
+								}
+							}
+						};
 
 						if (result is not null && result.data is not null)
 						{
 							if (result.data.Event == TradeEventValue.fill)
 							{
-								var filledOrder = AlpacaResponseMapper.MapAlpacaOrderResponse(result.data.order);
-								var relatedUser = userAccountsRepository.GetByAccountId(result.data.account_id).UserId;
-								var userOrders = userOrdersRepository.GetByUserId(relatedUser).Orders;
-								var relatedOrder = userOrders.FirstOrDefault(x => x.OrderId == filledOrder.OrderId);
-								if (relatedOrder is not null)
-								{
-									userOrdersRepository.FillOrder(relatedUser, relatedOrder.OrderId, filledOrder);
-									logger.LogInformation($"Filled order for accout, {result.data.account_id}, order for {result.data.order.symbol}");
-									var newPosition = new Position(result.data.order.symbol, result.data.order.filled_avg_price.Value, relatedOrder.PortfolioId, result.data.order.filled_qty);
-
-									positionAdditionHandler.AddPosition(relatedUser, newPosition);
-								}
-								else
-								{
-									logger.LogInformation(new EventId(1), "Failed to find order");
-								}
+								rabbitManager.Publish(result.data);
 							}
 						}
 					}
@@ -94,8 +92,6 @@ namespace ServerSentEventsClient
 			{
 				return default;
 			}
-
-			return default;
 		}
 
 		private void InitializeClient()

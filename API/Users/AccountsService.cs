@@ -73,6 +73,7 @@ namespace Users
 				var alpacaOrderResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
 
 				if (alpacaOrderResponse is not null)
+					// send message
 					orders.Add(AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
 			}
 
