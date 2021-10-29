@@ -46,28 +46,7 @@ namespace ServerSentEventsClient
 						Console.WriteLine($"Message: {message}");
 						message = $"{{{message}}}";
 						Console.WriteLine($"Cleaned message: {message}");
-						var result = new Event<TradeEvent>()
-						{
-							data = new TradeEvent
-							{
-								Event = TradeEventValue.fill,
-								account_id = new Guid("37438406-f906-4f6c-82d5-fcaa38332729"),
-								order = new AlpacaOrderResponse
-								{
-									id = new Guid("c628dbe1-741e-4200-9871-a786d968caed"),
-									symbol = "LLL",
-									status = Core.OrderStatusValue.filled,
-									created_at = DateTime.Now.AddHours(-1),
-									filled_at = DateTime.Now,
-									type = Core.OrderType.market,
-									side = Core.OrderDirectionValue.buy,
-									time_in_force = Core.OrderExecutionTimeframeValue.day,
-									qty = 69,
-									filled_qty = 69,
-									filled_avg_price = 100
-								}
-							}
-						};
+						var result = DeserializeResponse<Event<TradeEvent>>(message);
 
 						if (result is not null && result.data is not null)
 						{
