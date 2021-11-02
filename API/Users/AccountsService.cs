@@ -66,18 +66,15 @@ namespace Users
 			var transationId = Guid.NewGuid();
 			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkPurchaseOrder(request);
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First().AccountId;
-			var orders = new List<Order>();
 
 			foreach (var alpacaRequest in alpacaRequests)
 			{
 				var alpacaOrderResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
 
 				if (alpacaOrderResponse is not null)
-					// send message
-					orders.Add(AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
+					userOrdersRepository.AddOrder(userId, AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
 			}
 
-			userOrdersRepository.AddOrders(userId, orders);
 
 			return new OkResult();
 		}
