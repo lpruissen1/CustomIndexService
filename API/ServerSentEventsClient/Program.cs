@@ -1,15 +1,12 @@
 using Core.Logging;
-using Database.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.ObjectPool;
 using Microsoft.Extensions.Options;
-using Users;
-using Users.Database;
-using Users.Database.Config;
-using Users.Database.Repositories;
-using Users.Database.Repositories.Interfaces;
+using RabbitMQ.Client;
+using ServerSentEventsClient.RabbitProducer;
 
 namespace ServerSentEventsClient
 {
@@ -26,19 +23,13 @@ namespace ServerSentEventsClient
 				{
 					IConfiguration configuration = hostContext.Configuration;
 
-					services.Configure<UserDatabaseSettings>(configuration.GetSection(nameof(UserDatabaseSettings)));
-					services.AddSingleton<IUserDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserDatabaseSettings>>().Value);
-
 					services.Configure<MyLoggerOptions>(configuration.GetSection(nameof(MyLoggerOptions)));
 					services.AddSingleton<IMyLoggerOptions>(sp => sp.GetRequiredService<IOptions<MyLoggerOptions>>().Value);
-
-					services.AddSingleton<IMongoDBContext, MongoUserDbContext>();
-
-					services.AddSingleton<IUserPositionsRepository, UserPositionsRepository>();
-					services.AddSingleton<IUserAccountsRepository, UserAccountsRepository>();
-					services.AddSingleton<IUserOrdersRepository, UserOrdersRepository>();
-					services.AddSingleton<IPositionAdditionHandler, PositionAdditionHandler>();
 					services.AddSingleton<ILogger, MyLogger>();
+
+					// rabbit 
+					services.AddSingleton<IPooledObjectPolicy<IModel>, RabbitModelPooledObjectPolicy>();
+					services.AddSingleton<IRabbitManager, RabbitManager>();
 
 					services.AddHostedService<Worker>();
                 });
