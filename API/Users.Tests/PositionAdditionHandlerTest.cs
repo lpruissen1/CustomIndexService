@@ -8,13 +8,13 @@
 //	[TestFixture]
 //	public class PositionAdditionHandlerTest : DbTestBase
 //	{
-//		PositionUpdateHandler sut;
+//		PositionAdditionHandler sut;
 
 //		[SetUp]
 //		public void SetUp()
 //		{
 //			base.SetUp();
-//			sut = new PositionupdateHandler(UserPositionsRepository);
+//			sut = new PositionAdditionHandler(UserPositionsRepository);
 //		}
 
 //		[Test]

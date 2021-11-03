@@ -18,6 +18,7 @@ using Users.Database.Repositories.Interfaces;
 using Users.Funding;
 using Users.Orders;
 using Users.Positions;
+using Users.RabbitListener;
 
 namespace Users.Service
 {
@@ -33,6 +34,7 @@ namespace Users.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
 			services.Configure<UserDatabaseSettings>(Configuration.GetSection(nameof(UserDatabaseSettings)));
 			services.AddSingleton<IUserDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserDatabaseSettings>>().Value);
 
@@ -41,28 +43,33 @@ namespace Users.Service
 
 			services.Configure<MyLoggerOptions>(Configuration.GetSection(nameof(MyLoggerOptions)));
 			services.AddSingleton<IMyLoggerOptions>(sp => sp.GetRequiredService<IOptions<MyLoggerOptions>>().Value);
+			services.AddSingleton<ILogger, MyLogger>();
 
 			services.AddControllers();
 
-			services.AddScoped<IMongoDBContext, MongoUserDbContext>();
-			services.AddScoped<IPasswordListRepository, PasswordListRepository>();
-			services.AddScoped<IUserRepository, UserRepository>();
-			services.AddScoped<IUserAccountsRepository, UserAccountsRepository>();
-			services.AddScoped<IUserDisclosuresRepository, UserDisclosuresRepository>();
-			services.AddScoped<IUserDocumentsRepository, UserDocumentsRepository>();
-			services.AddScoped<IUserOrdersRepository, UserOrdersRepository>();
-			services.AddScoped<IUserTransfersRepository, UserTransfersRepository>();
+			services.AddSingleton<IMongoDBContext, MongoUserDbContext>();
+			services.AddSingleton<IPasswordListRepository, PasswordListRepository>();
+			services.AddSingleton<IUserRepository, UserRepository>();
+			services.AddSingleton<IUserAccountsRepository, UserAccountsRepository>();
+			services.AddSingleton<IUserDisclosuresRepository, UserDisclosuresRepository>();
+			services.AddSingleton<IUserDocumentsRepository, UserDocumentsRepository>();
+			services.AddSingleton<IUserOrdersRepository, UserOrdersRepository>();
+			services.AddSingleton<IUserTransfersRepository, UserTransfersRepository>();
+			services.AddSingleton<IUserPositionsRepository, UserPositionsRepository>();
+
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IFundingService, FundingService>();
 			services.AddScoped<IOrderService, OrderSerivce>();
-			services.AddScoped<IUserPositionsRepository, UserPositionsRepository>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IPositionsService, PositionsService>();
-			services.AddScoped<IPositionAdditionHandler, PositionUpdateHandler>();
 			services.AddScoped<IAccountsService, AccountsService>();
+
+			services.AddSingleton<IPositionAdditionHandler, PositionAdditionHandler>();
+
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IHasher, BCryptHasher>();
-			services.AddSingleton<ILogger, MyLogger>();
+
+			services.AddHostedService<PositionsListener>();
 
 			services.AddControllers().AddJsonOptions(o =>
 			{

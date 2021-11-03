@@ -11,6 +11,6 @@ namespace Users.Database.Repositories.Interfaces
 		void AddOrders(Guid userId, List<Order> orders);
 		void AddOrder(Guid userId, Order order);
 		void FillOrder(Guid userId, Guid orderId, Order order);
-		void UpdateOrder(Guid userId, Order order);
+		void UpdateOrderStatus(Guid userId, Order order);
 	}
 }

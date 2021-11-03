@@ -45,16 +45,15 @@ namespace Users.Mappers
 			return request;
 		}
 
-		public static IEnumerable<AlpacaMarketOrderRequest> MapBulkPurchaseOrder(BulkOrderRequest bulkPurchaseRequest)
+		public static IEnumerable<AlpacaMarketOrderRequest> MapBulkPurchaseOrder(BulkPurchaseRequest bulkPurchaseRequest)
 		{
 			foreach (var order in bulkPurchaseRequest.Orders)
 			{
 				yield return new AlpacaMarketOrderRequest()
 				{
 					symbol = order.Ticker,
-					notional = order.DollarAmount.GetValueOrDefault(),
-					qty = order.ShareAmount.GetValueOrDefault(),
-					side = bulkPurchaseRequest.Side,
+					notional = order.Amount,
+					side = "buy",
 					type = OrderType.market,
 					time_in_force = OrderExecutionTimeframeValue.day
 				};

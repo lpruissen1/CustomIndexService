@@ -1,14 +1,15 @@
+using AlpacaApiClient.Model.Response;
 using AlpacaApiClient.Model.Response.Events;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ServerSentEventsClient.RabbitProducer;
 using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Users;
 
 namespace ServerSentEventsClient
 {
@@ -17,13 +18,13 @@ namespace ServerSentEventsClient
 		private readonly HttpClient client;
 		private string route = "https://broker-api.sandbox.alpaca.markets";
 
-		public ILogger logger { get; }
-		public IPositionAdditionHandler positionAdditionHandler { get; }
+		private ILogger logger { get; }
+		private IRabbitManager rabbitManager { get; }
 
-		public Worker(ILogger logger, IPositionAdditionHandler positionAdditionHandler)
+		public Worker(ILogger logger, IRabbitManager rabbitManager)
 		{
 			this.logger = logger;
-			this.positionAdditionHandler = positionAdditionHandler;
+			this.rabbitManager = rabbitManager;
 			client = new HttpClient();
 		}
 
@@ -51,7 +52,7 @@ namespace ServerSentEventsClient
 						{
 							if (result.data.Event == TradeEventValue.fill)
 							{
-								positionAdditionHandler.HandlePositionUpdate(result.data);
+								rabbitManager.Publish(result.data);
 							}
 						}
 					}
@@ -70,8 +71,6 @@ namespace ServerSentEventsClient
 			{
 				return default;
 			}
-
-			return default;
 		}
 
 		private void InitializeClient()
