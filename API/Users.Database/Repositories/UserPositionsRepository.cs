@@ -35,6 +35,13 @@ namespace Users.Database.Repositories
 
 			dbCollection.UpdateOne(filter, update);
 		}
+
+		public void UpdatePosition(Guid userId, UserPositions positions)
+		{
+			FilterDefinition<UserPositions> filter = Builders<UserPositions>.Filter.Eq("UserId", userId);
+
+			dbCollection.ReplaceOne(filter, positions);
+		}
 	}
 }
 

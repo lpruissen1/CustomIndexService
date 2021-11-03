@@ -218,6 +218,21 @@ namespace AlpacaApiClient
 			return default;
 		}
 
+		public AlpacaPositionResponse GetPosition(Guid accountId, string ticker)
+		{
+			var request = new HttpRequestMessage(HttpMethod.Get, $"{route}/v1/trading/accounts/{accountId}/positions/{ticker}");
+			request.Headers.Add("Authorization", "Basic " + GetAuthHeader());
+
+			var response = client.SendAsync(request).Result;
+
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				return DeserializeResponse<AlpacaPositionResponse>(response);
+
+			logger.LogInformation(new EventId(1), $"Error executing order: {GetStringFromStream(response.Content.ReadAsStream())}");
+
+			return default;
+		}
+
 		private string GetAuthHeader()
 		{
 			return Convert.ToBase64String(Encoding.UTF8.GetBytes(key + ":" + secret));

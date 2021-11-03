@@ -15,7 +15,7 @@ namespace Users
 {
 	public class AccountsService : IAccountsService
 	{
-		public AccountsService(IUserRepository userRepository, IUserPositionsRepository userPositionsRepository, IUserTransfersRepository userTransfersRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, IPositionAdditionHandler positionAdditionHandler, ILogger logger)
+		public AccountsService(IUserRepository userRepository, IUserPositionsRepository userPositionsRepository, IUserTransfersRepository userTransfersRepository, IUserAccountsRepository userAccountsRepository, IUserDisclosuresRepository userDiclosuresRepository, IUserDocumentsRepository userDocumentsRepository, IUserOrdersRepository userOrdersRepository, ILogger logger)
 		{
 			this.userRepository = userRepository;
 			this.userAccountsRepository = userAccountsRepository;
@@ -23,7 +23,6 @@ namespace Users
 			this.userDiclosuresRepository = userDiclosuresRepository;
 			this.userDocumentsRepository = userDocumentsRepository;
 			this.userOrdersRepository = userOrdersRepository;
-			this.positionAdditionHandler = positionAdditionHandler;
 			this.userPositionsRepository = userPositionsRepository;
 			this.alpacaClient = new AlpacaClient(new AlpacaApiSettings { Key = "CKXM3IU2N9VWGMI470HF", Secret = "ZuT1Jrbn9VFU1bt3egkjdyoOseWNCZ1c5pjYMH7H" }, logger);
 		}
@@ -35,7 +34,6 @@ namespace Users
 		private IUserDocumentsRepository userDocumentsRepository { get; }
 		private IUserOrdersRepository userOrdersRepository { get; }
 		private IUserPositionsRepository userPositionsRepository { get; }
-		private IPositionAdditionHandler positionAdditionHandler { get; }
 		private AlpacaClient alpacaClient { get; }
 
 		public IActionResult CreateTradingAccount(CreateAccountRequest request)
@@ -61,10 +59,10 @@ namespace Users
 			return new BadRequestResult();
 		}
 
-		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request)
+		public IActionResult ExecuteBulkOrder(Guid userId, BulkOrderRequest request)
 		{
 			var transationId = Guid.NewGuid();
-			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkPurchaseOrder(request);
+			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkRequestOrder(request);
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First().AccountId;
 
 			foreach (var alpacaRequest in alpacaRequests)
@@ -74,7 +72,6 @@ namespace Users
 				if (alpacaOrderResponse is not null)
 					userOrdersRepository.AddOrder(userId, AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
 			}
-
 
 			return new OkResult();
 		}

@@ -7,6 +7,6 @@ namespace Users.Core
 	public interface IAccountsService
 	{
 		public IActionResult CreateTradingAccount(CreateAccountRequest request);
-		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request);
+		public IActionResult ExecuteBulkOrder(Guid userId, BulkOrderRequest request);
 	}
 }

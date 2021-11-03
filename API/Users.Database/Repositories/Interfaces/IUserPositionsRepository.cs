@@ -9,5 +9,6 @@ namespace Users.Database.Repositories.Interfaces
 		UserPositions GetByUserId(Guid userId);
 		void CreatePosition(Guid userId, Position position);
 		void UpdatePosition(Guid userId, Position position);
+		void UpdatePosition(Guid userId, UserPositions position);
 	}
 }

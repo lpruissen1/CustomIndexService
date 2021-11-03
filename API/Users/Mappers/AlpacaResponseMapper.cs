@@ -22,8 +22,8 @@ namespace Users.Mappers
 				Time_in_force = response.time_in_force,
 				OrderedQuantity = response?.qty,
 				OrderedAmount = response?.notional,
-				FilledQuantity = null,
-				FilledAmount = null
+				FilledQuantity = response?.filled_qty,
+				FilledAmount = response?.filled_qty * response?.filled_avg_price
 			};
 		}
 
