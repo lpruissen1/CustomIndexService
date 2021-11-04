@@ -50,7 +50,7 @@ namespace Users.Orders
 			if (response)
 			{
 				order.Status = OrderStatusValue.canceled;
-				userOrdersRepository.UpdateOrder(userId, order);
+				userOrdersRepository.UpdateOrderStatus(userId, order);
 				return true;
 			}
 

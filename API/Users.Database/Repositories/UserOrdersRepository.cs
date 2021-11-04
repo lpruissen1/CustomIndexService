@@ -42,11 +42,20 @@ namespace Users.Database.Repositories
 			dbCollection.UpdateOneAsync(filter, update);
 		}
 
-		public void UpdateOrder(Guid userId, Order order)
+		public void UpdateOrderStatus(Guid userId, Order order)
 		{
 			FilterDefinition<UserOrders> filter = Builders<UserOrders>.Filter.Eq("UserId", userId) & Builders<UserOrders>.Filter.ElemMatch(x => x.Orders, Builders<Order>.Filter.Eq(x => x.OrderId, order.OrderId));
 
 			var update = Builders<UserOrders>.Update.Set("Orders.$.Status", order.Status);
+
+			dbCollection.UpdateOneAsync(filter, update);
+		}
+
+		public void AddOrder(Guid userId, Order order)
+		{
+			FilterDefinition<UserOrders> filter = Builders<UserOrders>.Filter.Eq("UserId", userId);
+
+			var update = Builders<UserOrders>.Update.Push("Orders", order);
 
 			dbCollection.UpdateOneAsync(filter, update);
 		}
