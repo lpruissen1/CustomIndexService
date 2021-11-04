@@ -22,5 +22,26 @@
 					return 0;
 			}
 		}
+
+		public static int GetMonthsFromTimePeriod(this TimePeriod timespan)
+		{
+			switch (timespan)
+			{
+				case TimePeriod.Month:
+					return 1;
+				case TimePeriod.Quarter:
+					return 2;
+				case TimePeriod.HalfYear:
+					return 6;
+				case TimePeriod.Year:
+					return 12;
+				case TimePeriod.ThreeYear:
+					return 36;
+				case TimePeriod.FiveYear:
+					return 60;
+				default:
+					return 1;
+			}
+		}
 	}
 }

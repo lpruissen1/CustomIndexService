@@ -11,6 +11,7 @@
 		HalfYear,
 		Year,
 		ThreeYear,
-		FiveYear
+		FiveYear,
+		AllTime
 	}
 }
