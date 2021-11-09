@@ -102,7 +102,7 @@ namespace Users
 				var userPositions = userPositionsRepository.GetByUserId(relatedUser);
 				var soldPosition = userPositions.Positions.First(x => x.Ticker == filledOrder.Ticker);
 
-				var qty = soldPosition.Portfolios[filledOrder.Ticker];
+				var qty = soldPosition.Portfolios[relatedOrder.PortfolioId.ToString()];
 				var soldQty = filledOrder.FilledQuantity;
 
 				if(soldPosition.Portfolios.Count == 1)

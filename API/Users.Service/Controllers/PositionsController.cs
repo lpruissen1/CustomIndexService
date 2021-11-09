@@ -22,7 +22,7 @@ namespace Users.Service.Controllers
 			return positionsService.GetAllPositions(userId);
         }
 
-        [HttpPost("get-all-new/{userId}")]
+        [HttpGet("get-all-new/{userId}")]
         public async Task<IActionResult> GetAllPositionsNew(Guid userId)
         {
 			var result = await positionsService.GetPortfoliosByPortfolio(userId);
