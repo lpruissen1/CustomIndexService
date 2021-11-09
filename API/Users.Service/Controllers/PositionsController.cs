@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 using Users.Core;
 
 namespace Users.Service.Controllers
@@ -19,6 +20,14 @@ namespace Users.Service.Controllers
         public IActionResult GetAllPositions(Guid userId)
         {
 			return positionsService.GetAllPositions(userId);
+        }
+
+        [HttpPost("get-all-new/{userId}")]
+        public async Task<IActionResult> GetAllPositionsNew(Guid userId)
+        {
+			var result = await positionsService.GetPortfoliosByPortfolio(userId);
+
+			return new OkObjectResult(result);
         }
 
         [HttpPost("by-portfolio/{userId}/{portfolioId}")]

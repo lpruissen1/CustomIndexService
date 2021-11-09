@@ -54,7 +54,7 @@ namespace Users.Positions
 			return new OkObjectResult(response);
 		}
 
-		public async Task<PositionsResponse> GetPortfolios(Guid userId)
+		public async Task<PositionsResponse> GetPortfoliosByPortfolio(Guid userId)
 		{
 			var account = userAccountsRepository.GetByUserId(userId);
 			var indices = await customIndexService.GetAllForUserNew(userId.ToString());

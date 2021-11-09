@@ -9,6 +9,6 @@ namespace Users.Core
 	{
 		IActionResult GetAllPositions(Guid userId);
 		IActionResult GetPositionsForPortfolio(Guid userId, Guid portfolioId);
-		Task<PositionsResponse> GetPortfolios(Guid userId);
+		Task<PositionsResponse> GetPortfoliosByPortfolio(Guid userId);
 	}
 }
