@@ -92,10 +92,10 @@ namespace Users
 			return relevantTransfers;
 		}
 
-		public IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request)
+		public IActionResult ExecuteBulkOrder(Guid userId, BulkOrderRequest request)
 		{
 			var transationId = Guid.NewGuid();
-			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkPurchaseOrder(request);
+			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkRequestOrder(request);
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First().AccountId;
 
 			foreach (var alpacaRequest in alpacaRequests)
@@ -105,7 +105,6 @@ namespace Users
 				if (alpacaOrderResponse is not null)
 					userOrdersRepository.AddOrder(userId, AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId, request.PortfolioId));
 			}
-
 
 			return new OkResult();
 		}

@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
+using Users.Core.Response.Positions;
 
 namespace Users.Core
 {
 	public interface IPositionsService
 	{
-		public IActionResult GetAllPositions(Guid userId);
-		public IActionResult GetPositionsForPortfolio(Guid userId, Guid portfolioId);
+		IActionResult GetAllPositions(Guid userId);
+		IActionResult GetPositionsForPortfolio(Guid userId, Guid portfolioId);
+		Task<PositionsResponse> GetPortfoliosByPortfolio(Guid userId);
 	}
 }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using Users.Core;
+using Users.CustomIndices;
 using Users.Database;
 using Users.Database.Config;
 using Users.Database.Repositories;
@@ -47,6 +48,11 @@ namespace Users.Service
 
 			services.AddControllers();
 
+			services.AddScoped<IIndicesRepository, IndiciesRepository>();
+			services.AddScoped<ICustomIndexService, CustomIndexService>();
+			services.AddScoped<IRequestMapper, RequestMapper>();
+			services.AddScoped<IResponseMapper, ResponseMapper>();
+
 			services.AddSingleton<IMongoDBContext, MongoUserDbContext>();
 			services.AddSingleton<IPasswordListRepository, PasswordListRepository>();
 			services.AddSingleton<IUserRepository, UserRepository>();
@@ -64,7 +70,7 @@ namespace Users.Service
 			services.AddScoped<IPositionsService, PositionsService>();
 			services.AddScoped<IAccountsService, AccountsService>();
 
-			services.AddSingleton<IPositionAdditionHandler, PositionAdditionHandler>();
+			services.AddSingleton<IPositionUpdateHandler, PositionUpdateHandler>();
 
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IHasher, BCryptHasher>();

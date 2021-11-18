@@ -89,5 +89,12 @@ namespace UserCustomIndices.Services
 			logger.LogInformation(new EventId(1), $"Portfolio, {indexId} for user, {userId}, was not deleted properly");
 			return new BadRequestResult();
 		}
-    }
+
+		public async Task<IEnumerable<CustomIndexResponse>> GetAllForUserNew(string userid)
+		{
+			var result = await indicesRepository.GetAllForUser(userid);
+
+			return result.Select(index => responseMapper.Map(index)).AsEnumerable();
+		}
+	}
 }

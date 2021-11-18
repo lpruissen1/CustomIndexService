@@ -16,9 +16,9 @@ namespace Users.RabbitListener
 		private IConnection _connection;
 		private IModel _channel;
 
-		private IPositionAdditionHandler positionAdditionHandler { get; }
+		private IPositionUpdateHandler positionAdditionHandler { get; }
 
-		public PositionsListener(ILogger logger, IPositionAdditionHandler positionAdditionHandler)
+		public PositionsListener(ILogger logger, IPositionUpdateHandler positionAdditionHandler)
 		{
 			this.logger = logger;
 			this.positionAdditionHandler = positionAdditionHandler;
@@ -65,12 +65,11 @@ namespace Users.RabbitListener
 
 		private void HandleMessage(string content)
 		{
-			// we just print this message
-			// position addition handler
 			logger.LogInformation($"consumer received {content}");
 
 			var deserialized = JsonConvert.DeserializeObject<TradeEvent>(content);
-			positionAdditionHandler.AddPosition(deserialized);
+
+			positionAdditionHandler.UpdatePosition(deserialized);
 		}
 
 		private void OnConsumerConsumerCancelled(object sender, ConsumerEventArgs e) { }

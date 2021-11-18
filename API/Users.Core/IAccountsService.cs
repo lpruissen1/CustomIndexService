@@ -8,8 +8,8 @@ namespace Users.Core
 {
 	public interface IAccountsService
 	{
+		public IActionResult ExecuteBulkOrder(Guid userId, BulkOrderRequest request);
 		IActionResult CreateTradingAccount(CreateAccountRequest request);
-		IActionResult ExecuteBulkPurchase(Guid userId, BulkPurchaseRequest request);
 		AccountHistoryResponse GetAccountHistory(Guid userId, TimePeriod timePeriod);
 	}
 }
