@@ -60,6 +60,21 @@ namespace Users.Mappers
 			};
 		}
 
+		public static IEnumerable<AlpacaMarketOrderRequest> MapIndividualRequestOrder(IndividualOrderRequest individualOrderRequest)
+		{
+			foreach (var order in individualOrderRequest.Orders)
+			{
+				yield return new AlpacaMarketOrderRequest()
+				{
+					symbol = order.Ticker,
+					notional = order.Amount,
+					side = individualOrderRequest.Direction,
+					type = OrderType.market,
+					time_in_force = OrderExecutionTimeframeValue.day
+				};
+			};
+		}
+
 		private static AlpacaAccountContact MapAccountContactInfo(CreateAccountRequest createAccountRequest)
 		{
 			return new AlpacaAccountContact()

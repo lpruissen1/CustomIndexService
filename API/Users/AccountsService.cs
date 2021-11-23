@@ -108,5 +108,22 @@ namespace Users
 
 			return new OkResult();
 		}
+
+		public IActionResult ExecuteIndividualOrder(Guid userId, IndividualOrderRequest request)
+		{
+			var transationId = Guid.NewGuid();
+			var alpacaRequests = AlpacaAccountRequestMapper.MapIndividualRequestOrder(request);
+			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First().AccountId;
+
+			foreach (var alpacaRequest in alpacaRequests)
+			{
+				var alpacaOrderResponse = alpacaClient.ExecuteOrder(alpacaRequest, alpacaAccount);
+
+				if (alpacaOrderResponse is not null)
+					userOrdersRepository.AddOrder(userId, AlpacaResponseMapper.MapAlpacaOrderResponse(alpacaOrderResponse, transationId));
+			}
+
+			return new OkResult();
+		}
 	}
 }
