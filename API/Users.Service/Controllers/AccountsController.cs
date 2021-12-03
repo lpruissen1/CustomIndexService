@@ -39,5 +39,11 @@ namespace Users.Service.Controllers
 		{
 			return accountservice.ExecuteBulkOrder(userId, request);
 		}
+
+		[HttpPost("execute-individual-market-order/{userId}")]
+		public IActionResult ExecuteIndividualMarketOrder(Guid userId, IndividualOrderRequest request)
+		{
+			return accountservice.ExecuteIndividualOrder(userId, request);
+		}
 	}
 }

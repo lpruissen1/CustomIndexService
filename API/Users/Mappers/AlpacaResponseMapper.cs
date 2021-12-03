@@ -32,6 +32,27 @@ namespace Users.Mappers
 			};
 		}
 
+		public static Order MapAlpacaOrderResponse(AlpacaOrderResponse response, Guid TransactionId)
+		{
+			return new Order
+			{
+				OrderId = response.id,
+				PortfolioId = new Guid(),
+				TransactionId = TransactionId,
+				Ticker = response.symbol,
+				Status = response.status,
+				CreatedAt = response.created_at,
+				FilledAt = response.filled_at.GetValueOrDefault(),
+				Type = response.type,
+				Side = response.side,
+				Time_in_force = response.time_in_force,
+				OrderedQuantity = response?.qty,
+				OrderedAmount = response?.notional,
+				FilledQuantity = response?.filled_qty,
+				FilledAmount = response?.filled_qty * response?.filled_avg_price
+			};
+		}
+
 		public static Order MapAlpacaOrderResponse(AlpacaOrderResponse response)
 		{
 			return new Order
