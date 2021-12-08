@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ServerSentEventsClient.RabbitProducer;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -20,19 +21,65 @@ namespace ServerSentEventsClient
 
 		private ILogger logger { get; }
 		private IRabbitManager rabbitManager { get; }
-
+		private List<Func<CancellationToken, Task>> listenerTasks;
+		
 		public Worker(ILogger logger, IRabbitManager rabbitManager)
 		{
 			this.logger = logger;
 			this.rabbitManager = rabbitManager;
-			client = new HttpClient();
+
+			listenerTasks = new List<Func<CancellationToken, Task>> { (token) => ListenTransfers(token), (token) => ListenTrades(token) };
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
-			InitializeClient(); 
+			while (!stoppingToken.IsCancellationRequested)
+			{
+				var workers = new List<Task>();
+				foreach (var task in listenerTasks)
+					workers.Add(task(stoppingToken));
+
+				Console.WriteLine("All Running");
+				await Task.WhenAll(workers.ToArray());
+			}
+			Console.WriteLine("Connection Closed");
+		}
+
+		private async Task ListenTransfers(CancellationToken stoppingToken)
+		{
+			var client = InitializeClient();
+			var orderUrl = $"{route}/v1/events/transfers/status";
+			Console.WriteLine("Establishing connection to transfers");
+
+			while (!stoppingToken.IsCancellationRequested)
+			{
+				Console.WriteLine("Establishing connection");
+				using (var streamReader = new StreamReader(await client.GetStreamAsync(orderUrl)))
+				{
+					while (!streamReader.EndOfStream)
+					{
+						var message = await streamReader.ReadLineAsync();
+
+						Console.WriteLine($"Message: {message}");
+						message = $"{{{message}}}";
+						Console.WriteLine($"Cleaned message: {message}");
+						var result = DeserializeResponse<Event<TransferEvent>>(message);
+
+						if (result is not null && result.data is not null)
+						{
+							rabbitManager.Publish(result.data);
+						}
+					}
+				}
+			}
+			Console.WriteLine("Connection Closed for transfers");
+		}
+
+		private async Task ListenTrades(CancellationToken stoppingToken)
+		{
+			var client = InitializeClient(); 
 			var orderUrl = $"{route}/v1/events/trades";
-			Console.WriteLine("Establishing connection");
+			Console.WriteLine("Establishing connection to trades ");
 
 			while (!stoppingToken.IsCancellationRequested)
 			{
@@ -58,8 +105,10 @@ namespace ServerSentEventsClient
 					}
 				}
 			}
-			Console.WriteLine("Connection Closed");
+			Console.WriteLine("Connection Closed for trades");
 		}
+
+
 
 		private TResponseType DeserializeResponse<TResponseType>(string response)
 		{
@@ -73,10 +122,13 @@ namespace ServerSentEventsClient
 			}
 		}
 
-		private void InitializeClient()
+		private HttpClient InitializeClient()
 		{
+			var client = new HttpClient();
 			client.Timeout = TimeSpan.FromSeconds(2);
 			client.DefaultRequestHeaders.Add("Authorization", "Basic " + GetAuthHeader());
+
+			return client;
 		}
 
 		private string GetAuthHeader()

@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AlpacaApiClient.Model.Response.Events;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace ServerSentEventsClient.RabbitProducer
@@ -10,11 +12,12 @@ namespace ServerSentEventsClient.RabbitProducer
 	public class RabbitManager : IRabbitManager
 	{
 		private readonly DefaultObjectPool<IModel> _objectPool;
-
+		private readonly Dictionary<Type, string> queueMapping;
 		public RabbitManager(IPooledObjectPolicy<IModel> objectPolicy, ILogger logger)
 		{
 			_objectPool = new DefaultObjectPool<IModel>(objectPolicy, Environment.ProcessorCount * 2);
 			this.logger = logger;
+			queueMapping = new Dictionary<Type, string> { { typeof(TradeEvent), "positions" }, { typeof(TransferEvent), "transfers" } };
 		}
 
 		private ILogger logger { get; }
@@ -37,7 +40,7 @@ namespace ServerSentEventsClient.RabbitProducer
 				var properties = channel.CreateBasicProperties();
 				properties.Persistent = true;
 
-				channel.BasicPublish("", "positions", properties, sendBytes);
+				channel.BasicPublish("", queueMapping[typeof(T)], properties, sendBytes);
 			}
 			catch (Exception ex)
 			{

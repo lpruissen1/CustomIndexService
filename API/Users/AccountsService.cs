@@ -70,7 +70,7 @@ namespace Users
 			var relevantTransfers = GetTransfersForTimePeriod(accountTransfers, timePeriod);
 
 			if (alpacaAccountHistoryResponse.Code == 200)
-				return ResponseMapper.MapAlpacaAccountHistoryResponse(alpacaAccountHistoryResponse, relevantTransfers, accountTransfers.Transfers.Min(x => x.Created));
+				return ResponseMapper.MapAlpacaAccountHistoryResponse(alpacaAccountHistoryResponse, relevantTransfers, accountTransfers.Transfers.Min(x => x.CreatedAt));
 
 			return default;
 		}
@@ -85,7 +85,7 @@ namespace Users
 
 			foreach(var transfer in transfers.Transfers)
 			{
-				if (transfer.Status == TransferStatusValue.COMPLETE && transfer.Created >= startDate)
+				if (transfer.Status == TransferStatusValue.COMPLETE && transfer.CreatedAt >= startDate)
 					relevantTransfers.Add(transfer);
 			}
 

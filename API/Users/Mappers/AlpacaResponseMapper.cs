@@ -61,7 +61,7 @@ namespace Users.Mappers
 				Status = response.status,
 				TransferType = response.type,
 				Direction = response.direction,
-				Created = response.created_at
+				CreatedAt = response.created_at
 			};
 		}
 
@@ -103,7 +103,7 @@ namespace Users.Mappers
 				// these must be in chronological order
 				var currentTransfer = transfers.FirstOrDefault();
 
-				if (currentTransfer is not null && timestampDatetime.SameDay(currentTransfer.Created))
+				if (currentTransfer is not null && timestampDatetime.SameDay(currentTransfer.CreatedAt))
 				{
 					netContribution += currentTransfer.Direction == TransferDirectionValue.INCOMING ? currentTransfer.Amount : -currentTransfer.Amount;
 					transfers.Remove(currentTransfer);

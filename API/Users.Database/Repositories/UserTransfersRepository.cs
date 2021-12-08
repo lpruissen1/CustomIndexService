@@ -24,7 +24,8 @@ namespace Users.Database.Repositories
 		{
 			FilterDefinition<UserTransfers> filter = Builders<UserTransfers>.Filter.Eq("UserId", userId) & Builders<UserTransfers>.Filter.ElemMatch(x => x.Transfers, Builders<Transfer>.Filter.Eq(x => x.TransferId, transfer.TransferId));
 
-			var update = Builders<UserTransfers>.Update.Set("Transfers.$.Status", transfer.Status);
+			var update = Builders<UserTransfers>.Update.Set("Transfers.$.Status", transfer.Status).Set("Transfers.$.CancelledAt", transfer.CancelledAt).Set("Transfers.$.CompletedAt", transfer.CompletedAt).Set("Transfers.$.CreatedAt", transfer.CreatedAt);
+
 
 			dbCollection.UpdateOneAsync(filter, update);
 		}

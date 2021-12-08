@@ -15,7 +15,14 @@ namespace Users.Database.Model
 
 		public decimal Amount { get; set; }
 
-		public DateTime Created { get; set; }
+		[BsonRepresentation(BsonType.DateTime)]
+		public DateTime CreatedAt { get; set; }
+
+		[BsonRepresentation(BsonType.DateTime)]
+		public DateTime CompletedAt { get; set; }
+
+		[BsonRepresentation(BsonType.DateTime)]
+		public DateTime CancelledAt { get; set; }
 
 		[BsonRepresentation(BsonType.String)]
 		public TransferStatusValue Status { get; set; }

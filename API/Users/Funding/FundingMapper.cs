@@ -11,7 +11,7 @@ namespace Users.Funding
 				AccountId = transfer.AccountId,
 				TransferId = transfer.TransferId,
 				Amount = transfer.Amount,
-				Created = transfer.Created,
+				Created = transfer.CreatedAt,
 				Status = transfer.Status,
 				Direction = transfer.Direction
 			};

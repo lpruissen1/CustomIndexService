@@ -87,7 +87,8 @@ namespace Users.Funding
 
 			if (response)
 			{
-				transfer.Status = TransferStatusValue.CANCELLED;
+				transfer.Status = TransferStatusValue.CANCELED;
+				transfer.CancelledAt = DateTime.Now;
 				userTransferRepository.UpdateTransfer(userId, transfer);
 				return new OkResult();
 			}

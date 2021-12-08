@@ -71,6 +71,7 @@ namespace Users.Service
 			services.AddScoped<IAccountsService, AccountsService>();
 
 			services.AddSingleton<IPositionUpdateHandler, PositionUpdateHandler>();
+			services.AddSingleton<ITransferUpdateHandler, TransferUpdateHandler>();
 
 			services.AddScoped<ITokenGenerator, TokenGenerator>();
 			services.AddScoped<IHasher, BCryptHasher>();
