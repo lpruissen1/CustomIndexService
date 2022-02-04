@@ -1,0 +1,23 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /home/ubuntu/API
+
+hooks:
+  ApplicationStop:
+    - location: build/app-stop.sh
+      timeout: 300
+
+  BeforeInstall:
+    - location: aws-scripts/before-install.sh
+      timeout: 300
+
+  AfterInstall:
+    - location: aws-scripts/after-install.sh
+      timeout: 300
+
+  ApplicationStart:
+    - location: aws-scripts/app-start.sh
+      timeout: 300
