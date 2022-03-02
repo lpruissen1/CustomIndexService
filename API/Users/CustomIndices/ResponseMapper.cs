@@ -23,7 +23,8 @@ namespace Users.CustomIndices
 				Inclusions = index.Inclusions,
 				Exclusions = index.Exclusions,
 				WeightingOption = index.WeightingOption,
-				ManualWeights = index.ManualWeights.Select(kvp => (kvp.Key, kvp.Value)).ToList()
+				ManualWeights = index.ManualWeights.Select(kvp => (kvp.Key, kvp.Value)).ToList(),
+				RebalancingFrequency = new RebalancingRules { Frequency = index.RebalancingRules.Frequency, Automatic = index.RebalancingRules.Automatic}
 			};
 		}
 

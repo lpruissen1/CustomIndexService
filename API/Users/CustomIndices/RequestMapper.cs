@@ -26,10 +26,12 @@ namespace Users.CustomIndices
 				Inclusions = response.Inclusions,
 				Exclusions = response.Exclusions,
 				WeightingOption = response.WeightingOption,
-				ManualWeights = response.ManualWeights.ToDictionary(x => x.Ticker, y => y.Weight)
-            };
+				ManualWeights = response.ManualWeights.ToDictionary(x => x.Ticker, y => y.Weight),
+				RebalancingRules = new RebalancingRules { Frequency = response.RebalancingRules.Frequency, Automatic = response.RebalancingRules.Automatic }
+			};
         }
 
+		// consider consolidation
         public CustomIndex Map(CreateCustomIndexRequest response)
         {
             return new CustomIndex()
@@ -45,7 +47,8 @@ namespace Users.CustomIndices
                 Inclusions = response.Inclusions,
                 Exclusions = response.Exclusions,
 				WeightingOption = response.WeightingOption,
-				ManualWeights = response.ManualWeights.ToDictionary(x => x.Ticker, y => y.Weight)
+				ManualWeights = response.ManualWeights.ToDictionary(x => x.Ticker, y => y.Weight),
+				RebalancingRules = new RebalancingRules { Frequency = response.RebalancingRules.Frequency, Automatic = response.RebalancingRules.Automatic }
 			};
         }
 

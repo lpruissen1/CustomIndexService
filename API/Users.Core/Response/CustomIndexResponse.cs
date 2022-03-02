@@ -17,5 +17,6 @@ namespace Users.Core.Response
 		public List<string> Exclusions { get; init; } = new List<string>();
 		public List<(string Ticker, decimal Weight)> ManualWeights { get; init; } = new List<(string Ticker, decimal Weight)>();
 		public WeightingOption WeightingOption { get; init; }
+		public RebalancingRules RebalancingFrequency { get; init; }
 	}
 }

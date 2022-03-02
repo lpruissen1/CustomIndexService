@@ -13,7 +13,7 @@ namespace Users.Database.Model.CustomIndex
 		public string Name { get; init; }
 		public List<string> Markets { get; init; } = new List<string>();
 		public Sector Sector { get; set; }
-		public bool Active { get; set; }
+		public bool Active { get; set; } // remove me
 		public List<TimedRangeRule> TimedRangeRule { get; init; } = new List<TimedRangeRule>();
 		public List<RangedRule> RangedRule { get; init; } = new List<RangedRule>();
 		public List<string> Inclusions { get; init; } = new List<string>();
@@ -21,5 +21,7 @@ namespace Users.Database.Model.CustomIndex
 		public Dictionary<string, decimal> ManualWeights { get; init; } = new Dictionary<string, decimal>();
 		[BsonRepresentation(BsonType.String)]
 		public WeightingOption WeightingOption { get; init; }
+		public RebalancingRules RebalancingRules { get; init; }
+
 	}
 }

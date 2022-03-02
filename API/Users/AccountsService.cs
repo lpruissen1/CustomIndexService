@@ -63,6 +63,7 @@ namespace Users
 
 		public AccountHistoryResponse GetAccountHistory(Guid userId, TimePeriod timePeriod)
 		{
+			// need to check if account exists
 			var accountId = userAccountsRepository.GetByUserId(userId).Accounts[0].AccountId;
 			var alpacaAccountHistoryResponse = alpacaClient.AccountHistory(accountId, timePeriod);
 			var accountTransfers = userTransfersRepository.GetByUserId(userId);
@@ -97,6 +98,8 @@ namespace Users
 			var transationId = Guid.NewGuid();
 			var alpacaRequests = AlpacaAccountRequestMapper.MapBulkRequestOrder(request);
 			var alpacaAccount = userAccountsRepository.GetByUserId(userId).Accounts.First().AccountId;
+			// if initinal investment
+				// create entry in tradedIndex table
 
 			foreach (var alpacaRequest in alpacaRequests)
 			{

@@ -1,5 +1,6 @@
 ﻿using Core;
 using System.Collections.Generic;
+using Users.Core.Response;
 
 namespace Users.Core.Request
 {
@@ -17,5 +18,6 @@ namespace Users.Core.Request
 		public List<string> Exclusions { get; init; } = new List<string>();
 		public List<ManualWeightingEntry> ManualWeights { get; init; } = new List<ManualWeightingEntry>();
 		public WeightingOption WeightingOption { get; init; }
+		public RebalancingRules RebalancingRules { get; init; }
 	}
 }
